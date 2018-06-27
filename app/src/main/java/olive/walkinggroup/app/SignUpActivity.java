@@ -1,4 +1,4 @@
-package olive.walkinggroup;
+package olive.walkinggroup.app;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import olive.walkinggroup.model.User;
+import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.User;
 
 public class SignUpActivity extends AppCompatActivity {
 
