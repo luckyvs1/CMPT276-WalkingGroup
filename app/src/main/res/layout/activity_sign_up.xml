@@ -40,7 +40,7 @@
         tools:text="Password:" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/txtSetPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView3"
@@ -51,22 +51,22 @@
         android:inputType="textPassword" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/txtSetEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/editText"
+        android:layout_alignStart="@+id/txtSetPassword"
         android:layout_marginTop="96dp"
         android:ems="10"
         android:hint="valid@email.com"
         android:inputType="textEmailAddress" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/txtSetName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView"
-        android:layout_alignStart="@+id/editText"
+        android:layout_alignStart="@+id/txtSetPassword"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name" />

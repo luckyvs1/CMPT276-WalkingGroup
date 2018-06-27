@@ -38,7 +38,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="32dp"
         android:layout_marginTop="55dp"
-        android:text="TextView"
+        android:text="Password:"
         tools:layout_editor_absoluteX="25dp"
         tools:layout_editor_absoluteY="79dp"
         tools:text="Password:" />
@@ -60,7 +60,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/txtPassword"
         android:layout_marginTop="97dp"
-        android:text="TextView"
+        android:text="Email:"
         tools:text="Email:" />
 
     <EditText
