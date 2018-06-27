@@ -1,0 +1,4 @@
+Scrum Master: Lucky (lvs1)
+Product Owner: Jeffrey (jgyeung)
+Repository Manager: Rory (ckw27)
+Team Member: Josh (jha225)
