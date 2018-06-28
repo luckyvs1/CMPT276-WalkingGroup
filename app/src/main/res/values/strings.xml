@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">WalkingGroup</string>
     <string name="title_activity_create_group_maps">Map</string>
+    <string name="create_new_group_title">Create new group:</string>
+    <string name="group_name_edit_text">Group name</string>
+    <string name="group_name_text_view">Group name:</string>
+    <string name="choose_destination_location_btn">Choose destination location</string>
+    <string name="choose_meeting_place_btn">Choose meeting place</string>
+    <string name="ok_btn">OK</string>
+    <string name="cancel_btn">Cancel</string>
 </resources>
