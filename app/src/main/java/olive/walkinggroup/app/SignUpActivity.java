@@ -52,8 +52,8 @@ public class SignUpActivity extends AppCompatActivity {
                 setUserDetails();
 
                 // Make server call
-                // Call<User> caller = proxy.createUser(user);
-                // ProxyBuilder.callProxy(SignUpActivity.this, caller, returnedUser -> response(returnedUser));
+                 Call<User> caller = proxy.createUser(user);
+                 ProxyBuilder.callProxy(SignUpActivity.this, caller, returnedUser -> response(returnedUser));
 
                 // Log the user in on successful sign up
                 loginSignedUpUser();
@@ -78,6 +78,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     // Login the user after a successful sign up
     private void loginSignedUpUser() {
+
     }
 
     // Response from the call back function

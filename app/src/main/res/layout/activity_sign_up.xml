@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="30dp"
         android:layout_marginTop="40dp"
-        android:text="TextView"
+        android:text="Name:"
         tools:layout_editor_absoluteX="38dp"
         tools:layout_editor_absoluteY="70dp"
         tools:text="Name: " />
@@ -26,7 +26,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/textView"
         android:layout_marginTop="111dp"
-        android:text="TextView"
+        android:text="Email:"
         tools:text="Email: " />
 
     <TextView
@@ -36,7 +36,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/textView"
         android:layout_marginTop="188dp"
-        android:text="TextView"
+        android:text="Password:"
         tools:text="Password:" />
 
     <EditText
@@ -68,8 +68,8 @@
         android:layout_alignBaseline="@+id/textView"
         android:layout_alignStart="@+id/txtSetPassword"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:hint="First Lastname"
+        android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/btnSubmitSignup"
