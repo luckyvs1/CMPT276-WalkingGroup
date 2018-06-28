@@ -1,6 +1,7 @@
 package olive.walkinggroup.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,9 +31,17 @@ public class MainActivity extends AppCompatActivity {
 
         user = User.getInstance();
 
+        checkUserToken();
         setupLoginBtn();
         setupSignupBtn();
 
+    }
+
+    // By pass login screen if the user already has a token
+    private void checkUserToken() {
+        if(getTokenToSharedPreferences() != null){
+            goToDashBoardActivity();
+        }
     }
 
     private void setupLoginBtn() {
@@ -61,6 +70,24 @@ public class MainActivity extends AppCompatActivity {
         // Replace the current proxy with one that uses the token!
         Log.w("User logged in", "   --> NOW HAVE TOKEN: " + token);
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+
+        //Store token using shared preferences
+        storeTokenToSharedPreferences(token);
+    }
+
+    // Get the user token
+    private String getTokenToSharedPreferences() {
+        SharedPreferences userPrefs = getSharedPreferences("token", MODE_PRIVATE);
+        String extractedToken = userPrefs.getString("TokenValue", null);
+        return extractedToken;
+    }
+
+    // Store the login token
+    private void storeTokenToSharedPreferences(String token) {
+        SharedPreferences userPrefs = getSharedPreferences("token", MODE_PRIVATE);
+        SharedPreferences.Editor editor = userPrefs.edit();
+        editor.putString("TokenValue",token);
+        editor.commit();
     }
 
     // Login actually completes by calling this; nothing to do as it was all done

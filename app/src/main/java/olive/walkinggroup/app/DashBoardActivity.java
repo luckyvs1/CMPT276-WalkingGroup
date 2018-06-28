@@ -1,5 +1,6 @@
 package olive.walkinggroup.app;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -30,8 +31,21 @@ public class DashBoardActivity extends AppCompatActivity {
 
                 // Remove the token from the proxy
                 proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+
+                // Remove the token from the shared preferences
+                updateStoredTokenToSharedPreferences(token);
+
+                // End the activity
                 finish();
             }
         });
+    }
+
+    // Remove the login token
+    private void updateStoredTokenToSharedPreferences(String token) {
+        SharedPreferences userPrefs = getSharedPreferences("token", MODE_PRIVATE);
+        SharedPreferences.Editor editor = userPrefs.edit();
+        editor.putString("TokenValue",token);
+        editor.commit();
     }
 }
