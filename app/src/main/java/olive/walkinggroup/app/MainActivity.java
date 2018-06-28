@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupLoginBtn();
         setupSignupBtn();
+
     }
 
     private void setupLoginBtn() {
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // Check if the user email and password are valid
+                // Set the user details
                 setUserDetails();
 
                 // Register for token received:
@@ -51,14 +52,6 @@ public class MainActivity extends AppCompatActivity {
                 Call<Void> caller = proxy.login(user);
                 ProxyBuilder.callProxy(MainActivity.this, caller, returnedNothing -> response(returnedNothing));
 
-                // Go to the dashboard activity
-                Intent intent = new Intent(MainActivity.this, DashBoardActivity.class);
-                startActivity(intent);
-
-                // Failed login attempt
-
-                // Display toast
-                Toast.makeText(MainActivity.this, "Failed Login", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -74,6 +67,28 @@ public class MainActivity extends AppCompatActivity {
     // when we got the token.
     private void response(Void returnedNothing) {
         notifyUserViaLogAndToast("Server replied to login request (no content was expected).");
+
+        // Navigate user to the next activity
+        goToDashBoardActivity();
+
+        // Clear the fields
+        clearInputFields();
+    }
+
+    private void clearInputFields() {
+        setUserInput(R.id.txtGetPassword);
+        setUserInput(R.id.txtGetEmail);
+    }
+
+    private void setUserInput(int userInputResourceID) {
+        EditText userText = (EditText) findViewById(userInputResourceID);
+        userText.setText("");
+    }
+
+    private void goToDashBoardActivity() {
+        // Go to the dashboard activity
+        Intent intent = new Intent(MainActivity.this, DashBoardActivity.class);
+        startActivity(intent);
     }
 
     // Put message up in toast and logcat

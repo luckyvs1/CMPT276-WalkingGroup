@@ -46,24 +46,13 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // Check to see if the sign up is valid
-
-                // Set the user details if the sign up is valid
+                // Set the user details
                 setUserDetails();
 
                 // Make server call
                  Call<User> caller = proxy.createUser(user);
                  ProxyBuilder.callProxy(SignUpActivity.this, caller, returnedUser -> response(returnedUser));
 
-                // Log the user in on successful sign up
-                loginSignedUpUser();
-
-
-                launchDashboardActivity();
-
-
-                // Else display a toast message
-                Toast.makeText(SignUpActivity.this, "Failed signup", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -76,16 +65,14 @@ public class SignUpActivity extends AppCompatActivity {
         finish();
     }
 
-    // Login the user after a successful sign up
-    private void loginSignedUpUser() {
-
-    }
 
     // Response from the call back function
     private void response(User user) {
         notifyUserViaLogAndToast("Server replied with user: " + user.toString());
         userId = user.getId();
         userEmail = user.getEmail();
+
+        launchDashboardActivity();
     }
 
     // Toast and log cat message on successful user creation
