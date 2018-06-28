@@ -1,5 +1,6 @@
 package olive.walkinggroup;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +15,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class CreateGroupMapsActivity extends FragmentActivity implements OnMapReadyCallback {
+
+    private static final String LATITUDE_KEY = "olive.walkinggroup.CreateGroupMapsActivity - latitude";
+    private static final String LONGITUDE_KEY = "olive.walkinggroup.CreateGroupMapsActivity - longitude";
 
     private GoogleMap mMap;
 
@@ -40,11 +44,23 @@ public class CreateGroupMapsActivity extends FragmentActivity implements OnMapRe
             @Override
             public void onMapClick(LatLng latLng) {
                 Log.i("App","Lat: " + latLng.latitude + "Long: " + latLng.longitude);
+                Intent intent = new Intent();
+                intent.putExtra(LATITUDE_KEY, latLng.latitude);
+                intent.putExtra(LONGITUDE_KEY, latLng.longitude);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+
             }
         });
     }
 
     public static Intent makeLaunchIntent(Context context) {
         return new Intent(context, CreateGroupMapsActivity.class);
+    }
+
+    public static LatLng getLocationFromIntent(Intent intent) {
+        double latitude = intent.getDoubleExtra(LATITUDE_KEY, 0);
+        double longitude = intent.getDoubleExtra(LONGITUDE_KEY, 0);
+        return new LatLng(latitude, longitude);
     }
 }

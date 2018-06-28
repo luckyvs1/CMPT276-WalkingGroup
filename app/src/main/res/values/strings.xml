@@ -8,4 +8,6 @@
     <string name="choose_meeting_place_btn">Choose meeting place</string>
     <string name="ok_btn">OK</string>
     <string name="cancel_btn">Cancel</string>
+    <string name="selected_destination_location_none">Selected destination location: None</string>
+    <string name="selected_meeting_place_none">Selected meeting place: None</string>
 </resources>
