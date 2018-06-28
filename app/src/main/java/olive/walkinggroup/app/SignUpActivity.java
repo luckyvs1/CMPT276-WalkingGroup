@@ -1,6 +1,7 @@
 package olive.walkinggroup.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -72,6 +73,42 @@ public class SignUpActivity extends AppCompatActivity {
         userId = user.getId();
         userEmail = user.getEmail();
 
+        loginUserGetToken();
+    }
+
+    private void loginUserGetToken() {
+        // Register for token received:
+        ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
+
+        // Make call
+        Call<Void> caller = proxy.login(user);
+        ProxyBuilder.callProxy(SignUpActivity.this, caller, returnedNothing -> response(returnedNothing));
+    }
+
+    // Handle the token by generating a new Proxy which is encoded with it.
+    private void onReceiveToken(String token) {
+        // Replace the current proxy with one that uses the token!
+        Log.w("User logged in", "   --> NOW HAVE TOKEN: " + token);
+        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+
+        //Store token using shared preferences
+        storeTokenToSharedPreferences(token);
+    }
+
+    // Store the login token
+    private void storeTokenToSharedPreferences(String token) {
+        SharedPreferences userPrefs = getSharedPreferences("token", MODE_PRIVATE);
+        SharedPreferences.Editor editor = userPrefs.edit();
+        editor.putString("TokenValue",token);
+        editor.commit();
+    }
+
+    // Login actually completes by calling this; nothing to do as it was all done
+    // when we got the token.
+    private void response(Void returnedNothing) {
+        notifyUserViaLogAndToast("Server replied to login request (no content was expected).");
+
+        // Navigate user to the next activity
         launchDashboardActivity();
     }
 
