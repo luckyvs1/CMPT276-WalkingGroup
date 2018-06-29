@@ -10,4 +10,8 @@
     <string name="cancel_btn">Cancel</string>
     <string name="selected_destination_location_none">Selected destination location: None</string>
     <string name="selected_meeting_place_none">Selected meeting place: None</string>
+    <string name="title_activity_sign_up_activity">SignUpActivity</string>
+
+    <!--API Key for Group Olive obtained from: https://cmpt276-1177-bf.cmpt.sfu.ca:8184/web/index.html-->
+    <string name="apikey">506224F3-9B49-46FA-BCD1-E6817704A6BF6</string>
 </resources>

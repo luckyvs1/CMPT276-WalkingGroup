@@ -1,4 +1,4 @@
-package olive.walkinggroup;
+package olive.walkinggroup.app;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,10 +14,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import olive.walkinggroup.R;
+
 public class CreateGroupMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private static final String LATITUDE_KEY = "olive.walkinggroup.CreateGroupMapsActivity - latitude";
-    private static final String LONGITUDE_KEY = "olive.walkinggroup.CreateGroupMapsActivity - longitude";
+    private static final String LATITUDE_KEY = "olive.walkinggroup.app.CreateGroupMapsActivity - latitude";
+    private static final String LONGITUDE_KEY = "olive.walkinggroup.app.CreateGroupMapsActivity - longitude";
 
     private GoogleMap mMap;
 
