@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".app.DashBoardActivity" />
-        <activity android:name=".app.SignUpActivity"></activity>
+        <activity android:name=".app.SignUpActivity" />
+        <activity android:name=".app.MonitorActivity"></activity>
     </application>
 
 </manifest>

@@ -5,17 +5,11 @@ import android.os.Bundle;
 
 import olive.walkinggroup.R;
 
-public class DashBoardActivity extends AppCompatActivity {
+public class MonitorActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dash_board);
-
-        createLogoutButton();
-    }
-
-    private void createLogoutButton() {
-        
+        setContentView(R.layout.activity_monitor);
     }
 }
