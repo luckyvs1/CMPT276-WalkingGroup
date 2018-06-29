@@ -20,7 +20,7 @@ public class MonitorActivity extends AppCompatActivity {
 
     private void populateMonitorsMe() {
         //Create list
-        String[] userList = {"Rory \nckw27@sfu.ca","Lucky \nlvs1@sfu.ca","Josh \njha225@sfu.ca","Jeffery \njgyeung@sfu.ca; "};
+        String[] userList = {"Rory \nckw27@sfu.ca","Lucky \nlvs1@sfu.ca","Josh \njha225@sfu.ca","Jeffery \njgyeung@sfu.ca", "" ,"Add new member"};
 
         //Build Adaptor
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.item, userList);
@@ -33,7 +33,7 @@ public class MonitorActivity extends AppCompatActivity {
 
     private void populateIMonitor() {
         //Create list
-        String[] userList = {"Rory","Lucky","Josh","Jeffery"};
+        String[] userList = {"Rory \nckw27@sfu.ca","Lucky \nlvs1@sfu.ca","Josh \njha225@sfu.ca","Jeffery \njgyeung@sfu.ca", "" ,"Add new member"};
 
         //Build Adaptor
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.item, userList);
