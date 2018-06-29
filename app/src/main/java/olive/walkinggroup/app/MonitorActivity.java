@@ -11,5 +11,17 @@ public class MonitorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitor);
+
+        populateMonitorsMe();
+        populateIMonitor();
     }
+
+    private void populateMonitorsMe() {
+
+    }
+
+    private void populateIMonitor() {
+    }
+
+
 }
