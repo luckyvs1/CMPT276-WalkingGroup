@@ -19,7 +19,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".app.DashBoardActivity" />
-        <activity android:name=".app.SignUpActivity"></activity>
+        <activity android:name=".app.SignUpActivity" />
+        <activity android:name=".app.MonitorActivity" />
+        <activity android:name=".app.Map" />
+        <activity android:name=".app.CreateGroupActivity"></activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package olive.walkinggroup.app;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,43 @@ public class DashBoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dash_board);
 
         setupLogoutButton();
+        createToMonitorButton();
+        createToMapButton();
+        createToCreateGroupButton();
+
+    }
+
+    private void createToMonitorButton() {
+        Button btn = (Button)findViewById(R.id.toMonitor);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashBoardActivity.this, MonitorActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void createToMapButton() {
+        Button btn = (Button)findViewById(R.id.toMap);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashBoardActivity.this, Map.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void createToCreateGroupButton() {
+        Button btn = (Button)findViewById(R.id.toCreateGroup);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashBoardActivity.this, CreateGroupActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupLogoutButton() {
@@ -48,4 +86,14 @@ public class DashBoardActivity extends AppCompatActivity {
         editor.putString("TokenValue",token);
         editor.commit();
     }
+
+    //https://stackoverflow.com/questions/2354336/android-pressing-back-button-should-exit-the-app
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
 }
