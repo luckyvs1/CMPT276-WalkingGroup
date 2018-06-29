@@ -4,4 +4,5 @@
 
     <!--API Key for Group Olive obtained from: https://cmpt276-1177-bf.cmpt.sfu.ca:8184/web/index.html-->
     <string name="apikey">506224F3-9B49-46FA-BCD1-E6817704A6BF6</string>
+    <string name="title_activity_join_group">Map</string>
 </resources>
