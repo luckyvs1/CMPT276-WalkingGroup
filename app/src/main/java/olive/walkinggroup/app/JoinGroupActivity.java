@@ -1,6 +1,7 @@
 package olive.walkinggroup.app;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -10,8 +11,8 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -19,25 +20,27 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.Group;
 
-public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCallback {
+public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+    private static final String TAG = "JoinGroupActivity";
+
     public static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     public static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-    public static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
-    private static final String TAG = "JoinGroupActivity";
+    public static final int LOCATION_PERMISSION_REQUEST_CODE = 8080;
     private static final float DEFAULT_ZOOM = 15f;
 
-    private GoogleMap mMap;
-
     private Boolean locationPermissionGranted = false;
-
     private FusedLocationProviderClient fusedLocationProviderClient;
+
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +48,15 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
         setContentView(R.layout.activity_join_group);
 
         setupMyLocationButton();
-
         getLocationPermission();
     }
 
     private void setupMyLocationButton() {
-        RelativeLayout myLocationButton = findViewById(R.id.map_myLocationButton);
+        RelativeLayout myLocationButton = findViewById(R.id.joinGroup_myLocationButton);
         myLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Clicked my_location_button");
+                Log.d(TAG, "Centering on current location.");
                 getDeviceLocation();
             }
         });
@@ -97,7 +99,7 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
     }
 
     private void initializeMap() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.joinGroup_map);
         mapFragment.getMapAsync(JoinGroupActivity.this);
     }
 
@@ -114,8 +116,8 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
                             // Found location
                             Log.d(TAG, "getDeviceLocation: onComplete: location found.");
                             Location currentLocation = (Location) task.getResult();
-                            Log.d(TAG, "getDeviceLocation: onComplete: got current location");
                             LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                            // Center on current location
                             moveCamera(currentLatLng, DEFAULT_ZOOM);
                         } else {
                             // Cannot find current location
@@ -131,7 +133,7 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
 
     private void moveCamera(LatLng latLng, float zoom) {
         Log.d(TAG, "moveCamera: centering on current location.");
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
     @Override
@@ -145,6 +147,35 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
             }
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
+
+            Group group = Group.getInstance();
+            group.setEndPos(new LatLng(49.27898, -122.916671));
+            group.setName("Test Group");
+            group.setLeader("Tester");
+            group.setComment("Just a test!");
+
+            addMarker(group);
+            mMap.setOnMarkerClickListener(this);
         }
+    }
+
+    private void addMarker(Group group){
+        LatLng endPos = group.getEndPos();
+        String name = group.getName();
+        Marker marker = mMap.addMarker(new MarkerOptions().position(endPos).title(name));
+
+        marker.setTag(group);
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        // Get Group from Marker
+        Group group = (Group) marker.getTag();
+        Group.setInstance(group);
+
+        Intent intent = new Intent(JoinGroupActivity.this, GroupDetails.class);
+        startActivity(intent);
+
+        return false;
     }
 }

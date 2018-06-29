@@ -46,6 +46,8 @@
             android:name=".app.JoinGroupActivity"
             android:label="@string/title_activity_join_group">
         </activity>
+        <activity android:name=".app.GroupDetails">
+        </activity>
     </application>
 
 </manifest>
