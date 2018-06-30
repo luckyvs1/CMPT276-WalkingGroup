@@ -26,7 +26,7 @@ public class GroupDetails extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_details);
-        group = Group.getInstance();
+        // To be implemented after merge #4
 
         initializeMap();
         initializeText();
@@ -37,9 +37,7 @@ public class GroupDetails extends AppCompatActivity implements OnMapReadyCallbac
         TextView groupLeader = findViewById(R.id.groupDetail_groupLeader);
         TextView groupComment = findViewById(R.id.groupDetail_groupComment);
 
-        groupName.setText(group.getName());
-        groupLeader.setText(group.getLeader());
-        groupComment.setText(group.getComment());
+        // To be implemented after merge #4
     }
 
     private void initializeMap() {
@@ -55,10 +53,7 @@ public class GroupDetails extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng endPos = group.getEndPos();
-        String name = group.getName();
+        // To be implemented after merge #4
 
-        mMap.addMarker(new MarkerOptions().position(endPos).title(name));
-        moveCamera(endPos, 15f);
     }
 }

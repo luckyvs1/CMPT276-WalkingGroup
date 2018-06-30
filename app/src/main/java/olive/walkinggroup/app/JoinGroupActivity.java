@@ -148,33 +148,17 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-            Group group = Group.getInstance();
-            group.setEndPos(new LatLng(49.27898, -122.916671));
-            group.setName("Test Group");
-            group.setLeader("Tester");
-            group.setComment("Just a test!");
-
-            addMarker(group);
             mMap.setOnMarkerClickListener(this);
         }
     }
 
     private void addMarker(Group group){
-        LatLng endPos = group.getEndPos();
-        String name = group.getName();
-        Marker marker = mMap.addMarker(new MarkerOptions().position(endPos).title(name));
-
-        marker.setTag(group);
+        // To be implemented after merge #4
     }
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        // Get Group from Marker
-        Group group = (Group) marker.getTag();
-        Group.setInstance(group);
-
-        Intent intent = new Intent(JoinGroupActivity.this, GroupDetails.class);
-        startActivity(intent);
+        // To be implemented after merge #4
 
         return false;
     }
