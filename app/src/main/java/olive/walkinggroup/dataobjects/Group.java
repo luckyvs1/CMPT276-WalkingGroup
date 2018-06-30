@@ -1,6 +1,7 @@
 package olive.walkinggroup.dataobjects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +18,22 @@ public class Group extends IdItemBase{
     private String groupName;
     private String groupLeaderName;
     private String groupDescription;
+    private LatLng startPoint;
+    private LatLng endPoint;
 
-    // Group Start Point (Latitude, Longitude)
-    // TO BE IMPLEMENTED
 
-    // Group End Point (Latitude, Longitude)
-    // TO BE IMPLEMENTED
-    
+    public Group(String groupName,
+                 String groupDescription,
+                 String groupLeaderName,
+                 LatLng startPoint,
+                 LatLng endPoint) {
+        this.groupName = groupName;
+        this.groupDescription = groupDescription;
+        this.groupLeaderName = groupLeaderName;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+    }
+
     public String getGroupName() {
         return groupName;
     }
@@ -48,4 +58,19 @@ public class Group extends IdItemBase{
         this.groupDescription = groupDescription;
     }
 
+    public LatLng getStartPoint() {
+        return startPoint;
+    }
+
+    public void setStartPoint(LatLng startPoint) {
+        this.startPoint = startPoint;
+    }
+
+    public LatLng getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(LatLng endPoint) {
+        this.endPoint = endPoint;
+    }
 }
