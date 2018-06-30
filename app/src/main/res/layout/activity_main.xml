@@ -13,7 +13,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="208dp"
         android:layout_toEndOf="@+id/txtEmail"
-        android:text="Login"
+        android:text="@string/login"
         tools:text="Login" />
 
     <EditText
@@ -24,7 +24,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="45dp"
         android:ems="10"
-        android:hint="password"
+        android:hint="@string/password123"
         android:inputType="textPassword"
         tools:layout_editor_absoluteX="101dp"
         tools:layout_editor_absoluteY="70dp" />
@@ -49,7 +49,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/btnLogin"
         android:layout_marginEnd="92dp"
-        android:text="Sign Up"
+        android:text="@string/sign_up"
         tools:text="Sign Up" />
 
     <TextView
@@ -59,7 +59,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/txtPassword"
         android:layout_marginTop="119dp"
-        android:text="Email:"
+        android:text="@string/email"
         tools:text="Email:" />
 
     <EditText
@@ -69,7 +69,7 @@
         android:layout_alignBaseline="@+id/txtEmail"
         android:layout_alignStart="@+id/txtGetPassword"
         android:ems="10"
-        android:hint="valid@email.com"
+        android:hint="@string/valid_email_com"
         android:inputType="textEmailAddress" />
 
 </RelativeLayout>

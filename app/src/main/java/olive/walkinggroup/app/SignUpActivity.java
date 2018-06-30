@@ -1,6 +1,7 @@
 package olive.walkinggroup.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,24 +47,13 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // Check to see if the sign up is valid
-
-                // Set the user details if the sign up is valid
+                // Set the user details
                 setUserDetails();
 
                 // Make server call
                  Call<User> caller = proxy.createUser(user);
                  ProxyBuilder.callProxy(SignUpActivity.this, caller, returnedUser -> response(returnedUser));
 
-                // Log the user in on successful sign up
-                loginSignedUpUser();
-
-
-                launchDashboardActivity();
-
-
-                // Else display a toast message
-                Toast.makeText(SignUpActivity.this, "Failed signup", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -76,16 +66,50 @@ public class SignUpActivity extends AppCompatActivity {
         finish();
     }
 
-    // Login the user after a successful sign up
-    private void loginSignedUpUser() {
-
-    }
 
     // Response from the call back function
     private void response(User user) {
         notifyUserViaLogAndToast("Server replied with user: " + user.toString());
         userId = user.getId();
         userEmail = user.getEmail();
+
+        loginUserGetToken();
+    }
+
+    private void loginUserGetToken() {
+        // Register for token received:
+        ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
+
+        // Make call
+        Call<Void> caller = proxy.login(user);
+        ProxyBuilder.callProxy(SignUpActivity.this, caller, returnedNothing -> response(returnedNothing));
+    }
+
+    // Handle the token by generating a new Proxy which is encoded with it.
+    private void onReceiveToken(String token) {
+        // Replace the current proxy with one that uses the token!
+        Log.w("User logged in", "   --> NOW HAVE TOKEN: " + token);
+        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+
+        //Store token using shared preferences
+        storeTokenToSharedPreferences(token);
+    }
+
+    // Store the login token
+    private void storeTokenToSharedPreferences(String token) {
+        SharedPreferences userPrefs = getSharedPreferences("token", MODE_PRIVATE);
+        SharedPreferences.Editor editor = userPrefs.edit();
+        editor.putString("TokenValue",token);
+        editor.commit();
+    }
+
+    // Login actually completes by calling this; nothing to do as it was all done
+    // when we got the token.
+    private void response(Void returnedNothing) {
+        notifyUserViaLogAndToast("Server replied to login request (no content was expected).");
+
+        // Navigate user to the next activity
+        launchDashboardActivity();
     }
 
     // Toast and log cat message on successful user creation

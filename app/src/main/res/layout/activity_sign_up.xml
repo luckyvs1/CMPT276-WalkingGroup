@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="30dp"
         android:layout_marginTop="40dp"
-        android:text="Name:"
+        android:text="@string/name"
         tools:layout_editor_absoluteX="38dp"
         tools:layout_editor_absoluteY="70dp"
         tools:text="Name: " />
@@ -26,7 +26,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/textView"
         android:layout_marginTop="111dp"
-        android:text="Email:"
+        android:text="@string/email"
         tools:text="Email: " />
 
     <TextView
@@ -36,7 +36,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/textView"
         android:layout_marginTop="188dp"
-        android:text="Password:"
+        android:text="@string/password"
         tools:text="Password:" />
 
     <EditText
@@ -47,7 +47,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="57dp"
         android:ems="10"
-        android:hint="password"
+        android:hint="@string/password123"
         android:inputType="textPassword" />
 
     <EditText
@@ -58,7 +58,7 @@
         android:layout_alignStart="@+id/txtSetPassword"
         android:layout_marginTop="96dp"
         android:ems="10"
-        android:hint="valid@email.com"
+        android:hint="@string/valid_email_com"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -68,7 +68,7 @@
         android:layout_alignBaseline="@+id/textView"
         android:layout_alignStart="@+id/txtSetPassword"
         android:ems="10"
-        android:hint="First Lastname"
+        android:hint="@string/first_lastname"
         android:inputType="textPersonName" />
 
     <Button
@@ -78,7 +78,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="162dp"
         android:layout_toEndOf="@+id/textView2"
-        android:text="Submit"
+        android:text="@string/submit"
         tools:text="Submit" />
 
     <Button
@@ -88,6 +88,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/btnSubmitSignup"
         android:layout_marginEnd="90dp"
-        android:text="Cancel"
+        android:text="@string/cancel"
         tools:text="Cancel" />
 </RelativeLayout>
