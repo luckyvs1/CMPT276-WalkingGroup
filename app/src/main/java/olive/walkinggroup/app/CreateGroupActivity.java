@@ -6,16 +6,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.Group;
 
 public class CreateGroupActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_DEST_LOCATION = 0;
     private static final int REQUEST_CODE_MEETING_PLACE = 1;
+
+    private String groupName = null;
+    private LatLng startPoint = null;
+    private LatLng endPoint = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,22 +75,27 @@ public class CreateGroupActivity extends AppCompatActivity {
             case REQUEST_CODE_DEST_LOCATION:
                 if (resultCode == Activity.RESULT_OK) {
                     LatLng destLocation = CreateGroupMapsActivity.getLocationFromIntent(data);
-                    TextView textView = findViewById(R.id.textViewSelectedDestLocation);
-                    String txt = "Lat: " + destLocation.latitude + " Long: " + destLocation.longitude;
-                    textView.setText(txt);
+                    displayLatLngOnTextView(destLocation, R.id.textViewSelectedDestLocation);
+                    endPoint = destLocation;
+
 
                 }
                 break;
             case REQUEST_CODE_MEETING_PLACE:
                 if (resultCode == Activity.RESULT_OK) {
                     LatLng meetingPlace = CreateGroupMapsActivity.getLocationFromIntent(data);
-                    TextView textView = findViewById(R.id.textViewSelectedMeetingPlace);
-                    String txt = "Lat: " + meetingPlace.latitude + " Long: " + meetingPlace.longitude;
-                    textView.setText(txt);
+                    displayLatLngOnTextView(meetingPlace, R.id.textViewSelectedMeetingPlace);
+                    startPoint = meetingPlace;
                 }
                 break;
 
         }
+    }
+
+    private void displayLatLngOnTextView(LatLng location, int textViewId) {
+        TextView textView = findViewById(textViewId);
+        String txt = "Lat: " + location.latitude + " Long: " + location.longitude;
+        textView.setText(txt);
     }
 
     private void setupOKBtn() {
@@ -92,9 +103,30 @@ public class CreateGroupActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                getGroupNameInput();
+                if (    checkNameInput() &&
+                        checkLocationInput(startPoint) &&
+                        checkLocationInput(endPoint)
+                        ) {
+                    // Group group = new Group(groupName, " ", " ", startPoint, endPoint);
+                    // TODO: push updated User object (add group to leadsGroups) and Group object to server.
+                    finish();
+                }
             }
         });
+    }
+
+    private boolean checkLocationInput(LatLng latLng) {
+        return latLng != null;
+    }
+
+    private void getGroupNameInput() {
+        EditText editText = findViewById(R.id.editTextGroupName);
+        groupName = editText.getText().toString();
+    }
+
+    private boolean checkNameInput() {
+        return groupName.length() != 0;
     }
 
 
