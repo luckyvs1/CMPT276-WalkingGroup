@@ -26,8 +26,14 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
+import olive.walkinggroup.proxy.ProxyBuilder;
+import olive.walkinggroup.proxy.WGServerProxy;
+import retrofit2.Call;
 
 public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private static final String TAG = "JoinGroupActivity";
@@ -41,11 +47,14 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     private GoogleMap mMap;
+    private WGServerProxy proxy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_group);
+
+        proxy = ProxyBuilder.getProxy(getResources().getString(R.string.apikey), null);
 
         setupMyLocationButton();
         getLocationPermission();
@@ -143,7 +152,60 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
+            // Put Markers on map for each existing group
+            populateMapWithMarkers();
+
             mMap.setOnMarkerClickListener(this);
+        }
+    }
+
+    private void populateMapWithMarkers() {
+        // Commented until able to add group to server
+        //getGroupListFromServer();
+
+        List<Group> groupList = tempAddGroups();
+        markGroups(groupList);
+    }
+
+    // Temp function in place until method to add group to server exists.
+    private List<Group> tempAddGroups() {
+        // Walks from residence to fitness centre.
+        Group group1 = new Group("Gym Group",
+                "Work out together!",
+                "Jim",
+                new LatLng(49.280628, -122.928645),
+                new LatLng(49.279460, -122.922323));
+
+        // Walks from Novo to University Highlands Elementary
+        Group group2 = new Group("Highlands Elementary",
+                "Walks to school ;)",
+                "Mr. Brown",
+                new LatLng(49.279429, -122.904453),
+                new LatLng(49.278128, -122.907973));
+
+        // Walks from AQ to Brian's office
+        Group group3 = new Group("Finding Brian",
+                "Ask all your questions in Brian's office hours.",
+                "Curious Chris",
+                new LatLng(49.278495, -122.915911),
+                new LatLng(49.276756, -122.914109));
+
+        List<Group> groupList = new ArrayList<>();
+        groupList.add(group1);
+        groupList.add(group2);
+        groupList.add(group3);
+
+        return groupList;
+    }
+
+    private void getGroupListFromServer() {
+        Call<List<Group>> caller = proxy.getGroups();
+        ProxyBuilder.callProxy(JoinGroupActivity.this, caller, returnedList -> markGroups(returnedList));
+    }
+
+    private void markGroups(List<Group> returnedList) {
+        for (Group group : returnedList) {
+            addMarker(group);
         }
     }
 
