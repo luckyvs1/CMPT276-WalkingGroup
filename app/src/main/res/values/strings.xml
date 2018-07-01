@@ -20,4 +20,5 @@
     <string name="valid_email_com">valid@email.com</string>
     <string name="name">Name:</string>
     <string name="groupDetail_joinGroupBtnText">Join</string>
+    <string name="groupDetail_groupMembers">Members:</string>
 </resources>

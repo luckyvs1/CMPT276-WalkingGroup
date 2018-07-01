@@ -7,6 +7,55 @@
     android:orientation="vertical"
     tools:context=".app.GroupDetailsActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="80"
+        android:background="@color/colorPrimaryDark"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/groupDetail_topTitle"
+            android:padding="5dp"
+            android:layout_toStartOf="@id/groupDetail_joinGroupBtn"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/groupDetail_groupName"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/groupDetail_groupLeader"
+                android:textSize="13sp"
+                android:textColor="#fff"
+                />
+        </LinearLayout>
+
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:padding="0dp"
+            android:id="@+id/groupDetail_joinGroupBtn"
+            android:text="@string/groupDetail_joinGroupBtnText"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            android:background="@android:color/transparent"
+            />
+
+    </RelativeLayout>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,14 +73,6 @@
             tools:context=".MapsActivity"
             />
 
-        <Button
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/groupDetail_joinGroupBtn"
-            android:text="@string/groupDetail_joinGroupBtnText"
-            />
 
     </RelativeLayout>
 
@@ -39,10 +80,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="50"
-        android:padding="15dp"
+        android:padding="5dp"
         android:orientation="vertical"
         >
 
+        <!--
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,24 +96,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/groupDetail_groupName"
-            android:textSize="15sp"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="15sp"
             android:text="@string/groupDetail_groupLeader"
             />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/groupDetail_groupLeader"
-            android:textSize="15sp"
-            />
 
         <TextView
             android:layout_width="match_parent"
@@ -81,11 +110,21 @@
             android:text="@string/groupDetail_groupDescription"
             />
 
+        -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/groupDetail_groupDescription"
+            android:textSize="13sp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:textSize="15sp"
+            android:text="@string/groupDetail_groupMembers"
             />
 
     </LinearLayout>

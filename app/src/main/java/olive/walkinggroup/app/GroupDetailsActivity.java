@@ -56,7 +56,8 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         TextView groupDescription = findViewById(R.id.groupDetail_groupDescription);
 
         groupName.setText(group.getGroupName());
-        groupLeader.setText(group.getGroupLeaderName());
+        String leaderText = "Leader: "+ group.getGroupLeaderName();
+        groupLeader.setText(leaderText);
         groupDescription.setText(group.getGroupDescription());
     }
 
