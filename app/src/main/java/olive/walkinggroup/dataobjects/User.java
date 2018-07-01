@@ -40,23 +40,6 @@ public class User extends IdItemBase{
     private List<Group> memberOfGroups = new ArrayList<>(); // <-- TO BE IMPLEMENTED
     private List<Group> leadsGroups = new ArrayList<>();    // <-- TO BE IMPLEMENTED
 
-    // Instantiating a singleton pattern for the user
-    // Code from Dr. Brian Fraser
-    // https://www.youtube.com/watch?v=evkPjPIV6cw&feature=youtu.be
-    private static User instance;
-
-    private User() {
-        // Private to prevent anyone else from instantiating
-    }
-
-    public static User getInstance() {
-        if (instance == null) {
-            instance = new User();
-        }
-        return instance;
-    }
-
-
     // Basic User Data
     // -------------------------------------------------------------------------------------------
     public String getName() {

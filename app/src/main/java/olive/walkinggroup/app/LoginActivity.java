@@ -11,25 +11,26 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import olive.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
+
+    private Model instance;
     private User user;
-    private WGServerProxy proxy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Build the server proxy
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), null);
+        instance = Model.getInstance();
 
-        user = User.getInstance();
+        user = new User();
 
         checkUserToken();
         setupLoginBtn();
@@ -58,8 +59,12 @@ public class MainActivity extends AppCompatActivity {
                 ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
 
                   // Make call
-                Call<Void> caller = proxy.login(user);
-                ProxyBuilder.callProxy(MainActivity.this, caller, returnedNothing -> response(returnedNothing));
+                User newUser = new User();
+                newUser.setEmail("john@smith.com");
+                newUser.setPassword("johnsmith");
+
+                Call<Void> caller = instance.getProxy().login(user);
+                ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> response(returnedNothing));
 
             }
         });
@@ -69,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private void onReceiveToken(String token) {
         // Replace the current proxy with one that uses the token!
         Log.w("User logged in", "   --> NOW HAVE TOKEN: " + token);
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+        instance.updateProxy(token);
 
         //Store token using shared preferences
         storeTokenToSharedPreferences(token);
@@ -95,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
     private void response(Void returnedNothing) {
         notifyUserViaLogAndToast("Server replied to login request (no content was expected).");
 
+        instance.setCurrentUser(user);
+
         // Navigate user to the next activity
         goToDashBoardActivity();
 
@@ -114,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToDashBoardActivity() {
         // Go to the dashboard activity
-        Intent intent = new Intent(MainActivity.this, DashBoardActivity.class);
+        Intent intent = new Intent(LoginActivity.this, DashBoardActivity.class);
         startActivity(intent);
     }
 
@@ -146,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // Go to the sign up activity
-                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
         });
