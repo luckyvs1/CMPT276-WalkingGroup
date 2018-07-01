@@ -1,76 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".app.GroupDetails">
+    tools:context=".app.GroupDetailsActivity">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/groupDetail_map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="50"
-        tools:context=".MapsActivity"
-        />
+        android:layout_height="255dp"
+        android:id="@+id/groupDetail_mapFragmentContainer"
+        >
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/groupDetail_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentBottom="true"
+            tools:context=".MapsActivity"
+            />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:id="@+id/groupDetail_header"
+            android:elevation="5dp"
+            android:background="@color/colorPrimaryDark"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/groupDetail_topTitle"
+                android:padding="5dp"
+                android:layout_toStartOf="@id/groupDetail_joinGroupBtn"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/groupDetail_groupName"
+                    android:layout_alignParentTop="true"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#fff"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/groupDetail_groupLeader"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="15sp"
+                    android:textColor="#fff"
+                    />
+            </RelativeLayout>
+
+            <Button
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:padding="0dp"
+                android:id="@+id/groupDetail_joinGroupBtn"
+                android:text="@string/groupDetail_joinGroupBtnText"
+                android:textColor="#fff"
+                android:textSize="18sp"
+                android:background="@android:color/transparent"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="50"
-        android:padding="15dp"
+        android:layout_below="@id/groupDetail_mapFragmentContainer"
+        android:padding="5dp"
         android:orientation="vertical"
         >
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:text="@string/groupDetail_groupName"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/groupDetail_groupName"
-            android:textSize="18sp"
+            android:id="@+id/groupDetail_groupDescription"
+            android:textSize="15sp"
             />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="20sp"
-            android:text="@string/groupDetail_groupLeader"
+            android:textSize="15sp"
+            android:text="@string/groupDetail_groupMembers"
             />
 
-        <TextView
+        <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/groupDetail_groupLeader"
-            android:textSize="18sp"
-            />
+            android:layout_height="match_parent"
+            android:id="@+id/groupDetail_memberList"
+            >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:text="@string/groupDetail_groupComment"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/groupDetail_groupComment"
-            android:textSize="18sp"
-            />
+        </ListView>
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
