@@ -65,10 +65,13 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
     private void getLocationPermission() {
         String[] permissions = {FINE_LOCATION, COARSE_LOCATION};
 
+        Log.d(TAG, "getLocationPermission: getting permission...");
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locationPermissionGranted = true;
+
                 initializeMap();
+                getDeviceLocation();
             } else {
                 ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
             }
@@ -83,17 +86,10 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
 
         switch (requestCode) {
             case LOCATION_PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0) {
-                    for (int grantResult : grantResults) {
-                        if (grantResult != PackageManager.PERMISSION_GRANTED) {
-                            locationPermissionGranted = false;
-                            return;
-                        }
-                    }
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     locationPermissionGranted = true;
-
-                    // Initialize map
-                    initializeMap();
+                    Log.d(TAG, "onRequestPermissionsResult: permission granted. Restarting activity...");
+                    recreate();
                 }
         }
     }
@@ -117,7 +113,7 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
                             Log.d(TAG, "getDeviceLocation: onComplete: location found.");
                             Location currentLocation = (Location) task.getResult();
                             LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                            // Center on current location
+                            // Center camera on current location
                             moveCamera(currentLatLng, DEFAULT_ZOOM);
                         } else {
                             // Cannot find current location
@@ -132,7 +128,6 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
     }
 
     private void moveCamera(LatLng latLng, float zoom) {
-        Log.d(TAG, "moveCamera: centering on current location.");
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
@@ -153,12 +148,17 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
     }
 
     private void addMarker(Group group){
-        // To be implemented after merge #4
+        String groupName = group.getGroupName();
+        LatLng endPoint = group.getEndPoint();
+
+        Marker marker = mMap.addMarker(new MarkerOptions().position(endPoint).title(groupName));
+        // Associates a group object with a map Marker
+        marker.setTag(group);
     }
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
-        // To be implemented after merge #4
+        // To be implemented after Model class
 
         return false;
     }
