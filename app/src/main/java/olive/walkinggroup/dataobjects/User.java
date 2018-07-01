@@ -73,11 +73,28 @@ public class User extends IdItemBase{
         this.monitoredByUsers = monitoredByUsers;
     }
 
+    public void addToMonitoredByUsers(User user) {
+        this.monitoredByUsers.add(user);
+    }
+
+    public void removeFromMonitoredByUsers(User user) {
+        this.monitoredByUsers.remove(user);
+    }
+
     public List<User> getMonitorsUsers() {
         return monitorsUsers;
     }
+
     public void setMonitorsUsers(List<User> monitorsUsers) {
         this.monitorsUsers = monitorsUsers;
+    }
+
+    public void addToMonitorsUsers(User user) {
+        this.monitorsUsers.add(user);
+    }
+
+    public void removeFromMonitorsUsers(User user) {
+        this.monitorsUsers.remove(user);
     }
 
     // Groups
@@ -89,11 +106,25 @@ public class User extends IdItemBase{
         this.memberOfGroups = memberOfGroups;
     }
 
+    public void addToMemberOfGroup(Group group) {
+        this.memberOfGroups.add(group);
+    }
+    public void removeFromMemberOfGroup(Group group) {
+        this.memberOfGroups.remove(group);
+    }
+
     public List<Group> getLeadsGroups() {
         return leadsGroups;
     }
     public void setLeadsGroups(List<Group> leadsGroups) {
         this.leadsGroups = leadsGroups;
+    }
+
+    public void addToLeadsGroups(Group group) {
+        this.leadsGroups.add(group);
+    }
+    public void removeFromLeadsGroups(Group group) {
+        this.leadsGroups.remove(group);
     }
 
 
