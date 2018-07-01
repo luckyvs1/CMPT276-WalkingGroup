@@ -5,18 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".app.GroupDetails">
+    tools:context=".app.GroupDetailsActivity">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/groupDetail_map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="50"
-        tools:context=".MapsActivity"
-        />
+        >
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/groupDetail_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MapsActivity"
+            />
+
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/groupDetail_joinGroupBtn"
+            android:text="@string/groupDetail_joinGroupBtnText"
+            />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:text="@string/groupDetail_groupName"
             />
 
@@ -38,14 +55,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/groupDetail_groupName"
-            android:textSize="18sp"
+            android:textSize="15sp"
             />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:text="@string/groupDetail_groupLeader"
             />
 
@@ -53,22 +70,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/groupDetail_groupLeader"
-            android:textSize="18sp"
+            android:textSize="15sp"
             />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="20sp"
-            android:text="@string/groupDetail_groupComment"
+            android:textSize="15sp"
+            android:text="@string/groupDetail_groupDescription"
             />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/groupDetail_groupComment"
-            android:textSize="18sp"
+            android:id="@+id/groupDetail_groupDescription"
+            android:textSize="15sp"
             />
 
     </LinearLayout>

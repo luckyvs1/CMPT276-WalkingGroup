@@ -7,7 +7,7 @@
     <string name="title_activity_join_group">Map</string>
     <string name="groupDetail_groupName">Group Name:</string>
     <string name="groupDetail_groupLeader">Leader:</string>
-    <string name="groupDetail_groupComment">Comment:</string>
+    <string name="groupDetail_groupDescription">Description:</string>
     <string name="logout">Logout</string>
     <string name="login">Login</string>
     <string name="password123">password</string>
@@ -19,4 +19,5 @@
     <string name="cancel">Cancel</string>
     <string name="valid_email_com">valid@email.com</string>
     <string name="name">Name:</string>
+    <string name="groupDetail_joinGroupBtnText">Join</string>
 </resources>
