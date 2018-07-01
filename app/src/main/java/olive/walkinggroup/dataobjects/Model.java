@@ -9,26 +9,24 @@ import olive.walkinggroup.proxy.WGServerProxy;
 
 public class Model {
     private User currentUser;
-    private WGServerProxy proxy;
+    private static WGServerProxy proxy;
 
-    private Model instance;
+    private static Model instance;
 
     private Model(){
         // Prevent external instancing
     }
 
-    public Model getInstance() {
+    public static Model getInstance() {
         if (instance == null) {
             instance = new Model();
-
-            String apiKey = Resources.getSystem().getString(R.string.apikey);
-            proxy = ProxyBuilder.getProxy(apiKey, null);
+            updateProxy(null);
         }
         return instance;
     }
 
-    public void updateProxy(String token) {
-        String apiKey = Resources.getSystem().getString(R.string.apikey);
+    public static void updateProxy(String token) {
+        String apiKey = "506224F3-9B49-46FA-BCD1-E6817704A6BF6";
         proxy = ProxyBuilder.getProxy(apiKey, token);
     }
 
