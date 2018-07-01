@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import olive.walkinggroup.proxy.WGServerProxy;
@@ -23,17 +24,18 @@ public class SignUpActivity extends AppCompatActivity {
     private String userEmail;
     private String userPassword;
     private WGServerProxy proxy;
+    private Model instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        // Build the server proxy
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), null);
+        user = new User();
+        instance = Model.getInstance();
 
-        // Get the current user instance
-        user = User.getInstance();
+        // Build the server proxy
+        proxy = instance.getProxy();
 
         // Setup activity buttons
         setupConfirmSignupBtn();
@@ -73,6 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
         userId = user.getId();
         userEmail = user.getEmail();
 
+
         loginUserGetToken();
     }
 
@@ -88,9 +91,7 @@ public class SignUpActivity extends AppCompatActivity {
     // Handle the token by generating a new Proxy which is encoded with it.
     private void onReceiveToken(String token) {
         // Replace the current proxy with one that uses the token!
-        Log.w("User logged in", "   --> NOW HAVE TOKEN: " + token);
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-
+        instance.updateProxy(token);
         //Store token using shared preferences
         storeTokenToSharedPreferences(token);
     }
@@ -108,6 +109,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void response(Void returnedNothing) {
         notifyUserViaLogAndToast("Server replied to login request (no content was expected).");
 
+        instance.setCurrentUser(user);
         // Navigate user to the next activity
         launchDashboardActivity();
     }
