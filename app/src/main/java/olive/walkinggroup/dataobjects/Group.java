@@ -16,22 +16,24 @@ import java.util.List;
 public class Group extends IdItemBase{
 
     private String groupName;
-    private String groupLeaderName;
     private String groupDescription;
-    private LatLng startPoint;
-    private LatLng endPoint;
-
+    private User leader;
+    private double[] latArray;
+    private double[] lngArray;
+    private List<User> members;
 
     public Group(String groupName,
                  String groupDescription,
-                 String groupLeaderName,
-                 LatLng startPoint,
-                 LatLng endPoint) {
+                 User leader,
+                 double[] latArray,
+                 double[] lngArray,
+                 List<User> members) {
         this.groupName = groupName;
         this.groupDescription = groupDescription;
-        this.groupLeaderName = groupLeaderName;
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
+        this.leader = leader;
+        this.latArray = latArray;
+        this.lngArray = lngArray;
+        this.members = members;
     }
 
     public String getGroupName() {
@@ -42,14 +44,6 @@ public class Group extends IdItemBase{
         this.groupName = groupName;
     }
 
-    public String getGroupLeaderName() {
-        return groupLeaderName;
-    }
-
-    public void setGroupLeaderName(String groupLeaderName) {
-        this.groupLeaderName = groupLeaderName;
-    }
-
     public String getGroupDescription() {
         return groupDescription;
     }
@@ -58,19 +52,53 @@ public class Group extends IdItemBase{
         this.groupDescription = groupDescription;
     }
 
-    public LatLng getStartPoint() {
-        return startPoint;
+    public User getLeader() {
+        return leader;
     }
 
-    public void setStartPoint(LatLng startPoint) {
-        this.startPoint = startPoint;
+    public void setLeader(User leader) {
+        this.leader = leader;
+    }
+
+    public double[] getLatArray() {
+        return latArray;
+    }
+
+    public void setLatArray(double[] latArray) {
+        this.latArray = latArray;
+    }
+
+    public double[] getLngArray() {
+        return lngArray;
+    }
+
+    public void setLngArray(double[] lngArray) {
+        this.lngArray = lngArray;
+    }
+
+    public List<User> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<User> members) {
+        this.members = members;
+    }
+
+    public LatLng getStartPoint() {
+        return new LatLng(latArray[0], lngArray[0]);
     }
 
     public LatLng getEndPoint() {
-        return endPoint;
+        return new LatLng(latArray[1], lngArray[1]);
     }
 
-    public void setEndPoint(LatLng endPoint) {
-        this.endPoint = endPoint;
+    public void setStartPoint(LatLng start) {
+        latArray[0] = start.latitude;
+        lngArray[0] = start.longitude;
+    }
+
+    public void setEndPoint(LatLng end) {
+        latArray[1] = end.latitude;
+        lngArray[1] = end.longitude;
     }
 }
