@@ -21,7 +21,6 @@ public class Group extends IdItemBase{
     private LatLng startPoint;
     private LatLng endPoint;
 
-
     public Group(String groupName,
                  String groupDescription,
                  String groupLeaderName,
