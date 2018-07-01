@@ -1,6 +1,7 @@
 package olive.walkinggroup.app;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,7 +44,7 @@ public class DashBoardActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DashBoardActivity.this, Map.class);
+                Intent intent = new Intent(DashBoardActivity.this, JoinGroupActivity.class);
                 startActivity(intent);
             }
         });
