@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,9 +30,9 @@ import java.util.List;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
-import olive.walkinggroup.dataobjects.TempSingletonForJoinGroupActivity;
+import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
-import olive.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
 public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -48,15 +47,14 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     private GoogleMap mMap;
-    private WGServerProxy proxy;
+    private Model model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_group);
 
-        proxy = ProxyBuilder.getProxy(getResources().getString(R.string.apikey), null);
-
+        model = Model.getInstance();
         setupMyLocationButton();
         getLocationPermission();
     }
@@ -167,43 +165,40 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
         // Commented until able to add group to server
         //getGroupListFromServer();
 
-        List<Group> groupList = tempAddGroups();
-        markGroups(groupList);
+        markGroups(tempAddGroups());
     }
 
     // Temp function in place until method to add group to server exists.
     private List<Group> tempAddGroups() {
         // Walks from residence to fitness centre.
+        User user1 = new User();
+        user1.setName("Jim");
         Group group1 = new Group("Gym Group",
                 "Work out together!",
-                "Jim",
-                new LatLng(49.280628, -122.928645),
-                new LatLng(49.279460, -122.922323));
-
-        // Walks from Novo to University Highlands Elementary
-        Group group2 = new Group("Highlands Elementary",
-                "Walks to school everyday :)",
-                "Mr. Brown",
-                new LatLng(49.279429, -122.904453),
-                new LatLng(49.278128, -122.907973));
+                user1,
+                new double[]{49.280628, 49.279460},
+                new double[]{-122.928645, -122.922323},
+                null);
 
         // Walks from AQ to Brian's office
-        Group group3 = new Group("Finding Brian",
+        User user2 = new User();
+        user2.setName("Chris");
+        Group group2 = new Group("Finding Brian",
                 "Ask all your questions in Brian's office hours.",
-                "Curious Chris",
-                new LatLng(49.278495, -122.915911),
-                new LatLng(49.276756, -122.914109));
+                user2,
+                new double[] {49.278495, 49.276756},
+                new double[] {-122.915911, -122.914109},
+                null);
 
         List<Group> groupList = new ArrayList<>();
         groupList.add(group1);
         groupList.add(group2);
-        groupList.add(group3);
 
         return groupList;
     }
 
     private void getGroupListFromServer() {
-        Call<List<Group>> caller = proxy.getGroups();
+        Call<List<Group>> caller = model.getProxy().getGroups();
         ProxyBuilder.callProxy(JoinGroupActivity.this, caller, returnedList -> markGroups(returnedList));
     }
 
@@ -226,10 +221,12 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
     public boolean onMarkerClick(final Marker marker) {
         Group group = (Group) marker.getTag();
 
-        TempSingletonForJoinGroupActivity temp = TempSingletonForJoinGroupActivity.getInstance();
-        temp.setGroup(group);
+        /*
+        * https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android        *
+        */
 
         Intent intent = new Intent(JoinGroupActivity.this, GroupDetailsActivity.class);
+        intent.putExtra("group", group);
         startActivity(intent);
 
         return false;

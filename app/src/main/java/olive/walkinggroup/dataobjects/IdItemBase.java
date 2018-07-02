@@ -1,9 +1,11 @@
 package olive.walkinggroup.dataobjects;
 
+import java.io.Serializable;
+
 /**
  * Base class for all items that have an ID and href from the server.
  */
-public class IdItemBase {
+public class IdItemBase implements Serializable {
     // NOTE: Make numbers Long/Integer, not long/int because only the former will
     //       deserialize if the value is null from the server.
     private Long id;
