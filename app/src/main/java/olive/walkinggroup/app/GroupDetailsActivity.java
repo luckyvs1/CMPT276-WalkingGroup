@@ -18,22 +18,22 @@ package olive.walkinggroup.app;
 
         import olive.walkinggroup.R;
         import olive.walkinggroup.dataobjects.Group;
-        import olive.walkinggroup.dataobjects.TempSingletonForJoinGroupActivity;
+        import olive.walkinggroup.dataobjects.Model;
 
 public class GroupDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Group group;
 
-    private TempSingletonForJoinGroupActivity temp;
+    private Model model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_details);
 
-        temp = TempSingletonForJoinGroupActivity.getInstance();
-        group = temp.getGroup();
+        model = Model.getInstance();
+        group = (Group) getIntent().getSerializableExtra("group");
 
         setupJoinGroupBtn();
         initializeText();
@@ -56,7 +56,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         TextView groupDescription = findViewById(R.id.groupDetail_groupDescription);
 
         groupName.setText(group.getGroupName());
-        String leaderText = "Leader: "+ group.getGroupLeaderName();
+        String leaderText = "Leader: "+ group.getLeader().getName();
         groupLeader.setText(leaderText);
         groupDescription.setText(group.getGroupDescription());
     }
