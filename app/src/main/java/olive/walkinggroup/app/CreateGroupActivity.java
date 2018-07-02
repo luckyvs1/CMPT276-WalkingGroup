@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
@@ -32,6 +35,10 @@ public class CreateGroupActivity extends AppCompatActivity {
     private String groupName = null;
     private LatLng startPoint = null;
     private LatLng endPoint = null;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +128,14 @@ public class CreateGroupActivity extends AppCompatActivity {
                         checkLocationInput(startPoint) &&
                         checkLocationInput(endPoint)
                         ) {
-                    Group group = new Group(groupName, " ", " ", startPoint, endPoint);
+
+                    double[] latArray = new double[]{startPoint.latitude, endPoint.latitude};
+                    double[] lngArray = new double[]{startPoint.longitude, endPoint.longitude};
+
+                    List<User> members = new ArrayList<>();
+                    members.add(user);
+
+                    Group group = new Group(groupName, " ", user, latArray, lngArray, members);
                     pushGroupObjectToServer(group);
                     // TODO: push updated User object (add group to leadsGroups) and Group object to server.
                     finish();
