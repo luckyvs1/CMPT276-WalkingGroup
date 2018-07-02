@@ -3,6 +3,7 @@ package olive.walkinggroup.dataobjects;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * This is just to be a placeholder and inspire you how to do it.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Group extends IdItemBase{
+public class Group extends IdItemBase implements Serializable{
 
     private String groupName;
     private String groupDescription;
