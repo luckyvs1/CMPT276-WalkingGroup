@@ -107,6 +107,7 @@ public class Group extends IdItemBase implements Serializable{
         lngArray[1] = end.longitude;
     }
 
+    // TODO: Add more fields?
     @Override
     public String toString() {
         return "Group{" +

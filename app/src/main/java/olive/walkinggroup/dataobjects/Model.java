@@ -8,10 +8,12 @@ import olive.walkinggroup.proxy.ProxyBuilder;
 import olive.walkinggroup.proxy.WGServerProxy;
 
 public class Model {
+    // TODO: Have User object information save between application launches.
     private User currentUser;
     private static WGServerProxy proxy;
 
     private static Model instance;
+
 
     private Model(){
         // Prevent external instancing
