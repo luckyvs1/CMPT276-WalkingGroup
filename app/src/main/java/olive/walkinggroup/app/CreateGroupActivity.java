@@ -135,7 +135,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                     List<User> members = new ArrayList<>();
                     members.add(user);
 
-                    Group group = new Group(groupName, " ", user, latArray, lngArray, members);
+                    Group group = new Group(groupName, groupName, user, latArray, lngArray, members);
                     pushGroupObjectToServer(group);
                     // TODO: push updated User object (add group to leadsGroups) and Group object to server.
                     finish();
@@ -152,7 +152,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     }
 
     private void response(Group returnedGroup) {
-        notifyUserViaLogAndToast("Server replied with group name: " + returnedGroup.getGroupName());
+        notifyUserViaLogAndToast("Server replied with group name: " + returnedGroup.toString());
 
     }
 
