@@ -1,4 +1,4 @@
-package olive.walkinggroup.app;
+package olive.walkinggroup.dataobjects;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
