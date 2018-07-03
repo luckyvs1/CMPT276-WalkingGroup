@@ -58,7 +58,7 @@ public class DashBoardActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DashBoardActivity.this, JoinGroupActivity.class);
+                Intent intent = new Intent(DashBoardActivity.this, FindGroupsActivity.class);
                 startActivity(intent);
             }
         });
