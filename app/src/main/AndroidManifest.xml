@@ -30,7 +30,7 @@
         <activity android:name=".app.MonitorActivity" />
         <activity android:name=".dataobjects.Map" />
         <activity android:name=".app.CreateGroupActivity" />
-        <activity android:name=".app.CreateGroupMapsActivity"/>
+        <activity android:name=".app.CreateGroupMapsActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -48,6 +48,8 @@
             android:label="@string/title_activity_join_group">
         </activity>
         <activity android:name=".app.GroupDetailsActivity">
+        </activity>
+        <activity android:name=".app.ListGroupsActivity">
         </activity>
     </application>
 

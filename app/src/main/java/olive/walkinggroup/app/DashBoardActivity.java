@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import olive.walkinggroup.proxy.WGServerProxy;
 
@@ -20,11 +22,11 @@ public class DashBoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
 
-        setupLogoutButton();
         createToMonitorButton();
-        createToMapButton();
+        createToFindGroupsButton();
         createToCreateGroupButton();
-
+        createToViewMyGroupsButton();
+        setupLogoutButton();
     }
 
     private void createToMonitorButton() {
@@ -38,7 +40,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void createToMapButton() {
+    private void createToFindGroupsButton() {
         Button btn = (Button)findViewById(R.id.toMap);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +57,21 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashBoardActivity.this, CreateGroupActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void createToViewMyGroupsButton() {
+        Button btn = findViewById(R.id.dashboard_viewMyGroupsBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Model model = Model.getInstance();
+                User currentUser = model.getCurrentUser();
+
+                Intent intent = new Intent(DashBoardActivity.this, ListGroupsActivity.class);
+                intent.putExtra("user", currentUser);
                 startActivity(intent);
             }
         });
