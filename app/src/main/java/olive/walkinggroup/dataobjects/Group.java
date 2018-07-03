@@ -107,16 +107,11 @@ public class Group extends IdItemBase implements Serializable{
         latArray[1] = end.latitude;
         lngArray[1] = end.longitude;
     }
-    
+
     @Override
     public String toString() {
         return "Group{" +
-                "groupName='" + groupName + '\'' +
-                ", groupDescription='" + groupDescription + '\'' +
-                ", leader=" + leader +
-                ", latArray=" + Arrays.toString(latArray) +
-                ", lngArray=" + Arrays.toString(lngArray) +
-                ", members=" + members +
+                "groupDescription='" + groupDescription + '\'' +
                 '}';
     }
 }
