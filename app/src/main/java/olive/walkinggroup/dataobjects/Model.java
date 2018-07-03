@@ -8,7 +8,7 @@ import olive.walkinggroup.proxy.ProxyBuilder;
 import olive.walkinggroup.proxy.WGServerProxy;
 
 public class Model {
-    private User currentUser;
+    private static User currentUser;
     private static WGServerProxy proxy;
 
     private static Model instance;
@@ -31,7 +31,7 @@ public class Model {
     }
 
     public User getCurrentUser() {
-        return currentUser;
+        return this.currentUser;
     }
 
     public void setCurrentUser(User currentUser) {

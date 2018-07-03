@@ -59,5 +59,67 @@
         android:textSize="15sp"
         android:textStyle="bold" />
 
+    <Button
+        android:id="@+id/addMonitorsMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView6"
+        android:layout_alignTop="@+id/addIMonitor"
+        android:text="Add User" />
+
+    <Button
+        android:id="@+id/addIMonitor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/removeIMonitor"
+        android:layout_alignStart="@+id/IMonitor"
+        android:text="Add User" />
+
+    <Button
+        android:id="@+id/removeMonitorsMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView6"
+        android:layout_below="@+id/addIMonitor"
+        android:text="Remove User" />
+
+    <Button
+        android:id="@+id/removeIMonitor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/IMonitor"
+        android:layout_marginBottom="15dp"
+        android:text="Remove User" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/txtMonitorsMe"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/textView6"
+        android:layout_marginBottom="135dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/txtMonitorsMe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="User email" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/editIMonitor"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/IMonitor"
+        android:layout_alignTop="@+id/txtMonitorsMe">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/txtIMonitor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="User email" />
+    </android.support.design.widget.TextInputLayout>
+
 
 </RelativeLayout>
