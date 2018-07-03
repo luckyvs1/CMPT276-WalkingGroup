@@ -21,6 +21,12 @@ import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
+/*
+*   Display all groups a user is leading and is member of.
+*   Launch with intent and attach a User object with tag "user" to show the groups of that user.
+*   If no User object is passed through intent, the currentUser from Model is used instead.
+*   On list item click, GroupDetailsActivity is launched for the corresponding group.
+*/
 
 public class ListGroupsActivity extends AppCompatActivity {
     private Model model;
@@ -31,8 +37,6 @@ public class ListGroupsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_groups);
-
-        setupTitle();
 
         model = Model.getInstance();
         user = (User) getIntent().getSerializableExtra("user");
@@ -51,6 +55,7 @@ public class ListGroupsActivity extends AppCompatActivity {
             // Commented until able to add groups to user
             // userGroups = getGroupList();
 
+            setupTitle();
             populateGroupList();
             registerItemOnClick();
         }
@@ -68,7 +73,7 @@ public class ListGroupsActivity extends AppCompatActivity {
 //            if (Objects.equals(user.getId(), model.getCurrentUser().getId())) {
 //                text = "My " + text;
 //            } else {
-//                text = user.getName() + "'s" +text;
+//                text = user.getName() + "'s " +text;
 //            }
 //        }
 
@@ -174,7 +179,7 @@ public class ListGroupsActivity extends AppCompatActivity {
 
     private void displayLeaderTag(View itemView, Group currentGroup) {
         RelativeLayout leaderTag = itemView.findViewById(R.id.groupListItem_leaderTag);
-        // Hide leader tag if user is not leader of currentGroup
+        // Hide leader tag if user is not leader of currentGroup (compared using Id)
         if (!(Objects.equals(user.getId(), currentGroup.getLeader().getId()))) {
             leaderTag.setVisibility(View.INVISIBLE);
         }
