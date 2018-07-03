@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="85sp"
+        android:layout_height="90sp"
         android:background="@drawable/background_group_list_item"
         android:elevation="3dp"
         android:layout_marginTop="5dp"
@@ -39,7 +39,7 @@
                 android:text="@string/groupListItem_leaderTagText"
                 android:textColor="#fff"
                 android:textStyle="bold"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 android:layout_centerInParent="true"
@@ -61,7 +61,7 @@
         <RelativeLayout
             android:id="@+id/groupListItem_numMembersContainer"
             android:layout_width="45dp"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             >
@@ -72,7 +72,7 @@
                 android:layout_height="20dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_members"
-                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/groupListItem_numMembers"
                 android:layout_alignBottom="@id/groupListItem_numMembers"
                 android:layout_marginBottom="1dp"
                 />
@@ -86,7 +86,7 @@
                 android:textColor="#000"
                 android:layout_marginStart="3dp"
                 android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@id/groupListItem_memberIcon"
+                android:layout_alignParentEnd="true"
                 />
 
         </RelativeLayout>

@@ -32,16 +32,58 @@ public class ListGroupsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_groups);
 
-        model = Model.getInstance();
+        setupTitle();
 
-        //user = (User) getIntent().getSerializableExtra("user");
-        //userGroups = user.getMemberOfGroups();
+        model = Model.getInstance();
+        user = (User) getIntent().getSerializableExtra("user");
+        // Make user default to Model.currentUser if no User object is passed by intent
+        if (user == null) {
+            user = model.getCurrentUser();
+        }
+
+        // For testing only. Remove when able to add groups to user
         user = new User();
         user.setId((long) 1111);
         userGroups = makeTestGroups();
 
-        populateGroupList();
-        registerItemOnClick();
+        // Guard against null User object, in case currentUser is null
+        if (user != null) {
+            // Commented until able to add groups to user
+            // userGroups = getGroupList();
+
+            populateGroupList();
+            registerItemOnClick();
+        }
+    }
+
+    private void setupTitle() {
+        TextView title = findViewById(R.id.listGroups_headerTitle);
+        String text = getText(R.string.listGroups_headerTitle).toString();
+
+        // Added until issue #17 (Bug) is fixed
+        text = "My " + text;
+
+        // Commented until issue #17 (Bug) is fixed
+//        if (model.getCurrentUser() != null) {
+//            if (Objects.equals(user.getId(), model.getCurrentUser().getId())) {
+//                text = "My " + text;
+//            } else {
+//                text = user.getName() + "'s" +text;
+//            }
+//        }
+
+        title.setText(text);
+    }
+
+    private List<Group> getGroupList() {
+        List<Group> leaderGroup = new ArrayList<>();
+
+        if (user != null) {
+            leaderGroup = user.getLeadsGroups();
+            List<Group> memberGroup = user.getMemberOfGroups();
+            leaderGroup.addAll(memberGroup);
+        }
+        return leaderGroup;
     }
 
     private List<Group> makeTestGroups() {
@@ -57,7 +99,7 @@ public class ListGroupsActivity extends AppCompatActivity {
                 user1,
                 new double[]{49.280628, 49.279460},
                 new double[]{-122.928645, -122.922323},
-                memberList1);
+                null);
 
         // Walks from AQ to Brian's office
         User user2 = new User();
@@ -100,23 +142,41 @@ public class ListGroupsActivity extends AppCompatActivity {
             }
             Group currentGroup = userGroups.get(position);
 
-            TextView groupNameView = itemView.findViewById(R.id.groupListItem_groupName);
-            TextView groupDescriptionView = itemView.findViewById(R.id.groupListItem_groupDescription);
-            TextView numMembersView = itemView.findViewById(R.id.groupListItem_numMembers);
-
-            groupNameView.setText(currentGroup.getGroupName());
-            groupDescriptionView.setText(currentGroup.getGroupDescription());
-
-            String numMembersText = "" + (currentGroup.getMembers().size() * 5);
-            numMembersView.setText(numMembersText);
-
-            // Hide leader tag if user is not leader of group
-            RelativeLayout leaderTag = itemView.findViewById(R.id.groupListItem_leaderTag);
-            if (!(Objects.equals(user.getId(), currentGroup.getLeader().getId()))) {
-                leaderTag.setVisibility(View.INVISIBLE);
-            }
+            setupGroupNameView(itemView, currentGroup);
+            setupGroupDescriptionView(itemView, currentGroup);
+            setupNumMembersView(itemView, currentGroup);
+            displayLeaderTag(itemView, currentGroup);
 
             return itemView;
+        }
+    }
+
+    private void setupGroupNameView(View itemView, Group currentGroup) {
+        TextView groupNameView = itemView.findViewById(R.id.groupListItem_groupName);
+        groupNameView.setText(currentGroup.getGroupName());
+    }
+
+    private void setupGroupDescriptionView(View itemView, Group currentGroup) {
+        TextView groupDescriptionView = itemView.findViewById(R.id.groupListItem_groupDescription);
+        groupDescriptionView.setText(currentGroup.getGroupDescription());
+    }
+
+    private void setupNumMembersView(View itemView, Group currentGroup) {
+        TextView numMembersView = itemView.findViewById(R.id.groupListItem_numMembers);
+        int numMembers = 0;
+
+        if (currentGroup.getMembers() != null) {
+            numMembers = currentGroup.getMembers().size();
+        }
+        String numMembersText = "" + numMembers;
+        numMembersView.setText(numMembersText);
+    }
+
+    private void displayLeaderTag(View itemView, Group currentGroup) {
+        RelativeLayout leaderTag = itemView.findViewById(R.id.groupListItem_leaderTag);
+        // Hide leader tag if user is not leader of currentGroup
+        if (!(Objects.equals(user.getId(), currentGroup.getLeader().getId()))) {
+            leaderTag.setVisibility(View.INVISIBLE);
         }
     }
 

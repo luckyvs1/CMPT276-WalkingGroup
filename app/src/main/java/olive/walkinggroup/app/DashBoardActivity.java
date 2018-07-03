@@ -56,11 +56,7 @@ public class DashBoardActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Model model = Model.getInstance();
-                User currentUser = model.getCurrentUser();
-
                 Intent intent = new Intent(DashBoardActivity.this, CreateGroupActivity.class);
-                intent.putExtra("user", currentUser);
                 startActivity(intent);
             }
         });
@@ -71,7 +67,11 @@ public class DashBoardActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Model model = Model.getInstance();
+                User currentUser = model.getCurrentUser();
+
                 Intent intent = new Intent(DashBoardActivity.this, ListGroupsActivity.class);
+                intent.putExtra("user", currentUser);
                 startActivity(intent);
             }
         });
