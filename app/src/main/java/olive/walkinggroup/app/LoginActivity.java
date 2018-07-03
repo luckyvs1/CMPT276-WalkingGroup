@@ -40,8 +40,11 @@ public class LoginActivity extends AppCompatActivity {
 
     // By pass login screen if the user already has a token
     private void checkUserToken() {
-        if(getTokenToSharedPreferences() != null){
+        String token = getTokenToSharedPreferences();
+        if(token != null){
+            instance.updateProxy(token);
             goToDashBoardActivity();
+
         }
     }
 
