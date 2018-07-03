@@ -2,6 +2,7 @@ package olive.walkinggroup.dataobjects;
 
 import android.content.res.Resources;
 import android.provider.Settings;
+import android.util.Log;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.proxy.ProxyBuilder;
