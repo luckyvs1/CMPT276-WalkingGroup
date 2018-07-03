@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -106,12 +107,16 @@ public class Group extends IdItemBase implements Serializable{
         latArray[1] = end.latitude;
         lngArray[1] = end.longitude;
     }
-
-    // TODO: Add more fields?
+    
     @Override
     public String toString() {
         return "Group{" +
-                "groupDescription='" + groupDescription + '\'' +
+                "groupName='" + groupName + '\'' +
+                ", groupDescription='" + groupDescription + '\'' +
+                ", leader=" + leader +
+                ", latArray=" + Arrays.toString(latArray) +
+                ", lngArray=" + Arrays.toString(lngArray) +
+                ", members=" + members +
                 '}';
     }
 }
