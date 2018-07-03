@@ -37,6 +37,10 @@ public class Group extends IdItemBase implements Serializable{
         this.members = members;
     }
 
+    public Group() {
+        // Dummy constructor
+    }
+
     public String getGroupName() {
         return groupName;
     }
@@ -101,5 +105,12 @@ public class Group extends IdItemBase implements Serializable{
     public void setEndPoint(LatLng end) {
         latArray[1] = end.latitude;
         lngArray[1] = end.longitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "groupDescription='" + groupDescription + '\'' +
+                '}';
     }
 }
