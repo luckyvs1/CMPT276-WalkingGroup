@@ -1,7 +1,6 @@
 package olive.walkinggroup.app;
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,9 +22,9 @@ public class DashBoardActivity extends AppCompatActivity {
 
         setupLogoutButton();
         createToMonitorButton();
-        createToMapButton();
+        createToFindGroupsButton();
         createToCreateGroupButton();
-
+        createToViewMyGroupsButton();
     }
 
     private void createToMonitorButton() {
@@ -39,7 +38,7 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void createToMapButton() {
+    private void createToFindGroupsButton() {
         Button btn = (Button)findViewById(R.id.toMap);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +75,17 @@ public class DashBoardActivity extends AppCompatActivity {
 
                 // End the activity
                 finish();
+            }
+        });
+    }
+
+    private void createToViewMyGroupsButton() {
+        Button btn = findViewById(R.id.dashboard_viewMyGroupsBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashBoardActivity.this, ViewMyGroupsActivity.class);
+                startActivity(intent);
             }
         });
     }
