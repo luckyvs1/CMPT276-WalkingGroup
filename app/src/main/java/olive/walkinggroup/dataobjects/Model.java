@@ -2,16 +2,19 @@ package olive.walkinggroup.dataobjects;
 
 import android.content.res.Resources;
 import android.provider.Settings;
+import android.util.Log;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import olive.walkinggroup.proxy.WGServerProxy;
 
 public class Model {
-    private static User currentUser;
+    // TODO: Have User object information save between application launches.
+    private User currentUser;
     private static WGServerProxy proxy;
 
     private static Model instance;
+
 
     private Model(){
         // Prevent external instancing
@@ -31,7 +34,7 @@ public class Model {
     }
 
     public User getCurrentUser() {
-        return this.currentUser;
+        return currentUser;
     }
 
     public void setCurrentUser(User currentUser) {
