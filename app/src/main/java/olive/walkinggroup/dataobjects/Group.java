@@ -108,12 +108,10 @@ public class Group extends IdItemBase implements Serializable{
         lngArray[1] = end.longitude;
     }
 
-    // TO DO: Check if any more fields need to be added
     @Override
     public String toString() {
         return "Group{" +
                 "groupDescription='" + groupDescription + '\'' +
                 '}';
     }
-
 }

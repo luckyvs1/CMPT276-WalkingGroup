@@ -4,16 +4,17 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -21,7 +22,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -35,8 +35,8 @@ import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 
-public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
-    private static final String TAG = "JoinGroupActivity";
+public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+    private static final String TAG = "FindGroupsActivity";
 
     public static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     public static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -70,12 +70,17 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
         });
     }
 
+    // Request permission from user to locate their current location
     private void getLocationPermission() {
         String[] permissions = {FINE_LOCATION, COARSE_LOCATION};
 
         Log.d(TAG, "getLocationPermission: getting permission...");
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED)
+        {
+            if (ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED)
+            {
                 locationPermissionGranted = true;
 
                 initializeMap();
@@ -87,6 +92,7 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
         }
     }
 
+    // Refresh activity after user grants permission
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         locationPermissionGranted = false;
@@ -103,7 +109,7 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
 
     private void initializeMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.joinGroup_map);
-        mapFragment.getMapAsync(JoinGroupActivity.this);
+        mapFragment.getMapAsync(FindGroupsActivity.this);
     }
 
     private void getDeviceLocation(boolean animate) {
@@ -148,15 +154,17 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
 
         if (locationPermissionGranted) {
             getDeviceLocation(false);
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED)
+            {
                 return;
             }
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-            // Put Markers on map for each existing group
             populateMapWithMarkers();
-
             mMap.setOnMarkerClickListener(this);
         }
     }
@@ -165,6 +173,7 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
         // Commented until able to add group to server
         //getGroupListFromServer();
 
+        // Remove this when above is implemented
         markGroups(tempAddGroups());
     }
 
@@ -199,7 +208,7 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
 
     private void getGroupListFromServer() {
         Call<List<Group>> caller = model.getProxy().getGroups();
-        ProxyBuilder.callProxy(JoinGroupActivity.this, caller, returnedList -> markGroups(returnedList));
+        ProxyBuilder.callProxy(FindGroupsActivity.this, caller, returnedList -> markGroups(returnedList));
     }
 
     private void markGroups(List<Group> returnedList) {
@@ -221,11 +230,7 @@ public class JoinGroupActivity extends FragmentActivity implements OnMapReadyCal
     public boolean onMarkerClick(final Marker marker) {
         Group group = (Group) marker.getTag();
 
-        /*
-        * https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android        *
-        */
-
-        Intent intent = new Intent(JoinGroupActivity.this, GroupDetailsActivity.class);
+        Intent intent = new Intent(FindGroupsActivity.this, GroupDetailsActivity.class);
         intent.putExtra("group", group);
         startActivity(intent);
 

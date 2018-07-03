@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
@@ -21,8 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private User currentUser;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -134,6 +134,11 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // Put message up in toast and logcat
+    private void notifyUserViaLogAndToast(String message) {
+        Log.w("User logged in", message);
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
 
     // Get the user details from the login activity to login user
     private void setUserDetails() {

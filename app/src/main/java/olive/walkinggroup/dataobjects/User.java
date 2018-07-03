@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
 // It ensures deserialization does not fail if server sends you some fields you are not expecting.
 // This is needed for the server to be able to change without breaking your app!
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User extends IdItemBase{
+public class User extends IdItemBase implements Serializable{
     // NOTE: id, hasFullData, and href in IdItemBase base class.
 
     // Data fields for the user.

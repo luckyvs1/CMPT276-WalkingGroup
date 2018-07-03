@@ -30,7 +30,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
         setupLogoutButton();
         createToMonitorButton();
-        createToMapButton();
+        createToFindGroupsButton();
         createToCreateGroupButton();
 
         instance = Model.getInstance();
@@ -40,6 +40,8 @@ public class DashBoardActivity extends AppCompatActivity {
         } catch (NullPointerException e) {
             Log.d("DashboardActivity", e.getMessage());
         }
+        createToViewMyGroupsButton();
+
     }
 
     private void createToMonitorButton() {
@@ -53,12 +55,12 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private void createToMapButton() {
+    private void createToFindGroupsButton() {
         Button btn = (Button)findViewById(R.id.toMap);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DashBoardActivity.this, JoinGroupActivity.class);
+                Intent intent = new Intent(DashBoardActivity.this, FindGroupsActivity.class);
                 startActivity(intent);
             }
         });
@@ -70,6 +72,21 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashBoardActivity.this, CreateGroupActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void createToViewMyGroupsButton() {
+        Button btn = findViewById(R.id.dashboard_viewMyGroupsBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Model model = Model.getInstance();
+                User currentUser = model.getCurrentUser();
+
+                Intent intent = new Intent(DashBoardActivity.this, ListGroupsActivity.class);
+                intent.putExtra("user", currentUser);
                 startActivity(intent);
             }
         });
