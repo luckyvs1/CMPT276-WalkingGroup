@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fafafa"
-    tools:context=".app.ViewMyGroupsActivity">
+    tools:context=".app.ListGroupsActivity">
 
     <RelativeLayout
         android:id="@+id/viewMyGroups_header"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:elevation="5dp"
         >
 
@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:layout_centerVertical="true"
+            android:layout_marginStart="6dp"
             android:padding="10dp"
             android:textColor="#fff"
             android:text="@string/viewMyGroups_headerTitle"

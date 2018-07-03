@@ -33,4 +33,5 @@
     <string name="groupDetail_groupMembers">Members:</string>
     <string name="viewMyGroups_headerTitle">My Groups</string>
     <string name="dashboard_viewMyGroupsBtn">My Groups</string>
+    <string name="groupListItem_leaderTagText">Leader</string>
 </resources>

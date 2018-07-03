@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import olive.walkinggroup.proxy.WGServerProxy;
 
@@ -20,11 +22,11 @@ public class DashBoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
 
-        setupLogoutButton();
         createToMonitorButton();
         createToFindGroupsButton();
         createToCreateGroupButton();
         createToViewMyGroupsButton();
+        setupLogoutButton();
     }
 
     private void createToMonitorButton() {
@@ -54,7 +56,22 @@ public class DashBoardActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Model model = Model.getInstance();
+                User currentUser = model.getCurrentUser();
+
                 Intent intent = new Intent(DashBoardActivity.this, CreateGroupActivity.class);
+                intent.putExtra("user", currentUser);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void createToViewMyGroupsButton() {
+        Button btn = findViewById(R.id.dashboard_viewMyGroupsBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashBoardActivity.this, ListGroupsActivity.class);
                 startActivity(intent);
             }
         });
@@ -75,17 +92,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
                 // End the activity
                 finish();
-            }
-        });
-    }
-
-    private void createToViewMyGroupsButton() {
-        Button btn = findViewById(R.id.dashboard_viewMyGroupsBtn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashBoardActivity.this, ViewMyGroupsActivity.class);
-                startActivity(intent);
             }
         });
     }
