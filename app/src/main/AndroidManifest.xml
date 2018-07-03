@@ -28,7 +28,7 @@
         <activity android:name=".app.DashBoardActivity" />
         <activity android:name=".app.SignUpActivity" />
         <activity android:name=".app.MonitorActivity" />
-        <activity android:name=".app.Map" />
+        <activity android:name=".dataobjects.Map" />
         <activity android:name=".app.CreateGroupActivity" />
         <activity android:name=".app.CreateGroupMapsActivity"/>
         <!--
@@ -44,7 +44,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".app.JoinGroupActivity"
+            android:name=".app.FindGroupsActivity"
             android:label="@string/title_activity_join_group">
         </activity>
         <activity android:name=".app.GroupDetailsActivity">
