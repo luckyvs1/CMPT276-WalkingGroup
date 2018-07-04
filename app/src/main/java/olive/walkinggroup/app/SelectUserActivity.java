@@ -1,0 +1,129 @@
+package olive.walkinggroup.app;
+
+import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.Group;
+import olive.walkinggroup.dataobjects.User;
+import olive.walkinggroup.dataobjects.UserListHelper;
+
+public class SelectUserActivity extends AppCompatActivity {
+
+    private Group group;
+    private User currentUser;
+    private List<User> userList;
+    private String headerText;
+    private String addOrRemove;
+    private UserListHelper userListHelper;
+
+    public static Intent makeIntent(Context context, Group group, User currentUser, String headerText, String addOrRemove) {
+        Intent intent = new Intent(context, SelectUserActivity.class);
+        intent.putExtra("group", group);
+        intent.putExtra("currentUser", currentUser);
+        intent.putExtra("headerText", headerText);
+        intent.putExtra("addOrRemove", addOrRemove);
+
+        return intent;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_select_user);
+
+        getDataFromIntent();
+        getUserList();
+        userListHelper = new UserListHelper(SelectUserActivity.this, userList, currentUser);
+
+        setupCancelButton();
+        initializeText();
+        populateUserList();
+    }
+
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        group = (Group) intent.getSerializableExtra("group");
+        currentUser = (User) intent.getSerializableExtra("currentUser");
+        headerText = intent.getStringExtra("headerText");
+        addOrRemove = intent.getStringExtra("addOrRemove");
+    }
+
+    private void getUserList() {
+        switch (addOrRemove) {
+            case "add":
+                List<User> addableUsers = new ArrayList<>();
+                if (!(group.isMember(currentUser))) {
+                    addableUsers.add(currentUser);
+                }
+
+                for (int i = 0; i < currentUser.getMonitorsUsers().size(); i++) {
+                    User user = currentUser.getMonitorsUsers().get(i);
+                    if (!(group.isMember(user))) {
+                        addableUsers.add(user);
+                    }
+                }
+
+                userList = addableUsers;
+                break;
+
+            case "remove":
+                List<User> removableUsers = new ArrayList<>();
+                if (group.isLeader(currentUser)) {
+                    removableUsers = group.getMembers();
+                } else {
+                    if (group.isMember(currentUser)) {
+                        removableUsers.add(currentUser);
+                    }
+                    for (int i = 0; i < currentUser.getMonitorsUsers().size(); i++) {
+                        User user = currentUser.getMonitorsUsers().get(i);
+                        if (!(group.isMember(user))) {
+                            removableUsers.add(user);
+                        }
+                    }
+                }
+
+                userList = removableUsers;
+                break;
+
+            default:
+                userList = new ArrayList<>();
+                break;
+        }
+    }
+
+    private void setupCancelButton() {
+        Button btn = findViewById(R.id.selectUser_cancelBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    private void initializeText() {
+        TextView headerTextView = findViewById(R.id.selectUser_headerText);
+        TextView titleTextView = findViewById(R.id.selectUser_titleText);
+
+        headerTextView.setText(headerText);
+        String titleText = "Select user to " + addOrRemove + ":";
+        titleTextView.setText(titleText);
+    }
+
+    private void populateUserList() {
+        ArrayAdapter<User> adapter = userListHelper.getAdapter();
+        ListView userListView = findViewById(R.id.selectUser_userList);
+        userListView.setAdapter(adapter);
+    }
+}

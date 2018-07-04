@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Store information about the walking groups.
@@ -106,6 +107,18 @@ public class Group extends IdItemBase implements Serializable{
     public void setEndPoint(LatLng end) {
         latArray[1] = end.latitude;
         lngArray[1] = end.longitude;
+    }
+
+    public boolean isMember(User user) {
+        List<Integer> idList = new ArrayList<>();
+        for (int i = 0; i < members.size(); i++) {
+            idList.add(members.get(i).getId().intValue());
+        }
+        return idList.contains(user.getId().intValue());
+    }
+
+    public boolean isLeader(User user) {
+        return (Objects.equals(leader.getId(), user.getId()));
     }
 
     @Override

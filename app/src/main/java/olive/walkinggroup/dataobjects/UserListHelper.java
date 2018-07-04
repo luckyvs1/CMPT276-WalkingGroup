@@ -17,13 +17,13 @@ import java.util.Objects;
 import olive.walkinggroup.R;
 import olive.walkinggroup.app.GroupDetailsActivity;
 
-public class UserList {
+public class UserListHelper {
     private Activity activity;
     private List<User> userList;
     private User currentUser;
     private MemberListAdapter adapter;
 
-    public UserList(Activity activity, List<User> userList, User currentUser) {
+    public UserListHelper(Activity activity, List<User> userList, User currentUser) {
         this.activity = activity;
         this.userList = userList;
         this.currentUser = currentUser;

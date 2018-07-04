@@ -51,7 +51,7 @@
         </activity>
         <activity android:name=".app.ListGroupsActivity">
         </activity>
-        <activity android:name=".app.ListUsersActivity">
+        <activity android:name=".app.SelectUserActivity">
         </activity>
     </application>
 

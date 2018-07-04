@@ -1,14 +1,10 @@
 package olive.walkinggroup.app;
 
         import android.content.Intent;
-        import android.support.annotation.NonNull;
-        import android.support.annotation.Nullable;
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
         import android.view.View;
-        import android.view.ViewGroup;
         import android.widget.ArrayAdapter;
-        import android.widget.Button;
         import android.widget.ListView;
         import android.widget.RelativeLayout;
         import android.widget.TextView;
@@ -22,15 +18,13 @@ package olive.walkinggroup.app;
         import com.google.android.gms.maps.model.Marker;
         import com.google.android.gms.maps.model.MarkerOptions;
 
-        import java.util.ArrayList;
         import java.util.List;
-        import java.util.Objects;
 
         import olive.walkinggroup.R;
         import olive.walkinggroup.dataobjects.Group;
         import olive.walkinggroup.dataobjects.Model;
         import olive.walkinggroup.dataobjects.User;
-        import olive.walkinggroup.dataobjects.UserList;
+        import olive.walkinggroup.dataobjects.UserListHelper;
 
 public class GroupDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -40,7 +34,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private Model model;
     private User currentUser;
-    private UserList userList;
+    private UserListHelper userListHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +51,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         group = (Group) getIntent().getSerializableExtra("group");
         memberList = group.getMembers();
 
-        userList = new UserList(this, memberList, currentUser);
+        userListHelper = new UserListHelper(this, memberList, currentUser);
 
         setupAddUserButton();
         setupRemoveUserButton();
@@ -72,7 +66,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GroupDetailsActivity.this, ListUsersActivity.class);
+                Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, currentUser, group.getGroupName(), "add");
                 startActivity(intent);
             }
         });
@@ -83,7 +77,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GroupDetailsActivity.this, ListUsersActivity.class);
+                Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, currentUser, group.getGroupName(), "remove");
                 startActivity(intent);
             }
         });
@@ -127,7 +121,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void populateMemberList() {
-        ArrayAdapter<User> adapter = userList.getAdapter();
+        ArrayAdapter<User> adapter = userListHelper.getAdapter();
         ListView memberList = findViewById(R.id.groupDetail_memberList);
         memberList.setAdapter(adapter);
     }

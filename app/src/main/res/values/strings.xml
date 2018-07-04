@@ -35,10 +35,9 @@
     <string name="dashboard_viewMyGroupsBtn">My Groups</string>
     <string name="groupListItem_leaderTagText">Leader</string>
     <string name="sampleText">Sample Text</string>
-    <string name="listUsers_addBtn">Add</string>
-    <string name="listUsers_removeBtn">Remove</string>
+    <string name="listUsers_cancelBtn">Cancel</string>
     <string name="listUsers_youTag">You</string>
     <string name="listUsers_monitorTag">Monitor</string>
-    <string name="groupDetail_minusSign">\u2212</string>
+    <string name="groupDetail_minusSign">\u2013</string>
     <string name="groupDetail_plusSign">+</string>
 </resources>

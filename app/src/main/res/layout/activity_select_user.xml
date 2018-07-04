@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.ListUsersActivity">
+    tools:context=".app.SelectUserActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:id="@+id/listUsers_header"
+        android:id="@+id/selectUser_header"
         android:elevation="5dp"
         android:background="@color/colorPrimary"
         >
 
         <TextView
-            android:id="@+id/listUsers_headerText"
+            android:id="@+id/selectUser_headerText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -28,36 +28,23 @@
             />
 
         <Button
-            android:id="@+id/listUsers_addBtn"
+            android:id="@+id/selectUser_cancelBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:background="@drawable/background_header_button"
-            android:text="@string/listUsers_addBtn"
-            android:textColor="#fff"
-            android:padding="5dp"
-            android:textSize="15sp"
-            />
-
-        <Button
-            android:id="@+id/listUsers_removeBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toStartOf="@id/listUsers_addBtn"
-            android:background="@drawable/background_header_button"
-            android:text="@string/listUsers_removeBtn"
-            android:textColor="#fff"
-            android:padding="5dp"
+            android:text="@string/listUsers_cancelBtn"
+            android:textColor="#d0ffffff"
             android:textSize="15sp"
             />
 
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/listUsers_titleText"
+        android:id="@+id/selectUser_titleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/listUsers_header"
+        android:layout_below="@id/selectUser_header"
         android:text="@string/sampleText"
         android:textSize="18sp"
         android:textColor="#000"
@@ -66,10 +53,10 @@
         />
 
     <ListView
-        android:id="@+id/listUsers_userList"
+        android:id="@+id/selectUser_userList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/listUsers_titleText"
+        android:layout_below="@id/selectUser_titleText"
         >
     </ListView>
 

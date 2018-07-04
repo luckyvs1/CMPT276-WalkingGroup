@@ -17,26 +17,6 @@
         />
 
     <RelativeLayout
-        android:id="@+id/listUsers_youTag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_user_list_item_you_tag"
-        android:layout_alignParentEnd="true"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/listUsers_youTag"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="#fff"
-            android:layout_centerInParent="true"
-            />
-
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/listUsers_monitorTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,6 +28,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/listUsers_monitorTag"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="#fff"
+            android:layout_centerInParent="true"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/listUsers_youTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_user_list_item_you_tag"
+        android:layout_alignParentEnd="true"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/listUsers_youTag"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:textColor="#fff"
