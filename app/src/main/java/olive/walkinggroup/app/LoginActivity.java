@@ -46,10 +46,10 @@ public class LoginActivity extends AppCompatActivity {
             user.setPassword(userPassword);
             user.setEmail(userEmail);
             instance.updateProxy(token);
-            instance.setCurrentUser(user);
-            //updateCurrentUser(userEmail);
+            //instance.setCurrentUser(user);
+            updateCurrentUser(userEmail);
             //goToDashBoardActivity();
-            loginUserGetToken(instance.getCurrentUser());       // Logging in user on app resume; re-updates the token
+            //loginUserGetToken(instance.getCurrentUser());       // Logging in user on app resume; re-updates the token
         }
     }
 
@@ -97,8 +97,8 @@ public class LoginActivity extends AppCompatActivity {
     // Response for call back from the login user
     private void loginUserResponse(Void returnedNothing) {
         // Navigate user to the next activity
-        //updateCurrentUser(user.getEmail());
-        goToDashBoardActivity();
+        updateCurrentUser(user.getEmail());
+        //goToDashBoardActivity();
     }
 
     // Handle the token by generating a new Proxy which is encoded with it.
