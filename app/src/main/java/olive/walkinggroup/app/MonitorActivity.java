@@ -33,6 +33,10 @@ public class MonitorActivity extends AppCompatActivity {
         setupIMonitorButton();
     }
 
+    public void postSelection(){
+
+    }
+
     private void setupIMonitorButton() {
         Button btn = findViewById(R.id.editIMonitor);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -41,7 +45,6 @@ public class MonitorActivity extends AppCompatActivity {
                 android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
                 editMonitorUserFragment dialog = new editMonitorUserFragment();
                 dialog.show(manager, "EditDialog");
-                populateIMonitor();
             }
         });
     }
@@ -54,12 +57,11 @@ public class MonitorActivity extends AppCompatActivity {
                 android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
                 editMonitoredByUserFragment dialog = new editMonitoredByUserFragment();
                 dialog.show(manager, "EditDialog");
-                populateMonitorsMe();
             }
         });
     }
 
-    private void populateMonitorsMe() {
+    public void populateMonitorsMe() {
         //Create list
         String [] stringList = user.getMonitoredByUsersDescriptions();
 
@@ -71,7 +73,7 @@ public class MonitorActivity extends AppCompatActivity {
         list.setAdapter(adapter);
     }
 
-    private void populateIMonitor() {
+    public void populateIMonitor() {
         //Create list
         String [] stringList = user.getMonitorsUsersDescriptions();
 
