@@ -129,8 +129,8 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     private void populateMemberList() {
         userListHelper = new UserListHelper(this, memberList, currentUser);
         ArrayAdapter<User> adapter = userListHelper.getAdapter();
-        ListView memberList = findViewById(R.id.groupDetail_memberList);
-        memberList.setAdapter(adapter);
+        ListView memberListView = findViewById(R.id.groupDetail_memberList);
+        memberListView.setAdapter(adapter);
     }
 
     private void setupListHeader() {

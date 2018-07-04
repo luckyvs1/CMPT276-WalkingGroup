@@ -41,7 +41,7 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
     public static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     public static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 8080;
-    private static final float DEFAULT_ZOOM = 15f;
+    private static final float DEFAULT_ZOOM = 1f;
 
     private Boolean locationPermissionGranted = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -171,10 +171,10 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
 
     private void populateMapWithMarkers() {
         // Commented until able to add group to server
-        //getGroupListFromServer();
+        getGroupListFromServer();
 
         // Remove this when above is implemented
-        markGroups(tempAddGroups());
+        //markGroups(tempAddGroups());
     }
 
     // Temp function in place until method to add group to server exists.
@@ -281,7 +281,12 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
 
     private void markGroups(List<Group> returnedList) {
         for (Group group : returnedList) {
-            addMarker(group);
+            if (group.getRouteLatArray() != null && group.getRouteLngArray() != null) {
+                if (group.getRouteLatArray().length >= 2 && group.getRouteLngArray().length >= 2) {
+                    addMarker(group);
+                    Log.d("TAG", "Adding group to map...");
+                }
+            }
         }
     }
 
