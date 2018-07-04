@@ -8,6 +8,15 @@ import olive.walkinggroup.R;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import olive.walkinggroup.proxy.WGServerProxy;
 
+/**
+ * Model singleton class to store fields to be used across Activities.
+ *
+ * Information includes the current logged in user information, and a
+ * proxy for accessing the server.
+ *
+ * Operations include updating proxy using a valid token.
+ */
+
 public class Model {
     // TODO: Have User object information save between application launches.
     private User currentUser;
