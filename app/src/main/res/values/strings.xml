@@ -29,9 +29,14 @@
     <string name="cancel">Cancel</string>
     <string name="valid_email_com">valid@email.com</string>
     <string name="name">Name:</string>
-    <string name="groupDetail_joinGroupBtnText">Join</string>
+    <string name="groupDetail_BtnText">"Interact"</string>
     <string name="groupDetail_groupMembers">Members</string>
     <string name="listGroups_headerTitle">Groups</string>
     <string name="dashboard_viewMyGroupsBtn">My Groups</string>
     <string name="groupListItem_leaderTagText">Leader</string>
+    <string name="sampleText">Sample Text</string>
+    <string name="listUsers_addBtn">Add</string>
+    <string name="listUsers_removeBtn">Remove</string>
+    <string name="listUsers_youTag">You</string>
+    <string name="listUsers_monitorTag">Monitor</string>
 </resources>

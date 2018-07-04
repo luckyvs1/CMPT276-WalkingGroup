@@ -51,6 +51,8 @@
         </activity>
         <activity android:name=".app.ListGroupsActivity">
         </activity>
+        <activity android:name=".app.ListUsersActivity">
+        </activity>
     </application>
 
 </manifest>

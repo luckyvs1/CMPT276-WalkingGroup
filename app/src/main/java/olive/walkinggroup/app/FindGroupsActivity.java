@@ -178,13 +178,12 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
     }
 
     // Temp function in place until method to add group to server exists.
-    private List<Group> tempAddGroups() {
+    public static List<Group> tempAddGroups() {
         // Walks from residence to fitness centre.
         User user1 = new User();
         user1.setName("Jim");
+        user1.setEmail("Jim@gym.ca");
         user1.setId((long) 1111);
-        List<User> memberList1 = new ArrayList<>();
-        memberList1.add(user1);
 
         Group group1 = new Group("Gym Group",
                 "Work out together!",
@@ -193,16 +192,19 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
                 new double[]{-122.928645, -122.922323},
                 getTestMemberList());
 
-        // Walks from AQ to Brian's office
+        // Walks from AQ to Brian's office. Leader is Bob.
         User user2 = new User();
-        user2.setName("Bob");
-        user2.setId((long) 2222);
+        user2.setName("Ted");
+        user2.setEmail("ted@example.org");
+        user2.setId((long) 1112);
         List<User> memberList2 = new ArrayList<>();
+        User user3 = getBob();
+
         memberList2.add(user2);
         memberList2.add(user1);
         Group group2 = new Group("Finding Brian",
                 "Ask all your questions in Brian's office hours.\nWe have a lot of questions to ask, so this description will also be very lengthy! (Max 3 lines shown here) \n But more can be seen in GroupDetailsActivity",
-                user2,
+                user3,
                 new double[] {49.278495, 49.276756},
                 new double[] {-122.915911, -122.914109},
                 memberList2);
@@ -214,18 +216,17 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         return groupList;
     }
 
-    private List<User> getTestMemberList() {
+    // Temp function to generate a list of User
+    public static List<User> getTestMemberList() {
         List<User> list = new ArrayList<>();
 
         User user1 = new User();
         user1.setName("Adam");
         user1.setEmail("adam@email.com");
+        user1.setId((long) 1001);
         list.add(user1);
 
-        User user2 = new User();
-        user2.setName("Bob");
-        user2.setId((long) 2222);
-        user2.setEmail("bob@bobby.com");
+        User user2 = getBob();
         list.add(user2);
 
         User user3 = new User();
@@ -237,9 +238,40 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         User user4 = new User();
         user4.setName("Chris");
         user4.setEmail("chris@example.com");
+        user4.setId((long) 1002);
         list.add(user4);
 
+        User user5 = new User();
+        user5.setName("Dr. Brian Fraser");
+        user5.setEmail("bfraser@sfu.ca");
+        user5.setId((long) 9999);
+        list.add(user5);
+
         return list;
+    }
+
+    // Temp function to generate User "Bob"
+    public static User getBob() {
+        User bob = new User();
+        bob.setName("Bob");
+        bob.setId((long) 2222);
+        bob.setEmail("bob@bobby.com");
+
+        List<User> monitorList = new ArrayList<>();
+        User bobJr = new User();
+        bobJr.setName("Bob");
+        bobJr.setEmail("bob.junior@bobby.com");
+        bobJr.setId((long) 2223);
+        monitorList.add(bobJr);
+
+        User bobby = new User();
+        bobby.setName("Bobby");
+        bobby.setEmail("bobby@bobby.com");
+        bobby.setId((long) 2224);
+        monitorList.add(bobby);
+
+        bob.setMonitorsUsers(monitorList);
+        return bob;
     }
 
     private void getGroupListFromServer() {

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".app.ListUsersActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:id="@+id/listUsers_header"
+        android:elevation="5dp"
+        android:background="@color/colorPrimary"
+        >
+
+        <TextView
+            android:id="@+id/listUsers_headerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:textSize="18sp"
+            android:textColor="#fff"
+            android:layout_centerVertical="true"
+            android:text="@string/sampleText"
+            android:padding="10dp"
+            android:layout_marginStart="6dp"
+            />
+
+        <Button
+            android:id="@+id/listUsers_addBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/background_header_button"
+            android:text="@string/listUsers_addBtn"
+            android:textColor="#fff"
+            android:padding="5dp"
+            android:textSize="15sp"
+            />
+
+        <Button
+            android:id="@+id/listUsers_removeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toStartOf="@id/listUsers_addBtn"
+            android:background="@drawable/background_header_button"
+            android:text="@string/listUsers_removeBtn"
+            android:textColor="#fff"
+            android:padding="5dp"
+            android:textSize="15sp"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/listUsers_titleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listUsers_header"
+        android:text="@string/sampleText"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:padding="10dp"
+        android:layout_marginStart="6dp"
+        />
+
+    <ListView
+        android:id="@+id/listUsers_userList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/listUsers_titleText"
+        >
+    </ListView>
+
+</RelativeLayout>

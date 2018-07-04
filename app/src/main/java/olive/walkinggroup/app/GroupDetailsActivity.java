@@ -1,5 +1,6 @@
 package olive.walkinggroup.app;
 
+        import android.content.Intent;
         import android.support.annotation.NonNull;
         import android.support.annotation.Nullable;
         import android.support.v7.app.AppCompatActivity;
@@ -9,8 +10,8 @@ package olive.walkinggroup.app;
         import android.widget.ArrayAdapter;
         import android.widget.Button;
         import android.widget.ListView;
+        import android.widget.RelativeLayout;
         import android.widget.TextView;
-        import android.widget.Toast;
 
         import com.google.android.gms.maps.CameraUpdateFactory;
         import com.google.android.gms.maps.GoogleMap;
@@ -21,9 +22,9 @@ package olive.walkinggroup.app;
         import com.google.android.gms.maps.model.Marker;
         import com.google.android.gms.maps.model.MarkerOptions;
 
-        import java.lang.reflect.Array;
         import java.util.ArrayList;
         import java.util.List;
+        import java.util.Objects;
 
         import olive.walkinggroup.R;
         import olive.walkinggroup.dataobjects.Group;
@@ -37,6 +38,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     private List<User> memberList;
 
     private Model model;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,13 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         setContentView(R.layout.activity_group_details);
 
         model = Model.getInstance();
-        group = (Group) getIntent().getSerializableExtra("group");
+        // Commented until bug #17 is fixed
+        //currentUser = model.getCurrentUser();
 
+        // Temporary currentUser for testing (Bob)
+        currentUser = FindGroupsActivity.getBob();
+
+        group = (Group) getIntent().getSerializableExtra("group");
         memberList = group.getMembers();
 
         setupJoinGroupBtn();
@@ -60,7 +67,8 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(GroupDetailsActivity.this, "TODO: Put user in this group", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(GroupDetailsActivity.this, ListUsersActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -110,7 +118,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private class MemberListAdapter extends ArrayAdapter<User> {
         public MemberListAdapter() {
-            super(GroupDetailsActivity.this, R.layout.list_members_item, memberList);
+            super(GroupDetailsActivity.this, R.layout.list_user_item, memberList);
         }
 
         @NonNull
@@ -118,12 +126,13 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             View itemView = convertView;
             if (itemView == null) {
-                itemView = getLayoutInflater().inflate(R.layout.list_members_item, parent, false);
+                itemView = getLayoutInflater().inflate(R.layout.list_user_item, parent, false);
             }
             User currentMember = memberList.get(position);
 
             setupMemberNameView(itemView, currentMember);
             setupMemberEmailView(itemView, currentMember);
+            displayTag(itemView, currentMember);
 
             return itemView;
         }
@@ -141,10 +150,35 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         emailView.setText(emailText);
     }
 
+    private void displayTag(View itemView, User currentMember) {
+        // Hide the youTag if currentUser is not currentMember (compared by Id)
+        if (!(Objects.equals(currentUser.getId(), currentMember.getId()))) {
+            RelativeLayout youTag = itemView.findViewById(R.id.listUsers_youTag);
+            youTag.setVisibility(View.GONE);
+        }
+        // Hide the monitorTag if currentMember is not on monitor list of currentUser
+        if (!(isOnMonitorsUserList(currentUser, currentMember))) {
+            RelativeLayout monitorTag = itemView.findViewById(R.id.listUsers_monitorTag);
+            monitorTag.setVisibility(View.GONE);
+        }
+    }
+
+    // Return true if user2 is on List<User> monitorsUsers of user1
+    private boolean isOnMonitorsUserList(User user1, User user2) {
+        List<User> monitorList = user1.getMonitorsUsers();
+        List<Integer> idList = new ArrayList<>();
+
+        for (int i = 0; i < monitorList.size(); i++) {
+            Integer id = monitorList.get(i).getId().intValue();
+            idList.add(id);
+        }
+
+        return (idList.contains(user2.getId().intValue()));
+    }
+
     private void setupListHeader() {
         ListView memberList = findViewById(R.id.groupDetail_memberList);
         View headerView = getLayoutInflater().inflate(R.layout.list_members_header, memberList, false);
         memberList.addHeaderView(headerView);
     }
-
 }
