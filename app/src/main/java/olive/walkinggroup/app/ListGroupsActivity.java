@@ -47,8 +47,8 @@ public class ListGroupsActivity extends AppCompatActivity {
 
         // For testing only. Remove when able to add groups to user
         user = new User();
-        user.setId((long) 1111);
-        userGroups = makeTestGroups();
+        user.setId((long) 2222);
+        userGroups = FindGroupsActivity.tempAddGroups();
 
         // Guard against null User object, in case currentUser is null
         if (user != null) {
@@ -91,50 +91,14 @@ public class ListGroupsActivity extends AppCompatActivity {
         return leaderGroup;
     }
 
-    private List<Group> makeTestGroups() {
-        // Walks from residence to fitness centre.
-        User user1 = new User();
-        user1.setName("Jim");
-        user1.setId((long) 1111);
-        List<User> memberList1 = new ArrayList<User>();
-        memberList1.add(user1);
-
-        Group group1 = new Group("Gym Group",
-                "Work out together!",
-                user1,
-                new double[]{49.280628, 49.279460},
-                new double[]{-122.928645, -122.922323},
-                null);
-
-        // Walks from AQ to Brian's office
-        User user2 = new User();
-        user2.setName("Chris");
-        user2.setId((long) 2222);
-        List<User> memberList2 = new ArrayList<User>();
-        memberList2.add(user2);
-        memberList2.add(user1);
-        Group group2 = new Group("Finding Brian",
-                "Ask all your questions in Brian's office hours.\nWe have a lot of questions to ask, so this description will also be very lengthy! (Max 3 lines shown here) \n But more can be seen in GroupDetailsActivity",
-                user2,
-                new double[] {49.278495, 49.276756},
-                new double[] {-122.915911, -122.914109},
-                memberList2);
-
-        List<Group> groupList = new ArrayList<>();
-        groupList.add(group1);
-        groupList.add(group2);
-
-        return groupList;
-    }
-
     private void populateGroupList() {
-        ArrayAdapter<Group> adapter = new MyListAdapter();
+        ArrayAdapter<Group> adapter = new GroupListAdapter();
         ListView groupList = findViewById(R.id.viewMyGroups_groupList);
         groupList.setAdapter(adapter);
     }
 
-    private class MyListAdapter extends ArrayAdapter<Group> {
-        public MyListAdapter() {
+    private class GroupListAdapter extends ArrayAdapter<Group> {
+        public GroupListAdapter() {
             super(ListGroupsActivity.this, R.layout.list_groups_item, userGroups);
         }
 

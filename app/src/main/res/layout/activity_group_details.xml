@@ -31,7 +31,7 @@
             android:layout_height="56dp"
             android:id="@+id/groupDetail_header"
             android:elevation="5dp"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorPrimary"
             >
 
             <RelativeLayout
@@ -40,7 +40,7 @@
                 android:orientation="vertical"
                 android:id="@+id/groupDetail_topTitle"
                 android:padding="5dp"
-                android:layout_toStartOf="@id/groupDetail_joinGroupBtn"
+                android:layout_alignParentStart="true"
                 >
 
                 <TextView
@@ -63,18 +63,83 @@
                     />
             </RelativeLayout>
 
+            <!--
             <Button
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:padding="0dp"
+                android:padding="5dp"
                 android:id="@+id/groupDetail_joinGroupBtn"
-                android:text="@string/groupDetail_joinGroupBtnText"
+                android:text="@string/groupDetail_BtnText"
                 android:textColor="#fff"
-                android:textSize="18sp"
-                android:background="@android:color/transparent"
+                android:textSize="15sp"
+                android:background="@drawable/background_header_button"
                 />
+             -->
+
+            <RelativeLayout
+                android:id="@+id/groupDetail_addBtn"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/background_header_button"
+                android:padding="10dp"
+                >
+
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:id="@+id/groupDetail_addIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_person_white"
+                    android:layout_toEndOf="@id/groupDetail_plusSign"
+                    />
+
+                <TextView
+
+                    android:id="@+id/groupDetail_plusSign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/groupDetail_plusSign"
+                    android:textColor="#d0ffffff"
+                    android:textStyle="bold"
+                    android:textSize="22sp"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/groupDetail_removeBtn"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/background_header_button"
+                android:padding="10dp"
+                android:layout_marginEnd="56dp"
+                >
+
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:id="@+id/groupDetail_removeIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_person_white"
+                    android:layout_toEndOf="@id/groupDetail_minusSign"
+                    />
+
+                <TextView
+
+                    android:id="@+id/groupDetail_minusSign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/groupDetail_minusSign"
+                    android:textColor="#d0ffffff"
+                    android:textStyle="bold"
+                    android:textSize="22sp"
+                    />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
@@ -84,7 +149,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/groupDetail_mapFragmentContainer"
-        android:padding="5dp"
         android:orientation="vertical"
         >
 
@@ -93,14 +157,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/groupDetail_groupDescription"
             android:textSize="15sp"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:text="@string/groupDetail_groupMembers"
+            android:padding="5dp"
+            android:elevation="2dp"
+            android:background="#fff"
             />
 
         <ListView
@@ -108,7 +167,6 @@
             android:layout_height="match_parent"
             android:id="@+id/groupDetail_memberList"
             >
-
         </ListView>
 
     </LinearLayout>
