@@ -60,48 +60,20 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/addMonitorsMe"
+        android:id="@+id/editMonitorsMe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textView6"
-        android:layout_alignTop="@+id/addIMonitor"
-        android:text="Add User" />
+        android:layout_below="@+id/monitorsMe"
+        android:text="Edit" />
 
     <Button
-        android:id="@+id/addIMonitor"
+        android:id="@+id/editIMonitor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/removeIMonitor"
         android:layout_alignStart="@+id/IMonitor"
-        android:text="Add User" />
-
-    <Button
-        android:id="@+id/removeMonitorsMe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView6"
-        android:layout_below="@+id/addIMonitor"
-        android:text="Remove User" />
-
-    <Button
-        android:id="@+id/removeIMonitor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/IMonitor"
-        android:layout_marginBottom="15dp"
-        android:text="Remove User" />
-
-    <EditText
-        android:id="@+id/txtInputemail"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/textView6"
-        android:layout_marginBottom="144dp"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textEmailAddress" />
+        android:layout_alignTop="@+id/editMonitorsMe"
+        android:text="Edit" />
 
 
 </RelativeLayout>

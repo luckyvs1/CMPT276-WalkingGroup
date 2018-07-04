@@ -1,5 +1,8 @@
 package olive.walkinggroup.app;
 
+import android.app.FragmentManager;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +20,6 @@ import olive.walkinggroup.dataobjects.User;
 public class MonitorActivity extends AppCompatActivity {
     private Model instance = Model.getInstance();
     private User user = instance.getCurrentUser();
-    private User secUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,65 +29,31 @@ public class MonitorActivity extends AppCompatActivity {
         populateMonitorsMe();
         populateIMonitor();
 
-        createAddMonitorsMeButton();
-        createAddIMonitorButton();
-
-        createRemoveMonitorsMeButton();
-        createRemoveIMonitorButton();
-
+        setupEditMonitorsMeButton();
+        setupIMonitorButton();
     }
 
-    private void createRemoveIMonitorButton() {
-        Button logout = (Button) findViewById(R.id.removeIMonitor);
-        logout.setOnClickListener(new View.OnClickListener() {
+    private void setupIMonitorButton() {
+        Button btn = findViewById(R.id.editIMonitor);
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText userEmail = (EditText) findViewById(R.id.txtInputemail);
-                String email = userEmail.getText().toString();
-
-                user.removeFromMonitorsUsers(secUser);
+                android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+                editMonitorUserFragment dialog = new editMonitorUserFragment();
+                dialog.show(manager, "EditDialog");
                 populateIMonitor();
             }
         });
     }
 
-    private void createAddIMonitorButton() {
-        Button logout = (Button) findViewById(R.id.addIMonitor);
-        logout.setOnClickListener(new View.OnClickListener() {
+    private void setupEditMonitorsMeButton(){
+        Button btn = findViewById(R.id.editMonitorsMe);
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText userEmail = findViewById(R.id.txtInputemail);
-                String email = userEmail.getText().toString();
-
-                user.addToMonitorsUsers(secUser);
-                populateIMonitor();
-            }
-        });
-    }
-
-    private void createRemoveMonitorsMeButton() {
-        Button logout = (Button) findViewById(R.id.removeMonitorsMe);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText userEmail = (EditText) findViewById(R.id.txtInputemail);
-                String email = userEmail.getText().toString();
-
-                user.removeFromMonitoredByUsers(secUser);
-                populateMonitorsMe();
-            }
-        });
-    }
-
-    private void createAddMonitorsMeButton() {
-        Button logout = (Button) findViewById(R.id.addMonitorsMe);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText userEmail = findViewById(R.id.txtInputemail);
-                String email = userEmail.getText().toString();
-
-                user.addToMonitoredByUsers(secUser);
+                android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+                editMonitoredByUserFragment dialog = new editMonitoredByUserFragment();
+                dialog.show(manager, "EditDialog");
                 populateMonitorsMe();
             }
         });
@@ -101,7 +69,6 @@ public class MonitorActivity extends AppCompatActivity {
         //Configure the list view
         ListView list = (ListView) findViewById(R.id.monitorsMe);
         list.setAdapter(adapter);
-
     }
 
     private void populateIMonitor() {
@@ -114,8 +81,5 @@ public class MonitorActivity extends AppCompatActivity {
         //Configure the list view
         ListView list = (ListView) findViewById(R.id.IMonitor);
         list.setAdapter(adapter);
-
     }
-
-
 }

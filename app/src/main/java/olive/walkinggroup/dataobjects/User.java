@@ -118,6 +118,19 @@ public class User extends IdItemBase implements Serializable{
         return descriptions;
     }
 
+    public Integer checkEmailPosInList(String email, List <User> currentList){
+        Integer n = null;
+        for (int i = 0 ; i<currentList.size();i++){
+            User currentUser = currentList.get(i);
+            String userEmail = currentUser.getEmail();
+            if (userEmail.equals(email)){
+                n = new Integer(i);
+                break;
+            }
+        }
+        return n;
+    }
+
     // Groups
     // -------------------------------------------------------------------------------------------
     public List<Group> getMemberOfGroups() {
