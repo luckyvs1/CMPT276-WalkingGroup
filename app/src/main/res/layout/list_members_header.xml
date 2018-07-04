@@ -12,6 +12,7 @@
         android:text="@string/groupDetail_groupMembers"
         android:textColor="#fff"
         android:textSize="17sp"
+        android:textStyle="bold"
         />
 
 </RelativeLayout>

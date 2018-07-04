@@ -30,6 +30,7 @@ package olive.walkinggroup.app;
         import olive.walkinggroup.dataobjects.Group;
         import olive.walkinggroup.dataobjects.Model;
         import olive.walkinggroup.dataobjects.User;
+        import olive.walkinggroup.dataobjects.UserList;
 
 public class GroupDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -39,6 +40,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private Model model;
     private User currentUser;
+    private UserList userList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +57,29 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         group = (Group) getIntent().getSerializableExtra("group");
         memberList = group.getMembers();
 
-        setupJoinGroupBtn();
+        userList = new UserList(this, memberList, currentUser);
+
+        setupAddUserButton();
+        setupRemoveUserButton();
         initializeText();
         initializeMap();
-        populateMemberList();
         setupListHeader();
+        populateMemberList();
     }
 
-    private void setupJoinGroupBtn() {
-        Button btn = findViewById(R.id.groupDetail_joinGroupBtn);
+    private void setupAddUserButton() {
+        RelativeLayout btn = findViewById(R.id.groupDetail_addBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GroupDetailsActivity.this, ListUsersActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setupRemoveUserButton() {
+        RelativeLayout btn = findViewById(R.id.groupDetail_removeBtn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,69 +127,9 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void populateMemberList() {
-        ArrayAdapter<User> adapter = new MemberListAdapter();
+        ArrayAdapter<User> adapter = userList.getAdapter();
         ListView memberList = findViewById(R.id.groupDetail_memberList);
         memberList.setAdapter(adapter);
-    }
-
-    private class MemberListAdapter extends ArrayAdapter<User> {
-        public MemberListAdapter() {
-            super(GroupDetailsActivity.this, R.layout.list_user_item, memberList);
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            View itemView = convertView;
-            if (itemView == null) {
-                itemView = getLayoutInflater().inflate(R.layout.list_user_item, parent, false);
-            }
-            User currentMember = memberList.get(position);
-
-            setupMemberNameView(itemView, currentMember);
-            setupMemberEmailView(itemView, currentMember);
-            displayTag(itemView, currentMember);
-
-            return itemView;
-        }
-    }
-
-    private void setupMemberNameView(View itemView, User currentMember) {
-        TextView nameView = itemView.findViewById(R.id.listMembers_name);
-        String nameText = currentMember.getName();
-        nameView.setText(nameText);
-    }
-
-    private void setupMemberEmailView(View itemView, User currentMember) {
-        TextView emailView = itemView.findViewById(R.id.listMembers_email);
-        String emailText = currentMember.getEmail();
-        emailView.setText(emailText);
-    }
-
-    private void displayTag(View itemView, User currentMember) {
-        // Hide the youTag if currentUser is not currentMember (compared by Id)
-        if (!(Objects.equals(currentUser.getId(), currentMember.getId()))) {
-            RelativeLayout youTag = itemView.findViewById(R.id.listUsers_youTag);
-            youTag.setVisibility(View.GONE);
-        }
-        // Hide the monitorTag if currentMember is not on monitor list of currentUser
-        if (!(isOnMonitorsUserList(currentUser, currentMember))) {
-            RelativeLayout monitorTag = itemView.findViewById(R.id.listUsers_monitorTag);
-            monitorTag.setVisibility(View.GONE);
-        }
-    }
-
-    // Return true if user2 is on List<User> monitorsUsers of user1
-    private boolean isOnMonitorsUserList(User user1, User user2) {
-        List<User> monitorList = user1.getMonitorsUsers();
-        List<Integer> idList = new ArrayList<>();
-
-        for (int i = 0; i < monitorList.size(); i++) {
-            Integer id = monitorList.get(i).getId().intValue();
-            idList.add(id);
-        }
-
-        return (idList.contains(user2.getId().intValue()));
     }
 
     private void setupListHeader() {
