@@ -36,10 +36,6 @@ public class CreateGroupActivity extends AppCompatActivity {
     private LatLng startPoint = null;
     private LatLng endPoint = null;
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
