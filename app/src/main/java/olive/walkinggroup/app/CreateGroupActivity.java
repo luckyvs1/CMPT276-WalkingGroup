@@ -132,7 +132,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                     Group group = new Group(groupName,
                             groupName,
-                            testUser,
+                            user,
                             new double[]{startPoint.latitude, endPoint.latitude},
                             new double[]{startPoint.longitude, endPoint.longitude}
                             , null);
