@@ -125,7 +125,12 @@ public class SelectUserActivity extends AppCompatActivity {
         TextView titleTextView = findViewById(R.id.selectUser_titleText);
 
         headerTextView.setText(headerText);
-        String titleText = "Select user to " + addOrRemove + ":";
+        String titleText;
+        if (userList.size() == 0) {
+            titleText = "No available user to " + addOrRemove + ".";
+        } else {
+            titleText = "Select user to " + addOrRemove + ":";
+        }
         titleTextView.setText(titleText);
     }
 
