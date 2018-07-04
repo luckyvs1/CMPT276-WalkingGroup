@@ -145,18 +145,14 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
             case REQUEST_CODE_ADD:
                 if (resultCode == Activity.RESULT_OK) {
                     User userToAdd = (User) data.getSerializableExtra(SelectUserActivity.SELECT_USER_ACTIVITY_RETURN);
-                    Log.d(TAG, userToAdd.toString());
-
-                    Log.d(TAG, memberList.size() + "");
                     memberList.add(userToAdd);
-                    Log.d(TAG, memberList.size() + "");
-
                     populateMemberList();
 
                     // TODO: Uncomment when testing with server is ready
                     //addNewMemberToServer(userToAdd);
                     break;
                 }
+
             case REQUEST_CODE_REMOVE:
                 if (resultCode == Activity.RESULT_OK) {
                     User userToRemove = (User) data.getSerializableExtra(SelectUserActivity.SELECT_USER_ACTIVITY_RETURN);
@@ -164,14 +160,15 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                     if (index >= 0) {
                         memberList.remove(index);
                     }
-                    Log.d(TAG, userToRemove.toString());
-
                     populateMemberList();
 
                     // TODO: Uncomment when testing with server is ready
                     //removeMemberFromGroup(userToRemove);
                     break;
                 }
+
+            default:
+                break;
         }
     }
 
@@ -192,5 +189,4 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     private void onRemoveMemberResponse(Void returnNothing) {
         Log.d(TAG, "Removed user from group.");
     }
-
 }

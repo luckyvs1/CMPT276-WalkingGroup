@@ -20,6 +20,12 @@ import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.dataobjects.UserListHelper;
 
+/**
+ * Display a listView of User to choose from based on currentUser and group
+ * headerText shows the group name on top.
+ * addOrRemove must be either "add" or "remove"
+ */
+
 public class SelectUserActivity extends AppCompatActivity {
 
     public static final String SELECT_USER_ACTIVITY_RETURN = "SelectUserActivity: return selected User";
@@ -47,8 +53,6 @@ public class SelectUserActivity extends AppCompatActivity {
 
         getDataFromIntent();
         getUserList();
-        userListHelper = new UserListHelper(SelectUserActivity.this, userList, currentUser);
-
         setupCancelButton();
         initializeText();
         populateUserList();
@@ -126,6 +130,7 @@ public class SelectUserActivity extends AppCompatActivity {
     }
 
     private void populateUserList() {
+        userListHelper = new UserListHelper(SelectUserActivity.this, userList, currentUser);
         ArrayAdapter<User> adapter = userListHelper.getAdapter();
         ListView userListView = findViewById(R.id.selectUser_userList);
         userListView.setAdapter(adapter);
