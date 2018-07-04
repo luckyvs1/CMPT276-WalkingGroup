@@ -63,21 +63,6 @@
                     />
             </RelativeLayout>
 
-            <!--
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:padding="5dp"
-                android:id="@+id/groupDetail_joinGroupBtn"
-                android:text="@string/groupDetail_BtnText"
-                android:textColor="#fff"
-                android:textSize="15sp"
-                android:background="@drawable/background_header_button"
-                />
-             -->
-
             <RelativeLayout
                 android:id="@+id/groupDetail_addBtn"
                 android:layout_width="56dp"
@@ -168,6 +153,8 @@
             android:id="@+id/groupDetail_memberList"
             >
         </ListView>
+
+
 
     </LinearLayout>
 
