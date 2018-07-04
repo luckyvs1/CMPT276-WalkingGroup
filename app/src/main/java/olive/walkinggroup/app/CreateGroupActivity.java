@@ -130,7 +130,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                         ) {
 
 
-                    // testUser to be replaced with currentUser object.
+                    // TODO: testUser to be replaced with currentUser object.
                     User testUser = new User();
                     testUser.setId((long) 365);
 

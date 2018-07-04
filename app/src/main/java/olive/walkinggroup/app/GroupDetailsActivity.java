@@ -57,7 +57,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         currentUser = FindGroupsActivity.getBob();
 
         group = (Group) getIntent().getSerializableExtra("group");
-        memberList = group.getMembers();
+        memberList = group.getMemberUsers();
 
         setupAddUserButton();
         setupRemoveUserButton();

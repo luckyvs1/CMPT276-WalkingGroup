@@ -111,8 +111,8 @@ public class Group extends IdItemBase implements Serializable{
 
     public boolean isMember(User user) {
         List<Integer> idList = new ArrayList<>();
-        for (int i = 0; i < members.size(); i++) {
-            idList.add(members.get(i).getId().intValue());
+        for (int i = 0; i < memberUsers.size(); i++) {
+            idList.add(memberUsers.get(i).getId().intValue());
         }
         return idList.contains(user.getId().intValue());
     }
@@ -126,8 +126,8 @@ public class Group extends IdItemBase implements Serializable{
             return -1;
         }
         List<Integer> idList = new ArrayList<>();
-        for (int i = 0; i < members.size(); i++) {
-            idList.add(members.get(i).getId().intValue());
+        for (int i = 0; i < memberUsers.size(); i++) {
+            idList.add(memberUsers.get(i).getId().intValue());
         }
         return idList.indexOf(user.getId().intValue());
     }
