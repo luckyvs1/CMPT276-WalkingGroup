@@ -40,4 +40,5 @@
     <string name="listUsers_monitorTag">Monitor</string>
     <string name="groupDetail_minusSign">\u2013</string>
     <string name="groupDetail_plusSign">+</string>
+    <string name="groupDetail_emptyMessage">(Empty)</string>
 </resources>
