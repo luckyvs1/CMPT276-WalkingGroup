@@ -253,21 +253,21 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
     // Temp function to generate User "Bob"
     public static User getBob() {
         User bob = new User();
-        bob.setName("Bob");
-        bob.setId((long) 2222);
-        bob.setEmail("bob@bobby.com");
+        bob.setName("Chris Wong");
+        bob.setId((long) 870);
+        bob.setEmail("chris@wong.com");
 
         List<User> monitorList = new ArrayList<>();
         User bobJr = new User();
-        bobJr.setName("Bob");
-        bobJr.setEmail("bob.junior@bobby.com");
-        bobJr.setId((long) 2223);
+        bobJr.setName("John Smith");
+        bobJr.setEmail("john@smith.com");
+        bobJr.setId((long) 974);
         monitorList.add(bobJr);
 
         User bobby = new User();
-        bobby.setName("Bobby");
-        bobby.setEmail("bobby@bobby.com");
-        bobby.setId((long) 2224);
+        bobby.setName("Bobby Chan");
+        bobby.setEmail("bobby@chan.com");
+        bobby.setId((long) 975);
         monitorList.add(bobby);
 
         bob.setMonitorsUsers(monitorList);
@@ -291,10 +291,10 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
     }
 
     private void addMarker(Group group){
-        String groupName = group.getGroupName();
+        String groupDescription = group.getGroupDescription();
         LatLng endPoint = group.getEndPoint();
 
-        Marker marker = mMap.addMarker(new MarkerOptions().position(endPoint).title(groupName));
+        Marker marker = mMap.addMarker(new MarkerOptions().position(endPoint).title(groupDescription));
         // Associates a group object with a map Marker
         marker.setTag(group);
     }

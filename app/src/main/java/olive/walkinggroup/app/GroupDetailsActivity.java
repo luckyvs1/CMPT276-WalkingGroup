@@ -35,6 +35,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     private static final int REQUEST_CODE_ADD = 6568;
     private static final int REQUEST_CODE_REMOVE = 8269;
     public static final String TAG = "GroupDetailsActivity";
+    public static final float DEFAULT_ZOOM = 1f;
 
     private GoogleMap mMap;
     private Group group;
@@ -91,13 +92,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private void initializeText() {
         TextView groupName = findViewById(R.id.groupDetail_groupName);
-        TextView groupLeader = findViewById(R.id.groupDetail_groupLeader);
-        TextView groupDescription = findViewById(R.id.groupDetail_groupDescription);
-
-        groupName.setText(group.getGroupName());
-        String leaderText = "Leader: "+ group.getLeader().getName();
-        groupLeader.setText(leaderText);
-        groupDescription.setText(group.getGroupDescription());
+        groupName.setText(group.getGroupDescription());
     }
 
     private void initializeMap() {
@@ -123,7 +118,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                 .position(group.getEndPoint())
                 .title("Destination"));
         // Focus camera on meet-up location
-        moveCamera(group.getStartPoint(), 15f);
+        moveCamera(group.getStartPoint(), DEFAULT_ZOOM);
     }
 
     private void populateMemberList() {
@@ -149,7 +144,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                     populateMemberList();
 
                     // TODO: Uncomment when testing with server is ready
-                    //addNewMemberToServer(userToAdd);
+                    addNewMemberToServer(userToAdd);
                     break;
                 }
 
@@ -163,7 +158,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                     populateMemberList();
 
                     // TODO: Uncomment when testing with server is ready
-                    //removeMemberFromGroup(userToRemove);
+                    removeMemberFromGroup(userToRemove);
                     break;
                 }
 
