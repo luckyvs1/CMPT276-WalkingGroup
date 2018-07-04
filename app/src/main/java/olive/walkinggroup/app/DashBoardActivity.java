@@ -4,29 +4,44 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.model.Dash;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import olive.walkinggroup.proxy.WGServerProxy;
+import retrofit2.Call;
 
 public class DashBoardActivity extends AppCompatActivity {
 
     private WGServerProxy proxy;
+    private Model instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
 
+        setupLogoutButton();
         createToMonitorButton();
         createToFindGroupsButton();
         createToCreateGroupButton();
+
+        instance = Model.getInstance();
+
+        try {
+            Toast.makeText(DashBoardActivity.this, "Welcome " + instance.getCurrentUser().getName() + " " + instance.getCurrentUser().getId(), Toast.LENGTH_LONG).show();
+        } catch (NullPointerException e) {
+            Log.d("DashboardActivity", e.getMessage());
+        }
         createToViewMyGroupsButton();
-        setupLogoutButton();
+
     }
 
     private void createToMonitorButton() {
@@ -82,13 +97,14 @@ public class DashBoardActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String token = null;
+                String nullValue = null;
 
                 // Remove the token from the proxy
-                proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+                instance.updateProxy(nullValue);
 
-                // Remove the token from the shared preferences
-                updateStoredTokenToSharedPreferences(token);
+                // Remove the token and email from the shared preferences
+                storeToSharedPreferences("Token", nullValue);
+                storeToSharedPreferences("UserEmail", nullValue);
 
                 // End the activity
                 finish();
@@ -96,11 +112,11 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    // Remove the login token
-    private void updateStoredTokenToSharedPreferences(String token) {
-        SharedPreferences userPrefs = getSharedPreferences("token", MODE_PRIVATE);
+    // Remove the login token and user email
+    private void storeToSharedPreferences(String keyName, String value) {
+        SharedPreferences userPrefs = getSharedPreferences("userValues", MODE_PRIVATE);
         SharedPreferences.Editor editor = userPrefs.edit();
-        editor.putString("TokenValue",token);
+        editor.putString(keyName,value);
         editor.commit();
     }
 
