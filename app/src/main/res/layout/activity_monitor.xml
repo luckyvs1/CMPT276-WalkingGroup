@@ -22,7 +22,7 @@
     <ListView
         android:id="@+id/monitorsMe"
         android:layout_width="120dp"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/textView6"
         android:layout_marginTop="105dp" />
@@ -30,7 +30,7 @@
     <ListView
         android:id="@+id/IMonitor"
         android:layout_width="120dp"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/monitorsMe"
         android:layout_marginEnd="50dp" />
@@ -58,6 +58,22 @@
         android:textColor="@android:color/black"
         android:textSize="15sp"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/editMonitorsMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView6"
+        android:layout_below="@+id/monitorsMe"
+        android:text="Edit" />
+
+    <Button
+        android:id="@+id/editIMonitor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/IMonitor"
+        android:layout_below="@+id/IMonitor"
+        android:text="Edit" />
 
 
 </RelativeLayout>
