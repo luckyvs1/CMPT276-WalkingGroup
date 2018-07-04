@@ -19,7 +19,7 @@ import retrofit2.Call;
 
 public class LoginActivity extends AppCompatActivity {
 
-
+    // Instantiating variables
     private Model instance;
     private User user;
 
