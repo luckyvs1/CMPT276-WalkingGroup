@@ -129,15 +129,20 @@ public class CreateGroupActivity extends AppCompatActivity {
                         checkLocationInput(endPoint)
                         ) {
 
-                    double[] latArray = new double[]{startPoint.latitude, endPoint.latitude};
-                    double[] lngArray = new double[]{startPoint.longitude, endPoint.longitude};
 
-                    List<User> members = new ArrayList<>();
-                    members.add(user);
+                    // testUser to be replaced with currentUser object.
+                    User testUser = new User();
+                    testUser.setId((long) 365);
 
-                    Group group = new Group(groupName, groupName, user, latArray, lngArray, members);
+                    Group group = new Group(groupName,
+                            groupName,
+                            testUser,
+                            new double[]{startPoint.latitude, endPoint.latitude},
+                            new double[]{startPoint.longitude, endPoint.longitude}
+                            , null);
+
+                    Log.i("MyApp", "" + group.toString());
                     pushGroupObjectToServer(group);
-                    // TODO: push updated User object (add group to leadsGroups) and Group object to server.
                     finish();
                 }
             }

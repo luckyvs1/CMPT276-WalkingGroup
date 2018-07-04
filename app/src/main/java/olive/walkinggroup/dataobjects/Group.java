@@ -20,22 +20,22 @@ public class Group extends IdItemBase implements Serializable{
     private String groupName;
     private String groupDescription;
     private User leader;
-    private double[] latArray;
-    private double[] lngArray;
-    private List<User> members;
+    private double[] routeLatArray;
+    private double[] routeLngArray;
+    private List<User> memberUsers = new ArrayList<>();
 
     public Group(String groupName,
                  String groupDescription,
                  User leader,
-                 double[] latArray,
-                 double[] lngArray,
-                 List<User> members) {
+                 double[] routeLatArray,
+                 double[] routeLngArray,
+                 List<User> memberUsers) {
         this.groupName = groupName;
         this.groupDescription = groupDescription;
         this.leader = leader;
-        this.latArray = latArray;
-        this.lngArray = lngArray;
-        this.members = members;
+        this.routeLatArray = routeLatArray;
+        this.routeLngArray = routeLngArray;
+        this.memberUsers = memberUsers;
     }
 
     public Group() {
@@ -66,52 +66,56 @@ public class Group extends IdItemBase implements Serializable{
         this.leader = leader;
     }
 
-    public double[] getLatArray() {
-        return latArray;
+    public double[] getRouteLatArray() {
+        return routeLatArray;
     }
 
-    public void setLatArray(double[] latArray) {
-        this.latArray = latArray;
+    public void setRouteLatArray(double[] routeLngArray) {
+        this.routeLatArray = routeLngArray;
     }
 
-    public double[] getLngArray() {
-        return lngArray;
+    public double[] getRouteLngArray() {
+        return routeLngArray;
     }
 
-    public void setLngArray(double[] lngArray) {
-        this.lngArray = lngArray;
+    public void setRouteLngArray(double[] routeLngArray) {
+        this.routeLngArray = routeLngArray;
     }
 
-    public List<User> getMembers() {
-        return members;
+    public List<User> getMemberUsers() {
+        return memberUsers;
     }
 
-    public void setMembers(List<User> members) {
-        this.members = members;
+    public void setMemberUsers(List<User> memberUsers) {
+        this.memberUsers = memberUsers;
     }
 
     public LatLng getStartPoint() {
-        return new LatLng(latArray[0], lngArray[0]);
+        return new LatLng(routeLatArray[0], routeLngArray[0]);
     }
 
     public LatLng getEndPoint() {
-        return new LatLng(latArray[1], lngArray[1]);
+        return new LatLng(routeLatArray[1], routeLngArray[1]);
     }
 
     public void setStartPoint(LatLng start) {
-        latArray[0] = start.latitude;
-        lngArray[0] = start.longitude;
+        routeLatArray[0] = start.latitude;
+        routeLngArray[0] = start.longitude;
     }
 
     public void setEndPoint(LatLng end) {
-        latArray[1] = end.latitude;
-        lngArray[1] = end.longitude;
+        routeLatArray[1] = end.latitude;
+        routeLngArray[1] = end.longitude;
     }
 
     @Override
     public String toString() {
         return "Group{" +
                 "groupDescription='" + groupDescription + '\'' +
+                " ,routeLatArray=" + Arrays.toString(routeLatArray) +
+                " ,routeLngArray=" + Arrays.toString(routeLngArray) +
+                " ,leader=" + leader +
+                " ,memberUsers=" + memberUsers +
                 '}';
     }
 }
