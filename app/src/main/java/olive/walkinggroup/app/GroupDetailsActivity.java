@@ -27,6 +27,8 @@ package olive.walkinggroup.app;
         import olive.walkinggroup.dataobjects.Model;
         import olive.walkinggroup.dataobjects.User;
         import olive.walkinggroup.dataobjects.UserListHelper;
+        import olive.walkinggroup.proxy.ProxyBuilder;
+        import retrofit2.Call;
 
 public class GroupDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -56,8 +58,6 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
         group = (Group) getIntent().getSerializableExtra("group");
         memberList = group.getMembers();
-
-        userListHelper = new UserListHelper(this, memberList, currentUser);
 
         setupAddUserButton();
         setupRemoveUserButton();
@@ -127,6 +127,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void populateMemberList() {
+        userListHelper = new UserListHelper(this, memberList, currentUser);
         ArrayAdapter<User> adapter = userListHelper.getAdapter();
         ListView memberList = findViewById(R.id.groupDetail_memberList);
         memberList.setAdapter(adapter);
@@ -150,11 +151,10 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                     memberList.add(userToAdd);
                     Log.d(TAG, memberList.size() + "");
 
-                    userListHelper = new UserListHelper(this, memberList, currentUser);
                     populateMemberList();
 
-                    // TODO: Update server with new Group Member list
-
+                    // TODO: Uncomment when testing with server is ready
+                    //addNewMemberToServer(userToAdd);
                     break;
                 }
             case REQUEST_CODE_REMOVE:
@@ -166,14 +166,31 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                     }
                     Log.d(TAG, userToRemove.toString());
 
-
-                    userListHelper = new UserListHelper(this, memberList, currentUser);
                     populateMemberList();
 
-                    // TODO: Update server with new Group Member list
-
+                    // TODO: Uncomment when testing with server is ready
+                    //removeMemberFromGroup(userToRemove);
                     break;
                 }
         }
     }
+
+    private void addNewMemberToServer(User user) {
+        Call<List<User>> caller = model.getProxy().addGroupMember(group.getId(), user);
+        ProxyBuilder.callProxy(this, caller, listOfMembers -> onAddNewMemberResponse(listOfMembers));
+    }
+
+    private void onAddNewMemberResponse(List<User> listOfMembers) {
+        Log.d(TAG, "Added user to group. New group member list:\n\n\n" + listOfMembers.toString());
+    }
+
+    private void removeMemberFromGroup(User user) {
+        Call<Void> caller = model.getProxy().removeGroupMember(group.getId(), user.getId());
+        ProxyBuilder.callProxy(this, caller, returnNothing -> onRemoveMemberResponse(returnNothing));
+    }
+
+    private void onRemoveMemberResponse(Void returnNothing) {
+        Log.d(TAG, "Removed user from group.");
+    }
+
 }
