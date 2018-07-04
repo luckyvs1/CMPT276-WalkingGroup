@@ -71,9 +71,8 @@ public class User extends IdItemBase implements Serializable{
     public List<User> getMonitoredByUsers() {
         return monitoredByUsers;
     }
-    public void setMonitoredByUsers(List<User> monitoredByUsers) {
-        this.monitoredByUsers = monitoredByUsers;
-    }
+
+    public void setMonitoredByUsers(List<User> monitoredByUsers) { this.monitoredByUsers = monitoredByUsers; }
 
     public void addToMonitoredByUsers(User user) {
         this.monitoredByUsers.add(user);
@@ -97,6 +96,26 @@ public class User extends IdItemBase implements Serializable{
 
     public void removeFromMonitorsUsers(User user) {
         this.monitorsUsers.remove(user);
+    }
+
+    public String[] getMonitorsUsersDescriptions() {
+        int size =monitorsUsers.size();
+        String[] descriptions = new String[(size)];
+        for (int i = 0; i < size; i++) {
+            User user = monitorsUsers.get(i);
+            descriptions[i] = "Name: "+ user.getName() + "\n" + "Email: "+ user.getEmail();
+        }
+        return descriptions;
+    }
+
+    public String[] getMonitoredByUsersDescriptions() {
+        int size = monitoredByUsers.size();
+        String[] descriptions = new String[(size)];
+        for (int i = 0; i < size; i++) {
+            User user = monitoredByUsers.get(i);
+            descriptions[i] = "Name: "+ user.getName() + "\n" + "Email: "+ user.getEmail();
+        }
+        return descriptions;
     }
 
     // Groups

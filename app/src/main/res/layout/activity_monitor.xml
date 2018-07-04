@@ -92,34 +92,16 @@
         android:layout_marginBottom="15dp"
         android:text="Remove User" />
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/txtMonitorsMe"
-        android:layout_width="150dp"
+    <EditText
+        android:id="@+id/txtInputemail"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/textView6"
-        android:layout_marginBottom="135dp">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/txtMonitorsMe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="User email" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/editIMonitor"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/IMonitor"
-        android:layout_alignTop="@+id/txtMonitorsMe">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/txtIMonitor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="User email" />
-    </android.support.design.widget.TextInputLayout>
+        android:layout_marginBottom="144dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress" />
 
 
 </RelativeLayout>

@@ -17,6 +17,7 @@ import olive.walkinggroup.dataobjects.User;
 public class MonitorActivity extends AppCompatActivity {
     private Model instance = Model.getInstance();
     private User user = instance.getCurrentUser();
+    private User secUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +28,9 @@ public class MonitorActivity extends AppCompatActivity {
         populateIMonitor();
 
         createAddMonitorsMeButton();
-        createRemoveMonitorsMeButton();
         createAddIMonitorButton();
+
+        createRemoveMonitorsMeButton();
         createRemoveIMonitorButton();
 
     }
@@ -38,8 +40,11 @@ public class MonitorActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText userEmail = (EditText) findViewById(R.id.txtIMonitor);
+                EditText userEmail = (EditText) findViewById(R.id.txtInputemail);
+                String email = userEmail.getText().toString();
 
+                user.removeFromMonitorsUsers(secUser);
+                populateIMonitor();
             }
         });
     }
@@ -49,8 +54,11 @@ public class MonitorActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText userEmail = (EditText) findViewById(R.id.txtIMonitor);
+                EditText userEmail = findViewById(R.id.txtInputemail);
+                String email = userEmail.getText().toString();
 
+                user.addToMonitorsUsers(secUser);
+                populateIMonitor();
             }
         });
     }
@@ -60,8 +68,11 @@ public class MonitorActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText userEmail = (EditText) findViewById(R.id.txtMonitorsMe);
+                EditText userEmail = (EditText) findViewById(R.id.txtInputemail);
+                String email = userEmail.getText().toString();
 
+                user.removeFromMonitoredByUsers(secUser);
+                populateMonitorsMe();
             }
         });
     }
@@ -71,16 +82,18 @@ public class MonitorActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText userEmail = (EditText) findViewById(R.id.txtMonitorsMe);
+                EditText userEmail = findViewById(R.id.txtInputemail);
+                String email = userEmail.getText().toString();
 
+                user.addToMonitoredByUsers(secUser);
+                populateMonitorsMe();
             }
         });
     }
 
     private void populateMonitorsMe() {
         //Create list
-        List<User> userList = user.getMonitoredByUsers();
-        String [] stringList = userList.toArray(new String[userList.size()]);
+        String [] stringList = user.getMonitoredByUsersDescriptions();
 
         //Build Adaptor
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.item, stringList);
@@ -93,8 +106,7 @@ public class MonitorActivity extends AppCompatActivity {
 
     private void populateIMonitor() {
         //Create list
-        List<User> userList = user.getMonitorsUsers();
-        String [] stringList = userList.toArray(new String[userList.size()]);
+        String [] stringList = user.getMonitorsUsersDescriptions();
 
         //Build Adaptor
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.item, stringList);
