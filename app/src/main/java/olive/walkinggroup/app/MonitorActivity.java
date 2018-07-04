@@ -33,10 +33,6 @@ public class MonitorActivity extends AppCompatActivity {
         setupIMonitorButton();
     }
 
-    public void postSelection(){
-
-    }
-
     private void setupIMonitorButton() {
         Button btn = findViewById(R.id.editIMonitor);
         btn.setOnClickListener(new View.OnClickListener() {
