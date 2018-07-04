@@ -12,8 +12,13 @@ import java.util.Objects;
 /**
  * Store information about the walking groups.
  *
- * WARNING: INCOMPLETE! Server returns more information than this.
- * This is just to be a placeholder and inspire you how to do it.
+ * Information includes a group name and its description
+ * and array of latitudes and longitudes that represents its walking route.
+ * The array of latitudes and longitudes currently stores only the group's start and end points.
+ *
+ * Operations include checking if a user is a member of the group, or a leader of the group
+ * and returning a user's position in the group's member list.  The Group class also allows
+ * setting a start and end point.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Group extends IdItemBase implements Serializable{
