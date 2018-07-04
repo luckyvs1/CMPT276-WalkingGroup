@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    >
+
+    <TextView
+        android:id="@+id/listMembers_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:textColor="#000"
+        android:textSize="17sp"
+        android:text="@string/sampleText"
+        />
+
+    <RelativeLayout
+        android:id="@+id/listUsers_monitorTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_user_list_item_monitor_tag"
+        android:layout_alignParentEnd="true"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/listUsers_monitorTag"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="#fff"
+            android:layout_centerInParent="true"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/listUsers_youTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_user_list_item_you_tag"
+        android:layout_alignParentEnd="true"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/listUsers_youTag"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="#fff"
+            android:layout_centerInParent="true"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/listMembers_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/listMembers_name"
+        android:text="@string/sampleText"
+        />
+
+</RelativeLayout>
