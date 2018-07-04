@@ -1,8 +1,10 @@
 package olive.walkinggroup.app;
 
+        import android.app.Activity;
         import android.content.Intent;
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
+        import android.util.Log;
         import android.view.View;
         import android.widget.ArrayAdapter;
         import android.widget.ListView;
@@ -27,6 +29,10 @@ package olive.walkinggroup.app;
         import olive.walkinggroup.dataobjects.UserListHelper;
 
 public class GroupDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    private static final int REQUEST_CODE_ADD = 6568;
+    private static final int REQUEST_CODE_REMOVE = 8269;
+    public static final String TAG = "GroupDetailsActivity";
 
     private GoogleMap mMap;
     private Group group;
@@ -67,7 +73,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onClick(View v) {
                 Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, currentUser, group.getGroupName(), "add");
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_ADD);
             }
         });
     }
@@ -78,7 +84,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onClick(View v) {
                 Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, currentUser, group.getGroupName(), "remove");
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_REMOVE);
             }
         });
     }
@@ -130,5 +136,44 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         ListView memberList = findViewById(R.id.groupDetail_memberList);
         View headerView = getLayoutInflater().inflate(R.layout.list_members_header, memberList, false);
         memberList.addHeaderView(headerView);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_ADD:
+                if (resultCode == Activity.RESULT_OK) {
+                    User userToAdd = (User) data.getSerializableExtra(SelectUserActivity.SELECT_USER_ACTIVITY_RETURN);
+                    Log.d(TAG, userToAdd.toString());
+
+                    Log.d(TAG, memberList.size() + "");
+                    memberList.add(userToAdd);
+                    Log.d(TAG, memberList.size() + "");
+
+                    userListHelper = new UserListHelper(this, memberList, currentUser);
+                    populateMemberList();
+
+                    // TODO: Update server with new Group Member list
+
+                    break;
+                }
+            case REQUEST_CODE_REMOVE:
+                if (resultCode == Activity.RESULT_OK) {
+                    User userToRemove = (User) data.getSerializableExtra(SelectUserActivity.SELECT_USER_ACTIVITY_RETURN);
+                    int index = group.getMemberListIndex(userToRemove);
+                    if (index >= 0) {
+                        memberList.remove(index);
+                    }
+                    Log.d(TAG, userToRemove.toString());
+
+
+                    userListHelper = new UserListHelper(this, memberList, currentUser);
+                    populateMemberList();
+
+                    // TODO: Update server with new Group Member list
+
+                    break;
+                }
+        }
     }
 }

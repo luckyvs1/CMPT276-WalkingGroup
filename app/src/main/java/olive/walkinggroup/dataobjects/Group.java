@@ -121,6 +121,17 @@ public class Group extends IdItemBase implements Serializable{
         return (Objects.equals(leader.getId(), user.getId()));
     }
 
+    public int getMemberListIndex(User user) {
+        if (!(isMember(user))) {
+            return -1;
+        }
+        List<Integer> idList = new ArrayList<>();
+        for (int i = 0; i < members.size(); i++) {
+            idList.add(members.get(i).getId().intValue());
+        }
+        return idList.indexOf(user.getId().intValue());
+    }
+
     @Override
     public String toString() {
         return "Group{" +

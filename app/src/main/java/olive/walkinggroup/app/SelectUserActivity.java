@@ -1,10 +1,12 @@
 package olive.walkinggroup.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -20,6 +22,7 @@ import olive.walkinggroup.dataobjects.UserListHelper;
 
 public class SelectUserActivity extends AppCompatActivity {
 
+    public static final String SELECT_USER_ACTIVITY_RETURN = "SelectUserActivity: return selected User";
     private Group group;
     private User currentUser;
     private List<User> userList;
@@ -49,6 +52,7 @@ public class SelectUserActivity extends AppCompatActivity {
         setupCancelButton();
         initializeText();
         populateUserList();
+        registerItemOnClick();
     }
 
     private void getDataFromIntent() {
@@ -87,7 +91,7 @@ public class SelectUserActivity extends AppCompatActivity {
                     }
                     for (int i = 0; i < currentUser.getMonitorsUsers().size(); i++) {
                         User user = currentUser.getMonitorsUsers().get(i);
-                        if (!(group.isMember(user))) {
+                        if (group.isMember(user)) {
                             removableUsers.add(user);
                         }
                     }
@@ -125,5 +129,21 @@ public class SelectUserActivity extends AppCompatActivity {
         ArrayAdapter<User> adapter = userListHelper.getAdapter();
         ListView userListView = findViewById(R.id.selectUser_userList);
         userListView.setAdapter(adapter);
+    }
+
+    private void registerItemOnClick() {
+        ListView userListView = findViewById(R.id.selectUser_userList);
+        userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                User userClicked = userList.get(position);
+
+                // Pass back userClicked to GroupDetailsActivity
+                Intent intent = new Intent();
+                intent.putExtra(SELECT_USER_ACTIVITY_RETURN, userClicked);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 }
