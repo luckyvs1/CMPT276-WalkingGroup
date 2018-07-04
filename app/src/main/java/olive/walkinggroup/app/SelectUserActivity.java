@@ -88,7 +88,7 @@ public class SelectUserActivity extends AppCompatActivity {
             case "remove":
                 List<User> removableUsers = new ArrayList<>();
                 if (group.isLeader(currentUser)) {
-                    removableUsers = group.getMembers();
+                    removableUsers = group.getMemberUsers();
                 } else {
                     if (group.isMember(currentUser)) {
                         removableUsers.add(currentUser);

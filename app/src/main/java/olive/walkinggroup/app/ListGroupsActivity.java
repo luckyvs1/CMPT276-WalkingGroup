@@ -134,8 +134,8 @@ public class ListGroupsActivity extends AppCompatActivity {
         TextView numMembersView = itemView.findViewById(R.id.groupListItem_numMembers);
         int numMembers = 0;
 
-        if (currentGroup.getMembers() != null) {
-            numMembers = currentGroup.getMembers().size();
+        if (currentGroup.getMemberUsers() != null) {
+            numMembers = currentGroup.getMemberUsers().size();
         }
         String numMembersText = "" + numMembers;
         numMembersView.setText(numMembersText);
