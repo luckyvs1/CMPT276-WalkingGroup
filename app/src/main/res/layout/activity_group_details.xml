@@ -31,7 +31,7 @@
             android:layout_height="56dp"
             android:id="@+id/groupDetail_header"
             android:elevation="5dp"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorPrimary"
             >
 
             <RelativeLayout
@@ -84,7 +84,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/groupDetail_mapFragmentContainer"
-        android:padding="5dp"
         android:orientation="vertical"
         >
 
@@ -93,14 +92,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/groupDetail_groupDescription"
             android:textSize="15sp"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:text="@string/groupDetail_groupMembers"
+            android:padding="5dp"
+            android:elevation="2dp"
+            android:background="#fff"
             />
 
         <ListView
@@ -108,7 +102,6 @@
             android:layout_height="match_parent"
             android:id="@+id/groupDetail_memberList"
             >
-
         </ListView>
 
     </LinearLayout>

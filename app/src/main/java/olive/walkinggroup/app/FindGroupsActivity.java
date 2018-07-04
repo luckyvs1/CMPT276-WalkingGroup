@@ -182,28 +182,64 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         // Walks from residence to fitness centre.
         User user1 = new User();
         user1.setName("Jim");
+        user1.setId((long) 1111);
+        List<User> memberList1 = new ArrayList<>();
+        memberList1.add(user1);
+
         Group group1 = new Group("Gym Group",
                 "Work out together!",
                 user1,
                 new double[]{49.280628, 49.279460},
                 new double[]{-122.928645, -122.922323},
-                null);
+                getTestMemberList());
 
         // Walks from AQ to Brian's office
         User user2 = new User();
-        user2.setName("Chris");
+        user2.setName("Bob");
+        user2.setId((long) 2222);
+        List<User> memberList2 = new ArrayList<>();
+        memberList2.add(user2);
+        memberList2.add(user1);
         Group group2 = new Group("Finding Brian",
-                "Ask all your questions in Brian's office hours.",
+                "Ask all your questions in Brian's office hours.\nWe have a lot of questions to ask, so this description will also be very lengthy! (Max 3 lines shown here) \n But more can be seen in GroupDetailsActivity",
                 user2,
                 new double[] {49.278495, 49.276756},
                 new double[] {-122.915911, -122.914109},
-                null);
+                memberList2);
 
         List<Group> groupList = new ArrayList<>();
         groupList.add(group1);
         groupList.add(group2);
 
         return groupList;
+    }
+
+    private List<User> getTestMemberList() {
+        List<User> list = new ArrayList<>();
+
+        User user1 = new User();
+        user1.setName("Adam");
+        user1.setEmail("adam@email.com");
+        list.add(user1);
+
+        User user2 = new User();
+        user2.setName("Bob");
+        user2.setId((long) 2222);
+        user2.setEmail("bob@bobby.com");
+        list.add(user2);
+
+        User user3 = new User();
+        user3.setName("Bob");
+        user3.setEmail("bob.junior@bobby.com");
+        user3.setId((long) 2223);
+        list.add(user3);
+
+        User user4 = new User();
+        user4.setName("Chris");
+        user4.setEmail("chris@example.com");
+        list.add(user4);
+
+        return list;
     }
 
     private void getGroupListFromServer() {
