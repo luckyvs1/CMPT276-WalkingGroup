@@ -36,10 +36,6 @@ public class CreateGroupActivity extends AppCompatActivity {
     private LatLng startPoint = null;
     private LatLng endPoint = null;
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,7 +128,9 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                     // TODO: testUser to be replaced with currentUser object.
                     User testUser = new User();
-                    testUser.setId((long) 365);
+                    //testUser.setId((long) 365);
+
+                    testUser.setId(user.getId());
 
                     Group group = new Group(groupName,
                             groupName,

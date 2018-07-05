@@ -7,9 +7,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.Dash;
+
+import org.w3c.dom.Text;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
@@ -35,11 +39,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
         instance = Model.getInstance();
 
-        try {
-            Toast.makeText(DashBoardActivity.this, "Welcome " + instance.getCurrentUser().getName() + " " + instance.getCurrentUser().getId(), Toast.LENGTH_LONG).show();
-        } catch (NullPointerException e) {
-            Log.d("DashboardActivity", e.getMessage());
-        }
         createToViewMyGroupsButton();
 
     }

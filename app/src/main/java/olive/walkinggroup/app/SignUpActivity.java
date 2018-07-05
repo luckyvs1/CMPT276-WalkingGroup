@@ -96,10 +96,12 @@ public class SignUpActivity extends AppCompatActivity {
         instance.updateProxy(token);
 
         String userEmail = instance.getCurrentUser().getEmail();
+        String userPassword = currentUser.getPassword();
 
         //Store token and email using shared preferences
         storeToSharedPreferences("Token", token);
         storeToSharedPreferences("UserEmail", userEmail);
+        storeToSharedPreferences("UserPassword", userPassword);
     }
 
     // Store the resource to shared preferences

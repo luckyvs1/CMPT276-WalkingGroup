@@ -109,6 +109,7 @@ public class User extends IdItemBase implements Serializable{
         this.monitorsUsers.remove(user);
     }
 
+    @JsonIgnoreProperties
     public String[] getMonitorsUsersDescriptions() {
         int size =monitorsUsers.size();
         String[] descriptions = new String[(size)];
@@ -119,6 +120,7 @@ public class User extends IdItemBase implements Serializable{
         return descriptions;
     }
 
+    @JsonIgnoreProperties
     public String[] getMonitoredByUsersDescriptions() {
         int size = monitoredByUsers.size();
         String[] descriptions = new String[(size)];
@@ -129,6 +131,7 @@ public class User extends IdItemBase implements Serializable{
         return descriptions;
     }
 
+    @JsonIgnoreProperties
     public Integer checkEmailPosInList(String email, List <User> currentList){
         Integer n = null;
         for (int i = 0 ; i<currentList.size();i++){

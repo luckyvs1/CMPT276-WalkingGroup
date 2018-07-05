@@ -19,7 +19,7 @@ import retrofit2.Call;
 
 public class editMonitoredByUserFragment extends AppCompatDialogFragment {
     private Model instance = Model.getInstance();
-    private User currentUser = MonitorActivity.getDummy();
+    private User currentUser = instance.getCurrentUser();
 
     @Override
 

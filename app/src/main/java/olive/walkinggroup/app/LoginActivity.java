@@ -14,7 +14,6 @@ import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
-import olive.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
 public class LoginActivity extends AppCompatActivity {
@@ -40,11 +39,31 @@ public class LoginActivity extends AppCompatActivity {
 
     // By pass login screen if the user already has a token
     private void checkUserToken() {
-        String token = getTokenToSharedPreferences();
+        String token = getFromSharedPreferences("Token");
+        String userEmail = getFromSharedPreferences("UserEmail");
+        String userPassword = getFromSharedPreferences("UserPassword");
         if(token != null){
+            user.setPassword(userPassword);
+            user.setEmail(userEmail);
             instance.updateProxy(token);
-            goToDashBoardActivity();
+            updateCurrentUser(userEmail);
+        }
+    }
 
+    private void updateCurrentUser(String userEmail) {
+
+        Call<User> caller = instance.getProxy().getUserByEmail(userEmail);
+        ProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> getUserByEmailResponse(returnedUser));
+    }
+
+    private void getUserByEmailResponse(User userFromEmail){
+        instance.setCurrentUser(userFromEmail);
+
+        // If the current user is not null
+        if(instance.getCurrentUser().getId() != null) {
+            goToDashBoardActivity();
+        } else {
+            Toast.makeText(LoginActivity.this, "Error getting user details, please re-login in", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -58,74 +77,22 @@ public class LoginActivity extends AppCompatActivity {
                 // Set the user details
                 setUserDetails();
 
-                // Register for token received:
-                ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
-
-                  // Make call
-                User newUser = new User();
-                newUser.setEmail("john@smith.com");
-                newUser.setPassword("johnsmith");
-
-                Call<Void> caller = instance.getProxy().login(user);
-                ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> response(returnedNothing));
-
+                // Make call
+                loginUserGetToken();
             }
         });
     }
 
-    // Handle the token by generating a new Proxy which is encoded with it.
-    private void onReceiveToken(String token) {
-        // Replace the current proxy with one that uses the token!
-        Log.w("User logged in", "   --> NOW HAVE TOKEN: " + token);
-        instance.updateProxy(token);
-
-        //Store token using shared preferences
-        storeTokenToSharedPreferences(token);
-    }
-
-    // Get the user token
-    private String getTokenToSharedPreferences() {
-        SharedPreferences userPrefs = getSharedPreferences("token", MODE_PRIVATE);
-        String extractedToken = userPrefs.getString("TokenValue", null);
-        return extractedToken;
-    }
-
-    // Store the login token
-    private void storeTokenToSharedPreferences(String token) {
-        SharedPreferences userPrefs = getSharedPreferences("token", MODE_PRIVATE);
-        SharedPreferences.Editor editor = userPrefs.edit();
-        editor.putString("TokenValue",token);
-        editor.commit();
-    }
-
-    // Login actually completes by calling this; nothing to do as it was all done
-    // when we got the token.
-    private void response(Void returnedNothing) {
-        notifyUserViaLogAndToast("Server replied to login request (no content was expected).");
-
-        instance.setCurrentUser(user);
-
-        // Navigate user to the next activity
-        goToDashBoardActivity();
-
-        // Clear the fields
-        clearInputFields();
-    }
-
-    private void clearInputFields() {
-        setUserInput(R.id.txtGetPassword);
-        setUserInput(R.id.txtGetEmail);
+    // Get the resource from shared preferences
+    private String getFromSharedPreferences(String keyName) {
+        SharedPreferences userPrefs = getSharedPreferences("userValues", MODE_PRIVATE);
+        String extractedResource = userPrefs.getString(keyName, null);
+        return extractedResource;
     }
 
     private void setUserInput(int userInputResourceID) {
         EditText userText = (EditText) findViewById(userInputResourceID);
         userText.setText("");
-    }
-
-    private void goToDashBoardActivity() {
-        // Go to the dashboard activity
-        Intent intent = new Intent(LoginActivity.this, DashBoardActivity.class);
-        startActivity(intent);
     }
 
     // Put message up in toast and logcat
@@ -160,5 +127,52 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    // Login Functionality
+    // -------------------------------------------------------------------------------------------
+    private void loginUserGetToken() {
+        // Register for token received:
+        ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
+
+        // Make call
+        Call<Void> caller = instance.getProxy().login(user);
+        ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> loginUserResponse(returnedNothing));
+    }
+
+    // Login actually completes by calling this; nothing to do as it was all done
+    // when we got the token.
+    // Response for call back from the login user
+    private void loginUserResponse(Void returnedNothing) {
+        // Navigate user to the next activity
+        updateCurrentUser(instance.getCurrentUser().getEmail());
+    }
+
+    // Handle the token by generating a new Proxy which is encoded with it.
+    private void onReceiveToken(String token) {
+        // Replace the current proxy with one that uses the token!
+        instance.updateProxy(token);
+        instance.setCurrentUser(user);
+
+        String userEmail = instance.getCurrentUser().getEmail();
+
+        //Store token and email using shared preferences
+        storeToSharedPreferences("Token", token);
+        storeToSharedPreferences("UserEmail", userEmail);
+    }
+
+    // Store the resource to shared preferences
+    private void storeToSharedPreferences(String keyName, String value) {
+        SharedPreferences userPrefs = getSharedPreferences("userValues", MODE_PRIVATE);
+        SharedPreferences.Editor editor = userPrefs.edit();
+        editor.putString(keyName,value);
+        editor.commit();
+    }
+
+    private void goToDashBoardActivity() {
+        // Android back button must go to the loginActivity not signUpActivity
+        Intent intent = new Intent(LoginActivity.this, DashBoardActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

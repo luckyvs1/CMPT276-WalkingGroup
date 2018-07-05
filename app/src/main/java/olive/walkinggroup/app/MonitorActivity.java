@@ -24,7 +24,7 @@ import retrofit2.Call;
 
 public class MonitorActivity extends AppCompatActivity {
     private Model instance = Model.getInstance();
-    private User user = this.getDummy();
+    private User user = instance.getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
