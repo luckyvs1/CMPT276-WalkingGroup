@@ -1,25 +1,13 @@
 package olive.walkinggroup.app;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatDialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -62,14 +50,6 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
             }
         };
 
-        DialogInterface.OnDismissListener listner = new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                ((MonitorActivity)getActivity()).verifyMonitoredUsersList();
-            }
-        };
-
-
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setNegativeButton("Remove User",listener_remove)
@@ -91,11 +71,11 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
         newUser.setId(user.getId());
 
         Call<List<User>> caller = instance.getProxy().addToMonitoredByUsers(currentUser.getId(),newUser);
-        ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,listOfUsers -> refreshMonitorActivityAfterAdd(listOfUsers));
+        ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,listOfUsers -> setNewList(listOfUsers));
     }
 
 
-    private void refreshMonitorActivityAfterAdd(List<User> list){
+    private void setNewList(List<User> list){
         currentUser.setMonitoredByUsers(list);
     }
     // New Add Code Ends
@@ -111,9 +91,9 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
         currentUser.removeFromMonitoredByUsers(user);
 
         Call<Void> caller = instance.getProxy().removeFromMonitoredByUsers(currentUser.getId(),user.getId());
-        ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,returnNothing -> refreshMonitorActivityAfterRemove(returnNothing));
+        ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,returnNothing -> afterRemove(returnNothing));
     }
 
-    private void refreshMonitorActivityAfterRemove(Void returnNothing){}
+    private void afterRemove(Void returnNothing){}
     //New Remove Code Ends
 }
