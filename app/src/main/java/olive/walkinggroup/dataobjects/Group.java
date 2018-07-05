@@ -123,6 +123,9 @@ public class Group extends IdItemBase implements Serializable{
     }
 
     public boolean isLeader(User user) {
+        if (leader == null) {
+            return false;
+        }
         return (Objects.equals(leader.getId(), user.getId()));
     }
 

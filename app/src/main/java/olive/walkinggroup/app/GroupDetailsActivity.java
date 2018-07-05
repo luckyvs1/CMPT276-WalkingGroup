@@ -20,7 +20,9 @@ package olive.walkinggroup.app;
         import com.google.android.gms.maps.model.Marker;
         import com.google.android.gms.maps.model.MarkerOptions;
 
+        import java.util.ArrayList;
         import java.util.List;
+        import java.util.Objects;
 
         import olive.walkinggroup.R;
         import olive.walkinggroup.dataobjects.Group;
@@ -35,6 +37,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     private static final int REQUEST_CODE_ADD = 6568;
     private static final int REQUEST_CODE_REMOVE = 8269;
     public static final String TAG = "GroupDetailsActivity";
+    public static final float DEFAULT_ZOOM = 1f;
 
     private GoogleMap mMap;
     private Group group;
@@ -57,14 +60,49 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         currentUser = FindGroupsActivity.getBob();
 
         group = (Group) getIntent().getSerializableExtra("group");
-        memberList = group.getMemberUsers();
+        updateGroupDetails();
 
         setupAddUserButton();
         setupRemoveUserButton();
         initializeText();
         initializeMap();
-        setupListHeader();
-        populateMemberList();
+    }
+
+    private void updateGroupDetails() {
+        Call<List<Group>> caller = model.getProxy().getGroups();
+        ProxyBuilder.callProxy(this, caller, returnedGroups -> onUpdateGroupDetailsProxyResponse(returnedGroups));
+    }
+
+    private void onUpdateGroupDetailsProxyResponse(List<Group> returnedGroups) {
+        for (int i = 0; i < returnedGroups.size(); i++) {
+            if (Objects.equals(group.getId(), returnedGroups.get(i).getId())) {
+                group = returnedGroups.get(i);
+                break;
+            }
+        }
+
+        buildMemberList();
+    }
+
+    private void buildMemberList() {
+        memberList = new ArrayList<>();
+        List<User> userList = group.getMemberUsers();
+
+        for (int i = 0; i < userList.size(); i++) {
+            User user = userList.get(i);
+
+            Call<User> caller = model.getProxy().getUserById(user.getId());
+            ProxyBuilder.callProxy(this, caller, detailedUser -> onBuildMemberListProxyResponse(detailedUser));
+        }
+    }
+
+    private void onBuildMemberListProxyResponse(User detailedUser) {
+        if (detailedUser != null) {
+            Log.d(TAG, "Showing user on Member list: " + detailedUser.toString());
+
+            memberList.add(detailedUser);
+            populateMemberList();
+        }
     }
 
     private void setupAddUserButton() {
@@ -72,7 +110,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, currentUser, group.getGroupName(), "add");
+                Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, currentUser, group.getGroupDescription(), "add");
                 startActivityForResult(intent, REQUEST_CODE_ADD);
             }
         });
@@ -83,21 +121,16 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, currentUser, group.getGroupName(), "remove");
+                Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, currentUser, group.getGroupDescription(), "remove");
                 startActivityForResult(intent, REQUEST_CODE_REMOVE);
             }
         });
     }
 
     private void initializeText() {
-        TextView groupName = findViewById(R.id.groupDetail_groupName);
-        TextView groupLeader = findViewById(R.id.groupDetail_groupLeader);
-        TextView groupDescription = findViewById(R.id.groupDetail_groupDescription);
-
-        groupName.setText(group.getGroupName());
-        String leaderText = "Leader: "+ group.getLeader().getName();
-        groupLeader.setText(leaderText);
-        groupDescription.setText(group.getGroupDescription());
+        TextView groupDescriptionView = findViewById(R.id.groupDetail_groupDescription);
+        groupDescriptionView.setText(group.getGroupDescription());
+        groupDescriptionView.setSelected(true);
     }
 
     private void initializeMap() {
@@ -112,18 +145,21 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
         // Mark meet-up location on map as Green Marker
         Marker startPoint = mMap.addMarker(new MarkerOptions()
                 .position(group.getStartPoint())
                 .title("Meet-up")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         startPoint.showInfoWindow();
+
         // Mark walk destination on map as Red Marker
         Marker endPoint = mMap.addMarker(new MarkerOptions()
                 .position(group.getEndPoint())
                 .title("Destination"));
+
         // Focus camera on meet-up location
-        moveCamera(group.getStartPoint(), 15f);
+        moveCamera(group.getStartPoint(), DEFAULT_ZOOM);
     }
 
     private void populateMemberList() {
@@ -133,12 +169,6 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         memberListView.setAdapter(adapter);
     }
 
-    private void setupListHeader() {
-        ListView memberList = findViewById(R.id.groupDetail_memberList);
-        View headerView = getLayoutInflater().inflate(R.layout.list_members_header, memberList, false);
-        memberList.addHeaderView(headerView);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -146,30 +176,45 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                 if (resultCode == Activity.RESULT_OK) {
                     User userToAdd = (User) data.getSerializableExtra(SelectUserActivity.SELECT_USER_ACTIVITY_RETURN);
                     memberList.add(userToAdd);
-                    populateMemberList();
 
-                    // TODO: Uncomment when testing with server is ready
-                    //addNewMemberToServer(userToAdd);
+                    populateMemberList();
+                    addNewMemberToServer(userToAdd);
                     break;
                 }
 
             case REQUEST_CODE_REMOVE:
                 if (resultCode == Activity.RESULT_OK) {
                     User userToRemove = (User) data.getSerializableExtra(SelectUserActivity.SELECT_USER_ACTIVITY_RETURN);
-                    int index = group.getMemberListIndex(userToRemove);
-                    if (index >= 0) {
-                        memberList.remove(index);
-                    }
-                    populateMemberList();
 
-                    // TODO: Uncomment when testing with server is ready
-                    //removeMemberFromGroup(userToRemove);
+                    int index = getMemberListIndex(userToRemove);
+                    if (index >= 0) {
+                        try{
+                            memberList.remove(index);
+                        } catch (IndexOutOfBoundsException e) {
+                            Log.d(TAG, "onActivityResult: IndexOutOfBoundException" + e.getMessage());
+                        }
+                    }
+
+                    populateMemberList();
+                    removeMemberFromGroup(userToRemove);
                     break;
                 }
 
             default:
                 break;
         }
+    }
+
+    private int getMemberListIndex(User userToRemove) {
+        if (userToRemove == null || memberList == null) {
+            return -1;
+        }
+        for (int i = 0; i < memberList.size(); i++) {
+            if (Objects.equals(memberList.get(i).getId(), userToRemove.getId())) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private void addNewMemberToServer(User user) {

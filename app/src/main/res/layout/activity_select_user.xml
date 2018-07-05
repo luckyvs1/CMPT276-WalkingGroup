@@ -13,7 +13,11 @@
         android:elevation="5dp"
         android:background="@color/colorPrimary"
         >
-
+        <!--
+        To handle group Name being too long
+        https://stackoverflow.com/questions/5472362/android-automatic-horizontally-scrolling-textview
+        Added to line 53 - 58 below:
+        -->
         <TextView
             android:id="@+id/selectUser_headerText"
             android:layout_width="wrap_content"
@@ -23,9 +27,17 @@
             android:textStyle="bold"
             android:textColor="#fff"
             android:layout_centerVertical="true"
-            android:text="@string/sampleText"
             android:padding="10dp"
             android:layout_marginStart="6dp"
+
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scrollHorizontally="true"
+
+            android:layout_toStartOf="@id/selectUser_cancelBtn"
             />
 
         <Button
@@ -46,11 +58,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/selectUser_header"
-        android:text="@string/sampleText"
         android:textSize="18sp"
         android:textColor="#000"
         android:padding="10dp"
-        android:layout_marginStart="6dp"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:background="#fafafa"
+        android:elevation="2dp"
+        android:layout_marginBottom="5dp"
+
         />
 
     <ListView
@@ -58,6 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/selectUser_titleText"
+        android:animateLayoutChanges="true"
         >
     </ListView>
 
