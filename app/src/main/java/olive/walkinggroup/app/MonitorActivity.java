@@ -1,6 +1,8 @@
 package olive.walkinggroup.app;
 
+import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +26,6 @@ public class MonitorActivity extends AppCompatActivity {
     private Model instance = Model.getInstance();
     private User user = this.getDummy();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,19 +33,18 @@ public class MonitorActivity extends AppCompatActivity {
 
         //New Code Starts
         verifyMonitoredUsersList();
-
-        Call<List<User>> caller_2 = instance.getProxy().getMonitorsUsers(user.getId());
-        ProxyBuilder.callProxy(this,caller_2, listOfUsers -> setIMonitorList(listOfUsers));
+        verifyIMonitorList();
         //New Code Ends
 
         setupEditMonitorsMeButton();
         setupIMonitorButton();
+        setupRefreshButton();
     }
 
     public static User getDummy() {
         User dummy = new User();
         dummy.setName("Bob");
-        dummy.setId((long) 87);
+        dummy.setId((long) 20);
         dummy.setEmail("bob@bobby.com");
 
         return dummy;
@@ -72,6 +72,11 @@ public class MonitorActivity extends AppCompatActivity {
         //Configure the list view
         ListView list = (ListView) findViewById(R.id.monitorsMe);
         list.setAdapter(adapter);
+    }
+
+    public void verifyIMonitorList(){
+        Call<List<User>> caller_2 = instance.getProxy().getMonitorsUsers(user.getId());
+        ProxyBuilder.callProxy(this,caller_2, listOfUsers -> setIMonitorList(listOfUsers));
     }
 
     private void setIMonitorList(List<User>list){
@@ -111,6 +116,17 @@ public class MonitorActivity extends AppCompatActivity {
                 android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
                 editMonitoredByUserFragment dialog = new editMonitoredByUserFragment();
                 dialog.show(manager, "EditDialog");
+            }
+        });
+    }
+
+    private void setupRefreshButton() {
+        Button btn = findViewById(R.id.refreshBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verifyMonitoredUsersList();
+                verifyIMonitorList();
             }
         });
     }

@@ -1,10 +1,12 @@
 package olive.walkinggroup.app;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
     private User currentUser = MonitorActivity.getDummy();
 
     @Override
+
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         View v = LayoutInflater.from(getActivity())
@@ -56,7 +59,13 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
 
                 //New Function!
                 removeUserByEmail(email);
+            }
+        };
 
+        DialogInterface.OnDismissListener listner = new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                ((MonitorActivity)getActivity()).verifyMonitoredUsersList();
             }
         };
 
@@ -82,13 +91,12 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
         newUser.setId(user.getId());
 
         Call<List<User>> caller = instance.getProxy().addToMonitoredByUsers(currentUser.getId(),newUser);
-        ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,listOfUsers -> refreshMonitorActivity(listOfUsers));
+        ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,listOfUsers -> refreshMonitorActivityAfterAdd(listOfUsers));
     }
 
 
-    private void refreshMonitorActivity(List<User> list){
+    private void refreshMonitorActivityAfterAdd(List<User> list){
         currentUser.setMonitoredByUsers(list);
-        ((MonitorActivity)getActivity()).verifyMonitoredUsersList();
     }
     // New Add Code Ends
 
@@ -106,8 +114,6 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
         ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,returnNothing -> refreshMonitorActivityAfterRemove(returnNothing));
     }
 
-    private void refreshMonitorActivityAfterRemove(Void returnNothing){
-        //((MonitorActivity)getActivity()).populateMonitorsMe();
-    }
+    private void refreshMonitorActivityAfterRemove(Void returnNothing){}
     //New Remove Code Ends
 }
