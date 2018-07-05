@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:text="Monitor" />
+        android:text="@string/dashboard_monitorBtn" />
 
     <Button
         android:id="@+id/toMap"
@@ -22,7 +22,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="140dp"
-        android:text="Map" />
+        android:text="@string/dashboard_mapBtn" />
 
     <Button
         android:id="@+id/toCreateGroup"
@@ -31,7 +31,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="230dp"
-        android:text="Create Group" />
+        android:text="@string/dashboard_createGroupBtn" />
 
 
     <Button
@@ -51,31 +51,5 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="40dp"
         android:layout_marginEnd="40dp"
-        android:text="Logout" />
-
-    <TextView
-        android:id="@+id/txtName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btnLogout"
-        android:layout_alignStart="@+id/dashboard_viewMyGroupsBtn"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/txtId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/dashboard_viewMyGroupsBtn"
-        android:layout_marginBottom="26dp"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/txtEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/dashboard_viewMyGroupsBtn"
-        android:layout_marginEnd="77dp"
-        android:text="TextView" />
+        android:text="@string/dashboard_logoutBtn" />
 </RelativeLayout>

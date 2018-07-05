@@ -10,7 +10,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="41dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/hint_email"
         android:inputType="textEmailAddress" />
 
 </RelativeLayout>

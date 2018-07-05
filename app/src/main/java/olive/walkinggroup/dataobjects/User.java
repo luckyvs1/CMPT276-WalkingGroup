@@ -12,8 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User class to store the data the server expects and returns.
- * (Incomplete: Needs support for monitoring and groups).
+ * User class to store the data the server expects and returns
+ * and store user information.
+ *
+ * Information includes a name, email, password, current points, total points earned,
+ * and rewards.  In addition, a user array of who the user monitors and another user array
+ * of who the user is monitored by.  And a group array of which groups the user is a member of
+ * and another group array of which groups the user leads.
+ *
+ * Operations include adding and removing from the user and group arrays, getting descriptions
+ * of users who the user monitors and of users who the user is monitored by.  The class also
+ * allows returning a position of a user in a user list using its email.
+ *
+ *
  */
 
 // All model classes coming from server must have this next line.
