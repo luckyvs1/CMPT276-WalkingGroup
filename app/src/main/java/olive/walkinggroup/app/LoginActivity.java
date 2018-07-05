@@ -61,19 +61,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void getUserByEmailResponse(User userFromEmail){
         instance.setCurrentUser(userFromEmail);
-        //user.setId(userFromEmail.getId());
-        //user.setName(userFromEmail.getName());
-        //user.setEmail(userFromEmail.getEmail());
-        //user.setLeadsGroups(userFromEmail.getLeadsGroups());
-        //user.setMonitorsUsers(userFromEmail.getMonitorsUsers());
-        //user.setMonitoredByUsers(userFromEmail.getMonitoredByUsers());
-        //user.setMemberOfGroups(userFromEmail.getMemberOfGroups());
 
-        //instance.setCurrentUser(user);
-        //instance.getCurrentUser().setId(userFromEmail.getId());
-
+        // If the current user is not null
         if(instance.getCurrentUser().getId() != null) {
             goToDashBoardActivity();
+        } else {
+            Toast.makeText(LoginActivity.this, "Error getting user details, please re-login in", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -139,8 +132,8 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
-    //-----------Login --------------------------------------------
+    // Login Functionality
+    // -------------------------------------------------------------------------------------------
     private void loginUserGetToken() {
         // Register for token received:
         ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
