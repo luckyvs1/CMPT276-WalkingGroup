@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:text="Monitor" />
+        android:text="@string/dashboard_monitorBtn" />
 
     <Button
         android:id="@+id/toMap"
@@ -22,7 +22,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="140dp"
-        android:text="Map" />
+        android:text="@string/dashboard_mapBtn" />
 
     <Button
         android:id="@+id/toCreateGroup"
@@ -31,7 +31,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="230dp"
-        android:text="Create Group" />
+        android:text="@string/dashboard_createGroupBtn" />
 
 
     <Button
@@ -51,5 +51,5 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="40dp"
         android:layout_marginEnd="40dp"
-        android:text="Logout" />
+        android:text="@string/dashboard_logoutBtn" />
 </RelativeLayout>

@@ -9,13 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.List;
+
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
+import olive.walkinggroup.proxy.ProxyBuilder;
+import retrofit2.Call;
 
 public class editMonitorUserFragment extends AppCompatDialogFragment {
     private Model instance = Model.getInstance();
-    private User user = instance.getCurrentUser();
+    private User currentUser = MonitorActivity.getDummy();
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -31,14 +35,7 @@ public class editMonitorUserFragment extends AppCompatDialogFragment {
                 EditText userEmail = getDialog().findViewById(R.id.txtInputemail);
                 String email = userEmail.getText().toString();
 
-                User newUser = new User();
-                newUser.setEmail(email);
-                newUser.setName("Bob");
-
-                if (user.checkEmailPosInList(email,user.getMonitorsUsers())==null && !email.equals("")){
-                    user.addToMonitorsUsers(newUser);
-                }
-                ((MonitorActivity)getActivity()).populateIMonitor();
+                addUserByEmail(email);
             }
         };
 
@@ -48,15 +45,9 @@ public class editMonitorUserFragment extends AppCompatDialogFragment {
                 EditText userEmail = (EditText) getDialog().findViewById(R.id.txtInputemail);
                 String email = userEmail.getText().toString();
 
-                Integer pos = user.checkEmailPosInList(email,user.getMonitorsUsers());
-                if (pos!= null) {
-                    User removeUser = user.getMonitorsUsers().get(pos);
-                    user.removeFromMonitorsUsers(removeUser);
-                }
-                ((MonitorActivity)getActivity()).populateIMonitor();
+                removeUserByEmail(email);
             }
         };
-
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
@@ -64,4 +55,39 @@ public class editMonitorUserFragment extends AppCompatDialogFragment {
                 .setPositiveButton("Add User",listener_add)
                 .create();
     }
+
+    private void addUserByEmail(String email) {
+        Call<User> caller = instance.getProxy().getUserByEmail(email);
+        ProxyBuilder.callProxy((MonitorActivity)getActivity(), caller, user -> addUserToList(user));
+    }
+
+    private void addUserToList(User user){
+
+        currentUser.addToMonitorsUsers(user);
+
+        User newUser = new User();
+        newUser.setId(user.getId());
+
+        Call<List<User>> caller = instance.getProxy().addToMonitorsUsers(currentUser.getId(),newUser);
+        ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,listOfUsers -> setNewList(listOfUsers));
+    }
+
+    private void setNewList(List<User> list){
+        currentUser.setMonitoredByUsers(list);
+    }
+
+    private void removeUserByEmail(String email){
+        Call<User> caller = instance.getProxy().getUserByEmail(email);
+        ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller, user -> removeUserFromList(user));
+    }
+
+    private void removeUserFromList(User user){
+
+        currentUser.removeFromMonitorsUsers(user);
+
+        Call<Void> caller = instance.getProxy().removeFromMonitorsUsers(currentUser.getId(),user.getId());
+        ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,returnNothing -> afterRemove(returnNothing));
+    }
+
+    private void afterRemove(Void returnNothing){}
 }
