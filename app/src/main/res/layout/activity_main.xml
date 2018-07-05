@@ -37,7 +37,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="24dp"
         android:layout_marginTop="181dp"
-        android:text="Password:"
+        android:text="@string/caption_password"
         tools:layout_editor_absoluteX="25dp"
         tools:layout_editor_absoluteY="79dp"
         tools:text="Password:" />
