@@ -76,8 +76,6 @@ public class SelectUserActivity extends AppCompatActivity {
 
         getUserList();
         populateUserList();
-
-        getDataFromIntent();
         setupCancelButton();
         initializeText();
         registerItemOnClick();

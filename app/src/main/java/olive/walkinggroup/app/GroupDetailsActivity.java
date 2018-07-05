@@ -111,7 +111,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, currentUser, group.getGroupName(), "add");
+                Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, currentUser, group.getGroupDescription(), "add");
                 startActivityForResult(intent, REQUEST_CODE_ADD);
             }
         });
@@ -122,15 +122,16 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, currentUser, group.getGroupName(), "remove");
+                Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, currentUser, group.getGroupDescription(), "remove");
                 startActivityForResult(intent, REQUEST_CODE_REMOVE);
             }
         });
     }
 
     private void initializeText() {
-        TextView groupName = findViewById(R.id.groupDetail_groupName);
-        groupName.setText(group.getGroupDescription());
+        TextView groupDescriptionView = findViewById(R.id.groupDetail_groupDescription);
+        groupDescriptionView.setText(group.getGroupDescription());
+        groupDescriptionView.setSelected(true);
     }
 
     private void initializeMap() {
@@ -167,7 +168,6 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void setupListHeader() {
-
         if (memberList == null) {
             forceShowHeader();
         }

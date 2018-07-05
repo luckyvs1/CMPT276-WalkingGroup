@@ -21,6 +21,8 @@ import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
+import olive.walkinggroup.proxy.ProxyBuilder;
+import retrofit2.Call;
 /*
 *   Display all groups a user is leading and is member of.
 *   Launch with intent and attach a User object with tag "user" to show the groups of that user.
@@ -46,19 +48,23 @@ public class ListGroupsActivity extends AppCompatActivity {
         }
 
         // For testing only. Remove when able to add groups to user
-        user = new User();
-        user.setId((long) 2222);
-        userGroups = FindGroupsActivity.tempAddGroups();
+        user = FindGroupsActivity.getBob();
 
         // Guard against null User object, in case currentUser is null
         if (user != null) {
-            // Commented until able to add groups to user
-            // userGroups = getGroupList();
-
-            setupTitle();
-            populateGroupList();
-            registerItemOnClick();
+            updateUserInfo();
         }
+    }
+
+    private void updateUserInfo() {
+        Call<User> caller = model.getProxy().getUserById(user.getId());
+        ProxyBuilder.callProxy(this, caller, updatedUser -> onUpdateUserInfoResponse(updatedUser));
+    }
+
+    private void onUpdateUserInfoResponse(User updatedUser) {
+        user = updatedUser;
+        setupTitle();
+        getGroupList();
     }
 
     private void setupTitle() {
@@ -80,17 +86,40 @@ public class ListGroupsActivity extends AppCompatActivity {
         title.setText(text);
     }
 
-    private List<Group> getGroupList() {
-        List<Group> leaderGroup = new ArrayList<>();
+    private void getGroupList() {
+        List<Group> groupList = new ArrayList<>();
 
         if (user != null) {
-            if (Objects.equals(user.getId(), model.getCurrentUser().getId())) {
-                leaderGroup = user.getLeadsGroups();
+            // TODO: get currentUser from model. Now set to Bob just for testing...
+            if (Objects.equals(user.getId(), user.getId())) {
+                groupList = user.getLeadsGroups();
             }
             List<Group> memberGroup = user.getMemberOfGroups();
-            leaderGroup.addAll(memberGroup);
+            groupList.addAll(memberGroup);
         }
-        return leaderGroup;
+
+        userGroups = groupList;
+        getUserGroupDetails();
+    }
+
+    private void getUserGroupDetails() {
+        Call<List<Group>> caller = model.getProxy().getGroups();
+        ProxyBuilder.callProxy(this, caller, returnedGroups -> onGetUserGroupDetailsResponse(returnedGroups));
+    }
+
+    private void onGetUserGroupDetailsResponse(List<Group> returnedGroups) {
+        List<Group> groupList = new ArrayList<>();
+        for (int i = 0; i < returnedGroups.size(); i++) {
+            for (int j = 0; j < userGroups.size(); j++) {
+                if (Objects.equals(returnedGroups.get(i).getId(), userGroups.get(j).getId())) {
+                    groupList.add(returnedGroups.get(i));
+                }
+            }
+        }
+        userGroups = groupList;
+
+        populateGroupList();
+        registerItemOnClick();
     }
 
     private void populateGroupList() {
@@ -146,8 +175,10 @@ public class ListGroupsActivity extends AppCompatActivity {
     private void displayLeaderTag(View itemView, Group currentGroup) {
         RelativeLayout leaderTag = itemView.findViewById(R.id.groupListItem_leaderTag);
         // Hide leader tag if user is not leader of currentGroup (compared using Id)
-        if (!(Objects.equals(user.getId(), currentGroup.getLeader().getId()))) {
-            leaderTag.setVisibility(View.INVISIBLE);
+        if (currentGroup.getLeader() != null) {
+            if (!(Objects.equals(user.getId(), currentGroup.getLeader().getId()))) {
+                leaderTag.setVisibility(View.INVISIBLE);
+            }
         }
     }
 

@@ -25,7 +25,6 @@
             tools:context=".MapsActivity"
             />
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -34,38 +33,31 @@
             android:background="@color/colorPrimary"
             >
 
-            <RelativeLayout
+            <!--
+            To handle group Name being too long
+            https://stackoverflow.com/questions/5472362/android-automatic-horizontally-scrolling-textview
+            Added to line 51 - 56 below:
+            -->
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:id="@+id/groupDetail_topTitle"
-                android:padding="5dp"
-                android:layout_alignParentStart="true"
-                >
+                android:layout_height="wrap_content"
+                android:id="@+id/groupDetail_groupDescription"
+                android:layout_centerVertical="true"
+                android:textSize="20sp"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:padding="10dp"
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/groupDetail_groupName"
-                    android:layout_centerVertical="true"
-                    android:textSize="20sp"
-                    android:textColor="#fff"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:scrollHorizontally="true"
 
-                    android:padding="5dp"
-                    android:layout_marginStart="6dp"
-                    />
-
-                <!-- Hide for now
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/groupDetail_groupLeader"
-                    android:layout_alignParentBottom="true"
-                    android:textSize="15sp"
-                    android:textColor="#fff"
-                    />
-                -->
-            </RelativeLayout>
+                android:layout_marginStart="6dp"
+                android:layout_toStartOf="@id/groupDetail_removeBtn"
+                />
 
             <RelativeLayout
                 android:id="@+id/groupDetail_addBtn"
@@ -86,7 +78,6 @@
                     />
 
                 <TextView
-
                     android:id="@+id/groupDetail_plusSign"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -131,7 +122,6 @@
             </RelativeLayout>
 
         </RelativeLayout>
-
     </RelativeLayout>
 
     <LinearLayout
@@ -140,27 +130,12 @@
         android:layout_below="@id/groupDetail_mapFragmentContainer"
         android:orientation="vertical"
         >
-        <!-- Hide for now
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/groupDetail_groupDescription"
-            android:textSize="15sp"
-            android:padding="5dp"
-            android:elevation="2dp"
-            android:background="#fff"
-            />
-        -->
-
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/groupDetail_memberList"
             >
         </ListView>
-
-
-
     </LinearLayout>
 
 </RelativeLayout>
