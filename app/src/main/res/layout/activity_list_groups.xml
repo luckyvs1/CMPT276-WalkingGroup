@@ -24,6 +24,7 @@
             android:layout_marginStart="6dp"
             android:padding="10dp"
             android:textColor="#fff"
+            android:textStyle="bold"
             android:text="@string/listGroups_headerTitle"
             />
 
