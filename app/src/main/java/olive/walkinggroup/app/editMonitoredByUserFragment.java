@@ -14,6 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import olive.walkinggroup.R;
@@ -24,7 +29,7 @@ import retrofit2.Call;
 
 public class editMonitoredByUserFragment extends AppCompatDialogFragment {
     private Model instance = Model.getInstance();
-    private User currentUser = FindGroupsActivity.getBob();
+    private User currentUser = MonitorActivity.getDummy();
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -46,11 +51,12 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
         DialogInterface.OnClickListener listener_remove = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                    EditText userEmail = (EditText) getDialog().findViewById(R.id.txtInputemail);
-                    String email = userEmail.getText().toString();
+                EditText userEmail = (EditText) getDialog().findViewById(R.id.txtInputemail);
+                String email = userEmail.getText().toString();
 
-                    //New Function!
-                    removeUserByEmail(email);
+                //New Function!
+                removeUserByEmail(email);
+
             }
         };
 
@@ -69,24 +75,22 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
     }
 
     private void addUserToList(User user){
-        if (currentUser.checkEmailPosInList(user.getEmail(),currentUser.getMonitoredByUsers())==null && !user.getEmail().equals("")) {
 
-            //can be deleted
-            currentUser.addToMonitoredByUsers(user);
+        currentUser.addToMonitoredByUsers(user);
 
-            Log.d("test",user.toString());
-            Call<List<User>> caller = instance.getProxy().addToMonitoredByUsers(currentUser.getId(),user);
-            ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,listOfUsers -> refreshMonitorActivity(listOfUsers));
-        }
+        User newUser = new User();
+        newUser.setId(user.getId());
 
+        Call<List<User>> caller = instance.getProxy().addToMonitoredByUsers(currentUser.getId(),newUser);
+        ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,listOfUsers -> refreshMonitorActivity(listOfUsers));
     }
+
 
     private void refreshMonitorActivity(List<User> list){
         currentUser.setMonitoredByUsers(list);
-        ((MonitorActivity)getActivity()).populateMonitorsMe();
+        ((MonitorActivity)getActivity()).verifyMonitoredUsersList();
     }
     // New Add Code Ends
-
 
     // New Remove Code Starts
     private void removeUserByEmail(String email){
@@ -95,20 +99,15 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
     }
 
     private void removeUserFromList(User user){
-        Integer pos = currentUser.checkEmailPosInList(user.getEmail(),currentUser.getMonitoredByUsers());
-        if (pos!= null) {
 
-            //can't be deleted
-            User removeUser = currentUser.getMonitoredByUsers().get(pos);
-            currentUser.removeFromMonitoredByUsers(removeUser);
+        currentUser.removeFromMonitoredByUsers(user);
 
-            Call<Void> caller = instance.getProxy().removeFromMonitoredByUsers(currentUser.getId(),user.getId());
-            ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,returnNothing -> refreshMonitorActivityAfterRemove(returnNothing));
-        }
+        Call<Void> caller = instance.getProxy().removeFromMonitoredByUsers(currentUser.getId(),user.getId());
+        ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,returnNothing -> refreshMonitorActivityAfterRemove(returnNothing));
     }
 
     private void refreshMonitorActivityAfterRemove(Void returnNothing){
-        ((MonitorActivity)getActivity()).populateMonitorsMe();
+        //((MonitorActivity)getActivity()).populateMonitorsMe();
     }
     //New Remove Code Ends
 }
