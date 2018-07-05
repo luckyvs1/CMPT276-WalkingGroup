@@ -59,6 +59,16 @@ public class ListGroupsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            if (currentUser != null) {
+                updateUserInfo();
+            }
+        }
+    }
+
     private void updateUserInfo() {
         Call<User> caller = model.getProxy().getUserById(currentUser.getId());
         ProxyBuilder.callProxy(this, caller, updatedUser -> onUpdateUserInfoResponse(updatedUser));

@@ -66,7 +66,6 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         setupRemoveUserButton();
         initializeText();
         initializeMap();
-        //setupListHeader();
     }
 
     private void updateGroupDetails() {
@@ -146,16 +145,19 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
         // Mark meet-up location on map as Green Marker
         Marker startPoint = mMap.addMarker(new MarkerOptions()
                 .position(group.getStartPoint())
                 .title("Meet-up")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         startPoint.showInfoWindow();
+
         // Mark walk destination on map as Red Marker
         Marker endPoint = mMap.addMarker(new MarkerOptions()
                 .position(group.getEndPoint())
                 .title("Destination"));
+
         // Focus camera on meet-up location
         moveCamera(group.getStartPoint(), DEFAULT_ZOOM);
     }
@@ -174,9 +176,8 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                 if (resultCode == Activity.RESULT_OK) {
                     User userToAdd = (User) data.getSerializableExtra(SelectUserActivity.SELECT_USER_ACTIVITY_RETURN);
                     memberList.add(userToAdd);
-                    populateMemberList();
 
-                    // TODO: Uncomment when testing with server is ready
+                    populateMemberList();
                     addNewMemberToServer(userToAdd);
                     break;
                 }
@@ -184,13 +185,17 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
             case REQUEST_CODE_REMOVE:
                 if (resultCode == Activity.RESULT_OK) {
                     User userToRemove = (User) data.getSerializableExtra(SelectUserActivity.SELECT_USER_ACTIVITY_RETURN);
-                    int index = group.getMemberListIndex(userToRemove);
-                    if (index >= 0) {
-                        memberList.remove(index);
-                    }
-                    populateMemberList();
 
-                    // TODO: Uncomment when testing with server is ready
+                    int index = getMemberListIndex(userToRemove);
+                    if (index >= 0) {
+                        try{
+                            memberList.remove(index);
+                        } catch (IndexOutOfBoundsException e) {
+                            Log.d(TAG, "onActivityResult: IndexOutOfBoundException" + e.getMessage());
+                        }
+                    }
+
+                    populateMemberList();
                     removeMemberFromGroup(userToRemove);
                     break;
                 }
@@ -200,13 +205,24 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         }
     }
 
+    private int getMemberListIndex(User userToRemove) {
+        if (userToRemove == null || memberList == null) {
+            return -1;
+        }
+        for (int i = 0; i < memberList.size(); i++) {
+            if (Objects.equals(memberList.get(i).getId(), userToRemove.getId())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     private void addNewMemberToServer(User user) {
         Call<List<User>> caller = model.getProxy().addGroupMember(group.getId(), user);
         ProxyBuilder.callProxy(this, caller, listOfMembers -> onAddNewMemberResponse(listOfMembers));
     }
 
     private void onAddNewMemberResponse(List<User> listOfMembers) {
-        updateGroupDetails();
         Log.d(TAG, "Added user to group. New group member list:\n\n\n" + listOfMembers.toString());
     }
 
@@ -216,7 +232,6 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void onRemoveMemberResponse(Void returnNothing) {
-        updateGroupDetails();
         Log.d(TAG, "Removed user from group.");
     }
 }
