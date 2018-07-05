@@ -76,27 +76,7 @@ public class ListGroupsActivity extends AppCompatActivity {
 
     private void onUpdateUserInfoResponse(User updatedUser) {
         currentUser = updatedUser;
-        setupTitle();
         getCurrentUserGroupList();
-    }
-
-    private void setupTitle() {
-        TextView title = findViewById(R.id.listGroups_headerTitle);
-        String text = getText(R.string.listGroups_headerTitle).toString();
-
-        // Added until issue #17 (Bug) is fixed
-        text = "My " + text;
-
-        // Commented until issue #17 (Bug) is fixed
-//        if (model.getCurrentUser() != null) {
-//            if (Objects.equals(currentUser.getId(), model.getCurrentUser().getId())) {
-//                text = "My " + text;
-//            } else {
-//                text = currentUser.getName() + "'s " +text;
-//            }
-//        }
-
-        title.setText(text);
     }
 
     private void getCurrentUserGroupList() {
