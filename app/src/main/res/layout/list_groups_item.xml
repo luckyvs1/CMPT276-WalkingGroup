@@ -22,6 +22,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_alignParentTop="true"
+            android:maxLines="2"
             android:ellipsize="end"
             android:textColor="#000"
             android:padding="10dp"

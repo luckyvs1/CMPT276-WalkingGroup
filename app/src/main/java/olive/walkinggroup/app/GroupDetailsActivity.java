@@ -217,8 +217,14 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         return -1;
     }
 
+    private User getIdDummy(User user) {
+        User dummy = new User();
+        dummy.setId(user.getId());
+        return dummy;
+    }
+
     private void addNewMemberToServer(User user) {
-        Call<List<User>> caller = model.getProxy().addGroupMember(group.getId(), user);
+        Call<List<User>> caller = model.getProxy().addGroupMember(group.getId(), getIdDummy(user));
         ProxyBuilder.callProxy(this, caller, listOfMembers -> onAddNewMemberResponse(listOfMembers));
     }
 

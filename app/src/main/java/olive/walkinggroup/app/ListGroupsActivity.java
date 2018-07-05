@@ -26,9 +26,8 @@ import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 /*
-*   Display all groups a currentUser is leading and is member of.
-*   Launch with intent and attach a User object with tag "currentUser" to show the groups of that currentUser.
-*   If no User object is passed through intent, the currentUser from Model is used instead.
+*   Display all groups a currentUser is leading, is member of, and all groups that the
+*   users monitored by currentUser are members of.
 *   On list item click, GroupDetailsActivity is launched for the corresponding group.
 */
 
@@ -46,12 +45,8 @@ public class ListGroupsActivity extends AppCompatActivity {
 
         model = Model.getInstance();
         currentUser = model.getCurrentUser();
-
         userGroups = new ArrayList<>();
         monitorUserGroupsList = new ArrayList<>();
-
-        // TODO: get currentUser from model. Now set to Bob just for testing...
-        //currentUser = FindGroupsActivity.getBob();
 
         // Guard against null User object, in case currentUser is null
         if (currentUser != null) {
@@ -94,28 +89,32 @@ public class ListGroupsActivity extends AppCompatActivity {
             }
         }
         userGroups = groupList;
-        getMonitorUserGroupList();
+        getMonitorsUserListWithFullDetails();
     }
 
-    // Add the groups which the users currentUser monitors are member of to userGroups
-    private void getMonitorUserGroupList() {
-        //List<User> monitorUsers = currentUser.getMonitorsUsers();
-        // TODO: uncomment above and remove below when able to add monitor list to server
-        List<User> monitorUsers = FindGroupsActivity.getBob().getMonitorsUsers();
+    private void getMonitorsUserListWithFullDetails() {
+        monitorUserGroupsList = new ArrayList<>();
 
-        Log.d(TAG, "getMonitorUserGroupList: monitorUsers " + monitorUsers.toString());
-        for (int i = 0; i < monitorUsers.size(); i++) {
-            List<Group> monitorUserGroups = monitorUsers.get(i).getMemberOfGroups();
+        List<User> monitorsUserIdList = currentUser.getMonitorsUsers();
+        for (int i = 0; i < monitorsUserIdList.size(); i++) {
+            Call<User> caller = model.getProxy().getUserById(monitorsUserIdList.get(i).getId());
+            ProxyBuilder.callProxy(this, caller, detailedUser -> getMonitorUserGroupList(detailedUser));
+        }
+    }
 
-            for (int j = 0; j < monitorUserGroups.size(); j++) {
-                Group group = monitorUserGroups.get(j);
-                if (!(groupIsInList(userGroups, group))) {
-                    userGroups.add(group);
-                }
+    private void getMonitorUserGroupList(User detailedUser) {
+        List<Group> monitorUserGroups = detailedUser.getMemberOfGroups();
 
-                if (!(groupIsInList(monitorUserGroupsList, group))) {
-                    monitorUserGroupsList.add(group);
-                }
+        for (int i = 0; i < monitorUserGroups.size(); i++) {
+            Group group = monitorUserGroups.get(i);
+
+            if (!(groupIsInList(userGroups, group))) {
+                userGroups.add(group);
+            }
+
+            if (!(groupIsInList(monitorUserGroupsList, group))) {
+                Log.d(TAG, "getMonitorUserGroupList: putting group into monitorUserGroupList");
+                monitorUserGroupsList.add(group);
             }
         }
         getGroupDetails();
@@ -123,6 +122,7 @@ public class ListGroupsActivity extends AppCompatActivity {
 
     private boolean groupIsInList(List<Group> groupList, Group group) {
         List<Integer> groupListId = new ArrayList<>();
+
         for (int i = 0; i < groupList.size(); i++) {
             groupListId.add(groupList.get(i).getId().intValue());
         }
@@ -136,6 +136,7 @@ public class ListGroupsActivity extends AppCompatActivity {
 
     private void onGetGroupDetailsResponse(List<Group> returnedGroups) {
         List<Group> groupList = new ArrayList<>();
+
         for (int i = 0; i < returnedGroups.size(); i++) {
             for (int j = 0; j < userGroups.size(); j++) {
                 if (Objects.equals(returnedGroups.get(i).getId(), userGroups.get(j).getId())) {
@@ -194,6 +195,7 @@ public class ListGroupsActivity extends AppCompatActivity {
 
     private void displayTags(View itemView, Group currentGroup) {
         RelativeLayout leaderTag = itemView.findViewById(R.id.groupListItem_leaderTag);
+
         if (currentGroup.getLeader() != null) {
             if (!(Objects.equals(currentUser.getId(), currentGroup.getLeader().getId()))) {
                 leaderTag.setVisibility(View.GONE);
@@ -201,6 +203,7 @@ public class ListGroupsActivity extends AppCompatActivity {
         }
 
         RelativeLayout monitorTag = itemView.findViewById(R.id.groupListItem_monitorTag);
+
         if (!(groupIsInList(monitorUserGroupsList, currentGroup))) {
             monitorTag.setVisibility(View.GONE);
         }
