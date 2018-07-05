@@ -34,7 +34,6 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
                 EditText userEmail = getDialog().findViewById(R.id.txtInputemail);
                 String email = userEmail.getText().toString();
 
-                //New Function!
                 addUserByEmail(email);
             }
         };
@@ -45,7 +44,6 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
                 EditText userEmail = (EditText) getDialog().findViewById(R.id.txtInputemail);
                 String email = userEmail.getText().toString();
 
-                //New Function!
                 removeUserByEmail(email);
             }
         };
@@ -57,14 +55,12 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
                 .create();
     }
 
-    // New Add Code Starts
     private void addUserByEmail(String email) {
         Call<User> caller = instance.getProxy().getUserByEmail(email);
         ProxyBuilder.callProxy((MonitorActivity)getActivity(), caller, user -> addUserToList(user));
     }
 
     private void addUserToList(User user){
-
         currentUser.addToMonitoredByUsers(user);
 
         User newUser = new User();
@@ -74,20 +70,16 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
         ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,listOfUsers -> setNewList(listOfUsers));
     }
 
-
     private void setNewList(List<User> list){
         currentUser.setMonitoredByUsers(list);
     }
-    // New Add Code Ends
 
-    // New Remove Code Starts
     private void removeUserByEmail(String email){
         Call<User> caller = instance.getProxy().getUserByEmail(email);
         ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller, user -> removeUserFromList(user));
     }
 
     private void removeUserFromList(User user){
-
         currentUser.removeFromMonitoredByUsers(user);
 
         Call<Void> caller = instance.getProxy().removeFromMonitoredByUsers(currentUser.getId(),user.getId());
@@ -95,5 +87,4 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
     }
 
     private void afterRemove(Void returnNothing){}
-    //New Remove Code Ends
 }
