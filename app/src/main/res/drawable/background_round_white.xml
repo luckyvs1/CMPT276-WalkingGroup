@@ -2,11 +2,11 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="oval">
-            <solid android:color="#fafafa"/>
+            <solid android:color="#eaeaea"/>
         </shape>
     </item>
 
-    <item android:state_window_focused="true">
+    <item android:state_enabled="true">
         <shape android:shape="oval">
             <solid android:color="#fff"/>
         </shape>

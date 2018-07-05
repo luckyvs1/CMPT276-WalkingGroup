@@ -52,7 +52,7 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_join_group);
+        setContentView(R.layout.activity_find_group);
 
         model = Model.getInstance();
         setupMyLocationButton();
@@ -118,6 +118,7 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         try {
             if (locationPermissionGranted) {
                 Task location = fusedLocationProviderClient.getLastLocation();
+
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
@@ -125,9 +126,12 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
                             // Found location
                             Log.d(TAG, "getDeviceLocation: onComplete: location found.");
                             Location currentLocation = (Location) task.getResult();
-                            LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                            // Center camera on current location
-                            moveCamera(currentLatLng, DEFAULT_ZOOM, animate);
+
+                            if (currentLocation != null) {
+                                LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                                // Center camera on current location
+                                moveCamera(currentLatLng, DEFAULT_ZOOM, animate);
+                            }
                         } else {
                             // Cannot find current location
                             Log.d(TAG, "getDeviceLocation: onComplete: location not found.");
@@ -154,6 +158,7 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
 
         if (locationPermissionGranted) {
             getDeviceLocation(false);
+
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)

@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".app.GroupDetailsActivity">
+    tools:context=".app.GroupDetailsActivity"
+    >
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="255dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="60"
+        android:orientation="vertical"
         android:id="@+id/groupDetail_mapFragmentContainer"
         >
-
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/groupDetail_map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_alignParentBottom="true"
-            tools:context=".MapsActivity"
-            />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -120,22 +112,55 @@
                     />
 
             </RelativeLayout>
-
         </RelativeLayout>
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/groupDetail_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            tools:context=".MapsActivity"
+            />
+
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/groupDetail_mapFragmentContainer"
+        android:layout_weight="40"
         android:orientation="vertical"
         >
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:background="@color/colorPrimary"
+            android:elevation="2dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/groupDetail_groupMembers"
+                android:textColor="#fff"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                />
+
+        </RelativeLayout>
+
+
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/groupDetail_memberList"
+            android:animateLayoutChanges="true"
             >
         </ListView>
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
