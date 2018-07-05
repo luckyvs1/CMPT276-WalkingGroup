@@ -23,6 +23,10 @@ public class LoginActivity extends AppCompatActivity {
     private Model instance;
     private User user;
 
+    // Dialog
+//    android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+//    LoginMessageFragment dialog = new LoginMessageFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,10 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showLoggingInMessage() {
-        android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-        LoginMessageFragment dialog = new LoginMessageFragment();
-        dialog.show(manager, "MessageDialog");
-
+        //dialog.show(manager, "MessageDialog");
     }
 
     private void updateCurrentUser(String userEmail) {
@@ -69,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // If the current user is not null
         if(instance.getCurrentUser().getId() != null) {
+            //dialog.dismiss();
             goToDashBoardActivity();
         } else {
             Toast.makeText(LoginActivity.this, "Error getting user details, please re-login in", Toast.LENGTH_LONG).show();
