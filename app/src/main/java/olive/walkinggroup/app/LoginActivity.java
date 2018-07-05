@@ -1,5 +1,6 @@
 package olive.walkinggroup.app;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -41,13 +42,20 @@ public class LoginActivity extends AppCompatActivity {
     private void checkUserToken() {
         String token = getFromSharedPreferences("Token");
         String userEmail = getFromSharedPreferences("UserEmail");
-        String userPassword = getFromSharedPreferences("UserPassword");
         if(token != null){
-            user.setPassword(userPassword);
+
+            showLoggingInMessage();
             user.setEmail(userEmail);
             instance.updateProxy(token);
             updateCurrentUser(userEmail);
         }
+    }
+
+    private void showLoggingInMessage() {
+        android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+        LoginMessageFragment dialog = new LoginMessageFragment();
+        dialog.show(manager, "MessageDialog");
+
     }
 
     private void updateCurrentUser(String userEmail) {
