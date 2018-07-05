@@ -97,13 +97,17 @@ public class SelectUserActivity extends AppCompatActivity {
             case "add":
                 List<User> addableUsers = new ArrayList<>();
                 if (!(group.isMember(currentUser))) {
-                    addableUsers.add(currentUser);
+                    if (!Objects.equals(group.getLeader().getId(), currentUser.getId())) {
+                        addableUsers.add(currentUser);
+                    }
                 }
 
                 for (int i = 0; i < currentUser.getMonitorsUsers().size(); i++) {
                     User user = currentUser.getMonitorsUsers().get(i);
                     if (!(group.isMember(user))) {
-                        addableUsers.add(user);
+                        if (!Objects.equals(group.getLeader().getId(), user.getId())) {
+                            addableUsers.add(user);
+                        }
                     }
                 }
 
