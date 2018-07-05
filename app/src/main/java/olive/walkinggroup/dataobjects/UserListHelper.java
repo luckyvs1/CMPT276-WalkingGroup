@@ -97,6 +97,9 @@ public class UserListHelper {
             idList.add(id);
         }
 
+        if (user.getId() == null) {
+            return false;
+        }
         return (idList.contains(user.getId().intValue()));
     }
 }

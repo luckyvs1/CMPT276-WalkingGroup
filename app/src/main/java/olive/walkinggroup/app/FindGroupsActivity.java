@@ -52,7 +52,7 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_join_group);
+        setContentView(R.layout.activity_find_group);
 
         model = Model.getInstance();
         setupMyLocationButton();
@@ -118,6 +118,7 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         try {
             if (locationPermissionGranted) {
                 Task location = fusedLocationProviderClient.getLastLocation();
+
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
@@ -125,9 +126,12 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
                             // Found location
                             Log.d(TAG, "getDeviceLocation: onComplete: location found.");
                             Location currentLocation = (Location) task.getResult();
-                            LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                            // Center camera on current location
-                            moveCamera(currentLatLng, DEFAULT_ZOOM, animate);
+
+                            if (currentLocation != null) {
+                                LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                                // Center camera on current location
+                                moveCamera(currentLatLng, DEFAULT_ZOOM, animate);
+                            }
                         } else {
                             // Cannot find current location
                             Log.d(TAG, "getDeviceLocation: onComplete: location not found.");
@@ -154,6 +158,7 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
 
         if (locationPermissionGranted) {
             getDeviceLocation(false);
+
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -253,21 +258,32 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
     // Temp function to generate User "Bob"
     public static User getBob() {
         User bob = new User();
-        bob.setName("Bob");
-        bob.setId((long) 2222);
+        bob.setName("Bob Bobby");
+        bob.setId((long) 23);
         bob.setEmail("bob@bobby.com");
 
         List<User> monitorList = new ArrayList<>();
         User bobJr = new User();
-        bobJr.setName("Bob");
-        bobJr.setEmail("bob.junior@bobby.com");
-        bobJr.setId((long) 2223);
+        bobJr.setName("Bob Jr. Bobby");
+        bobJr.setEmail("bob.jr@bobby.com");
+        bobJr.setId((long) 29);
+        Group group1 = new Group();
+        group1.setId((long) 8);
+        List<Group> groupList1 = new ArrayList<>();
+        groupList1.add(group1);
+        //bobJr.setMemberOfGroups(groupList1);
         monitorList.add(bobJr);
 
         User bobby = new User();
-        bobby.setName("Bobby");
-        bobby.setEmail("bobby@bobby.com");
-        bobby.setId((long) 2224);
+        bobby.setName("Bobby Chan");
+        bobby.setEmail("bobby@chan.com");
+        bobby.setId((long) 32);
+        Group group2 = new Group();
+        group2.setId((long) 28);
+        List<Group> groupList2 = new ArrayList<>();
+        groupList2.add(group1);
+        groupList2.add(group2);
+        //bobby.setMemberOfGroups(groupList2);
         monitorList.add(bobby);
 
         bob.setMonitorsUsers(monitorList);
@@ -291,10 +307,10 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
     }
 
     private void addMarker(Group group){
-        String groupName = group.getGroupName();
+        String groupDescription = group.getGroupDescription();
         LatLng endPoint = group.getEndPoint();
 
-        Marker marker = mMap.addMarker(new MarkerOptions().position(endPoint).title(groupName));
+        Marker marker = mMap.addMarker(new MarkerOptions().position(endPoint).title(groupDescription));
         // Associates a group object with a map Marker
         marker.setTag(group);
     }

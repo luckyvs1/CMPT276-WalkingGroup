@@ -31,7 +31,7 @@
     <string name="name">Name:</string>
     <string name="groupDetail_BtnText">"Interact"</string>
     <string name="groupDetail_groupMembers">Members</string>
-    <string name="listGroups_headerTitle">Groups</string>
+    <string name="listGroups_headerTitle">My Groups</string>
     <string name="dashboard_viewMyGroupsBtn">My Groups</string>
     <string name="groupListItem_leaderTagText">Leader</string>
     <string name="sampleText">Sample Text</string>
@@ -52,4 +52,5 @@
     <string name="caption_whoMonitorsMe">Who monitors me</string>
     <string name="caption_whomIMonitor">Whom I monitor</string>
     <string name="btn_edit">Edit</string>
+    <string name="groupListItem_monitorTagText">Monitor</string>
 </resources>

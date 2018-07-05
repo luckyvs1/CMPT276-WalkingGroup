@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="5dp"
     >
 
@@ -19,8 +19,8 @@
     <RelativeLayout
         android:id="@+id/listUsers_monitorTag"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_user_list_item_monitor_tag"
+        android:layout_height="20dp"
+        android:background="@drawable/background_tag_monitor"
         android:layout_alignParentEnd="true"
         >
 
@@ -39,8 +39,8 @@
     <RelativeLayout
         android:id="@+id/listUsers_youTag"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_user_list_item_you_tag"
+        android:layout_height="20dp"
+        android:background="@drawable/background_tag_you"
         android:layout_alignParentEnd="true"
         >
 
@@ -62,6 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/listMembers_name"
+        android:layout_marginTop="5dp"
         android:text="@string/sampleText"
         />
 

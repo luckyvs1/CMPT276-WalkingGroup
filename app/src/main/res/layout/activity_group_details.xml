@@ -1,30 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".app.GroupDetailsActivity">
+    tools:context=".app.GroupDetailsActivity"
+    >
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="255dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="60"
+        android:orientation="vertical"
         android:id="@+id/groupDetail_mapFragmentContainer"
         >
-
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/groupDetail_map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_alignParentBottom="true"
-            tools:context=".MapsActivity"
-            />
-
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -34,34 +25,31 @@
             android:background="@color/colorPrimary"
             >
 
-            <RelativeLayout
+            <!--
+            To handle group Name being too long
+            https://stackoverflow.com/questions/5472362/android-automatic-horizontally-scrolling-textview
+            Added to line 51 - 56 below:
+            -->
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:id="@+id/groupDetail_topTitle"
-                android:padding="5dp"
-                android:layout_alignParentStart="true"
-                >
+                android:layout_height="wrap_content"
+                android:id="@+id/groupDetail_groupDescription"
+                android:layout_centerVertical="true"
+                android:textSize="20sp"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:padding="10dp"
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/groupDetail_groupName"
-                    android:layout_alignParentTop="true"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="#fff"
-                    />
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:scrollHorizontally="true"
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/groupDetail_groupLeader"
-                    android:layout_alignParentBottom="true"
-                    android:textSize="15sp"
-                    android:textColor="#fff"
-                    />
-            </RelativeLayout>
+                android:layout_marginStart="6dp"
+                android:layout_toStartOf="@id/groupDetail_removeBtn"
+                />
 
             <RelativeLayout
                 android:id="@+id/groupDetail_addBtn"
@@ -82,7 +70,6 @@
                     />
 
                 <TextView
-
                     android:id="@+id/groupDetail_plusSign"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -125,37 +112,55 @@
                     />
 
             </RelativeLayout>
-
         </RelativeLayout>
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/groupDetail_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            tools:context=".MapsActivity"
+            />
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/groupDetail_mapFragmentContainer"
+        android:layout_weight="40"
         android:orientation="vertical"
         >
 
-        <TextView
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/groupDetail_groupDescription"
-            android:textSize="15sp"
-            android:padding="5dp"
+            android:layout_height="24dp"
+            android:background="@color/colorPrimary"
             android:elevation="2dp"
-            android:background="#fff"
-            />
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/groupDetail_groupMembers"
+                android:textColor="#fff"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                />
+
+        </RelativeLayout>
+
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/groupDetail_memberList"
+            android:animateLayoutChanges="true"
             >
         </ListView>
-
-
-
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

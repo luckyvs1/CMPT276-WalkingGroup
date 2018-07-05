@@ -37,6 +37,7 @@
         android:divider="@null"
         android:dividerHeight="0dp"
         android:paddingTop="5dp"
+
         >
     </ListView>
 </RelativeLayout>
