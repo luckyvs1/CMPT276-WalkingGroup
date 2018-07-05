@@ -262,12 +262,23 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         bobJr.setName("Bob Jr. Bobby");
         bobJr.setEmail("bob.jr@bobby.com");
         bobJr.setId((long) 29);
+        Group group1 = new Group();
+        group1.setId((long) 8);
+        List<Group> groupList1 = new ArrayList<>();
+        groupList1.add(group1);
+        //bobJr.setMemberOfGroups(groupList1);
         monitorList.add(bobJr);
 
         User bobby = new User();
         bobby.setName("Bobby Chan");
         bobby.setEmail("bobby@chan.com");
         bobby.setId((long) 32);
+        Group group2 = new Group();
+        group2.setId((long) 28);
+        List<Group> groupList2 = new ArrayList<>();
+        groupList2.add(group1);
+        groupList2.add(group2);
+        //bobby.setMemberOfGroups(groupList2);
         monitorList.add(bobby);
 
         bob.setMonitorsUsers(monitorList);

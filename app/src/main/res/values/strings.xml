@@ -41,4 +41,5 @@
     <string name="groupDetail_minusSign">\u2013</string>
     <string name="groupDetail_plusSign">+</string>
     <string name="groupDetail_emptyMessage">(Empty)</string>
+    <string name="groupListItem_monitorTagText">Monitor</string>
 </resources>

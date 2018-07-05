@@ -58,6 +58,7 @@ public class SelectUserActivity extends AppCompatActivity {
 
         model = Model.getInstance();
         getDataFromIntent();
+        initializeHeaderText();
         updateGroupDetails();
     }
 
@@ -77,7 +78,7 @@ public class SelectUserActivity extends AppCompatActivity {
         getUserList();
         populateUserList();
         setupCancelButton();
-        initializeText();
+        initializeMessage();
         registerItemOnClick();
     }
 
@@ -142,11 +143,13 @@ public class SelectUserActivity extends AppCompatActivity {
         });
     }
 
-    private void initializeText() {
+    private void initializeHeaderText() {
         TextView headerTextView = findViewById(R.id.selectUser_headerText);
-        TextView titleTextView = findViewById(R.id.selectUser_titleText);
-
         headerTextView.setText(headerText);
+    }
+
+    private void initializeMessage() {
+        TextView titleTextView = findViewById(R.id.selectUser_titleText);
         String titleText;
         if (userList.size() == 0) {
             titleText = "No available user to " + addOrRemove + ".";
