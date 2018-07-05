@@ -46,10 +46,7 @@ public class LoginActivity extends AppCompatActivity {
             user.setPassword(userPassword);
             user.setEmail(userEmail);
             instance.updateProxy(token);
-            //instance.setCurrentUser(user);
             updateCurrentUser(userEmail);
-            //goToDashBoardActivity();
-            //loginUserGetToken();       // Logging in user on app resume; re-updates the token
         }
     }
 
@@ -148,7 +145,6 @@ public class LoginActivity extends AppCompatActivity {
     // Response for call back from the login user
     private void loginUserResponse(Void returnedNothing) {
         // Navigate user to the next activity
-        //goToDashBoardActivity();
         updateCurrentUser(instance.getCurrentUser().getEmail());
     }
 
@@ -159,12 +155,10 @@ public class LoginActivity extends AppCompatActivity {
         instance.setCurrentUser(user);
 
         String userEmail = instance.getCurrentUser().getEmail();
-        String userPassword = user.getPassword();
 
         //Store token and email using shared preferences
         storeToSharedPreferences("Token", token);
         storeToSharedPreferences("UserEmail", userEmail);
-        storeToSharedPreferences("UserPassword", userPassword);
     }
 
     // Store the resource to shared preferences

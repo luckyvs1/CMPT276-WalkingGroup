@@ -51,7 +51,7 @@ public class ListGroupsActivity extends AppCompatActivity {
         monitorUserGroupsList = new ArrayList<>();
 
         // TODO: get currentUser from model. Now set to Bob just for testing...
-        currentUser = FindGroupsActivity.getBob();
+        //currentUser = FindGroupsActivity.getBob();
 
         // Guard against null User object, in case currentUser is null
         if (currentUser != null) {

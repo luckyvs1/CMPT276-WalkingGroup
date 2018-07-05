@@ -39,38 +39,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
         instance = Model.getInstance();
 
-        displayDebugging();
         createToViewMyGroupsButton();
-
-    }
-
-    private void displayDebugging() {
-        try {
-            Toast.makeText(DashBoardActivity.this, "Welcome " + instance.getCurrentUser().getName() + " " + instance.getCurrentUser().getId(), Toast.LENGTH_LONG).show();
-        } catch (NullPointerException e) {
-            Log.d("DashboardActivity", e.getMessage());
-        }
-
-        try {
-            TextView name = (TextView) findViewById(R.id.txtName);
-            name.setText(instance.getCurrentUser().getName().toString());
-        } catch (NullPointerException e) {
-            Log.d("DashboardActivity", e.getMessage());
-        }
-
-        try {
-            TextView id = (TextView) findViewById(R.id.txtId);
-            id.setText(instance.getCurrentUser().getId().toString());
-        } catch (NullPointerException e) {
-            Log.d("DashboardActivity", e.getMessage());
-        }
-
-        try {
-            TextView email = (TextView) findViewById(R.id.txtEmail);
-            email.setText(instance.getCurrentUser().getEmail().toString());
-        } catch (NullPointerException e) {
-            Log.d("DashboardActivity", e.getMessage());
-        }
 
     }
 

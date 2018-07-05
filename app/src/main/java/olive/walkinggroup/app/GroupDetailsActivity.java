@@ -54,10 +54,10 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
         model = Model.getInstance();
         // Commented until bug #17 is fixed
-        //currentUser = model.getCurrentUser();
+        currentUser = model.getCurrentUser();
 
         // Temporary currentUser for testing (Bob)
-        currentUser = FindGroupsActivity.getBob();
+        //currentUser = FindGroupsActivity.getBob();
 
         group = (Group) getIntent().getSerializableExtra("group");
         updateGroupDetails();
