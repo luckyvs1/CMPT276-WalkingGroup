@@ -167,9 +167,22 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void setupListHeader() {
+
+        if (memberList == null) {
+            forceShowHeader();
+        }
         ListView memberListView = findViewById(R.id.groupDetail_memberList);
         View headerView = getLayoutInflater().inflate(R.layout.list_members_header, memberListView, false);
         memberListView.addHeaderView(headerView);
+    }
+
+    // Force list header to display with null memberList
+    private void forceShowHeader() {
+        memberList = new ArrayList<>();
+        memberList.add(new User());
+        populateMemberList();
+        memberList.remove(0);
+        populateMemberList();
     }
 
     @Override
