@@ -24,7 +24,7 @@ import retrofit2.Call;
 
 public class editMonitoredByUserFragment extends AppCompatDialogFragment {
     private Model instance = Model.getInstance();
-    private User currentUser = instance.getCurrentUser();
+    private User currentUser = FindGroupsActivity.getBob();
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -39,16 +39,9 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 EditText userEmail = getDialog().findViewById(R.id.txtInputemail);
                 String email = userEmail.getText().toString();
+
+                //New Function!
                 addUserByEmail(email);
-//                User newUser = new User();
-//
-//                newUser.setEmail(email);
-//                newUser.setName("Bob");
-//
-//                if (user.checkEmailPosInList(email,user.getMonitoredByUsers())==null && !email.equals("")) {
-//                    user.addToMonitoredByUsers(newUser);
-//                }
-//                ((MonitorActivity)getActivity()).populateMonitorsMe();
             }
         };
 
@@ -56,7 +49,7 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                     EditText userEmail = (EditText) getDialog().findViewById(R.id.txtInputemail);
-                    String email = userEmail.getText().toString().replace("@","%40");
+                    String email = userEmail.getText().toString();
 
 //                    Integer pos = currentUser.checkEmailPosInList(email,currentUser.getMonitoredByUsers());
 //                    if (pos!= null) {
@@ -75,16 +68,19 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
                 .create();
     }
 
+    // New Add Code Starts
     private void addUserByEmail(String email) {
         Call<User> caller = instance.getProxy().getUserByEmail(email);
         ProxyBuilder.callProxy((MonitorActivity)getActivity(), caller, user -> addUserToList(user));
     }
 
     private void addUserToList(User user){
-        if (user.checkEmailPosInList(user.getEmail(),user.getMonitoredByUsers())==null && !user.getEmail().equals("")) {
-            user.addToMonitoredByUsers(user);
+        if (currentUser.checkEmailPosInList(user.getEmail(),currentUser.getMonitoredByUsers())==null && !user.getEmail().equals("")) {
+            //can be deleted
+            currentUser.addToMonitoredByUsers(user);
+
             Log.d("test",user.toString());
-            Call<List<User>> caller = instance.getProxy().addToMonitoredByUsers(user.getId(),currentUser);
+            Call<List<User>> caller = instance.getProxy().addToMonitoredByUsers(currentUser.getId(),user);
             ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,listOfUsers -> refreshMonitorActivity(listOfUsers));
         }
 
@@ -92,8 +88,14 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
 
     private void refreshMonitorActivity(List<User> list){
         currentUser.setMonitoredByUsers(list);
-        //((MonitorActivity)getActivity()).populateMonitorsMe();
+        ((MonitorActivity)getActivity()).populateMonitorsMe();
     }
+    // New Add Code Ends
+
+    private void refreshMonitorActivityAfterRemove(Void returnNothing){
+        ((MonitorActivity)getActivity()).populateMonitorsMe();
+    }
+
 
     private void removeUserByEmail(String email){
         Call<User> caller = instance.getProxy().getUserByEmail(email);
@@ -101,10 +103,16 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
     }
 
     private void removeUserFromList(User user){
-        Integer pos = user.checkEmailPosInList(user.getEmail(),user.getMonitoredByUsers());
+        Integer pos = currentUser.checkEmailPosInList(user.getEmail(),currentUser.getMonitoredByUsers());
         if (pos!= null) {
-            User removeUser = user.getMonitoredByUsers().get(pos);
-            user.removeFromMonitoredByUsers(removeUser);
+
+            //can be deleted
+            User removeUser = currentUser.getMonitoredByUsers().get(pos);
+            currentUser.removeFromMonitoredByUsers(removeUser);
+
+            Call<Void> caller = instance.getProxy().removeFromMonitoredByUsers(currentUser.getId(),user.getId());
+            ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller,returnNothing -> refreshMonitorActivityAfterRemove(returnNothing));
+
         }
         ((MonitorActivity)getActivity()).populateMonitorsMe();
     }
