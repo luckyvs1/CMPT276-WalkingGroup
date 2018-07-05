@@ -25,7 +25,8 @@
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/textView6"
-        android:layout_marginTop="105dp" />
+        android:layout_marginTop="105dp"
+        android:background="#8ce7f6fb" />
 
     <ListView
         android:id="@+id/IMonitor"
@@ -33,7 +34,8 @@
         android:layout_height="300dp"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/monitorsMe"
-        android:layout_marginEnd="50dp" />
+        android:layout_marginEnd="50dp"
+        android:background="#8ce7f6fb" />
 
     <TextView
         android:id="@+id/textView7"
