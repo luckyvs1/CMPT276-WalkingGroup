@@ -35,7 +35,8 @@ public class SelectUserActivity extends AppCompatActivity {
     public static final String SELECT_USER_ACTIVITY_RETURN = "SelectUserActivity: return selected User";
     private Group group;
     private User currentUser;
-    private List<User> userList;
+    private List<User> userIdOnlyList;
+    private List<User> userDetailedList;
     private String headerText;
     private String addOrRemove;
     private UserListHelper userListHelper;
@@ -57,6 +58,8 @@ public class SelectUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_user);
 
         model = Model.getInstance();
+        userDetailedList = new ArrayList<>();
+
         getDataFromIntent();
         initializeHeaderText();
         updateGroupDetails();
@@ -76,7 +79,6 @@ public class SelectUserActivity extends AppCompatActivity {
         }
 
         getUserList();
-        populateUserList();
         setupCancelButton();
         initializeMessage();
         registerItemOnClick();
@@ -105,7 +107,8 @@ public class SelectUserActivity extends AppCompatActivity {
                     }
                 }
 
-                userList = addableUsers;
+                userIdOnlyList = addableUsers;
+                getDetailedUserList();
                 break;
 
             case "remove":
@@ -124,13 +127,26 @@ public class SelectUserActivity extends AppCompatActivity {
                     }
                 }
 
-                userList = removableUsers;
+                userIdOnlyList = removableUsers;
+                getDetailedUserList();
                 break;
 
             default:
-                userList = new ArrayList<>();
+                userIdOnlyList = new ArrayList<>();
                 break;
         }
+    }
+
+    private void getDetailedUserList() {
+        for (int i = 0; i < userIdOnlyList.size(); i++) {
+            Call<User> caller = model.getProxy().getUserById(userIdOnlyList.get(i).getId());
+            ProxyBuilder.callProxy(this, caller, detailedUser -> onGetDetailedUserListResponse(detailedUser));
+        }
+    }
+
+    private void onGetDetailedUserListResponse(User detailedUser) {
+        userDetailedList.add(detailedUser);
+        populateUserList();
     }
 
     private void setupCancelButton() {
@@ -151,7 +167,7 @@ public class SelectUserActivity extends AppCompatActivity {
     private void initializeMessage() {
         TextView titleTextView = findViewById(R.id.selectUser_titleText);
         String titleText;
-        if (userList.size() == 0) {
+        if (userIdOnlyList.size() == 0) {
             titleText = "No available user to " + addOrRemove + ".";
         } else {
             titleText = "Select user to " + addOrRemove + ":";
@@ -160,7 +176,7 @@ public class SelectUserActivity extends AppCompatActivity {
     }
 
     private void populateUserList() {
-        userListHelper = new UserListHelper(SelectUserActivity.this, userList, currentUser);
+        userListHelper = new UserListHelper(SelectUserActivity.this, userDetailedList, currentUser);
         ArrayAdapter<User> adapter = userListHelper.getAdapter();
         ListView userListView = findViewById(R.id.selectUser_userList);
         userListView.setAdapter(adapter);
@@ -171,7 +187,7 @@ public class SelectUserActivity extends AppCompatActivity {
         userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                User userClicked = userList.get(position);
+                User userClicked = userDetailedList.get(position);
 
                 // Pass back userClicked to GroupDetailsActivity
                 Intent intent = new Intent();
