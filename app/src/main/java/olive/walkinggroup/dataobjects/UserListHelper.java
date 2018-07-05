@@ -17,6 +17,12 @@ import java.util.Objects;
 import olive.walkinggroup.R;
 import olive.walkinggroup.app.GroupDetailsActivity;
 
+/**
+ * UserListHelper class allows generating an ArrayAdapter to be used in a ListView of users
+ * using an activity object, a user list and the current logged-in user.
+ */
+
+
 public class UserListHelper {
     private Activity activity;
     private List<User> userList;

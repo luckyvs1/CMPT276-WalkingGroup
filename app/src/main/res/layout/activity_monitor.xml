@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="Monitor"
+        android:text="@string/monitorAct_monitorTitle"
         android:textSize="30sp"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp" />
@@ -44,7 +44,7 @@
         android:layout_above="@+id/monitorsMe"
         android:layout_alignStart="@+id/textView6"
         android:layout_marginBottom="-105dp"
-        android:text="Who monitors me"
+        android:text="@string/caption_whoMonitorsMe"
         android:textColor="@android:color/black"
         android:textSize="15sp"
         android:textStyle="bold" />
@@ -56,7 +56,7 @@
         android:layout_above="@+id/monitorsMe"
         android:layout_alignStart="@+id/IMonitor"
         android:layout_marginBottom="-105dp"
-        android:text="Whom I monitor"
+        android:text="@string/caption_whomIMonitor"
         android:textColor="@android:color/black"
         android:textSize="15sp"
         android:textStyle="bold" />
@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textView6"
         android:layout_below="@+id/monitorsMe"
-        android:text="Edit" />
+        android:text="@string/btn_edit" />
 
     <Button
         android:id="@+id/editIMonitor"
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/IMonitor"
         android:layout_below="@+id/IMonitor"
-        android:text="Edit" />
+        android:text="@string/btn_edit" />
 
     <Button
         android:id="@+id/refreshBtn"
