@@ -20,7 +20,9 @@ package olive.walkinggroup.app;
         import com.google.android.gms.maps.model.Marker;
         import com.google.android.gms.maps.model.MarkerOptions;
 
+        import java.util.ArrayList;
         import java.util.List;
+        import java.util.Objects;
 
         import olive.walkinggroup.R;
         import olive.walkinggroup.dataobjects.Group;
@@ -58,14 +60,50 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         currentUser = FindGroupsActivity.getBob();
 
         group = (Group) getIntent().getSerializableExtra("group");
-        memberList = group.getMemberUsers();
+        updateGroupDetails();
 
         setupAddUserButton();
         setupRemoveUserButton();
         initializeText();
         initializeMap();
         setupListHeader();
-        populateMemberList();
+    }
+
+    private void updateGroupDetails() {
+        Call<List<Group>> caller = model.getProxy().getGroups();
+        ProxyBuilder.callProxy(this, caller, returnedGroups -> onUpdateGroupDetailsProxyResponse(returnedGroups));
+    }
+
+    private void onUpdateGroupDetailsProxyResponse(List<Group> returnedGroups) {
+        for (int i = 0; i < returnedGroups.size(); i++) {
+            if (Objects.equals(group.getId(), returnedGroups.get(i).getId())) {
+                group = returnedGroups.get(i);
+                break;
+            }
+        }
+
+        buildMemberList();
+    }
+
+    private void buildMemberList() {
+        memberList = new ArrayList<>();
+        List<User> userList = group.getMemberUsers();
+
+        for (int i = 0; i < userList.size(); i++) {
+            User user = userList.get(i);
+
+            Call<User> caller = model.getProxy().getUserById(user.getId());
+            ProxyBuilder.callProxy(this, caller, detailedUser -> onBuildMemberListProxyResponse(detailedUser));
+        }
+    }
+
+    private void onBuildMemberListProxyResponse(User detailedUser) {
+        if (detailedUser != null) {
+            Log.d(TAG, "Showing user on Member list: " + detailedUser.toString());
+
+            memberList.add(detailedUser);
+            populateMemberList();
+        }
     }
 
     private void setupAddUserButton() {
@@ -129,9 +167,9 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void setupListHeader() {
-        ListView memberList = findViewById(R.id.groupDetail_memberList);
-        View headerView = getLayoutInflater().inflate(R.layout.list_members_header, memberList, false);
-        memberList.addHeaderView(headerView);
+        ListView memberListView = findViewById(R.id.groupDetail_memberList);
+        View headerView = getLayoutInflater().inflate(R.layout.list_members_header, memberListView, false);
+        memberListView.addHeaderView(headerView);
     }
 
     @Override
@@ -173,6 +211,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void onAddNewMemberResponse(List<User> listOfMembers) {
+        updateGroupDetails();
         Log.d(TAG, "Added user to group. New group member list:\n\n\n" + listOfMembers.toString());
     }
 
@@ -182,6 +221,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void onRemoveMemberResponse(Void returnNothing) {
+        updateGroupDetails();
         Log.d(TAG, "Removed user from group.");
     }
 }

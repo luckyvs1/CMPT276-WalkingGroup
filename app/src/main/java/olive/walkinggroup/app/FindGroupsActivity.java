@@ -253,21 +253,21 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
     // Temp function to generate User "Bob"
     public static User getBob() {
         User bob = new User();
-        bob.setName("Chris Wong");
-        bob.setId((long) 870);
-        bob.setEmail("chris@wong.com");
+        bob.setName("Bob Bobby");
+        bob.setId((long) 23);
+        bob.setEmail("bob@bobby.com");
 
         List<User> monitorList = new ArrayList<>();
         User bobJr = new User();
-        bobJr.setName("John Smith");
-        bobJr.setEmail("john@smith.com");
-        bobJr.setId((long) 974);
+        bobJr.setName("Bob Jr. Bobby");
+        bobJr.setEmail("bob.jr@bobby.com");
+        bobJr.setId((long) 29);
         monitorList.add(bobJr);
 
         User bobby = new User();
         bobby.setName("Bobby Chan");
         bobby.setEmail("bobby@chan.com");
-        bobby.setId((long) 975);
+        bobby.setId((long) 32);
         monitorList.add(bobby);
 
         bob.setMonitorsUsers(monitorList);

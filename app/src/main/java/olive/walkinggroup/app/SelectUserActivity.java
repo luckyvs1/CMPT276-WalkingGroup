@@ -14,11 +14,15 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
+import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.dataobjects.UserListHelper;
+import olive.walkinggroup.proxy.ProxyBuilder;
+import retrofit2.Call;
 
 /**
  * Display a listView of User to choose from based on currentUser and group
@@ -35,6 +39,7 @@ public class SelectUserActivity extends AppCompatActivity {
     private String headerText;
     private String addOrRemove;
     private UserListHelper userListHelper;
+    private Model model;
 
     public static Intent makeIntent(Context context, Group group, User currentUser, String headerText, String addOrRemove) {
         Intent intent = new Intent(context, SelectUserActivity.class);
@@ -51,11 +56,30 @@ public class SelectUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_user);
 
+        model = Model.getInstance();
         getDataFromIntent();
+        updateGroupDetails();
+    }
+
+    private void updateGroupDetails() {
+        Call<List<Group>> caller = model.getProxy().getGroups();
+        ProxyBuilder.callProxy(this, caller, returnedGroups -> onUpdateGroupDetailsRespond(returnedGroups));
+    }
+
+    private void onUpdateGroupDetailsRespond(List<Group> returnedGroups) {
+        for (int i = 0; i < returnedGroups.size(); i++) {
+            if (Objects.equals(group.getId(), returnedGroups.get(i).getId())) {
+                group = returnedGroups.get(i);
+                break;
+            }
+        }
+
         getUserList();
+        populateUserList();
+
+        getDataFromIntent();
         setupCancelButton();
         initializeText();
-        populateUserList();
         registerItemOnClick();
     }
 

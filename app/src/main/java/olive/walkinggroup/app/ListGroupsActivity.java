@@ -84,7 +84,9 @@ public class ListGroupsActivity extends AppCompatActivity {
         List<Group> leaderGroup = new ArrayList<>();
 
         if (user != null) {
-            leaderGroup = user.getLeadsGroups();
+            if (Objects.equals(user.getId(), model.getCurrentUser().getId())) {
+                leaderGroup = user.getLeadsGroups();
+            }
             List<Group> memberGroup = user.getMemberOfGroups();
             leaderGroup.addAll(memberGroup);
         }
