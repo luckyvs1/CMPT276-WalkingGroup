@@ -134,6 +134,57 @@
         android:orientation="vertical"
         >
 
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/groupDetail_leaderContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            >
+
+            <TextView
+                android:id="@+id/groupDetail_leaderName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:textColor="#000"
+                android:textSize="17sp"
+                />
+
+            <RelativeLayout
+                android:id="@+id/listUsers_monitorTag"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:background="@drawable/background_tag_leader"
+                android:layout_alignParentEnd="true"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/groupListItem_leaderTagText"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="#fff"
+                    android:layout_centerInParent="true"
+                    />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/groupDetail_leaderEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/groupDetail_leaderName"
+                android:layout_marginTop="5dp"
+                />
+
+        </RelativeLayout>
+
+
+
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="24dp"

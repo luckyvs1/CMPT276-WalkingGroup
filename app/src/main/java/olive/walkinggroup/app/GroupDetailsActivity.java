@@ -53,11 +53,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         setContentView(R.layout.activity_group_details);
 
         model = Model.getInstance();
-        // Commented until bug #17 is fixed
         currentUser = model.getCurrentUser();
-
-        // Temporary currentUser for testing (Bob)
-        //currentUser = FindGroupsActivity.getBob();
 
         group = (Group) getIntent().getSerializableExtra("group");
         updateGroupDetails();
@@ -80,8 +76,24 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                 break;
             }
         }
-
+        updateLeaderInfo();
         buildMemberList();
+    }
+
+    private void updateLeaderInfo() {
+        User leader = group.getLeader();
+        if (leader != null) {
+            Call<User> caller = model.getProxy().getUserById(leader.getId());
+            ProxyBuilder.callProxy(this, caller, detailedLeader -> onUpdateLeaderInfoResponse(detailedLeader));
+        }
+    }
+
+    private void onUpdateLeaderInfoResponse(User detailedLeader) {
+        TextView leaderNameView = findViewById(R.id.groupDetail_leaderName);
+        TextView leaderEmailView = findViewById(R.id.groupDetail_leaderEmail);
+
+        leaderNameView.setText(detailedLeader.getName());
+        leaderEmailView.setText(detailedLeader.getEmail());
     }
 
     private void buildMemberList() {
