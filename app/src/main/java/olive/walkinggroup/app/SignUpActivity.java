@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import olive.walkinggroup.R;
@@ -26,6 +27,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        hideLoadingCircle();
         currentUser = new User();
         instance = Model.getInstance();
 
@@ -75,6 +77,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void loginUserGetToken() {
+        showLoadingCircle();
         // Register for token received:
         ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
 
@@ -127,4 +130,32 @@ public class SignUpActivity extends AppCompatActivity {
                 finish();
             }
         });
-}   }
+    }
+
+    private void showLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.signup_loading);
+        Button cancelButton =  (Button) findViewById(R.id.btnCancelSignUp);
+        Button signupButton =  (Button) findViewById(R.id.btnSubmitSignup);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.VISIBLE);
+            cancelButton.setVisibility(View.INVISIBLE);
+            signupButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void hideLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.signup_loading);
+        Button cancelButton =  (Button) findViewById(R.id.btnCancelSignUp);
+        Button signupButton =  (Button) findViewById(R.id.btnSubmitSignup);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
+            cancelButton.setVisibility(View.INVISIBLE);
+            signupButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+}
+
+

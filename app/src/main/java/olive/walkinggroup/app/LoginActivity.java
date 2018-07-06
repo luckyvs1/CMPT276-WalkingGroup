@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import olive.walkinggroup.R;
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        hideLoadingCircle();
         instance = Model.getInstance();
         user = new User();
         tokenAvailable = isTokenAvailable();
@@ -49,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         Boolean validToken = false;
         String token = getFromSharedPreferences("Token");
         if(token != null){
+            showLoadingCircle();
             instance.updateProxy(token);
             validToken = true;
         }
@@ -68,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         if(instance.getCurrentUser().getId() != null) {
             //dialog.dismiss();
             Toast.makeText(LoginActivity.this, "Logged in as:  " + instance.getCurrentUser().getName(), Toast.LENGTH_LONG);
+            hideLoadingCircle();
             goToDashBoardActivity();
         } else {
             Toast.makeText(LoginActivity.this, R.string.loginError, Toast.LENGTH_LONG).show();
@@ -133,6 +137,8 @@ public class LoginActivity extends AppCompatActivity {
                 //Clear user input
                 clearUserInput(R.id.txtGetEmail);
                 clearUserInput(R.id.txtGetPassword);
+
+                hideLoadingCircle();
             }
         });
     }
@@ -185,5 +191,31 @@ public class LoginActivity extends AppCompatActivity {
         //Clear user input
         clearUserInput(R.id.txtGetEmail);
         clearUserInput(R.id.txtGetPassword);
+        hideLoadingCircle();
+    }
+
+    private void showLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.login_loading);
+        Button loginButton =  (Button) findViewById(R.id.btnLogin);
+        Button signupButton =  (Button) findViewById(R.id.btnSignUp);
+
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.VISIBLE);
+            loginButton.setVisibility(View.INVISIBLE);
+            signupButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void hideLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.login_loading);
+        Button loginButton =  (Button) findViewById(R.id.btnLogin);
+        Button signupButton =  (Button) findViewById(R.id.btnSignUp);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
+            loginButton.setVisibility(View.VISIBLE);
+            signupButton.setVisibility(View.VISIBLE);
+        }
     }
 }
