@@ -8,8 +8,8 @@
     <string name="choose_meeting_place_btn">Choose meeting place</string>
     <string name="ok_btn">OK</string>
     <string name="cancel_btn">Cancel</string>
-    <string name="selected_destination_location_none">Selected destination location: None</string>
-    <string name="selected_meeting_place_none">Selected meeting place: None</string>
+    <string name="selected_destination_location_none">No destination location selected</string>
+    <string name="selected_meeting_place_none">No meeting place selected</string>
     <string name="title_activity_sign_up_activity">SignUpActivity</string>
 
     <!--API Key for Group Olive obtained from: https://cmpt276-1177-bf.cmpt.sfu.ca:8184/web/index.html-->
@@ -56,4 +56,11 @@
     <string name="findGroup_headerTitle">Find a group</string>
     <string name="loginError">Error getting user details, please re-login in</string>
     <string name="invalidInput">Please enter a valid value!</string>
+    <string name="create_group_serverReply">Server replied with group:</string>
+    <string name="create_group_chooseMeetingPlace">Please choose a meeting place</string>
+    <string name="create_group_destPlace">Please choose a destination place</string>
+    <string name="create_group_enterName">Please enter a group name</string>
+    <string name="create_group_latCaption">Lat:</string>
+    <string name="create_group_lngCaption">Long:</string>
+    <string name="create_group_errorMsg">Error create group, please logout and login and try again</string>
 </resources>
