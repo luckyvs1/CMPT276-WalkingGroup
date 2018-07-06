@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,6 +35,7 @@ import retrofit2.Call;
 public class SelectUserActivity extends AppCompatActivity {
 
     public static final String SELECT_USER_ACTIVITY_RETURN = "SelectUserActivity: return selected User";
+    private static final String TAG = "SelectUserActivity";
     private Group group;
     private User currentUser;
     private List<User> userIdOnlyList;
@@ -64,6 +66,7 @@ public class SelectUserActivity extends AppCompatActivity {
         getDataFromIntent();
         initializeHeaderText();
         updateGroupDetails();
+        registerItemOnClick();
     }
 
     private void updateGroupDetails() {
@@ -82,7 +85,6 @@ public class SelectUserActivity extends AppCompatActivity {
         getUserList();
         setupCancelButton();
         initializeMessage();
-        registerItemOnClick();
     }
 
     private void getDataFromIntent() {
@@ -113,9 +115,6 @@ public class SelectUserActivity extends AppCompatActivity {
                 }
                 userIdOnlyList = addableUsers;
 
-                if (userIdOnlyList.size() == 0) {
-                    hideLoadingCircle();
-                }
                 getDetailedUserList();
                 break;
 
@@ -134,18 +133,13 @@ public class SelectUserActivity extends AppCompatActivity {
                         }
                     }
                 }
-
                 userIdOnlyList = removableUsers;
 
-                if (userIdOnlyList.size() == 0) {
-                    hideLoadingCircle();
-                }
                 getDetailedUserList();
                 break;
 
             default:
                 userIdOnlyList = new ArrayList<>();
-                hideLoadingCircle();
                 break;
         }
     }
@@ -197,7 +191,8 @@ public class SelectUserActivity extends AppCompatActivity {
         ListView userListView = findViewById(R.id.selectUser_userList);
         userListView.setAdapter(adapter);
 
-        hideLoadingCircle();
+        registerItemOnClick();
+        Log.d(TAG, "populateUserList: finish");
     }
 
     private void registerItemOnClick() {
@@ -207,6 +202,7 @@ public class SelectUserActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 User userClicked = userDetailedList.get(position);
 
+                Log.d(TAG, "Clicked user: " + userClicked);
                 // Pass back userClicked to GroupDetailsActivity
                 Intent intent = new Intent();
                 intent.putExtra(SELECT_USER_ACTIVITY_RETURN, userClicked);
@@ -214,13 +210,5 @@ public class SelectUserActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    private void hideLoadingCircle() {
-        RelativeLayout loadingCircle = findViewById(R.id.selectUser_loading);
-
-        if (loadingCircle != null) {
-            loadingCircle.setVisibility(View.GONE);
-        }
     }
 }
