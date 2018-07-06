@@ -33,8 +33,8 @@ import retrofit2.Call;
 
 public class ListGroupsActivity extends AppCompatActivity {
     public static final String TAG = "ListGroupsActivity";
-    private Model model;
-    private User currentUser;
+    private Model model = Model.getInstance();
+    private User currentUser = model.getCurrentUser();
     private List<Group> userGroups;
     private List<Group> monitorUserGroupsList;
 
@@ -50,6 +50,7 @@ public class ListGroupsActivity extends AppCompatActivity {
 
         // Guard against null User object, in case currentUser is null
         if (currentUser != null) {
+            Log.d(TAG, "onCreate: currentUser leads group:\n" + currentUser.getLeadsGroups());
             updateUserInfo();
         }
     }
@@ -71,6 +72,10 @@ public class ListGroupsActivity extends AppCompatActivity {
 
     private void onUpdateUserInfoResponse(User updatedUser) {
         currentUser = updatedUser;
+
+        if (currentUser.getMonitorsUsers().size() == 0) {
+            getGroupDetails();
+        }
         getCurrentUserGroupList();
     }
 
@@ -89,6 +94,9 @@ public class ListGroupsActivity extends AppCompatActivity {
             }
         }
         userGroups = groupList;
+        if (currentUser.getMonitorsUsers().size() == 0) {
+            getGroupDetails();
+        }
         getMonitorsUserListWithFullDetails();
     }
 
