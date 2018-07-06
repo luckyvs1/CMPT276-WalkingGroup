@@ -38,16 +38,6 @@ public class MonitorActivity extends AppCompatActivity {
 
         setupEditMonitorsMeButton();
         setupIMonitorButton();
-        setupRefreshButton();
-    }
-
-    public static User getDummy() {
-        User dummy = new User();
-        dummy.setName("Bob");
-        dummy.setId((long) 20);
-        dummy.setEmail("bob@bobby.com");
-
-        return dummy;
     }
 
     //New Code Starts
@@ -116,17 +106,6 @@ public class MonitorActivity extends AppCompatActivity {
                 android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
                 editMonitoredByUserFragment dialog = new editMonitoredByUserFragment();
                 dialog.show(manager, "EditDialog");
-            }
-        });
-    }
-
-    private void setupRefreshButton() {
-        Button btn = findViewById(R.id.refreshBtn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                verifyMonitoredUsersList();
-                verifyIMonitorList();
             }
         });
     }

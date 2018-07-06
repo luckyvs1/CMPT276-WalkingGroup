@@ -112,6 +112,7 @@ public class User extends IdItemBase implements Serializable{
     @JsonIgnoreProperties
     public String[] getMonitorsUsersDescriptions() {
         int size =monitorsUsers.size();
+        monitorsUsers = UserListHelper.sortUsers(monitorsUsers);
         String[] descriptions = new String[(size)];
         for (int i = 0; i < size; i++) {
             User user = monitorsUsers.get(i);
@@ -123,26 +124,13 @@ public class User extends IdItemBase implements Serializable{
     @JsonIgnoreProperties
     public String[] getMonitoredByUsersDescriptions() {
         int size = monitoredByUsers.size();
+        monitoredByUsers = UserListHelper.sortUsers(monitoredByUsers);
         String[] descriptions = new String[(size)];
         for (int i = 0; i < size; i++) {
             User user = monitoredByUsers.get(i);
             descriptions[i] = "Name: "+ user.getName() + "\n" + "Email: "+ user.getEmail();
         }
         return descriptions;
-    }
-
-    @JsonIgnoreProperties
-    public Integer checkEmailPosInList(String email, List <User> currentList){
-        Integer n = null;
-        for (int i = 0 ; i<currentList.size();i++){
-            User currentUser = currentList.get(i);
-            String userEmail = currentUser.getEmail();
-            if (userEmail.equals(email)){
-                n = new Integer(i);
-                break;
-            }
-        }
-        return n;
     }
 
     // Groups
