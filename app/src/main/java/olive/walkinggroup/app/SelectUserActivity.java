@@ -111,8 +111,11 @@ public class SelectUserActivity extends AppCompatActivity {
                         }
                     }
                 }
-
                 userIdOnlyList = addableUsers;
+
+                if (userIdOnlyList.size() == 0) {
+                    hideLoadingCircle();
+                }
                 getDetailedUserList();
                 break;
 
@@ -133,11 +136,16 @@ public class SelectUserActivity extends AppCompatActivity {
                 }
 
                 userIdOnlyList = removableUsers;
+
+                if (userIdOnlyList.size() == 0) {
+                    hideLoadingCircle();
+                }
                 getDetailedUserList();
                 break;
 
             default:
                 userIdOnlyList = new ArrayList<>();
+                hideLoadingCircle();
                 break;
         }
     }
