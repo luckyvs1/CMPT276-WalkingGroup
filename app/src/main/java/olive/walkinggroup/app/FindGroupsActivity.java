@@ -3,31 +3,25 @@ package olive.walkinggroup.app;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import java.util.List;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.CurrentLocationHelper;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.proxy.ProxyBuilder;
@@ -47,13 +41,8 @@ import retrofit2.Call;
 public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private static final String TAG = "FindGroupsActivity";
 
-    public static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
-    public static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-    public static final int LOCATION_PERMISSION_REQUEST_CODE = 8080;
-    private static final float DEFAULT_ZOOM = 1f;
 
-    private Boolean locationPermissionGranted = false;
-    private FusedLocationProviderClient fusedLocationProviderClient;
+    private CurrentLocationHelper currentLocationHelper;
 
     private GoogleMap mMap;
     private Model model;
@@ -64,9 +53,11 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         setContentView(R.layout.activity_find_group);
 
         model = Model.getInstance();
+        initializeMap();
         setupMyLocationButton();
         setupCreateGroupButton();
-        getLocationPermission();
+        currentLocationHelper = new CurrentLocationHelper(this);
+        currentLocationHelper.getLocationPermission();
     }
 
     private void setupMyLocationButton() {
@@ -75,7 +66,8 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Centering on current location.");
-                getDeviceLocation(true);
+                currentLocationHelper.setAnimate(true);
+                currentLocationHelper.centerCameraAtCurrentLocationIfFound(mMap);
             }
         });
     }
@@ -91,37 +83,15 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         });
     }
 
-    // Request permission from user to locate their current location
-    private void getLocationPermission() {
-        String[] permissions = {FINE_LOCATION, COARSE_LOCATION};
-
-        Log.d(TAG, "getLocationPermission: getting permission...");
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED)
-        {
-            if (ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED)
-            {
-                locationPermissionGranted = true;
-
-                initializeMap();
-            } else {
-                ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-            }
-        } else {
-            ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-        }
-    }
-
     // Refresh activity after user grants permission
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        locationPermissionGranted = false;
+        currentLocationHelper.setLocationPermissionGranted(false);
 
         switch (requestCode) {
-            case LOCATION_PERMISSION_REQUEST_CODE:
+            case CurrentLocationHelper.LOCATION_PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    locationPermissionGranted = true;
+                    currentLocationHelper.setLocationPermissionGranted(true);
                     Log.d(TAG, "onRequestPermissionsResult: permission granted. Restarting activity...");
                     recreate();
                 }
@@ -133,52 +103,13 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         mapFragment.getMapAsync(FindGroupsActivity.this);
     }
 
-    private void getDeviceLocation(boolean animate) {
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
-        try {
-            if (locationPermissionGranted) {
-                Task location = fusedLocationProviderClient.getLastLocation();
-
-                location.addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            // Found location
-                            Log.d(TAG, "getDeviceLocation: onComplete: location found.");
-                            Location currentLocation = (Location) task.getResult();
-
-                            if (currentLocation != null) {
-                                LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                                // Center camera on current location
-                                moveCamera(currentLatLng, DEFAULT_ZOOM, animate);
-                            }
-                        } else {
-                            // Cannot find current location
-                            Log.d(TAG, "getDeviceLocation: onComplete: location not found.");
-                        }
-                    }
-                });
-            }
-        } catch (SecurityException e) {
-            Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage());
-        }
-    }
-
-    private void moveCamera(LatLng latLng, float zoom, boolean animate) {
-        if (animate) {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-        } else {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-        }
-    }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        if (locationPermissionGranted) {
-            getDeviceLocation(false);
+        if (currentLocationHelper.getLocationPermissionGranted()) {
+            currentLocationHelper.setAnimate(false);
+            currentLocationHelper.centerCameraAtCurrentLocationIfFound(mMap);
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED
@@ -194,6 +125,8 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
             mMap.setOnMarkerClickListener(this);
         }
     }
+
+
 
     private void populateMapWithMarkers() {
         Call<List<Group>> caller = model.getProxy().getGroups();
