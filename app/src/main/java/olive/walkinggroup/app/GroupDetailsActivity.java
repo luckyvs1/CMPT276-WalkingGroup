@@ -159,20 +159,25 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Mark meet-up location on map as Green Marker
-        Marker startPoint = mMap.addMarker(new MarkerOptions()
-                .position(group.getStartPoint())
-                .title("Meet-up")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-        startPoint.showInfoWindow();
+        if (group.getRouteLngArray() != null && group.getRouteLatArray() != null) {
+            if (group.getRouteLatArray().length >=2 && group.getRouteLngArray().length >= 2) {
 
-        // Mark walk destination on map as Red Marker
-        Marker endPoint = mMap.addMarker(new MarkerOptions()
-                .position(group.getEndPoint())
-                .title("Destination"));
+                // Mark meet-up location on map as Green Marker
+                Marker startPoint = mMap.addMarker(new MarkerOptions()
+                        .position(group.getStartPoint())
+                        .title("Meet-up")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                startPoint.showInfoWindow();
 
-        // Focus camera on meet-up location
-        moveCamera(group.getStartPoint(), DEFAULT_ZOOM);
+                // Mark walk destination on map as Red Marker
+                Marker endPoint = mMap.addMarker(new MarkerOptions()
+                        .position(group.getEndPoint())
+                        .title("Destination"));
+
+                // Focus camera on meet-up location
+                moveCamera(group.getStartPoint(), DEFAULT_ZOOM);
+            }
+        }
     }
 
     private void populateMemberList() {
