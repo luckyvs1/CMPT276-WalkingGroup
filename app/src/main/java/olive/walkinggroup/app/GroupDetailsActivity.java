@@ -1,37 +1,48 @@
 package olive.walkinggroup.app;
 
-        import android.app.ActionBar;
-        import android.app.Activity;
-        import android.content.Intent;
-        import android.support.v7.app.AppCompatActivity;
-        import android.os.Bundle;
-        import android.util.Log;
-        import android.view.View;
-        import android.widget.ArrayAdapter;
-        import android.widget.ListView;
-        import android.widget.RelativeLayout;
-        import android.widget.TextView;
+import android.app.ActionBar;
+import android.app.Activity;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-        import com.google.android.gms.maps.CameraUpdateFactory;
-        import com.google.android.gms.maps.GoogleMap;
-        import com.google.android.gms.maps.OnMapReadyCallback;
-        import com.google.android.gms.maps.SupportMapFragment;
-        import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-        import com.google.android.gms.maps.model.LatLng;
-        import com.google.android.gms.maps.model.Marker;
-        import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-        import java.util.ArrayList;
-        import java.util.List;
-        import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-        import olive.walkinggroup.R;
-        import olive.walkinggroup.dataobjects.Group;
-        import olive.walkinggroup.dataobjects.Model;
-        import olive.walkinggroup.dataobjects.User;
-        import olive.walkinggroup.dataobjects.UserListHelper;
-        import olive.walkinggroup.proxy.ProxyBuilder;
-        import retrofit2.Call;
+import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.Group;
+import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.User;
+import olive.walkinggroup.dataobjects.UserListHelper;
+import olive.walkinggroup.proxy.ProxyBuilder;
+import retrofit2.Call;
+
+/**
+ * GroupDetailsActivity shows the details of a given group, including:
+ *  - Group name (description) on top
+ *  - Group leader's name and email
+ *  - Group member list (if has members)
+ * User is able to join, quit or remove users from the group using the buttons on top,
+ * given that they have the correct permission to do so.
+ * Clicking on add/remove buttons will launch SelectUserActivity, with addable/removable users
+ * relative to currentUser on a list.
+ */
 
 public class GroupDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -78,6 +89,10 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         }
         updateLeaderInfo();
         initializeText();
+
+        if (group.getMemberUsers().size() == 0) {
+            hideLoadingCircle();
+        }
     }
 
     private void updateLeaderInfo() {
@@ -280,11 +295,17 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private void showLoadingCircle() {
         RelativeLayout loadingCircle = findViewById(R.id.groupDetail_loading);
-        loadingCircle.setVisibility(View.VISIBLE);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.VISIBLE);
+        }
     }
 
     private void hideLoadingCircle() {
         RelativeLayout loadingCircle = findViewById(R.id.groupDetail_loading);
-        loadingCircle.setVisibility(View.GONE);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
+        }
     }
 }

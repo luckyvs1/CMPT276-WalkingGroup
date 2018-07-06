@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -187,6 +188,8 @@ public class SelectUserActivity extends AppCompatActivity {
         ArrayAdapter<User> adapter = userListHelper.getAdapter();
         ListView userListView = findViewById(R.id.selectUser_userList);
         userListView.setAdapter(adapter);
+
+        hideLoadingCircle();
     }
 
     private void registerItemOnClick() {
@@ -203,5 +206,13 @@ public class SelectUserActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void hideLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.selectUser_loading);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
+        }
     }
 }

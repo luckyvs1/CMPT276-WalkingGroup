@@ -235,6 +235,9 @@ public class ListGroupsActivity extends AppCompatActivity {
 
     private void hideLoadingCircle() {
         RelativeLayout loadingCircle = findViewById(R.id.listGroups_loading);
-        loadingCircle.setVisibility(View.GONE);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
+        }
     }
 }
