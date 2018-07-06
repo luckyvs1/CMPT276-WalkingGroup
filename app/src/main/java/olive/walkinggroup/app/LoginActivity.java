@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         tokenAvailable = isTokenAvailable();
 
         if(tokenAvailable){
-            Toast.makeText(LoginActivity.this, "Logging in, please wait!", Toast.LENGTH_LONG);
+            Toast.makeText(LoginActivity.this, "Logging in, please wait!", Toast.LENGTH_LONG).show();
             String userEmail = getFromSharedPreferences("UserEmail");
             user.setEmail(userEmail);
             updateCurrentUser(userEmail);
@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         // If the current user is not null
         if(instance.getCurrentUser().getId() != null) {
             //dialog.dismiss();
-            Toast.makeText(LoginActivity.this, "Logged in as:  " + instance.getCurrentUser().getName(), Toast.LENGTH_LONG);
+            Toast.makeText(LoginActivity.this, "Logged in as:  " + instance.getCurrentUser().getName(), Toast.LENGTH_LONG).show();
             hideLoadingCircle();
             goToDashBoardActivity();
         } else {

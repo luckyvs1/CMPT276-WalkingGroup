@@ -104,7 +104,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void onReceiveToken(String token) {
         // Replace the current proxy with one that uses the token!
         instance.updateProxy(token);
-        Toast.makeText(SignUpActivity.this, "Logged in as:  " + currentUser.getName(), Toast.LENGTH_LONG);
+        Toast.makeText(SignUpActivity.this, "Logged in as:  " + currentUser.getName(), Toast.LENGTH_LONG).show();
 
         String userEmail = instance.getCurrentUser().getEmail();
 
