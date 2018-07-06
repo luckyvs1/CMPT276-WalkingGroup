@@ -18,6 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Objects;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.CurrentLocationHelper;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
@@ -49,7 +51,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     private static final int REQUEST_CODE_ADD = 6568;
     private static final int REQUEST_CODE_REMOVE = 8269;
     public static final String TAG = "GroupDetailsActivity";
-    public static final float DEFAULT_ZOOM = 1f;
+    public static final float DEFAULT_ZOOM = CurrentLocationHelper.DEFAULT_ZOOM;
 
     private GoogleMap mMap;
     private Group group;
@@ -201,9 +203,19 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                         .title("Destination"));
 
                 // Focus camera on meet-up location
-                moveCamera(group.getStartPoint(), DEFAULT_ZOOM);
+                //moveCamera(group.getStartPoint(), DEFAULT_ZOOM);
+
+                moveCameraToShowPoints(group.getStartPoint(), group.getEndPoint());
             }
         }
+    }
+
+    private void moveCameraToShowPoints(LatLng point1, LatLng point2) {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(point1);
+        builder.include(point2);
+        LatLngBounds bounds = builder.build();
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200, 200, 0));
     }
 
     private void populateMemberList() {

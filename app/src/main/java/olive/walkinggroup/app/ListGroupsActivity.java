@@ -57,7 +57,8 @@ public class ListGroupsActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
             if (currentUser != null) {
-                recreate();
+                showLoadingCircle();
+                updateUserInfo();
             }
         }
     }
@@ -231,6 +232,14 @@ public class ListGroupsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void showLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.listGroups_loading);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.VISIBLE);
+        }
     }
 
     private void hideLoadingCircle() {
