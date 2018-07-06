@@ -18,20 +18,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".app.LoginActivity">
+        <activity android:name=".app.LoginActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboard|orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".app.DashBoardActivity" />
-        <activity android:name=".app.SignUpActivity" />
+        <activity android:name=".app.DashBoardActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboard|orientation|keyboardHidden|screenSize"/>
+        <activity android:name=".app.SignUpActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboard|orientation|keyboardHidden|screenSize"/>
         <activity android:name=".app.MonitorActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".dataobjects.Map" />
-        <activity android:name=".app.CreateGroupActivity" />
-        <activity android:name=".app.CreateGroupMapsActivity" />
+        <activity android:name=".app.CreateGroupActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboard|orientation|keyboardHidden|screenSize"/>
+        <activity android:name=".app.CreateGroupMapsActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboard|orientation|keyboardHidden|screenSize"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -46,16 +58,24 @@
 
         <activity
             android:name=".app.FindGroupsActivity"
-            android:label="@string/title_activity_join_group">
+            android:label="@string/title_activity_join_group"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboard|orientation|keyboardHidden|screenSize">
         </activity>
         <activity android:name=".app.GroupDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboard|orientation|keyboardHidden|screenSize">
         </activity>
         <activity android:name=".app.ListGroupsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboard|orientation|keyboardHidden|screenSize">
         </activity>
         <activity android:name=".app.SelectUserActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboard|orientation|keyboardHidden|screenSize">
         </activity>
     </application>
 

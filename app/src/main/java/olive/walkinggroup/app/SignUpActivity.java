@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
@@ -94,6 +95,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void onReceiveToken(String token) {
         // Replace the current proxy with one that uses the token!
         instance.updateProxy(token);
+        Toast.makeText(SignUpActivity.this, "Logged in as:  " + currentUser.getName(), Toast.LENGTH_LONG);
 
         String userEmail = instance.getCurrentUser().getEmail();
 

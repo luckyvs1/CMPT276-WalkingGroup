@@ -21,10 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     // Instantiating variables
     private Model instance;
     private User user;
-
-    // Dialog
-//    android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-//    LoginMessageFragment dialog = new LoginMessageFragment();
+    private Boolean tokenAvailable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,34 +29,34 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         instance = Model.getInstance();
-
         user = new User();
+        tokenAvailable = isTokenAvailable();
 
-        checkUserToken();
+        if(tokenAvailable){
+            Toast.makeText(LoginActivity.this, "Logging in, please wait!", Toast.LENGTH_LONG);
+            String userEmail = getFromSharedPreferences("UserEmail");
+            user.setEmail(userEmail);
+            updateCurrentUser(userEmail);
+        }
+
         setupLoginBtn();
         setupSignupBtn();
 
     }
 
     // By pass login screen if the user already has a token
-    private void checkUserToken() {
+    private Boolean isTokenAvailable() {
+        Boolean validToken = false;
         String token = getFromSharedPreferences("Token");
-        String userEmail = getFromSharedPreferences("UserEmail");
         if(token != null){
-
-            showLoggingInMessage();
-            user.setEmail(userEmail);
             instance.updateProxy(token);
-            updateCurrentUser(userEmail);
+            validToken = true;
         }
-    }
 
-    private void showLoggingInMessage() {
-        //dialog.show(manager, "MessageDialog");
+        return validToken;
     }
 
     private void updateCurrentUser(String userEmail) {
-
         Call<User> caller = instance.getProxy().getUserByEmail(userEmail);
         ProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> getUserByEmailResponse(returnedUser));
     }
@@ -70,22 +67,20 @@ public class LoginActivity extends AppCompatActivity {
         // If the current user is not null
         if(instance.getCurrentUser().getId() != null) {
             //dialog.dismiss();
+            Toast.makeText(LoginActivity.this, "Logged in as:  " + instance.getCurrentUser().getName(), Toast.LENGTH_LONG);
             goToDashBoardActivity();
         } else {
-            Toast.makeText(LoginActivity.this, "Error getting user details, please re-login in", Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this, R.string.loginError, Toast.LENGTH_LONG).show();
         }
     }
 
     private void setupLoginBtn() {
         Button loginBtn = (Button) findViewById(R.id.btnLogin);
-
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // Set the user details
                 setUserDetails();
-
                 // Make call
                 loginUserGetToken();
             }
@@ -99,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
         return extractedResource;
     }
 
-    private void setUserInput(int userInputResourceID) {
+    private void clearUserInput(int userInputResourceID) {
         EditText userText = (EditText) findViewById(userInputResourceID);
         userText.setText("");
     }
@@ -134,6 +129,10 @@ public class LoginActivity extends AppCompatActivity {
                 // Go to the sign up activity
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
+
+                //Clear user input
+                clearUserInput(R.id.txtGetEmail);
+                clearUserInput(R.id.txtGetPassword);
             }
         });
     }
@@ -182,6 +181,9 @@ public class LoginActivity extends AppCompatActivity {
         // Android back button must go to the loginActivity not signUpActivity
         Intent intent = new Intent(LoginActivity.this, DashBoardActivity.class);
         startActivity(intent);
-        finish();
+
+        //Clear user input
+        clearUserInput(R.id.txtGetEmail);
+        clearUserInput(R.id.txtGetPassword);
     }
 }
