@@ -60,4 +60,5 @@
     <string name="create_group_enterName">Please enter a group name</string>
     <string name="create_group_latCaption">Lat:</string>
     <string name="create_group_lngCaption">Long:</string>
+    <string name="create_group_errorMsg">Error create group, please logout and login and try again</string>
 </resources>

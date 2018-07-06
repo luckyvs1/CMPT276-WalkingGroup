@@ -129,21 +129,21 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                 if (validateInput()) {
 
-                    // TODO: testUser to be replaced with currentUser object.
-                    User testUser = new User();
-                    //testUser.setId((long) 365);
+                    if (user != null) {
+                        User testUser = new User();
+                        testUser.setId(user.getId());
 
-                    testUser.setId(user.getId());
+                        Group group = new Group(groupName,
+                                groupName,
+                                testUser,
+                                new double[]{startPoint.latitude, endPoint.latitude},
+                                new double[]{startPoint.longitude, endPoint.longitude}
+                                , null);
 
-                    Group group = new Group(groupName,
-                            groupName,
-                            testUser,
-                            new double[]{startPoint.latitude, endPoint.latitude},
-                            new double[]{startPoint.longitude, endPoint.longitude}
-                            , null);
-
-                    Log.i("MyApp", "" + group.toString());
-                    pushGroupObjectToServer(group);
+                        pushGroupObjectToServer(group);
+                    } else {
+                        notifyUserViaLogAndToast(getString(R.string.create_group_errorMsg));
+                    }
                     finish();
                 }
             }
@@ -153,7 +153,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     private boolean validateInput() {
         Boolean nameEntered = checkNameInput();
         Boolean destPlaceEntered = checkLocationInput(endPoint, TYPE_DEST_LOCATION);
-        Boolean meetingPlaceEntered =checkLocationInput(startPoint, TYPE_MEETING_PLACE);
+        Boolean meetingPlaceEntered = checkLocationInput(startPoint, TYPE_MEETING_PLACE);
 
         return nameEntered && destPlaceEntered && meetingPlaceEntered;
     }
