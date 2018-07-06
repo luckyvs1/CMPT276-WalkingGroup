@@ -4,27 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.model.Dash;
-
-import org.w3c.dom.Text;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
-import olive.walkinggroup.dataobjects.User;
-import olive.walkinggroup.proxy.ProxyBuilder;
-import olive.walkinggroup.proxy.WGServerProxy;
-import retrofit2.Call;
 
 public class DashBoardActivity extends AppCompatActivity {
-
-    private WGServerProxy proxy;
+    
     private Model instance;
 
     @Override
@@ -32,56 +19,22 @@ public class DashBoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
 
+        instance = Model.getInstance(); 
+
         setupLogoutButton();
-        createToMonitorButton();
-        createToFindGroupsButton();
-        createToCreateGroupButton();
-
-        instance = Model.getInstance();
-
-        createToViewMyGroupsButton();
+        setupSimpleButtonActivityChange(R.id.toMonitor, MonitorActivity.class);
+        setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class);
+        setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class);
+        setupSimpleButtonActivityChange(R.id.dashboard_viewMyGroupsBtn, ListGroupsActivity.class);
 
     }
 
-    private void createToMonitorButton() {
-        Button btn = (Button)findViewById(R.id.toMonitor);
+    private void setupSimpleButtonActivityChange(int buttonId, Class activityName) {
+        Button btn = (Button) findViewById(buttonId);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DashBoardActivity.this, MonitorActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void createToFindGroupsButton() {
-        Button btn = (Button)findViewById(R.id.toMap);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashBoardActivity.this, FindGroupsActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void createToCreateGroupButton() {
-        Button btn = (Button)findViewById(R.id.toCreateGroup);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashBoardActivity.this, CreateGroupActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void createToViewMyGroupsButton() {
-        Button btn = findViewById(R.id.dashboard_viewMyGroupsBtn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DashBoardActivity.this, ListGroupsActivity.class);
+                Intent intent = new Intent(DashBoardActivity.this, activityName);
                 startActivity(intent);
             }
         });
