@@ -32,7 +32,7 @@ public class CurrentLocationHelper
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-    private static final float DEFAULT_ZOOM = 1f;
+    public static final float DEFAULT_ZOOM = 14f;
 
 
     private Boolean animate;
