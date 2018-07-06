@@ -78,15 +78,18 @@ public class UserListHelper {
     }
 
     private void displayTag(View itemView, User user) {
-        // Hide the youTag if currentUser is not user (compared by Id)
-        if (!(Objects.equals(currentUser.getId(), user.getId()))) {
-            RelativeLayout youTag = itemView.findViewById(R.id.listUsers_youTag);
-            youTag.setVisibility(View.GONE);
+        RelativeLayout youTag = itemView.findViewById(R.id.listUsers_youTag);
+        youTag.setVisibility(View.GONE);
+
+        RelativeLayout monitorTag = itemView.findViewById(R.id.listUsers_monitorTag);
+        monitorTag.setVisibility(View.GONE);
+
+        if ((Objects.equals(currentUser.getId(), user.getId()))) {
+            youTag.setVisibility(View.VISIBLE);
         }
-        // Hide the monitorTag if user is not on monitor list of currentUser
-        if (!(isOnMonitorsUserList(currentUser, user))) {
-            RelativeLayout monitorTag = itemView.findViewById(R.id.listUsers_monitorTag);
-            monitorTag.setVisibility(View.GONE);
+
+        if ((isOnMonitorsUserList(currentUser, user))) {
+            monitorTag.setVisibility(View.VISIBLE);
         }
     }
 
@@ -100,10 +103,7 @@ public class UserListHelper {
             idList.add(id);
         }
 
-        if (user.getId() == null) {
-            return false;
-        }
-        return (idList.contains(user.getId().intValue()));
+        return user.getId() != null && (idList.contains(user.getId().intValue()));
     }
 
 

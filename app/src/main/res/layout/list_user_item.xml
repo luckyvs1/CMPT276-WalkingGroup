@@ -33,7 +33,6 @@
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:background="@drawable/background_tag_monitor"
-            android:layout_alignParentEnd="true"
             >
 
             <TextView
@@ -53,7 +52,6 @@
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:background="@drawable/background_tag_you"
-            android:layout_alignParentEnd="true"
             >
 
             <TextView
