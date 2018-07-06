@@ -180,6 +180,9 @@ public class SelectUserActivity extends AppCompatActivity {
     }
 
     private void populateUserList() {
+        // Sort user list
+        userDetailedList = UserListHelper.sortUsers(userDetailedList);
+
         userListHelper = new UserListHelper(SelectUserActivity.this, userDetailedList, currentUser);
         ArrayAdapter<User> adapter = userListHelper.getAdapter();
         ListView userListView = findViewById(R.id.selectUser_userList);
