@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -48,9 +47,7 @@ public class ListGroupsActivity extends AppCompatActivity {
         userGroups = new ArrayList<>();
         monitorUserGroupsList = new ArrayList<>();
 
-        // Guard against null User object, in case currentUser is null
         if (currentUser != null) {
-            Log.d(TAG, "onCreate: currentUser leads group:\n" + currentUser.getLeadsGroups());
             updateUserInfo();
         }
     }
@@ -60,7 +57,7 @@ public class ListGroupsActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
             if (currentUser != null) {
-                updateUserInfo();
+                recreate();
             }
         }
     }
@@ -94,10 +91,14 @@ public class ListGroupsActivity extends AppCompatActivity {
             }
         }
         userGroups = groupList;
-        if (currentUser.getMonitorsUsers().size() == 0) {
-            getGroupDetails();
+        if (currentUser != null) {
+            if (currentUser.getMonitorsUsers() != null) {
+                if (currentUser.getMonitorsUsers().size() == 0) {
+                    getGroupDetails();
+                }
+                getMonitorsUserListWithFullDetails();
+            }
         }
-        getMonitorsUserListWithFullDetails();
     }
 
     private void getMonitorsUserListWithFullDetails() {
@@ -159,8 +160,9 @@ public class ListGroupsActivity extends AppCompatActivity {
 
     private void populateGroupList() {
         ArrayAdapter<Group> adapter = new GroupListAdapter();
-        ListView groupList = findViewById(R.id.viewMyGroups_groupList);
+        ListView groupList = findViewById(R.id.listGroups_groupList);
         groupList.setAdapter(adapter);
+        hideLoadingCircle();
     }
 
     private class GroupListAdapter extends ArrayAdapter<Group> {
@@ -218,7 +220,7 @@ public class ListGroupsActivity extends AppCompatActivity {
     }
 
     private void registerItemOnClick() {
-        ListView groupList = findViewById(R.id.viewMyGroups_groupList);
+        ListView groupList = findViewById(R.id.listGroups_groupList);
         groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -229,5 +231,10 @@ public class ListGroupsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void hideLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.listGroups_loading);
+        loadingCircle.setVisibility(View.GONE);
     }
 }

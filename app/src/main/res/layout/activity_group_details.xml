@@ -163,6 +163,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignBottom="@id/groupDetail_leaderName"
+                android:gravity="end"
                 >
 
                 <RelativeLayout
@@ -176,6 +177,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/groupListItem_leaderTagText"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:textColor="#fff"
+                        android:layout_centerInParent="true"
+                        />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/groupDetail_youTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:background="@drawable/background_tag_you"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/listUsers_youTag"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
                         android:textColor="#fff"
@@ -240,9 +261,26 @@
                 >
             </ListView>
 
+            <!--
+            Loading progress bar. Using code from:
+            https://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff
+            -->
+
+            <RelativeLayout
+                android:id="@+id/groupDetail_loading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                >
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    />
+            </RelativeLayout>
+
 
         </RelativeLayout>
-
     </LinearLayout>
-
 </LinearLayout>

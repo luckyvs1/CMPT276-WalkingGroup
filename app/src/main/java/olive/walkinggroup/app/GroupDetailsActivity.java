@@ -61,7 +61,6 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
         setupAddUserButton();
         setupRemoveUserButton();
-        initializeText();
         initializeMap();
     }
 
@@ -78,7 +77,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
             }
         }
         updateLeaderInfo();
-        buildMemberList();
+        initializeText();
     }
 
     private void updateLeaderInfo() {
@@ -95,6 +94,9 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
         leaderNameView.setText(detailedLeader.getName());
         leaderEmailView.setText(detailedLeader.getEmail());
+
+        buildMemberList();
+        displayYouTag();
     }
 
     private void buildMemberList() {
@@ -155,6 +157,15 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
+    private void displayYouTag() {
+        RelativeLayout youTag = findViewById(R.id.groupDetail_youTag);
+        if (group.getLeader() != null) {
+            if (Objects.equals(group.getLeader().getId(), currentUser.getId())) {
+                youTag.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -188,10 +199,14 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         ArrayAdapter<User> adapter = userListHelper.getAdapter();
         ListView memberListView = findViewById(R.id.groupDetail_memberList);
         memberListView.setAdapter(adapter);
+
+        hideLoadingCircle();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        showLoadingCircle();
+
         switch (requestCode) {
             case REQUEST_CODE_ADD:
                 if (resultCode == Activity.RESULT_OK) {
@@ -222,6 +237,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                 }
 
             default:
+                hideLoadingCircle();
                 break;
         }
     }
@@ -260,5 +276,15 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private void onRemoveMemberResponse(Void returnNothing) {
         Log.d(TAG, "Removed user from group.");
+    }
+
+    private void showLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.groupDetail_loading);
+        loadingCircle.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.groupDetail_loading);
+        loadingCircle.setVisibility(View.GONE);
     }
 }
