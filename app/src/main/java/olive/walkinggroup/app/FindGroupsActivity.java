@@ -3,32 +3,25 @@ package olive.walkinggroup.app;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import java.util.List;
 
 import olive.walkinggroup.R;
-import olive.walkinggroup.dataobjects.GetCurrentLocationHelper;
+import olive.walkinggroup.dataobjects.CurrentLocationHelper;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.proxy.ProxyBuilder;
@@ -39,7 +32,7 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
 
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 8080;
 
-    private GetCurrentLocationHelper getCurrentLocationHelper;
+    private CurrentLocationHelper currentLocationHelper;
 
     private GoogleMap mMap;
     private Model model;
@@ -53,8 +46,8 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         initializeMap();
         setupMyLocationButton();
         setupCreateGroupButton();
-        getCurrentLocationHelper = new GetCurrentLocationHelper(this);
-        getCurrentLocationHelper.getLocationPermission();
+        currentLocationHelper = new CurrentLocationHelper(this);
+        currentLocationHelper.getLocationPermission();
     }
 
     private void setupMyLocationButton() {
@@ -63,8 +56,8 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Centering on current location.");
-                getCurrentLocationHelper.setAnimate(true);
-                getCurrentLocationHelper.getDeviceLocation(mMap);
+                currentLocationHelper.setAnimate(true);
+                currentLocationHelper.getDeviceLocation(mMap);
             }
         });
     }
@@ -83,12 +76,12 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
     // Refresh activity after user grants permission
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        getCurrentLocationHelper.setLocationPermissionGranted(false);
+        currentLocationHelper.setLocationPermissionGranted(false);
 
         switch (requestCode) {
             case LOCATION_PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getCurrentLocationHelper.setLocationPermissionGranted(true);
+                    currentLocationHelper.setLocationPermissionGranted(true);
                     Log.d(TAG, "onRequestPermissionsResult: permission granted. Restarting activity...");
                     recreate();
                 }
@@ -104,9 +97,9 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        if (getCurrentLocationHelper.getLocationPermissionGranted()) {
-            getCurrentLocationHelper.setAnimate(false);
-            getCurrentLocationHelper.getDeviceLocation(mMap);
+        if (currentLocationHelper.getLocationPermissionGranted()) {
+            currentLocationHelper.setAnimate(false);
+            currentLocationHelper.getDeviceLocation(mMap);
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED

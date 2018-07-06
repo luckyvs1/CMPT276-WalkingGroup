@@ -19,7 +19,7 @@ import com.google.android.gms.tasks.Task;
 
 
 
-public class GetCurrentLocationHelper
+public class CurrentLocationHelper
 {
     private static final String TAG = "GCLHClass";
 
@@ -35,7 +35,7 @@ public class GetCurrentLocationHelper
 
     private Activity activity;
 
-    public GetCurrentLocationHelper(Activity activity) {
+    public CurrentLocationHelper(Activity activity) {
         this.activity = activity;
 
         locationPermissionGranted = false;
