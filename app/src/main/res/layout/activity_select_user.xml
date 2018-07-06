@@ -53,29 +53,47 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/selectUser_titleText"
+    <RelativeLayout
+        android:id="@+id/selectUser_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/selectUser_header"
-        android:textSize="18sp"
-        android:textColor="#000"
-        android:padding="10dp"
-        android:paddingStart="6dp"
-        android:paddingEnd="6dp"
-        android:background="#fafafa"
+        android:background="#fff"
         android:elevation="2dp"
-        android:layout_marginBottom="5dp"
+        android:paddingStart="11dp"
+        android:paddingEnd="11dp"
+        >
 
-        />
+        <TextView
+            android:id="@+id/selectUser_titleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:padding="10dp"
+            />
 
-    <ListView
-        android:id="@+id/selectUser_userList"
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/selectUser_titleText"
-        android:animateLayoutChanges="true"
+        android:layout_below="@id/selectUser_title"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="2dp"
+        android:paddingTop="5dp"
+        android:background="#eeeeee"
         >
-    </ListView>
 
+        <ListView
+            android:id="@+id/selectUser_userList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/background_rectangle_rounded_white"
+            android:scrollbars="none"
+            >
+        </ListView>
+    </RelativeLayout>
 </RelativeLayout>

@@ -28,7 +28,7 @@
             <!--
             To handle group Name being too long
             https://stackoverflow.com/questions/5472362/android-automatic-horizontally-scrolling-textview
-            Added to line 51 - 56 below:
+            Added to TextView below:
             -->
             <TextView
                 android:layout_width="match_parent"

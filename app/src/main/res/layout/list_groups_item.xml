@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="90sp"
+        android:layout_height="105sp"
         android:background="@drawable/background_rectangle_rounded_white"
         android:elevation="5dp"
         android:layout_marginTop="8dp"
@@ -18,9 +18,10 @@
         <TextView
             android:id="@+id/groupListItem_groupDescription"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:textSize="20sp"
             android:layout_alignParentTop="true"
+            android:layout_above="@id/groupListItem_tagContainer"
             android:maxLines="2"
             android:ellipsize="end"
             android:textColor="#000"
@@ -92,6 +93,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="10dp"
+            android:layout_alignTop="@id/groupListItem_tagContainer"
             >
 
             <ImageView
