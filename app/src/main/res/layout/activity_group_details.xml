@@ -28,7 +28,7 @@
             <!--
             To handle group Name being too long
             https://stackoverflow.com/questions/5472362/android-automatic-horizontally-scrolling-textview
-            Added to line 51 - 56 below:
+            Added to TextView below:
             -->
             <TextView
                 android:layout_width="match_parent"
@@ -134,6 +134,72 @@
         android:orientation="vertical"
         >
 
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/groupDetail_leaderContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            >
+
+            <TextView
+                android:id="@+id/groupDetail_leaderName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/groupDetail_tagContainer"
+                android:ellipsize="end"
+                android:textColor="#000"
+                android:textSize="17sp"
+                />
+
+            <LinearLayout
+                android:id="@+id/groupDetail_tagContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@id/groupDetail_leaderName"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/groupDetail_leaderTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:background="@drawable/background_tag_leader"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/groupListItem_leaderTagText"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:textColor="#fff"
+                        android:layout_centerInParent="true"
+                        />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/groupDetail_leaderEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/groupDetail_leaderName"
+                android:textSize="15sp"
+                android:layout_marginTop="2dp"
+                />
+
+        </RelativeLayout>
+
+
+
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="24dp"
@@ -153,14 +219,30 @@
 
         </RelativeLayout>
 
-
-        <ListView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/groupDetail_memberList"
-            android:animateLayoutChanges="true"
+
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
+            android:background="#eeeeee"
             >
-        </ListView>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/groupDetail_memberList"
+                android:animateLayoutChanges="true"
+                android:background="@drawable/background_rectangle_rounded_white"
+                android:scrollbars="none"
+                >
+            </ListView>
+
+
+        </RelativeLayout>
+
     </LinearLayout>
 
 </LinearLayout>

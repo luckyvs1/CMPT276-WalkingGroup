@@ -48,11 +48,14 @@
             android:name=".app.FindGroupsActivity"
             android:label="@string/title_activity_join_group">
         </activity>
-        <activity android:name=".app.GroupDetailsActivity">
+        <activity android:name=".app.GroupDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".app.ListGroupsActivity">
+        <activity android:name=".app.ListGroupsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".app.SelectUserActivity">
+        <activity android:name=".app.SelectUserActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

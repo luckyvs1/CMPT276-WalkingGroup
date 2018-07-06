@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fafafa"
+    android:background="#eeeeee"
     tools:context=".app.ListGroupsActivity">
 
     <RelativeLayout
@@ -24,6 +24,7 @@
             android:layout_marginStart="6dp"
             android:padding="10dp"
             android:textColor="#fff"
+            android:textStyle="bold"
             android:text="@string/listGroups_headerTitle"
             />
 
@@ -36,7 +37,7 @@
         android:layout_below="@id/listGroups_header"
         android:divider="@null"
         android:dividerHeight="0dp"
-        android:paddingTop="5dp"
+        android:scrollbars="none"
 
         >
     </ListView>
