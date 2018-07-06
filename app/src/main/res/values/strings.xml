@@ -55,4 +55,5 @@
     <string name="groupListItem_monitorTagText">Monitor</string>
     <string name="findGroup_headerTitle">Find a group</string>
     <string name="loginError">Error getting user details, please re-login in</string>
+    <string name="invalidInput">Please enter a valid value!</string>
 </resources>

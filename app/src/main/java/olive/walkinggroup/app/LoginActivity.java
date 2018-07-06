@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -121,6 +122,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private String getUserInput(int userInputResourceID) {
         EditText userText = (EditText) findViewById(userInputResourceID);
+        // https://stackoverflow.com/questions/11535011/edittext-field-is-required-before-moving-on-to-another-activity#11535058
+        if(TextUtils.isEmpty(userText.getText())) {
+            userText.setError(getString(R.string.invalidInput));
+        }
         return userText.getText().toString();
     }
 

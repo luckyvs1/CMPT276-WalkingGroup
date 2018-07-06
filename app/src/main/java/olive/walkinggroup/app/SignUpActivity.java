@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,6 +68,11 @@ public class SignUpActivity extends AppCompatActivity {
 
     private String getUserInput(int userInputResourceID) {
         EditText userText = (EditText) findViewById(userInputResourceID);
+
+        // https://stackoverflow.com/questions/11535011/edittext-field-is-required-before-moving-on-to-another-activity#11535058
+        if(TextUtils.isEmpty(userText.getText())) {
+            userText.setError(getString(R.string.invalidInput));
+        }
         return userText.getText().toString();
     }
 
@@ -151,8 +157,8 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (loadingCircle != null) {
             loadingCircle.setVisibility(View.GONE);
-            cancelButton.setVisibility(View.INVISIBLE);
-            signupButton.setVisibility(View.INVISIBLE);
+            cancelButton.setVisibility(View.VISIBLE);
+            signupButton.setVisibility(View.VISIBLE);
         }
     }
 
