@@ -2,12 +2,14 @@ package olive.walkinggroup.app;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import olive.walkinggroup.R;
@@ -21,37 +23,44 @@ public class LoginActivity extends AppCompatActivity {
     // Instantiating variables
     private Model instance;
     private User user;
+    private Boolean tokenAvailable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        hideLoadingCircle();
         instance = Model.getInstance();
-
         user = new User();
+        tokenAvailable = isTokenAvailable();
 
-        checkUserToken();
+        if(tokenAvailable){
+            Toast.makeText(LoginActivity.this, "Logging in, please wait!", Toast.LENGTH_LONG);
+            String userEmail = getFromSharedPreferences("UserEmail");
+            user.setEmail(userEmail);
+            updateCurrentUser(userEmail);
+        }
+
         setupLoginBtn();
         setupSignupBtn();
 
     }
 
     // By pass login screen if the user already has a token
-    private void checkUserToken() {
+    private Boolean isTokenAvailable() {
+        Boolean validToken = false;
         String token = getFromSharedPreferences("Token");
-        String userEmail = getFromSharedPreferences("UserEmail");
-        String userPassword = getFromSharedPreferences("UserPassword");
         if(token != null){
-            user.setPassword(userPassword);
-            user.setEmail(userEmail);
+            showLoadingCircle();
             instance.updateProxy(token);
-            updateCurrentUser(userEmail);
+            validToken = true;
         }
+
+        return validToken;
     }
 
     private void updateCurrentUser(String userEmail) {
-
         Call<User> caller = instance.getProxy().getUserByEmail(userEmail);
         ProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> getUserByEmailResponse(returnedUser));
     }
@@ -61,22 +70,22 @@ public class LoginActivity extends AppCompatActivity {
 
         // If the current user is not null
         if(instance.getCurrentUser().getId() != null) {
+            //dialog.dismiss();
+            Toast.makeText(LoginActivity.this, "Logged in as:  " + instance.getCurrentUser().getName(), Toast.LENGTH_LONG);
+            hideLoadingCircle();
             goToDashBoardActivity();
         } else {
-            Toast.makeText(LoginActivity.this, "Error getting user details, please re-login in", Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this, R.string.loginError, Toast.LENGTH_LONG).show();
         }
     }
 
     private void setupLoginBtn() {
         Button loginBtn = (Button) findViewById(R.id.btnLogin);
-
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // Set the user details
                 setUserDetails();
-
                 // Make call
                 loginUserGetToken();
             }
@@ -90,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
         return extractedResource;
     }
 
-    private void setUserInput(int userInputResourceID) {
+    private void clearUserInput(int userInputResourceID) {
         EditText userText = (EditText) findViewById(userInputResourceID);
         userText.setText("");
     }
@@ -113,6 +122,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private String getUserInput(int userInputResourceID) {
         EditText userText = (EditText) findViewById(userInputResourceID);
+        // https://stackoverflow.com/questions/11535011/edittext-field-is-required-before-moving-on-to-another-activity#11535058
+        if(TextUtils.isEmpty(userText.getText())) {
+            userText.setError(getString(R.string.invalidInput));
+        }
         return userText.getText().toString();
     }
 
@@ -125,6 +138,12 @@ public class LoginActivity extends AppCompatActivity {
                 // Go to the sign up activity
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
+
+                //Clear user input
+                clearUserInput(R.id.txtGetEmail);
+                clearUserInput(R.id.txtGetPassword);
+
+                hideLoadingCircle();
             }
         });
     }
@@ -173,6 +192,35 @@ public class LoginActivity extends AppCompatActivity {
         // Android back button must go to the loginActivity not signUpActivity
         Intent intent = new Intent(LoginActivity.this, DashBoardActivity.class);
         startActivity(intent);
-        finish();
+
+        //Clear user input
+        clearUserInput(R.id.txtGetEmail);
+        clearUserInput(R.id.txtGetPassword);
+        hideLoadingCircle();
+    }
+
+    private void showLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.login_loading);
+        Button loginButton =  (Button) findViewById(R.id.btnLogin);
+        Button signupButton =  (Button) findViewById(R.id.btnSignUp);
+
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.VISIBLE);
+            loginButton.setVisibility(View.INVISIBLE);
+            signupButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void hideLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.login_loading);
+        Button loginButton =  (Button) findViewById(R.id.btnLogin);
+        Button signupButton =  (Button) findViewById(R.id.btnSignUp);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
+            loginButton.setVisibility(View.VISIBLE);
+            signupButton.setVisibility(View.VISIBLE);
+        }
     }
 }
