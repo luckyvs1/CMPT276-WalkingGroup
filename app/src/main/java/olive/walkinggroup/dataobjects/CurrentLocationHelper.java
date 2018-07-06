@@ -17,6 +17,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+/**
+ * CurrentLocationHelper class allows getting location permissions, and centering a map to the
+ * device's current location if found.
+ */
 
 
 public class CurrentLocationHelper
