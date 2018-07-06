@@ -144,10 +144,10 @@ public class Group extends IdItemBase implements Serializable{
     public String toString() {
         return "Group{" +
                 "groupDescription='" + groupDescription + '\'' +
-                " ,routeLatArray=" + Arrays.toString(routeLatArray) +
-                " ,routeLngArray=" + Arrays.toString(routeLngArray) +
-                " ,leader=" + leader +
-                " ,memberUsers=" + memberUsers +
+                ", leader=" + leader +
+                ", routeLatArray=" + Arrays.toString(routeLatArray) +
+                ", routeLngArray=" + Arrays.toString(routeLngArray) +
+                ", memberUsers=" + memberUsers +
                 '}';
     }
 }

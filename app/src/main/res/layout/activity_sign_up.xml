@@ -90,4 +90,25 @@
         android:layout_marginEnd="90dp"
         android:text="@string/cancel"
         tools:text="Cancel" />
+
+
+    <!--
+            Loading progress bar. Using code from:
+            https://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff
+            -->
+
+    <RelativeLayout
+        android:id="@+id/signup_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@android:color/white"
+        >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            />
+    </RelativeLayout>
 </RelativeLayout>

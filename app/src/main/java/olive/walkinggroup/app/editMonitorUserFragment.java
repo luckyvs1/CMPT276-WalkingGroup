@@ -1,9 +1,12 @@
 package olive.walkinggroup.app;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +23,11 @@ import retrofit2.Call;
 public class editMonitorUserFragment extends AppCompatDialogFragment {
     private Model instance = Model.getInstance();
     private User currentUser = instance.getCurrentUser();
+    private final Handler handler = new Handler();
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Activity activity = (MonitorActivity)getActivity();
 
         View v = LayoutInflater.from(getActivity())
                 .inflate(R.layout.editmonitoractivity,null);
@@ -36,6 +41,13 @@ public class editMonitorUserFragment extends AppCompatDialogFragment {
                 String email = userEmail.getText().toString();
 
                 addUserByEmail(email);
+
+                handler.postDelayed(new Runnable(){
+                    @Override
+                    public void run(){
+                        activity.recreate();
+                    }
+                },1000);
             }
         };
 
@@ -46,6 +58,13 @@ public class editMonitorUserFragment extends AppCompatDialogFragment {
                 String email = userEmail.getText().toString();
 
                 removeUserByEmail(email);
+
+                handler.postDelayed(new Runnable(){
+                    @Override
+                    public void run(){
+                        activity.recreate();
+                    }
+                },1000);
             }
         };
 
