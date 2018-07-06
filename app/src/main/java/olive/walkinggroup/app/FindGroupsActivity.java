@@ -30,7 +30,6 @@ import retrofit2.Call;
 public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private static final String TAG = "FindGroupsActivity";
 
-    public static final int LOCATION_PERMISSION_REQUEST_CODE = 8080;
 
     private CurrentLocationHelper currentLocationHelper;
 
@@ -79,7 +78,7 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         currentLocationHelper.setLocationPermissionGranted(false);
 
         switch (requestCode) {
-            case LOCATION_PERMISSION_REQUEST_CODE:
+            case CurrentLocationHelper.LOCATION_PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     currentLocationHelper.setLocationPermissionGranted(true);
                     Log.d(TAG, "onRequestPermissionsResult: permission granted. Restarting activity...");
