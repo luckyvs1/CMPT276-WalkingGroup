@@ -11,6 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -75,15 +78,18 @@ public class UserListHelper {
     }
 
     private void displayTag(View itemView, User user) {
-        // Hide the youTag if currentUser is not user (compared by Id)
-        if (!(Objects.equals(currentUser.getId(), user.getId()))) {
-            RelativeLayout youTag = itemView.findViewById(R.id.listUsers_youTag);
-            youTag.setVisibility(View.GONE);
+        RelativeLayout youTag = itemView.findViewById(R.id.listUsers_youTag);
+        youTag.setVisibility(View.GONE);
+
+        RelativeLayout monitorTag = itemView.findViewById(R.id.listUsers_monitorTag);
+        monitorTag.setVisibility(View.GONE);
+
+        if ((Objects.equals(currentUser.getId(), user.getId()))) {
+            youTag.setVisibility(View.VISIBLE);
         }
-        // Hide the monitorTag if user is not on monitor list of currentUser
-        if (!(isOnMonitorsUserList(currentUser, user))) {
-            RelativeLayout monitorTag = itemView.findViewById(R.id.listUsers_monitorTag);
-            monitorTag.setVisibility(View.GONE);
+
+        if ((isOnMonitorsUserList(currentUser, user))) {
+            monitorTag.setVisibility(View.VISIBLE);
         }
     }
 
@@ -97,9 +103,38 @@ public class UserListHelper {
             idList.add(id);
         }
 
-        if (user.getId() == null) {
-            return false;
+        return user.getId() != null && (idList.contains(user.getId().intValue()));
+    }
+
+
+    public static List<User> sortUsers(List<User> listToSort) {
+        Collections.sort(listToSort, new UserComparator());
+        return listToSort;
+    }
+
+    public static class UserComparator implements Comparator<User> {
+
+        @Override
+        public int compare(User o1, User o2) {
+            String name1 = o1.getName();
+            String name2 = o2.getName();
+
+            if (name1 != null && name2 != null) {
+                int compareName = name1.compareToIgnoreCase(name2);
+
+                if (compareName != 0) {
+                    return compareName;
+                } else {
+                    String email1 = o1.getEmail();
+                    String email2 = o2.getEmail();
+
+                    if (email1 != null && email2 != null) {
+                        return email1.compareTo(email2);
+                    }
+                    return 0;
+                }
+            }
+            return 0;
         }
-        return (idList.contains(user.getId().intValue()));
     }
 }

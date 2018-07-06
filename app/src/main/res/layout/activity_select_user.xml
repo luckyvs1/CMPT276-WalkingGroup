@@ -95,5 +95,25 @@
             android:scrollbars="none"
             >
         </ListView>
+
+        <!--
+        Loading progress bar. Using code from:
+        https://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff
+        -->
+
+        <RelativeLayout
+            android:id="@+id/selectUser_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            >
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                />
+        </RelativeLayout>
+
     </RelativeLayout>
 </RelativeLayout>

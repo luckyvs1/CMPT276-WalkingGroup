@@ -33,6 +33,17 @@ import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 
+/**
+ * FindGroupsActivity starts with a map, centred on user's current location, with markers showing
+ * locations where existing walking groups walk to. Clicking on one of these red Markers will open
+ * a group details page (GroupDetailsActivity), where user can interact with the group.
+ * User can also create group here using the button on top.
+ *
+ * Part of the code used is from a Google Maps API video course, modified to fit this use case.
+ * https://www.youtube.com/playlist?list=PLgCYzUzKIBE-vInwQhGSdnbyJ62nixHCt
+ * by CodingWithMitch
+ */
+
 public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private static final String TAG = "FindGroupsActivity";
 
