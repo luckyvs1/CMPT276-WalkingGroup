@@ -74,7 +74,7 @@ public class CurrentLocationHelper
     }
 
 
-    public void getDeviceLocation(GoogleMap map) {
+    public void centerCameraAtCurrentLocationIfFound(GoogleMap map) {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity);
 
         try {
@@ -95,13 +95,13 @@ public class CurrentLocationHelper
 
                         } else {
                             // Cannot find current location
-                            Log.d(TAG, "getDeviceLocation: onComplete: location not found.");
+                            Log.d(TAG, "centerCameraAtCurrentLocationIfFound: onComplete: location not found.");
                         }
                     }
                 });
             }
         } catch (SecurityException e) {
-            Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage());
+            Log.e(TAG, "centerCameraAtCurrentLocationIfFound: SecurityException: " + e.getMessage());
         }
     }
 

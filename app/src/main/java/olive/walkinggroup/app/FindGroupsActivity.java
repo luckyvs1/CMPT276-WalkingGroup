@@ -57,7 +57,7 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
             public void onClick(View v) {
                 Log.d(TAG, "Centering on current location.");
                 currentLocationHelper.setAnimate(true);
-                currentLocationHelper.getDeviceLocation(mMap);
+                currentLocationHelper.centerCameraAtCurrentLocationIfFound(mMap);
             }
         });
     }
@@ -99,7 +99,7 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
 
         if (currentLocationHelper.getLocationPermissionGranted()) {
             currentLocationHelper.setAnimate(false);
-            currentLocationHelper.getDeviceLocation(mMap);
+            currentLocationHelper.centerCameraAtCurrentLocationIfFound(mMap);
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED
