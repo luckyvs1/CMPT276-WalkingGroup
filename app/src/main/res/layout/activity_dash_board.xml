@@ -7,30 +7,25 @@
     tools:context=".app.DashBoardActivity">
 
 
-    <TextView
-        android:id="@+id/txtUserName"
-        android:layout_width="395dp"
-        android:layout_height="24dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="56dp"
-        android:text="TextView"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <LinearLayout
-        android:layout_width="315dp"
-        android:layout_height="396dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="152dp"
+        android:layout_width="match_parent"
+        android:layout_height="482dp"
+        android:layout_marginTop="52dp"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
+
+        <TextView
+            android:id="@+id/txtUserName"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="32dp"
+            android:text="TextView"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="60dp" />
 
         <Button
             android:id="@+id/toMonitor"
@@ -39,8 +34,8 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:text="@string/dashboard_monitorBtn"
-            tools:layout_editor_absoluteX="139dp"
-            tools:layout_editor_absoluteY="143dp" />
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="82dp" />
 
         <Button
             android:id="@+id/toMap"
@@ -49,8 +44,8 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:text="@string/dashboard_mapBtn"
-            tools:layout_editor_absoluteX="147dp"
-            tools:layout_editor_absoluteY="234dp" />
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="130dp" />
 
         <Button
             android:id="@+id/toCreateGroup"
@@ -58,8 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/dashboard_createGroupBtn"
-            tools:layout_editor_absoluteX="139dp"
-            tools:layout_editor_absoluteY="322dp" />
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="178dp" />
 
         <Button
             android:id="@+id/dashboard_viewMyGroupsBtn"
@@ -68,14 +63,16 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:text="@string/dashboard_viewMyGroupsBtn"
-            tools:layout_editor_absoluteX="154dp"
-            tools:layout_editor_absoluteY="423dp" />
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="231dp" />
 
         <Button
             android:id="@+id/toUserSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/settings" />
+            android:text="@string/settings"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="279dp" />
 
         <Button
             android:id="@+id/btnLogout"
@@ -84,7 +81,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:text="@string/dashboard_logoutBtn"
-            tools:layout_editor_absoluteX="319dp"
-            tools:layout_editor_absoluteY="509dp" />
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="327dp" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
