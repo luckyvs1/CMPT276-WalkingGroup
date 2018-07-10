@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnSubmitSignup"
+        android:layout_above="@+id/btnSubmitEditUser"
         android:layout_alignParentStart="true"
         android:orientation="vertical">
 
@@ -48,7 +48,7 @@
             android:id="@+id/txtSetGrade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btnSubmitSignup"
+            android:layout_above="@+id/btnSubmitEditUser"
             android:layout_alignParentStart="true"
             android:ems="10"
             android:hint="Grade"
@@ -126,7 +126,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnSubmitSignup"
+        android:id="@+id/btnSubmitEditUser"
         android:layout_width="192.5dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -139,18 +139,18 @@
         android:layout_width="192.5dp"
         android:layout_height="66dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/btnSubmitSignup"
+        android:layout_alignTop="@+id/btnSubmitEditUser"
         android:layout_marginEnd="0dp"
         android:text="@string/cancel"
         tools:text="Cancel" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txtTitle"
         android:layout_width="101dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Sign Up " />
+        android:text="Sign Up User" />
 
 
     <!--
@@ -158,18 +158,18 @@
             https://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff
             -->
 
-    <!--<RelativeLayout-->
-        <!--android:id="@+id/signup_loading"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:gravity="center"-->
-        <!--android:background="@android:color/white"-->
-        <!--&gt;-->
+    <RelativeLayout
+        android:id="@+id/signup_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@android:color/white"
+        >
 
-        <!--<ProgressBar-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:indeterminate="true"-->
-            <!--/>-->
-    <!--</RelativeLayout>-->
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            />
+    </RelativeLayout>
 </RelativeLayout>

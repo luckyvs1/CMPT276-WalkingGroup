@@ -1,9 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".app.EditUserInformationActivity">
 
-</android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnSubmitEditUser"
+        android:layout_alignParentStart="true"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/txtSetBirthmonth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtSetBirthyear"
+            android:ems="10"
+            android:hint="Birthmonth mm"
+            android:inputType="number|numberSigned|numberDecimal" />
+
+        <EditText
+            android:id="@+id/txtSetEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:ems="10"
+            android:hint="@string/valid_email_com"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/txtSetGrade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnSubmitEditUser"
+            android:layout_alignParentStart="true"
+            android:ems="10"
+            android:hint="Grade"
+            android:inputType="none|numberSigned|numberDecimal" />
+
+        <EditText
+            android:id="@+id/txtSetEmergencyContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:ems="10"
+            android:hint="Emergency Contact Information"
+            android:inputType="textMultiLine" />
+
+        <EditText
+            android:id="@+id/txtSetAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:hint="Street, City Province, Postal Code, Canada "
+            android:inputType="textPostalAddress" />
+
+        <EditText
+            android:id="@+id/txtSetTeachername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtSetHomephone"
+            android:ems="10"
+            android:hint="Teacher Name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/txtSetBirthyear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtSetName"
+            android:ems="10"
+            android:hint="Birthyear yyyy"
+            android:inputType="number|numberSigned|numberDecimal" />
+
+        <EditText
+            android:id="@+id/txtSetCellphone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtSetAddress"
+            android:ems="10"
+            android:hint="778-111-1111"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/txtSetHomephone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtSetCellphone"
+            android:ems="10"
+            android:hint="604-310-1010"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/txtSetName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtSetPassword"
+            android:ems="10"
+            android:hint="@string/first_lastname"
+            android:inputType="textPersonName" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSubmitEditUser"
+        android:layout_width="192.5dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/submit"
+        tools:text="Submit" />
+
+    <Button
+        android:id="@+id/btnCancelSignUp"
+        android:layout_width="192.5dp"
+        android:layout_height="66dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/btnSubmitEditUser"
+        android:layout_marginEnd="0dp"
+        android:text="@string/cancel"
+        tools:text="Cancel" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="167dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Edit User Information" />
+
+</RelativeLayout>

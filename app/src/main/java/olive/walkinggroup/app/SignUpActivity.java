@@ -38,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void setupConfirmSignupBtn() {
-        Button confirmBtn = (Button) findViewById(R.id.btnSubmitSignup);
+        Button confirmBtn = (Button) findViewById(R.id.btnSubmitEditUser);
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,18 +59,35 @@ public class SignUpActivity extends AppCompatActivity {
         String name = getUserInput(R.id.txtSetName);
         String email = getUserInput(R.id.txtSetEmail);
         String password = getUserInput(R.id.txtSetPassword);
+        Integer birthYear = Integer.valueOf(getUserInput(R.id.txtSetBirthyear));
+        Integer birthMonth = Integer.valueOf(getUserInput(R.id.txtSetBirthmonth));
+        String address = getUserInput(R.id.txtSetAddress);
+        String teacherName = getUserInput(R.id.txtSetTeachername);
+        String grade = getUserInput(R.id.txtSetGrade);
+        String cellPhone = getUserInput(R.id.txtSetCellphone);
+        String homePhone = getUserInput(R.id.txtSetHomephone);
+        String emergencyContactInformation = getUserInput(R.id.txtSetEmergencyContact);
 
         // Update the details of the user instance
         currentUser.setName(name);
         currentUser.setPassword(password);
         currentUser.setEmail(email);
+        currentUser.setBirthYear(birthYear);
+        currentUser.setBirthMonth(birthMonth);
+        currentUser.setAddress(address);
+        currentUser.setTeacherName(teacherName);
+        currentUser.setGrade(grade);
+        currentUser.setCellPhone(cellPhone);
+        currentUser.setHomePhone(homePhone);
+        currentUser.setEmergencyContactInfo(emergencyContactInformation);
+
     }
 
     private String getUserInput(int userInputResourceID) {
         EditText userText = (EditText) findViewById(userInputResourceID);
 
         // https://stackoverflow.com/questions/11535011/edittext-field-is-required-before-moving-on-to-another-activity#11535058
-        if(TextUtils.isEmpty(userText.getText())) {
+        if(TextUtils.isEmpty(userText.getText()) && ((userInputResourceID == R.id.txtSetPassword) || (userInputResourceID == R.id.txtSetEmail))) {
             userText.setError(getString(R.string.invalidInput));
         }
         return userText.getText().toString();
@@ -139,27 +156,27 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void showLoadingCircle() {
-        //RelativeLayout loadingCircle = findViewById(R.id.signup_loading);
+        RelativeLayout loadingCircle = findViewById(R.id.signup_loading);
         Button cancelButton =  (Button) findViewById(R.id.btnCancelSignUp);
-        Button signupButton =  (Button) findViewById(R.id.btnSubmitSignup);
+        Button signupButton =  (Button) findViewById(R.id.btnSubmitEditUser);
 
-//        if (loadingCircle != null) {
-//            loadingCircle.setVisibility(View.VISIBLE);
-//            cancelButton.setVisibility(View.INVISIBLE);
-//            signupButton.setVisibility(View.INVISIBLE);
-//        }
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.VISIBLE);
+            cancelButton.setVisibility(View.INVISIBLE);
+            signupButton.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void hideLoadingCircle() {
-        //RelativeLayout loadingCircle = findViewById(R.id.signup_loading);
+        RelativeLayout loadingCircle = findViewById(R.id.signup_loading);
         Button cancelButton =  (Button) findViewById(R.id.btnCancelSignUp);
-        Button signupButton =  (Button) findViewById(R.id.btnSubmitSignup);
+        Button signupButton =  (Button) findViewById(R.id.btnSubmitEditUser);
 
-//        if (loadingCircle != null) {
-//            loadingCircle.setVisibility(View.GONE);
-//            cancelButton.setVisibility(View.VISIBLE);
-//            signupButton.setVisibility(View.VISIBLE);
-//        }
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
+            cancelButton.setVisibility(View.VISIBLE);
+            signupButton.setVisibility(View.VISIBLE);
+        }
     }
 
 }
