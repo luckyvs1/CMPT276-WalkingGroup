@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.text.TextUtils;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import olive.walkinggroup.R;
@@ -65,34 +63,55 @@ public class EditUserInformationActivity extends AppCompatActivity {
     private void updateUserResponse(User updatedUser) {
         instance.setCurrentUser(updatedUser);
 
-        Toast.makeText(EditUserInformationActivity.this, "User Information Updated Successfully", Toast.LENGTH_LONG).show();
+        Toast.makeText(EditUserInformationActivity.this, R.string.UpdateUserInformatonSuccessfully, Toast.LENGTH_LONG).show();
         finish();
     }
 
-    // Set the user details from the signup activity
+    // Set the user details from the edit user information activity
     private void setUserDetails() {
-        String name = getUserInput(R.id.txtSetName);
-        String email = getUserInput(R.id.txtSetEmail);
-        Integer birthYear = Integer.valueOf(getUserInput(R.id.txtSetBirthyear));
-        Integer birthMonth = Integer.valueOf(getUserInput(R.id.txtSetBirthmonth));
-        String address = getUserInput(R.id.txtSetAddress);
-        String teacherName = getUserInput(R.id.txtSetTeachername);
-        String grade = getUserInput(R.id.txtSetGrade);
-        String cellPhone = getUserInput(R.id.txtSetCellphone);
-        String homePhone = getUserInput(R.id.txtSetHomephone);
-        String emergencyContactInformation = getUserInput(R.id.txtSetEmergencyContact);
+        try {
+            String name = getUserInput(R.id.txtSetName);
+            String email = getUserInput(R.id.txtSetEmail);
+            String birthYear = getUserInput(R.id.txtSetBirthyear);
+            String birthMonth = getUserInput(R.id.txtSetBirthmonth);
+            String address = getUserInput(R.id.txtSetAddress);
+            String teacherName = getUserInput(R.id.txtSetTeachername);
+            String grade = getUserInput(R.id.txtSetGrade);
+            String cellPhone = getUserInput(R.id.txtSetCellphone);
+            String homePhone = getUserInput(R.id.txtSetHomephone);
+            String emergencyContactInformation = getUserInput(R.id.txtSetEmergencyContact);
+            Integer intBirthYear;
+            Integer intBirthMonth;
 
-        // Update the details of the user instance
-        instance.getCurrentUser().setName(name);
-        instance.getCurrentUser().setEmail(email);
-        instance.getCurrentUser().setBirthYear(birthYear);
-        instance.getCurrentUser().setBirthMonth(birthMonth);
-        instance.getCurrentUser().setAddress(address);
-        instance.getCurrentUser().setTeacherName(teacherName);
-        instance.getCurrentUser().setGrade(grade);
-        instance.getCurrentUser().setCellPhone(cellPhone);
-        instance.getCurrentUser().setHomePhone(homePhone);
-        instance.getCurrentUser().setEmergencyContactInfo(emergencyContactInformation);
+            if (birthYear != null) {
+                intBirthYear = Integer.valueOf(birthYear);
+            } else {
+                intBirthYear = 0;
+            }
+
+            if (birthMonth != null) {
+                intBirthMonth = Integer.valueOf(birthMonth);
+            } else {
+                intBirthMonth = 0;
+            }
+
+            // Update the details of the user instance
+            instance.getCurrentUser().setName(name);
+            instance.getCurrentUser().setEmail(email);
+            instance.getCurrentUser().setAddress(address);
+            instance.getCurrentUser().setTeacherName(teacherName);
+            instance.getCurrentUser().setGrade(grade);
+            instance.getCurrentUser().setCellPhone(cellPhone);
+            instance.getCurrentUser().setHomePhone(homePhone);
+            instance.getCurrentUser().setEmergencyContactInfo(emergencyContactInformation);
+            instance.getCurrentUser().setBirthYear(intBirthYear);
+            instance.getCurrentUser().setBirthMonth(intBirthMonth);
+
+        } catch (NullPointerException e ) {
+            Toast.makeText(EditUserInformationActivity.this, R.string.SignupErrorMessage, Toast.LENGTH_LONG).show();
+        } catch (NumberFormatException e) {
+            Toast.makeText(EditUserInformationActivity.this, R.string.SignupErrorMessage, Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -100,8 +119,10 @@ public class EditUserInformationActivity extends AppCompatActivity {
         EditText userText = (EditText) findViewById(userInputResourceID);
 
         // https://stackoverflow.com/questions/11535011/edittext-field-is-required-before-moving-on-to-another-activity#11535058
-        if(TextUtils.isEmpty(userText.getText()) && ((userInputResourceID == R.id.txtSetPassword) || (userInputResourceID == R.id.txtSetEmail))) {
+        if(TextUtils.isEmpty(userText.getText()) && ((userInputResourceID == R.id.txtSetEmail) || (userInputResourceID == R.id.txtSetName))) {
             userText.setError(getString(R.string.invalidInput));
+        } else if (TextUtils.isEmpty(userText.getText())) {
+            return null;
         }
         return userText.getText().toString();
     }
