@@ -66,23 +66,24 @@
             android:name=".app.FindGroupsActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_join_group"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".app.GroupDetailsActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".app.ListGroupsActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".app.SelectUserActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".app.ChildrenDetail"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".app.ChildrenDetail" />
+        <activity android:name=".app.ParentDetail"></activity>
     </application>
 
 </manifest>

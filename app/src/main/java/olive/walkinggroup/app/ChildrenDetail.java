@@ -1,5 +1,6 @@
 package olive.walkinggroup.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -29,17 +31,19 @@ public class ChildrenDetail extends AppCompatActivity {
     TextView email;
     TextView grade;
     TextView teacher;
-    ListView emergencyList;
+    ListView contactList;
+    List <User> parentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_children_detail);
 
+        extractDataFromIntent();
         setView();
         populateView();
         verifyMonitoredUsersList();
-
+        registerClickCallback();
     }
 
     private void setView() {
@@ -51,18 +55,18 @@ public class ChildrenDetail extends AppCompatActivity {
         email = findViewById(R.id.detailEmail);
         grade = findViewById(R.id.detailGrade);
         teacher = findViewById(R.id.detailTeacher);
-        emergencyList = findViewById(R.id.IMonitor);
+        contactList = findViewById(R.id.IMonitor);
     }
 
     private void populateView(){
         name.append(user.getName());
-        birthday.append(user.getBirthMonth()+user.getBirthYear().toString());
-        address.append(user.getAddress());
-        phone.append(user.getHomePhone());
-        cell.append(user.getCellPhone());
+//        birthday.append(user.getBirthMonth()+user.getBirthYear().toString());
+//        address.append(user.getAddress());
+//        phone.append(user.getHomePhone());
+//        cell.append(user.getCellPhone());
         email.append(user.getEmail());
-        grade.append(user.getGrade());
-        teacher.append(user.getTeacherName());
+//        grade.append(user.getGrade());
+//        teacher.append(user.getTeacherName());
     }
 
     public void verifyMonitoredUsersList(){
@@ -72,6 +76,7 @@ public class ChildrenDetail extends AppCompatActivity {
 
     private void setMonitoredByUsersList(List<User>list){
         user.setMonitoredByUsers(list);
+        parentList = user.getMonitoredByUsers();
         populateMonitorsMe();
     }
     //New Code Ends
@@ -89,15 +94,25 @@ public class ChildrenDetail extends AppCompatActivity {
     }
 
     private void registerClickCallback() {
-        ListView list = (ListView) findViewById(R.id.IMonitor);
+        ListView list = (ListView) findViewById(R.id.monitorsMe);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                TextView textView = (TextView) viewClicked;
-                //Intent intent = calculateActivity.makeIntent (MainActivity.this, currentPotList.getPot(position));
-                //startActivityForResult(intent);
+                Toast.makeText(ChildrenDetail.this,parentList.get(position).getName(),Toast.LENGTH_SHORT).show();
+                Intent intent = ParentDetail.makeIntent (ChildrenDetail.this, parentList.get(position));
+                startActivity(intent);
             }
         });
     }
 
+    public static Intent makeIntent(Context context, User user) {
+        Intent intent = new Intent (context, ChildrenDetail.class);
+        intent.putExtra("Children", user);
+        return intent;
+    }
+
+    private void extractDataFromIntent(){
+        Intent intent = getIntent();
+        user = (User) intent.getSerializableExtra("Children");
+    }
 }
