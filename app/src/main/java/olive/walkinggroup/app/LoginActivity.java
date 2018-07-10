@@ -75,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
             hideLoadingCircle();
             goToDashBoardActivity();
         } else {
+            hideLoadingCircle();
             Toast.makeText(LoginActivity.this, R.string.loginError, Toast.LENGTH_LONG).show();
         }
     }
