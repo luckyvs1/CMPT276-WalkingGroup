@@ -35,16 +35,29 @@ import java.util.List;
 public class User extends IdItemBase implements Serializable{
     // NOTE: id, hasFullData, and href in IdItemBase base class.
 
-    // Data fields for the user.
-    // -------------------------------------------------------------------------------------------
     // NOTE: Make numbers Long/Integer, not long/int because only the former will
     //       deserialize if the value is null from the server.
+
+    // ---------------------------------------
+    //    Fields
+    // ---------------------------------------
     private String name;
     private String email;
+    private Integer birthYear;
+    private Integer birthMonth;
+    private String address;
+    private String cellPhone;
+    private String homePhone;
+    private String grade;
+    private String teacherName;
+    private String emergencyContactInfo;
     private String password;
 
+    // Gamification Support
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private Integer currentPoints;
     private Integer totalPointsEarned;
+    // rewards will be serialized to be the customJson
     private EarnedRewards rewards;
 
     private List<User> monitoredByUsers = new ArrayList<>();
@@ -53,8 +66,22 @@ public class User extends IdItemBase implements Serializable{
     private List<Group> memberOfGroups = new ArrayList<>();
     private List<Group> leadsGroups = new ArrayList<>();
 
-    // Basic User Data
-    // -------------------------------------------------------------------------------------------
+    // GPS Location
+    // - - - - - - - - - - - - - - - - - - - - - - - - - -
+    private GpsLocation lastGpsLocation;
+
+    // Messages
+    // - - - - - - - - - - - - - - - - - - - - - - - - - -
+    private List<Message> messages;
+
+    // Permissions
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    private List<PermissionRequest> pendingPermissionRequests;
+
+
+    // ----------------------------------------------
+    // Setters / Getters
+    // ----------------------------------------------
 
     public String getName() {
         return name;
@@ -68,6 +95,70 @@ public class User extends IdItemBase implements Serializable{
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Integer getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(Integer birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public Integer getBirthMonth() {
+        return birthMonth;
+    }
+
+    public void setBirthMonth(Integer birthMonth) {
+        this.birthMonth = birthMonth;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCellPhone() {
+        return cellPhone;
+    }
+
+    public void setCellPhone(String cellPhone) {
+        this.cellPhone = cellPhone;
+    }
+
+    public String getHomePhone() {
+        return homePhone;
+    }
+
+    public void setHomePhone(String homePhone) {
+        this.homePhone = homePhone;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
+    public String getEmergencyContactInfo() {
+        return emergencyContactInfo;
+    }
+
+    public void setEmergencyContactInfo(String emergencyContactInfo) {
+        this.emergencyContactInfo = emergencyContactInfo;
     }
 
     // Note: Password never returned by the server; only used to send password to server.
@@ -164,6 +255,25 @@ public class User extends IdItemBase implements Serializable{
         this.leadsGroups.remove(group);
     }
 
+    // GPS Location
+    // -------------------------------------------------------------------------------------------
+    public GpsLocation getLastGpsLocation() {
+        return lastGpsLocation;
+    }
+
+    public void setLastGpsLocation(GpsLocation lastGpsLocation) {
+        this.lastGpsLocation = lastGpsLocation;
+    }
+
+    // Messages
+    // -------------------------------------------------------------------------------------------
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
 
     // Rewards (custom JSON data)
     // -------------------------------------------------------------------------------------------
@@ -220,23 +330,45 @@ public class User extends IdItemBase implements Serializable{
         this.rewards = rewards;
     }
 
+    // Permission Requests
+    // -------------------------------------------------------------------------------------------
+    public List<PermissionRequest> getPendingPermissionRequests() {
+        return pendingPermissionRequests;
+    }
+
+    public void setPendingPermissionRequests(List<PermissionRequest> pendingPermissionRequests) {
+        this.pendingPermissionRequests = pendingPermissionRequests;
+    }
+
     // Utility Functions
     // -------------------------------------------------------------------------------------------
     @Override
     public String toString() {
         return "User{" +
-                "id=" + getId() +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", birthYear=" + birthYear +
+                ", birthMonth=" + birthMonth +
+                ", address='" + address + '\'' +
+                ", cellPhone='" + cellPhone + '\'' +
+                ", homePhone='" + homePhone + '\'' +
+                ", grade='" + grade + '\'' +
+                ", teacherName='" + teacherName + '\'' +
+                ", emergencyContactInfo='" + emergencyContactInfo + '\'' +
                 ", password='" + password + '\'' +
-                ", currentPoints=" + currentPoints +
-                ", totalPointsEarned=" + totalPointsEarned +
                 ", monitoredByUsers=" + monitoredByUsers +
                 ", monitorsUsers=" + monitorsUsers +
                 ", memberOfGroups=" + memberOfGroups +
                 ", leadsGroups=" + leadsGroups +
-                ", hasFullData=" + hasFullData()+
-                ", href='" + getHref() + '\'' +
+                ", lastGpsLocation=" + lastGpsLocation +
+                ", messages=" + messages +
+                ", currentPoints=" + currentPoints +
+                ", totalPointsEarned=" + totalPointsEarned +
+                ", rewards=" + rewards +
+                ", pendingPermissionRequests=" + pendingPermissionRequests +
+                ", id=" + id +
+                ", hasFullData=" + hasFullData +
+                ", href='" + href + '\'' +
                 '}';
     }
 }
