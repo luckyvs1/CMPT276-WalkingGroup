@@ -1,34 +1,17 @@
 package olive.walkinggroup.dataobjects;
 
 import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-/**
- * Base class for all items that have an ID and href from the server.
- */
+import java.util.Objects;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class IdItemBase implements Serializable {
     // NOTE: Make numbers Long/Integer, not long/int because only the former will
     //       deserialize if the value is null from the server.
-    private Long id;
-    private Boolean hasFullData;
-    private String href;
-
-    public IdItemBase() {
-
-    }
-
-
-    // Check if full data
-    // -------------------------------------------------------------------------------------------
-    // Server often replies with stub objects instead of full data.
-    // If server sends back just an ID then it's a stub; otherwise you have full data about
-    // *this* object. Objects it refers to, such as other users or groups, may not be filled in
-    // (and hence those will have hasFullData set to false for them).
-    public Boolean hasFullData() {
-        return hasFullData;
-    }
-    public void setHasFullData(Boolean hasFullData) {
-        this.hasFullData = hasFullData;
-    }
+    protected Long id;
+    protected Boolean hasFullData;
+    protected String href;
 
     // Basic User Data
     // -------------------------------------------------------------------------------------------
@@ -37,6 +20,19 @@ public class IdItemBase implements Serializable {
     }
     public void setId(Long id) {
         this.id = id;
+    }
+
+    // Check if full data
+    // -------------------------------------------------------------------------------------------
+    // Server often replies with stub objects instead of full data.
+    // If server sends back just an ID then it's a stub; otherwise you have full data about
+    // *this* object. Objects it refers to, such as other users or groups, may not be filled in
+    // (and hence those will have hasFullData set to false for them).
+    public Boolean getHasFullData() {
+        return hasFullData;
+    }
+    public void setHasFullData(Boolean hasFullData) {
+        this.hasFullData = hasFullData;
     }
 
     // Link (unneeded, but send by server...)
@@ -48,4 +44,27 @@ public class IdItemBase implements Serializable {
         this.href = href;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IdItemBase idItem = (IdItemBase) o;
+        return Objects.equals(getId(), idItem.getId());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId());
+    }
+
+
+    @Override
+    public String toString() {
+        return "IdItemBase{" +
+                "id=" + id +
+                ", hasFullData=" + hasFullData +
+                ", href='" + href + '\'' +
+                '}';
+    }
 }
