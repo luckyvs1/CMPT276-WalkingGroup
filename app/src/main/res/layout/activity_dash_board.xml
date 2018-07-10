@@ -72,6 +72,12 @@
             tools:layout_editor_absoluteY="423dp" />
 
         <Button
+            android:id="@+id/toUserSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings" />
+
+        <Button
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

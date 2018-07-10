@@ -139,27 +139,27 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void showLoadingCircle() {
-        RelativeLayout loadingCircle = findViewById(R.id.signup_loading);
+        //RelativeLayout loadingCircle = findViewById(R.id.signup_loading);
         Button cancelButton =  (Button) findViewById(R.id.btnCancelSignUp);
         Button signupButton =  (Button) findViewById(R.id.btnSubmitSignup);
 
-        if (loadingCircle != null) {
-            loadingCircle.setVisibility(View.VISIBLE);
-            cancelButton.setVisibility(View.INVISIBLE);
-            signupButton.setVisibility(View.INVISIBLE);
-        }
+//        if (loadingCircle != null) {
+//            loadingCircle.setVisibility(View.VISIBLE);
+//            cancelButton.setVisibility(View.INVISIBLE);
+//            signupButton.setVisibility(View.INVISIBLE);
+//        }
     }
 
     private void hideLoadingCircle() {
-        RelativeLayout loadingCircle = findViewById(R.id.signup_loading);
+        //RelativeLayout loadingCircle = findViewById(R.id.signup_loading);
         Button cancelButton =  (Button) findViewById(R.id.btnCancelSignUp);
         Button signupButton =  (Button) findViewById(R.id.btnSubmitSignup);
 
-        if (loadingCircle != null) {
-            loadingCircle.setVisibility(View.GONE);
-            cancelButton.setVisibility(View.VISIBLE);
-            signupButton.setVisibility(View.VISIBLE);
-        }
+//        if (loadingCircle != null) {
+//            loadingCircle.setVisibility(View.GONE);
+//            cancelButton.setVisibility(View.VISIBLE);
+//            signupButton.setVisibility(View.VISIBLE);
+//        }
     }
 
 }

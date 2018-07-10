@@ -6,90 +6,151 @@
     android:layout_height="match_parent"
     tools:context=".app.SignUpActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/btnSubmitSignup"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
-        android:text="@string/name"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="70dp"
-        tools:text="Name: " />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/textView"
-        android:layout_marginTop="111dp"
-        android:text="@string/email"
-        tools:text="Email: " />
+        <EditText
+            android:id="@+id/txtSetPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtSetEmail"
+            android:ems="10"
+            android:hint="@string/password123"
+            android:inputType="textPassword"
+            android:selectAllOnFocus="false" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/textView"
-        android:layout_marginTop="188dp"
-        android:text="@string/password"
-        tools:text="Password:" />
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/editText"
+            android:ems="10"
+            android:hint="Birthmonth mm"
+            android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/txtSetPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView3"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="57dp"
-        android:ems="10"
-        android:hint="@string/password123"
-        android:inputType="textPassword" />
+        <EditText
+            android:id="@+id/txtSetEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:ems="10"
+            android:hint="@string/valid_email_com"
+            android:inputType="textEmailAddress" />
 
-    <EditText
-        android:id="@+id/txtSetEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/txtSetPassword"
-        android:layout_marginTop="96dp"
-        android:ems="10"
-        android:hint="@string/valid_email_com"
-        android:inputType="textEmailAddress" />
+        <EditText
+            android:id="@+id/editText7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnSubmitSignup"
+            android:layout_alignParentStart="true"
+            android:ems="10"
+            android:hint="Grade"
+            android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/txtSetName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView"
-        android:layout_alignStart="@+id/txtSetPassword"
-        android:ems="10"
-        android:hint="@string/first_lastname"
-        android:inputType="textPersonName" />
+        <EditText
+            android:id="@+id/editText8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:ems="10"
+            android:hint="Emergency Contact Information"
+            android:inputType="textMultiLine" />
+
+        <EditText
+            android:id="@+id/editText3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:hint="Street, City Province, Postal Code, Canada "
+            android:inputType="textPostalAddress" />
+
+        <EditText
+            android:id="@+id/editText6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/editText5"
+            android:ems="10"
+            android:hint="Teacher Name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtSetName"
+            android:ems="10"
+            android:hint="Birthyear yyyy"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editText4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/editText3"
+            android:ems="10"
+            android:hint="778-111-1111"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/editText5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/editText4"
+            android:ems="10"
+            android:hint="604-874-5072"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/txtSetName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtSetPassword"
+            android:ems="10"
+            android:hint="@string/first_lastname"
+            android:inputType="textPersonName" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnSubmitSignup"
-        android:layout_width="wrap_content"
+        android:layout_width="192.5dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="162dp"
-        android:layout_toEndOf="@+id/textView2"
+        android:layout_alignParentStart="true"
         android:text="@string/submit"
         tools:text="Submit" />
 
     <Button
         android:id="@+id/btnCancelSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="192.5dp"
+        android:layout_height="66dp"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/btnSubmitSignup"
-        android:layout_marginEnd="90dp"
+        android:layout_marginEnd="0dp"
         android:text="@string/cancel"
         tools:text="Cancel" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="101dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Sign Up " />
 
 
     <!--
@@ -97,18 +158,18 @@
             https://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff
             -->
 
-    <RelativeLayout
-        android:id="@+id/signup_loading"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:background="@android:color/white"
-        >
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/signup_loading"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:gravity="center"-->
+        <!--android:background="@android:color/white"-->
+        <!--&gt;-->
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            />
-    </RelativeLayout>
+        <!--<ProgressBar-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:indeterminate="true"-->
+            <!--/>-->
+    <!--</RelativeLayout>-->
 </RelativeLayout>

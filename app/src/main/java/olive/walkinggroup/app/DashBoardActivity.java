@@ -29,6 +29,7 @@ public class DashBoardActivity extends AppCompatActivity {
         setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class);
         setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class);
         setupSimpleButtonActivityChange(R.id.dashboard_viewMyGroupsBtn, ListGroupsActivity.class);
+        setupSimpleButtonActivityChange(R.id.toUserSettings, UserSettingsActivity.class);
 
     }
 
