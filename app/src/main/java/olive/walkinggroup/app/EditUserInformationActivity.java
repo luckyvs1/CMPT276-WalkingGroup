@@ -10,6 +10,12 @@ public class EditUserInformationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_user_information);
+        setContentView(R.layout.activity_sign_up);
+
+        populateUserField();
+    }
+
+    private void populateUserField() {
+
     }
 }

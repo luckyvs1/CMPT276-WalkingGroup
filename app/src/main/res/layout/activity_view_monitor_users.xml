@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".app.ViewMonitorUsersActivity">
 
-</android.support.constraint.ConstraintLayout>
+
+    <ListView
+        android:id="@+id/IMonitor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="#8ce7f6fb"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="105dp" />
+
+</RelativeLayout>

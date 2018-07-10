@@ -25,14 +25,14 @@
             android:selectAllOnFocus="false" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/txtSetBirthmonth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/editText"
+            android:layout_below="@+id/txtSetBirthyear"
             android:ems="10"
             android:hint="Birthmonth mm"
-            android:inputType="textPersonName" />
+            android:inputType="number|numberSigned|numberDecimal" />
 
         <EditText
             android:id="@+id/txtSetEmail"
@@ -45,17 +45,17 @@
             android:inputType="textEmailAddress" />
 
         <EditText
-            android:id="@+id/editText7"
+            android:id="@+id/txtSetGrade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/btnSubmitSignup"
             android:layout_alignParentStart="true"
             android:ems="10"
             android:hint="Grade"
-            android:inputType="textPersonName" />
+            android:inputType="none|numberSigned|numberDecimal" />
 
         <EditText
-            android:id="@+id/editText8"
+            android:id="@+id/txtSetEmergencyContact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -65,7 +65,7 @@
             android:inputType="textMultiLine" />
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/txtSetAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -75,43 +75,43 @@
             android:inputType="textPostalAddress" />
 
         <EditText
-            android:id="@+id/editText6"
+            android:id="@+id/txtSetTeachername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/editText5"
+            android:layout_below="@+id/txtSetHomephone"
             android:ems="10"
             android:hint="Teacher Name"
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/txtSetBirthyear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/txtSetName"
             android:ems="10"
             android:hint="Birthyear yyyy"
-            android:inputType="textPersonName" />
+            android:inputType="number|numberSigned|numberDecimal" />
 
         <EditText
-            android:id="@+id/editText4"
+            android:id="@+id/txtSetCellphone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/editText3"
+            android:layout_below="@+id/txtSetAddress"
             android:ems="10"
             android:hint="778-111-1111"
             android:inputType="phone" />
 
         <EditText
-            android:id="@+id/editText5"
+            android:id="@+id/txtSetHomephone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/editText4"
+            android:layout_below="@+id/txtSetCellphone"
             android:ems="10"
-            android:hint="604-874-5072"
+            android:hint="604-310-1010"
             android:inputType="phone" />
 
         <EditText
