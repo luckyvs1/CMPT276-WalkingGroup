@@ -45,6 +45,10 @@ public class UploadGpsLocation {
 
     }
 
+    public void stop() {
+        timer.cancel();
+    }
+
     private void setLastGpsLocationReturned(GpsLocation returnedGpsLocation) {
         // callback
     }
