@@ -65,4 +65,10 @@
     <string name="create_group_errorMsg">Error create group, please logout and login and try again</string>
     <string name="dashBoard_headerText">Dash Board</string>
     <string name="dashBoard_messagesText">!</string>
+    <string name="messagesActivity_headerText">Messages</string>
+    <string name="messagesActivity_newMessageBtnText">+</string>
+    <string name="newMessage_headerText">Compose New Message</string>
+    <string name="newMessage_toUserInputPrompt">To:</string>
+    <string name="newMessage_groupListTitle">My Groups</string>
+    <string name="newMessage_newMessageText">+</string>
 </resources>

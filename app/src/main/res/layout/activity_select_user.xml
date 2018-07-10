@@ -56,7 +56,7 @@
     <RelativeLayout
         android:id="@+id/selectUser_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_below="@id/selectUser_header"
         android:background="#fff"
         android:elevation="2dp"
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textColor="#000"
-            android:padding="10dp"
+            android:layout_centerInParent="true"
             />
 
     </RelativeLayout>
