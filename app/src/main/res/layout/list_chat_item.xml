@@ -5,10 +5,13 @@
     android:layout_height="match_parent"
     android:padding="5dp"
     >
+
     <RelativeLayout
+        android:gravity="bottom"
         android:id="@+id/chatItem_textContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:padding="10dp">
 
         <TextView
@@ -16,7 +19,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="false"
-            android:text="@string/sampleText"
             android:textSize="17sp" />
     </RelativeLayout>
 

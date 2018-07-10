@@ -83,13 +83,19 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText input = findViewById(R.id.chatActivity_input);
                 String messageText = input.getText().toString();
+
+                if (messageText.replaceAll("\\s", "").equals("")) {
+                    return;
+                }
                 input.setText("");
+
                 Message message = new Message();
                 User dummy = new User();
                 dummy.setId(currentUser.getId());
                 message.setFromUser(dummy);
                 message.setText(messageText);
                 message.setTimestamp(Calendar.getInstance().getTime());
+
                 addMessage(message);
             }
         });
@@ -136,15 +142,11 @@ public class ChatActivity extends AppCompatActivity {
 
             Message currentMessage = chatLog.get(position);
             String messageText = currentMessage.getText();
-            Date messageTimestamp = currentMessage.getTimestamp();
             boolean isSender = isSender(currentMessage);
 
             RelativeLayout textContainer = itemView.findViewById(R.id.chatItem_textContainer);
             TextView textView = itemView.findViewById(R.id.chatItem_text);
-            //TextView timestampTextView = itemView.findViewById(R.id.chatItem_details);
-
             textView.setText(messageText);
-            //timestampTextView.setText(dateFormat.format(messageTimestamp));
 
             if (isSender) {
                 textContainer.setLayoutParams(sendParams);
