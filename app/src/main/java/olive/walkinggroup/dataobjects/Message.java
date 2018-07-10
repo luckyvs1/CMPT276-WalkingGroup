@@ -2,10 +2,11 @@ package olive.walkinggroup.dataobjects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Message extends IdItemBase {
+public class Message extends IdItemBase implements Serializable {
     private Boolean read;
     private boolean isEmergency;
     private Date timestamp;

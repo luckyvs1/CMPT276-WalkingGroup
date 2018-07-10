@@ -1,11 +1,13 @@
 package olive.walkinggroup.dataobjects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
 import java.util.Set;
 import olive.walkinggroup.proxy.WGServerProxy;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PermissionRequest extends IdItemBase {
+public class PermissionRequest extends IdItemBase implements Serializable{
     private String action;
     private WGServerProxy.PermissionStatus status;
     private User userA;
