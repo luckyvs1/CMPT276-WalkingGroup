@@ -61,41 +61,11 @@ public class SignUpActivity extends AppCompatActivity {
             String name = getUserInput(R.id.txtSetName);
             String email = getUserInput(R.id.txtSetEmail);
             String password = getUserInput(R.id.txtSetPassword);
-            String birthYear = getUserInput(R.id.txtSetBirthyear);
-            String birthMonth = getUserInput(R.id.txtSetBirthmonth);
-            String address = getUserInput(R.id.txtSetAddress);
-            String teacherName = getUserInput(R.id.txtSetTeachername);
-            String grade = getUserInput(R.id.txtSetGrade);
-            String cellPhone = getUserInput(R.id.txtSetCellphone);
-            String homePhone = getUserInput(R.id.txtSetHomephone);
-            String emergencyContactInformation = getUserInput(R.id.txtSetEmergencyContact);
-            Integer intBirthYear;
-            Integer intBirthMonth;
-
-            if (birthYear != null) {
-                intBirthYear = Integer.valueOf(birthYear);
-            } else {
-                intBirthYear = 0;
-            }
-
-            if (birthMonth != null) {
-                intBirthMonth = Integer.valueOf(birthMonth);
-            } else {
-                intBirthMonth = 0;
-            }
 
             // Update the details of the user instance
             currentUser.setName(name);
             currentUser.setPassword(password);
             currentUser.setEmail(email);
-            currentUser.setAddress(address);
-            currentUser.setTeacherName(teacherName);
-            currentUser.setGrade(grade);
-            currentUser.setCellPhone(cellPhone);
-            currentUser.setHomePhone(homePhone);
-            currentUser.setEmergencyContactInfo(emergencyContactInformation);
-            currentUser.setBirthYear(intBirthYear);
-            currentUser.setBirthMonth(intBirthMonth);
 
         } catch (NullPointerException e ) {
             Toast.makeText(SignUpActivity.this, R.string.SignupErrorMessage, Toast.LENGTH_LONG).show();
@@ -111,8 +81,6 @@ public class SignUpActivity extends AppCompatActivity {
         // https://stackoverflow.com/questions/11535011/edittext-field-is-required-before-moving-on-to-another-activity#11535058
         if(TextUtils.isEmpty(userText.getText()) && ((userInputResourceID == R.id.txtSetPassword) || (userInputResourceID == R.id.txtSetEmail) || (userInputResourceID == R.id.txtSetName))) {
             userText.setError(getString(R.string.invalidInput));
-        } else if (TextUtils.isEmpty(userText.getText())) {
-            return null;
         }
         return userText.getText().toString();
     }

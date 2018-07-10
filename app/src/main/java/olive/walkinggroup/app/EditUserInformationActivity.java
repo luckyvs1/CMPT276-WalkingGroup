@@ -127,7 +127,7 @@ public class EditUserInformationActivity extends AppCompatActivity {
         return userText.getText().toString();
     }
 
-    // Set the user details from the signup activity
+    // Set the user details from the edit user information activity
     private void getUserDetails() {
         // Update the details of the user instance
         String name = instance.getCurrentUser().getName();
