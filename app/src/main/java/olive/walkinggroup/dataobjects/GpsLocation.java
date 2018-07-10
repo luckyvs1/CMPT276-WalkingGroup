@@ -2,6 +2,8 @@ package olive.walkinggroup.dataobjects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 /**
  * Store information about a GPS location of a user.
  *
@@ -9,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * it was last updated.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GpsLocation {
+public class GpsLocation implements Serializable {
 
     private double lat;
     private double lng;
