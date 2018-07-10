@@ -91,6 +91,8 @@ public class UserListHelper {
         if ((isOnMonitorsUserList(currentUser, user))) {
             monitorTag.setVisibility(View.VISIBLE);
         }
+
+        //Todo: add tag for users who monitors me, and leader of groups
     }
 
     // Return true if user is on List<User> monitorsUsers of currentUser
