@@ -7,20 +7,62 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.User;
+import olive.walkinggroup.dataobjects.UserListHelper;
 
 public class NewMessageActivity extends AppCompatActivity {
+    private Model model;
+    private User currentUser;
+    private Spinner dropdown;
+    private List<User> contactList;
+    private List<String> contactLabelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_message);
 
+        dropdown = findViewById(R.id.newMessage_toUserDropdown);
+        model = Model.getInstance();
+        currentUser = model.getCurrentUser();
+        contactList = getTestList();
+        buildContactLabelList();
+
         setupNewMessageBtn();
         setupToUserDropdown();
+    }
+
+    private List<User> getTestList() {
+        List<User> returnList = new ArrayList<>();
+        User user1 = new User();
+        user1.setId((long) 9990);
+        user1.setName("Test Subject1");
+        user1.setEmail("sub1@test.com");
+        returnList.add(user1);
+
+        User user2 = new User();
+        user2.setId((long) 9991);
+        user2.setName("Test Subject2");
+        user2.setEmail("sub2@test.com");
+        returnList.add(user2);
+
+        return returnList;
+    }
+
+    private void buildContactLabelList() {
+        contactLabelList = new ArrayList<>();
+
+        for (int i = 0; i < contactList.size(); i++) {
+            User currUser = contactList.get(i);
+            contactLabelList.add(currUser.getName());
+        }
     }
 
     private void setupNewMessageBtn() {
@@ -28,7 +70,10 @@ public class NewMessageActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                User selectedUser = contactList.get(dropdown.getSelectedItemPosition());
+
                 Intent intent = new Intent(NewMessageActivity.this, ChatActivity.class);
+                intent.putExtra("toUser", selectedUser);
                 startActivity(intent);
                 finish();
             }
@@ -36,12 +81,7 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
     private void setupToUserDropdown() {
-        Spinner dropdown = findViewById(R.id.newMessage_toUserDropdown);
-        dropdown.setSelection(-1, false);
-
-        String[] testList = new String[]{"User 1", "User 2", "User 3"};
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, testList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, contactLabelList);
         dropdown.setAdapter(adapter);
     }
 }
