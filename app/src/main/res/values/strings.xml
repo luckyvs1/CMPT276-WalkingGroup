@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WalkingGroup</string>
+    <string name="app_name">Walking Group</string>
     <string name="title_activity_create_group_maps">Map</string>
     <string name="create_new_group_title">Create new group:</string>
     <string name="group_name_edit_text">Group name</string>
@@ -63,4 +63,6 @@
     <string name="create_group_latCaption">Lat:</string>
     <string name="create_group_lngCaption">Long:</string>
     <string name="create_group_errorMsg">Error create group, please logout and login and try again</string>
+    <string name="dashBoard_headerText">Dash Board</string>
+    <string name="dashBoard_messagesText">!</string>
 </resources>

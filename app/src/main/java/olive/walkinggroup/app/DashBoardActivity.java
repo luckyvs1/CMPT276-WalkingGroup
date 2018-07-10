@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import olive.walkinggroup.R;
@@ -24,12 +25,15 @@ public class DashBoardActivity extends AppCompatActivity {
         instance = Model.getInstance();
 
         displayUserName();
-        setupLogoutButton();
+
         setupSimpleButtonActivityChange(R.id.toMonitor, MonitorActivity.class);
         setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class);
         setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class);
-        setupSimpleButtonActivityChange(R.id.dashboard_viewMyGroupsBtn, ListGroupsActivity.class);
+        setupSimpleButtonActivityChange(R.id.dashBoard_viewMyGroupsBtn, ListGroupsActivity.class);
+        setupMessagesButton();
+        // Todo: check new messages, display "!" on R.id.dashBoard_messagesText
 
+        setupLogoutButton();
     }
 
     private void displayUserName() {
@@ -48,6 +52,17 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashBoardActivity.this, activityName);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setupMessagesButton() {
+        RelativeLayout btn = findViewById(R.id.dashBoard_messagesBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashBoardActivity.this, MessageActivity.class);
                 startActivity(intent);
             }
         });
