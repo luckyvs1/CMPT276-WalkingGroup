@@ -11,10 +11,14 @@ import android.widget.TextView;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.UploadGpsLocation;
+import olive.walkinggroup.dataobjects.User;
 
 public class DashBoardActivity extends AppCompatActivity {
     
     private Model instance;
+    private User user;
+    private UploadGpsLocation uploadGpsLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,9 @@ public class DashBoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dash_board);
 
         instance = Model.getInstance();
+        user = instance.getCurrentUser();
+        uploadGpsLocation = new UploadGpsLocation(this);
+
 
         displayUserName();
         setupLogoutButton();
@@ -30,7 +37,13 @@ public class DashBoardActivity extends AppCompatActivity {
         setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class);
         setupSimpleButtonActivityChange(R.id.dashboard_viewMyGroupsBtn, ListGroupsActivity.class);
 
+
+        // TEST
+        uploadGpsLocation.start();
+
     }
+
+
 
     private void displayUserName() {
         try {
