@@ -7,18 +7,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
-import olive.walkinggroup.dataobjects.UploadGpsLocation;
-import olive.walkinggroup.dataobjects.User;
 
 public class DashBoardActivity extends AppCompatActivity {
     
     private Model instance;
-    private User user;
-    private UploadGpsLocation uploadGpsLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,24 +23,18 @@ public class DashBoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dash_board);
 
         instance = Model.getInstance();
-        user = instance.getCurrentUser();
-        uploadGpsLocation = new UploadGpsLocation(this);
-
 
         displayUserName();
-        setupLogoutButton();
+
         setupSimpleButtonActivityChange(R.id.toMonitor, MonitorActivity.class);
         setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class);
         setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class);
-        setupSimpleButtonActivityChange(R.id.dashboard_viewMyGroupsBtn, ListGroupsActivity.class);
+        setupSimpleButtonActivityChange(R.id.dashBoard_viewMyGroupsBtn, ListGroupsActivity.class);
+        setupMessagesButton();
+        // Todo: check new messages, display "!" on R.id.dashBoard_messagesText
 
-
-        // TEST
-        uploadGpsLocation.start();
-
+        setupLogoutButton();
     }
-
-
 
     private void displayUserName() {
         try {
@@ -61,6 +52,17 @@ public class DashBoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashBoardActivity.this, activityName);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setupMessagesButton() {
+        RelativeLayout btn = findViewById(R.id.dashBoard_messagesBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashBoardActivity.this, MessagesActivity.class);
                 startActivity(intent);
             }
         });
