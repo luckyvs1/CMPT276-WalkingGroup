@@ -85,4 +85,5 @@
     <string name="yyyy">yyyy</string>
     <string name="mm">mm</string>
     <string name="UpdateUserInformatonSuccessfully">User Information Updated Successfully</string>
+    <string name="profile">Profile</string>
 </resources>

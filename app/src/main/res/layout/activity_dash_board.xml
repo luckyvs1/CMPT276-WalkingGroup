@@ -70,7 +70,7 @@
             android:id="@+id/toUserSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/settings"
+            android:text="@string/profile"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="279dp" />
 
