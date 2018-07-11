@@ -1,5 +1,7 @@
 package olive.walkinggroup.app;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,6 +41,14 @@ public class ChatActivity extends AppCompatActivity {
 
     RelativeLayout.LayoutParams sendParams;
     RelativeLayout.LayoutParams receiveParams;
+
+    public static Intent makeIntent(Context context, List<Message> list, User user) {
+        Intent intent = new Intent(context, ChatActivity.class);
+        //intent.putParcelableArrayListExtra("messageList", list);
+        intent.putExtra("user", user);
+
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

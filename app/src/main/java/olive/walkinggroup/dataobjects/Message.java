@@ -1,5 +1,7 @@
 package olive.walkinggroup.dataobjects;
 
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
