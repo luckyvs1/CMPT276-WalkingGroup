@@ -60,13 +60,20 @@ public class ChildrenDetail extends AppCompatActivity {
 
     private void populateView(){
         name.append(user.getName());
-//        birthday.append(user.getBirthMonth()+user.getBirthYear().toString());
-//        address.append(user.getAddress());
-//        phone.append(user.getHomePhone());
-//        cell.append(user.getCellPhone());
         email.append(user.getEmail());
-//        grade.append(user.getGrade());
-//        teacher.append(user.getTeacherName());
+
+        if (user.getBirthYear()!=null && user.getBirthMonth()!=null)
+        {birthday.append(""+user.getBirthMonth()+" / "+user.getBirthYear().toString());}
+        if(user.getAddress()!=null)
+        {address.append(user.getAddress());}
+        if(user.getHomePhone()!=null)
+        {phone.append(user.getHomePhone());}
+        if(user.getCellPhone()!=null)
+        {cell.append(user.getCellPhone());}
+        if(user.getGrade()!=null)
+        {grade.append(user.getGrade());}
+        if(user.getTeacherName()!=null)
+        {teacher.append(user.getTeacherName());}
     }
 
     public void verifyMonitoredUsersList(){

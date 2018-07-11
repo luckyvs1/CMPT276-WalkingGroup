@@ -13,7 +13,6 @@ import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
 
 public class ParentDetail extends AppCompatActivity {
-    private Model instance = Model.getInstance();
     User user;
 
     TextView name;
@@ -55,11 +54,16 @@ public class ParentDetail extends AppCompatActivity {
 
     private void populateView(){
         name.append(user.getName());
-//        birthday.append(user.getBirthMonth()+user.getBirthYear().toString());
-//        address.append(user.getAddress());
-//        phone.append(user.getHomePhone());
-//        cell.append(user.getCellPhone());
         email.append(user.getEmail());
+
+        if (user.getBirthYear()!=null && user.getBirthMonth()!=null)
+        {birthday.append(""+user.getBirthMonth()+" / "+user.getBirthYear());}
+        if(user.getAddress()!=null)
+        {address.append(user.getAddress());}
+        if(user.getHomePhone()!=null)
+        {phone.append(user.getHomePhone());}
+        if(user.getCellPhone()!=null)
+        {cell.append(user.getCellPhone());}
     }
 
     public static Intent makeIntent(Context context, User user) {
