@@ -14,11 +14,14 @@ import android.widget.TextView;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import olive.walkinggroup.R;
@@ -40,6 +43,8 @@ public class MessagesActivity extends AppCompatActivity {
     private Model model;
     private User currentUser;
 
+    SimpleDateFormat format;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +52,8 @@ public class MessagesActivity extends AppCompatActivity {
 
         model = Model.getInstance();
         currentUser = model.getCurrentUser();
+
+        format = new SimpleDateFormat("MMM dd (EEE) hh:mmaaa", Locale.getDefault());
 
         getAllMessages();
 
@@ -60,8 +67,42 @@ public class MessagesActivity extends AppCompatActivity {
     }
 
     private void onGetAllMessagesResponse(List<Message> returnedList) {
-        allMessagesList = returnedList;
+        //allMessagesList = returnedList;
+        allMessagesList = makeTestList();
         buildMyMessagesList();
+    }
+
+    private List<Message> makeTestList() {
+        List<Message> returnList = new ArrayList<>();
+
+        returnList.add(makeTestMessage(101, 5, "Hello", makeUser(501, "Bobby C."), currentUser));
+        returnList.add(makeTestMessage(102, 6, "This is a test.", makeUser(502, "Dark Lord Sauron"), currentUser));
+        returnList.add(makeTestMessage(103, 9, "Buy me some stuff, here's a list:\n-milk\n-eggs\n-goo", makeUser(501, "Bobby C."), currentUser));
+        returnList.add(makeTestMessage(104, 8, "SECRET!!!", makeUser(401, "Hidden"), makeUser(402, "Hidden")));
+        returnList.add(makeTestMessage(105, 12, "Fun Fair!", currentUser, makeUser(505, "Ronald R.")));
+
+        return returnList;
+    }
+
+    private Message makeTestMessage(int id, int timeInc, String text, User fromUser, User toUser) {
+        Message message = new Message();
+        message.setId((long) id);
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MINUTE, timeInc);
+        Date date = cal.getTime();
+        message.setTimestamp(date);
+        message.setText(text);
+        message.setFromUser(fromUser);
+        message.setToUser(toUser);
+        return message;
+    }
+
+    private User makeUser(int id, String name) {
+        User user = new User();
+        user.setId((long) id);
+        user.setName(name);
+        return user;
     }
 
     // Get only messages related to user, put in myMessagesList, grouped by contact
@@ -117,6 +158,7 @@ public class MessagesActivity extends AppCompatActivity {
         }
     }
 
+    // Get latest Message from each contact, from index 0 of sorted Message Lists.
     private void buildDisplayList() {
         for (int i = 0; i < myMessagesList.size(); i++) {
             displayList.add(myMessagesList.get(i).get(0));
@@ -199,10 +241,22 @@ public class MessagesActivity extends AppCompatActivity {
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.list_message_item, parent, false);
             }
+            Message currentMessage = displayList.get(position);
 
             TextView contactNameTextView = itemView.findViewById(R.id.listMessageItem_userName);
             TextView latestMessageTextView = itemView.findViewById(R.id.listMessageItem_latestMessage);
             TextView timestampTextView = itemView.findViewById(R.id.listMessageItem_timestamp);
+
+            if (Objects.equals(currentMessage.getToUser().getId(), currentUser.getId())) {
+                // If currentUser is receiver
+                contactNameTextView.setText(currentMessage.getFromUser().getName());
+            } else if (Objects.equals(currentMessage.getFromUser().getId(), currentUser.getId())) {
+                // If currentUser is sender
+                contactNameTextView.setText(currentMessage.getToUser().getName());
+            }
+
+            latestMessageTextView.setText(currentMessage.getText());
+            timestampTextView.setText(format.format(currentMessage.getTimestamp()));
 
 
 

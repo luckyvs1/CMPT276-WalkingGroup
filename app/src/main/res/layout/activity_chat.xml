@@ -43,17 +43,17 @@
 
     </RelativeLayout>
 
+    <!-- set transcriptMode to alwaysScroll so list auto-scrolls to bottom when add new item-->
     <ListView
         android:id="@+id/chatActivity_chatLog"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/chatActivity_header"
         app:layout_constraintBottom_toTopOf="@id/chatActivity_inputContainer"
-        android:animateLayoutChanges="true"
         android:divider="@null"
         android:dividerHeight="0dp"
         android:stackFromBottom="true"
-        android:transcriptMode="normal"
+        android:transcriptMode="alwaysScroll"
         android:scrollbars="none"
         >
     </ListView>
@@ -61,11 +61,15 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/chatActivity_inputContainer"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="#fff"
+        android:background="@drawable/background_chat_send"
         android:paddingStart="10dp"
-        android:paddingEnd="5dp"
+        android:paddingEnd="0dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:elevation="5dp"
         >
 
         <EditText
@@ -76,17 +80,22 @@
             app:layout_constraintEnd_toStartOf="@+id/chatActivity_sendBtn"
             app:layout_constraintStart_toStartOf="parent"
             android:hint="@string/chatActivity_EditTextHint"
-            android:inputType="text" />
+            android:inputType="textMultiLine"
+            android:maxLines="8"
+            android:scrollbars="vertical"
+            />
 
         <RelativeLayout
             android:id="@+id/chatActivity_sendBtn"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:gravity="center"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:background="@drawable/background_header_button"
+            android:paddingStart="13dp"
+            android:paddingEnd="13dp"
+            android:background="@drawable/background_header_button_rounded"
             >
 
             <ImageView
@@ -96,6 +105,7 @@
                 />
 
         </RelativeLayout>
+
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
