@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -228,6 +229,18 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         memberListView.setAdapter(adapter);
 
         hideLoadingCircle();
+        registerClickCallback();
+    }
+
+    private void registerClickCallback() {
+        ListView list = (ListView) findViewById(R.id.groupDetail_memberList);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                Intent intent = ChildrenDetail.makeIntent (GroupDetailsActivity.this, memberList.get(position));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
