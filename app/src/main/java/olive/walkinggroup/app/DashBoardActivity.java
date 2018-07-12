@@ -1,5 +1,6 @@
 package olive.walkinggroup.app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -11,10 +12,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
 
 public class DashBoardActivity extends AppCompatActivity {
-    
+
+    private static final int REQUEST_CODE_VIEW_GROUPS = 0;
     private Model instance;
 
     @Override
@@ -26,10 +29,10 @@ public class DashBoardActivity extends AppCompatActivity {
 
         displayUserName();
 
-        setupSimpleButtonActivityChange(R.id.toMonitor, MonitorActivity.class);
-        setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class);
-        setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class);
-        setupSimpleButtonActivityChange(R.id.dashBoard_viewMyGroupsBtn, ListGroupsActivity.class);
+        setupSimpleButtonActivityChange(R.id.toMonitor, MonitorActivity.class, false);
+        setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class, false);
+        setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class, false);
+        setupSimpleButtonActivityChange(R.id.dashBoard_viewMyGroupsBtn, ListGroupsActivity.class, true);
         setupMessagesButton();
         // Todo: check new messages, display "!" on R.id.dashBoard_messagesText
 
@@ -46,13 +49,17 @@ public class DashBoardActivity extends AppCompatActivity {
         }
     }                   
 
-    private void setupSimpleButtonActivityChange(int buttonId, Class activityName) {
+    private void setupSimpleButtonActivityChange(int buttonId, Class activityName, boolean forResult) {
         Button btn = (Button) findViewById(buttonId);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashBoardActivity.this, activityName);
-                startActivity(intent);
+                if (!forResult) {
+                    startActivity(intent);
+                } else {
+                    startActivityForResult(intent, REQUEST_CODE_VIEW_GROUPS);
+                }
             }
         });
     }
@@ -105,4 +112,14 @@ public class DashBoardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_VIEW_GROUPS:
+                if (resultCode == Activity.RESULT_OK) {
+                    Group activeGroup = ListGroupsActivity.getGroupFromIntent(data);
+                    Log.i("MyApp", activeGroup.toString());
+                }
+        }
+    }
 }

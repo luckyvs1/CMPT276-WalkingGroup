@@ -1,5 +1,6 @@
 package olive.walkinggroup.app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +35,7 @@ import retrofit2.Call;
 
 public class ListGroupsActivity extends AppCompatActivity {
     public static final String TAG = "ListGroupsActivity";
+    private static final String ACTIVE_GROUP_KEY = "ListGroupsActivity - ActiveGroup";
     private Model model = Model.getInstance();
     private User currentUser = model.getCurrentUser();
     private List<Group> userGroups;
@@ -166,6 +170,11 @@ public class ListGroupsActivity extends AppCompatActivity {
         hideLoadingCircle();
     }
 
+    public static Group getGroupFromIntent(Intent intent) {
+        Serializable serializable = intent.getSerializableExtra(ACTIVE_GROUP_KEY);
+        return (Group)serializable;
+    }
+
     private class GroupListAdapter extends ArrayAdapter<Group> {
         public GroupListAdapter() {
             super(ListGroupsActivity.this, R.layout.list_groups_item, userGroups);
@@ -178,14 +187,32 @@ public class ListGroupsActivity extends AppCompatActivity {
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.list_groups_item, parent, false);
             }
+
+
             Group currentGroup = userGroups.get(position);
+
+
 
             setupGroupDescriptionView(itemView, currentGroup);
             setupNumMembersView(itemView, currentGroup);
             displayTags(itemView, currentGroup);
+            setupButtons(itemView, currentGroup);
 
             return itemView;
         }
+    }
+
+    private void setupButtons(View itemView, Group currentGroup) {
+        Button btn = itemView.findViewById(R.id.btn_setActiveGroup);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra(ACTIVE_GROUP_KEY, currentGroup);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 
     private void setupGroupDescriptionView(View itemView, Group currentGroup) {
@@ -225,6 +252,7 @@ public class ListGroupsActivity extends AppCompatActivity {
         groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Group clickedGroup = userGroups.get(position);
 
                 Intent intent = new Intent(ListGroupsActivity.this, GroupDetailsActivity.class);
