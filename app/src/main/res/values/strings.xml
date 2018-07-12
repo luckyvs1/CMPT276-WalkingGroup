@@ -72,4 +72,5 @@
     <string name="newMessage_groupListTitle">My Groups</string>
     <string name="newMessage_newMessageText">+</string>
     <string name="chatActivity_EditTextHint">Message</string>
+    <string name="btn_setActiveGroup_text">walk</string>
 </resources>
