@@ -15,12 +15,12 @@ import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
-import retrofit2.http.Query;
 
 public class EditUserInformationActivity extends AppCompatActivity {
 
     private Model instance;
-    private User editUser;
+    private User user;
+    private User currentUser;
     private String editUserEmail;
 
     @Override
@@ -29,15 +29,16 @@ public class EditUserInformationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_user_information);
 
         instance = Model.getInstance();
+        currentUser = instance.getCurrentUser();
 
         extractDataFromIntent();
 
-        if(extractDataFromIntent() != null){
+        if(editUserEmail != null){
             //Get the edit user details
-            //updateEditUser(extractDataFromIntent());
+            updateEditUser(editUserEmail);
+        } else {
+            getUserDetails();
         }
-        getUserDetails();
-
 
         // Setup activity buttons
         setupConfirmEditUserBtn();
@@ -52,23 +53,9 @@ public class EditUserInformationActivity extends AppCompatActivity {
     }
 
     private void getUserByEmailResponse(User userFromEmail){
-        editUser.setName(userFromEmail.getName());
-        editUser.setEmail(userFromEmail.getEmail());
-        editUser.setCellPhone(userFromEmail.getCellPhone());
-        editUser.setHomePhone(userFromEmail.getHomePhone());
-        editUser.setEmergencyContactInfo(userFromEmail.getEmergencyContactInfo());
-        editUser.setAddress(userFromEmail.getAddress());
-        editUser.setGrade(userFromEmail.getGrade());
-        editUser.setTeacherName(userFromEmail.getTeacherName());
-        editUser.setBirthYear(userFromEmail.getBirthYear());
-        editUser.setBirthMonth(userFromEmail.getBirthMonth());
-        editUser.setId(userFromEmail.getId());
-    }
-
-    private String extractDataFromIntent() {
-        Intent intent = getIntent();
-        editUserEmail = intent.getStringExtra("email");
-        return editUserEmail;
+        user = userFromEmail;
+        Toast.makeText(EditUserInformationActivity.this, user.toString(), Toast.LENGTH_LONG).show();
+        getUserDetails();
     }
 
     private void setupCancelBtn() {
@@ -89,17 +76,28 @@ public class EditUserInformationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setUserDetails();
 
+                Call<User> caller;
+
                 // Make server call
-                Call<User> caller = instance.getProxy().updateUser(instance.getCurrentUser().getId(), instance.getCurrentUser());
+                if(editUserEmail != null){
+                    caller = instance.getProxy().updateUser(user.getId(), user);
+                } else {
+                    caller = instance.getProxy().updateUser(currentUser.getId(), currentUser);
+                }
                 ProxyBuilder.callProxy(EditUserInformationActivity.this, caller, updatedUser -> updateUserResponse(updatedUser));
             }
         });
     }
 
     private void updateUserResponse(User updatedUser) {
-        instance.setCurrentUser(updatedUser);
 
-        Toast.makeText(EditUserInformationActivity.this, R.string.UpdateUserInformatonSuccessfully, Toast.LENGTH_LONG).show();
+        if(user.getId() != null) {
+            Toast.makeText(EditUserInformationActivity.this, R.string.UpdateUserInformatonSuccessfully, Toast.LENGTH_LONG).show();
+            user = updatedUser;
+        } else {
+            instance.setCurrentUser(updatedUser);
+            currentUser = updatedUser;
+        }
         finish();
     }
 
@@ -119,42 +117,42 @@ public class EditUserInformationActivity extends AppCompatActivity {
             Integer intBirthYear;
             Integer intBirthMonth;
 
-            if (birthYear != null && extractDataFromIntent() == null) {
+            if (birthYear != null && editUserEmail == null) {
                 intBirthYear = Integer.valueOf(birthYear);
-                instance.getCurrentUser().setBirthYear(intBirthYear);
+                currentUser.setBirthYear(intBirthYear);
 
-            } else if (birthYear != null && extractDataFromIntent() != null ) {
+            } else if (birthYear != null && editUserEmail != null) {
                 intBirthYear = Integer.valueOf(birthYear);
-                editUser.setBirthYear(intBirthYear);
+                user.setBirthYear(intBirthYear);
             }
 
-            if (birthMonth != null && extractDataFromIntent() == null) {
+            if (birthMonth != null && editUserEmail == null) {
                 intBirthMonth = Integer.valueOf(birthMonth);
-                instance.getCurrentUser().setBirthMonth(intBirthMonth);
-            } else if (birthMonth != null && extractDataFromIntent() != null ) {
+                currentUser.setBirthMonth(intBirthMonth);
+            } else if (birthMonth != null && editUserEmail != null) {
                 intBirthMonth = Integer.valueOf(birthMonth);
-                editUser.setBirthMonth(intBirthMonth);
+                user.setBirthMonth(intBirthMonth);
             }
 
-            if(extractDataFromIntent() == null) {
+            if(editUserEmail == null) {
                 // Update the details of the user instance
-                instance.getCurrentUser().setName(name);
-                instance.getCurrentUser().setEmail(email);
-                instance.getCurrentUser().setAddress(address);
-                instance.getCurrentUser().setTeacherName(teacherName);
-                instance.getCurrentUser().setGrade(grade);
-                instance.getCurrentUser().setCellPhone(cellPhone);
-                instance.getCurrentUser().setHomePhone(homePhone);
-                instance.getCurrentUser().setEmergencyContactInfo(emergencyContactInformation);
+                currentUser.setName(name);
+                currentUser.setEmail(email);
+                currentUser.setAddress(address);
+                currentUser.setTeacherName(teacherName);
+                currentUser.setGrade(grade);
+                currentUser.setCellPhone(cellPhone);
+                currentUser.setHomePhone(homePhone);
+                currentUser.setEmergencyContactInfo(emergencyContactInformation);
             } else {
-                editUser.setName(name);
-                editUser.setEmail(email);
-                editUser.setCellPhone(cellPhone);
-                editUser.setHomePhone(homePhone);
-                editUser.setEmergencyContactInfo(emergencyContactInformation);
-                editUser.setAddress(address);
-                editUser.setGrade(grade);
-                editUser.setTeacherName(teacherName);
+                user.setName(name);
+                user.setEmail(email);
+                user.setCellPhone(cellPhone);
+                user.setHomePhone(homePhone);
+                user.setEmergencyContactInfo(emergencyContactInformation);
+                user.setAddress(address);
+                user.setGrade(grade);
+                user.setTeacherName(teacherName);
             }
 
         } catch (NullPointerException e ) {
@@ -191,34 +189,41 @@ public class EditUserInformationActivity extends AppCompatActivity {
         String homePhone;
         String emergencyContactInformation;
 
-        if(extractDataFromIntent() == null) {
-            name = instance.getCurrentUser().getName();
-            email = instance.getCurrentUser().getEmail();
-            birthYear = String.valueOf(instance.getCurrentUser().getBirthYear());
-            birthMonth = String.valueOf(instance.getCurrentUser().getBirthMonth());
-            address = instance.getCurrentUser().getAddress();
-            teacherName = instance.getCurrentUser().getTeacherName();
-            grade = instance.getCurrentUser().getGrade();
-            cellPhone = instance.getCurrentUser().getCellPhone();
-            homePhone = instance.getCurrentUser().getHomePhone();
-            emergencyContactInformation = instance.getCurrentUser().getEmergencyContactInfo();
+        if(editUserEmail == null) {
+            name = currentUser.getName();
+            email = currentUser.getEmail();
+            birthYear = String.valueOf(currentUser.getBirthYear());
+            birthMonth = String.valueOf(currentUser.getBirthMonth());
+            address = currentUser.getAddress();
+            teacherName = currentUser.getTeacherName();
+            grade = currentUser.getGrade();
+            cellPhone = currentUser.getCellPhone();
+            homePhone = currentUser.getHomePhone();
+            emergencyContactInformation = currentUser.getEmergencyContactInfo();
         } else {
-            name = editUser.getName();
-            email = editUser.getEmail();
-            birthYear = String.valueOf(editUser.getBirthYear());
-            birthMonth = String.valueOf(editUser.getBirthMonth());
-            address = editUser.getAddress();
-            teacherName = editUser.getTeacherName();
-            grade = editUser.getGrade();
-            cellPhone = editUser.getCellPhone();
-            homePhone = editUser.getHomePhone();
-            emergencyContactInformation = editUser.getEmergencyContactInfo();
+            name = user.getName();
+            email = user.getEmail();
+            birthYear = String.valueOf(user.getBirthYear());
+            birthMonth = String.valueOf(user.getBirthMonth());
+            address = user.getAddress();
+            teacherName = user.getTeacherName();
+            grade = user.getGrade();
+            cellPhone = user.getCellPhone();
+            homePhone = user.getHomePhone();
+            emergencyContactInformation = user.getEmergencyContactInfo();
         }
 
         setUserInput(R.id.txtSetName, name);
         setUserInput(R.id.txtSetEmail, email);
-        setUserInput(R.id.txtSetBirthyear, birthYear);
-        setUserInput(R.id.txtSetBirthmonth, birthMonth);
+
+        if(birthYear != "null") {
+            setUserInput(R.id.txtSetBirthyear, birthYear);
+        }
+
+        if(birthMonth != "null") {
+            setUserInput(R.id.txtSetBirthmonth, birthMonth);
+        }
+
         setUserInput(R.id.txtSetAddress, address);
         setUserInput(R.id.txtSetTeachername, teacherName);
         setUserInput(R.id.txtSetGrade, grade);
@@ -233,10 +238,18 @@ public class EditUserInformationActivity extends AppCompatActivity {
     }
 
     public static Intent makeIntent(Context context, String email) {
-        Intent intent = new Intent(context, EditUserInformationActivity.class);
+        Intent intent = new Intent (context, EditUserInformationActivity.class);
         intent.putExtra("Email", email);
         return intent;
     }
+
+    private void extractDataFromIntent() {
+        Intent intent = getIntent();
+        //user.setEmail(intent.getStringExtra("Email"));
+        Toast.makeText(EditUserInformationActivity.this, intent.getStringExtra("Email"), Toast.LENGTH_LONG).show();
+        editUserEmail = intent.getStringExtra("Email");
+    }
+
 
 
 }
