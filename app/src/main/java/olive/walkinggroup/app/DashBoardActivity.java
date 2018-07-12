@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
@@ -17,7 +18,7 @@ import olive.walkinggroup.dataobjects.Model;
 
 public class DashBoardActivity extends AppCompatActivity {
 
-    private static final int REQUEST_CODE_VIEW_GROUPS = 0;
+    private static final int REQUEST_CODE_VIEW_GROUPS_START_WALK = 0;
     private Model instance;
 
     @Override
@@ -58,7 +59,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 if (!forResult) {
                     startActivity(intent);
                 } else {
-                    startActivityForResult(intent, REQUEST_CODE_VIEW_GROUPS);
+                    startActivityForResult(intent, REQUEST_CODE_VIEW_GROUPS_START_WALK);
                 }
             }
         });
@@ -115,11 +116,19 @@ public class DashBoardActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_CODE_VIEW_GROUPS:
+            case REQUEST_CODE_VIEW_GROUPS_START_WALK:
                 if (resultCode == Activity.RESULT_OK) {
                     Group activeGroup = ListGroupsActivity.getGroupFromIntent(data);
-                    Log.i("MyApp", activeGroup.toString());
+                    notifyUserViaLogAndToast(getString(R.string.start_walk_group_name) + activeGroup.getGroupDescription());
                 }
         }
     }
+
+    private void notifyUserViaLogAndToast(String message) {
+        Toast.makeText(DashBoardActivity.this, message, Toast.LENGTH_LONG).show();
+        Log.i("App", message);
+    }
 }
+
+
+

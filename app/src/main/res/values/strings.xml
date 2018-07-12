@@ -73,4 +73,5 @@
     <string name="newMessage_newMessageText">+</string>
     <string name="chatActivity_EditTextHint">Message</string>
     <string name="btn_setActiveGroup_text">walk</string>
+    <string name="start_walk_group_name">Started uploading GPS location with group name:</string>
 </resources>
