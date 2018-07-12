@@ -9,7 +9,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import olive.walkinggroup.R;
-import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
 
 public class ParentDetail extends AppCompatActivity {

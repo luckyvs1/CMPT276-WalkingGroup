@@ -1,23 +1,15 @@
 package olive.walkinggroup.app;
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import olive.walkinggroup.R;
@@ -29,6 +21,7 @@ import retrofit2.Call;
 public class MonitorActivity extends AppCompatActivity {
     private Model instance = Model.getInstance();
     private User user = instance.getCurrentUser();
+    private User editUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,12 +82,23 @@ public class MonitorActivity extends AppCompatActivity {
                 String description = tvClicked.getText().toString();
                 String email = description.split("Email: ")[1];
 
-                Intent intent = EditUserInformationActivity.makeIntent(MonitorActivity.this, email);
-                //Toast.makeText(MonitorActivity.this, email, Toast.LENGTH_LONG).show();
-                startActivity(intent);
+                getUserByEmail(email);
             }
         });
     }
+
+    private void getUserByEmail(String email) {
+        Call<User> caller = instance.getProxy().getUserByEmail(email);
+        ProxyBuilder.callProxy(MonitorActivity.this, caller, returnedUser -> getUserByEmailResponse(returnedUser));
+    }
+
+    private void getUserByEmailResponse(User userFromEmail){
+        editUser = userFromEmail;
+
+        Intent intent = ChildrenDetail.makeIntent(MonitorActivity.this, editUser);
+        startActivity(intent);
+    }
+
 
     public void populateIMonitor() {
         //Create list

@@ -91,7 +91,7 @@ public class EditUserInformationActivity extends AppCompatActivity {
 
     private void updateUserResponse(User updatedUser) {
 
-        if(user.getId() != null) {
+        if(editUserEmail != null) {
             Toast.makeText(EditUserInformationActivity.this, R.string.UpdateUserInformatonSuccessfully, Toast.LENGTH_LONG).show();
             user = updatedUser;
         } else {
@@ -245,11 +245,7 @@ public class EditUserInformationActivity extends AppCompatActivity {
 
     private void extractDataFromIntent() {
         Intent intent = getIntent();
-        //user.setEmail(intent.getStringExtra("Email"));
-        Toast.makeText(EditUserInformationActivity.this, intent.getStringExtra("Email"), Toast.LENGTH_LONG).show();
         editUserEmail = intent.getStringExtra("Email");
     }
-
-
 
 }
