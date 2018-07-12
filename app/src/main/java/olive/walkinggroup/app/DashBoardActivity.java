@@ -13,19 +13,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.GpsLocation;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.UploadGpsLocation;
 
 public class DashBoardActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_VIEW_GROUPS_START_WALK = 0;
     private Model instance;
+    private UploadGpsLocation uploadGpsLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
 
+        uploadGpsLocation = new UploadGpsLocation(this);
         instance = Model.getInstance();
 
         displayUserName();
@@ -90,6 +94,9 @@ public class DashBoardActivity extends AppCompatActivity {
                 storeToSharedPreferences("Token", nullValue);
                 storeToSharedPreferences("UserEmail", nullValue);
 
+                // Stop Gps location upload
+                uploadGpsLocation.stop();
+
                 // End the activity
                 finish();
             }
@@ -118,11 +125,15 @@ public class DashBoardActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_CODE_VIEW_GROUPS_START_WALK:
                 if (resultCode == Activity.RESULT_OK) {
+
                     Group activeGroup = ListGroupsActivity.getGroupFromIntent(data);
                     notifyUserViaLogAndToast(getString(R.string.start_walk_group_name) + activeGroup.getGroupDescription());
+                    uploadGpsLocation.start();
                 }
         }
     }
+
+
 
     private void notifyUserViaLogAndToast(String message) {
         Toast.makeText(DashBoardActivity.this, message, Toast.LENGTH_LONG).show();

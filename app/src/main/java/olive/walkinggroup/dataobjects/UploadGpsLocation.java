@@ -25,9 +25,12 @@ public class UploadGpsLocation {
     private Activity activity;
     private Model instance;
     private User user;
-    private Timer uploadTimer;
-    private Timer autoStopTimer;
+    private Timer uploadTimer = new Timer();
+    private Timer autoStopTimer = new Timer();
     private boolean hasArrivedAtDestLocation;
+
+    private GpsLocation currentUserLocation = new GpsLocation();
+    private GpsLocation activeGroupDestLocation = new GpsLocation();
 
     private static final int NUM_MS_IN_S = 1000;
     private static final int NUM_S_IN_MIN = 60;
@@ -40,15 +43,17 @@ public class UploadGpsLocation {
     public UploadGpsLocation(Activity activity) {
         currentLocationHelper = new CurrentLocationHelper(activity);
         hasArrivedAtDestLocation = false;
-        uploadTimer = new Timer();
-        autoStopTimer = new Timer();
         this.activity = activity;
+
         instance = Model.getInstance();
         user = instance.getCurrentUser();
+
     }
 
     public void start() {
+        stop();
         currentLocationHelper.getLocationPermission();
+        uploadTimer = new Timer();
         uploadTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -56,6 +61,7 @@ public class UploadGpsLocation {
                     startAutoStopTimer();
                 }
                 getLocationAndUploadToServer();
+
             }
         },UPLOAD_DELAY_S, UPLOAD_RATE_S*NUM_MS_IN_S);
 
@@ -63,6 +69,7 @@ public class UploadGpsLocation {
     }
 
     private void startAutoStopTimer() {
+        autoStopTimer = new Timer();
         autoStopTimer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -89,7 +96,9 @@ public class UploadGpsLocation {
                         if (task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
                             if (currentLocation != null) {
-                                LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+//                                LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                                LatLng currentLatLng = new LatLng(1.23, 1.23);
+
                                 uploadGpsLocationToServer(currentLatLng);
                             }
                         } else {
@@ -103,7 +112,6 @@ public class UploadGpsLocation {
             Log.e("MyApp", "UploadGpsLocation: SecurityException: " + e.getMessage());
         }
 
-
     }
 
     private void uploadGpsLocationToServer(LatLng latLng) {
@@ -111,6 +119,9 @@ public class UploadGpsLocation {
         GpsLocation lastGpsLocation = new GpsLocation(latLng.latitude, latLng.longitude, timeStamp);
         Call<GpsLocation> caller = instance.getProxy().setLastGpsLocation(user.getId(), lastGpsLocation);
         ProxyBuilder.callProxy(activity, caller, returnedGpsLocation -> setLastGpsLocationReturned(returnedGpsLocation));
+
+        Log.i("MyApp", "UploadGpsLocation: upload to server");
+
 
     }
 
