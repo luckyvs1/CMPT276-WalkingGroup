@@ -42,41 +42,79 @@ public class ChildrenDetail extends AppCompatActivity {
         setContentView(R.layout.activity_children_detail);
 
         extractDataFromIntent();
-        setView();
+//        setView();
         populateView();
         verifyMonitoredUsersList();
         registerClickCallback();
         setupEditButton();
     }
 
-    private void setView() {
-        name = findViewById(R.id.detailName);
-        birthday = findViewById(R.id.detailBirthday);
-        address = findViewById(R.id.detailAddress);
-        phone = findViewById(R.id.detailPhone);
-        cell = findViewById(R.id.detailCell);
-        email = findViewById(R.id.detailEmail);
-        grade = findViewById(R.id.detailGrade);
-        teacher = findViewById(R.id.detailTeacher);
-        contactList = findViewById(R.id.IMonitor);
-    }
+//    private void setView() {
+//        name = findViewById(R.id.detailName);
+//        birthday = findViewById(R.id.detailBirthday);
+//        address = findViewById(R.id.detailAddress);
+//        phone = findViewById(R.id.detailPhone);
+//        cell = findViewById(R.id.detailCell);
+//        email = findViewById(R.id.detailEmail);
+//        grade = findViewById(R.id.detailGrade);
+//        teacher = findViewById(R.id.detailTeacher);
+//        contactList = findViewById(R.id.IMonitor);
+//    }
+
+//    private void populateView(){
+//        name.append(user.getName());
+//        email.append(user.getEmail());
+//
+//        if (user.getBirthYear()!=null && user.getBirthMonth()!=null)
+//        {birthday.append(""+user.getBirthMonth()+" / "+user.getBirthYear().toString());}
+//        if(user.getAddress()!=null)
+//        {address.append(user.getAddress());}
+//        if(user.getHomePhone()!=null)
+//        {phone.append(user.getHomePhone());}
+//        if(user.getCellPhone()!=null)
+//        {cell.append(user.getCellPhone());}
+//        if(user.getGrade()!=null)
+//        {grade.append(user.getGrade());}
+//        if(user.getTeacherName()!=null)
+//        {teacher.append(user.getTeacherName());}
+//    }
 
     private void populateView(){
-        name.append(user.getName());
-        email.append(user.getEmail());
+//        name.append(user.getName());
+//        email.append(user.getEmail());
 
-        if (user.getBirthYear()!=null && user.getBirthMonth()!=null)
-        {birthday.append(""+user.getBirthMonth()+" / "+user.getBirthYear().toString());}
-        if(user.getAddress()!=null)
-        {address.append(user.getAddress());}
-        if(user.getHomePhone()!=null)
-        {phone.append(user.getHomePhone());}
-        if(user.getCellPhone()!=null)
-        {cell.append(user.getCellPhone());}
-        if(user.getGrade()!=null)
-        {grade.append(user.getGrade());}
-        if(user.getTeacherName()!=null)
-        {teacher.append(user.getTeacherName());}
+//        if (user.getBirthYear()!=null && user.getBirthMonth()!=null)
+//        {birthday.append(""+user.getBirthMonth()+" / "+user.getBirthYear().toString());}
+//        if(user.getAddress()!=null)
+//        {address.append(user.getAddress());}
+//        if(user.getHomePhone()!=null)
+//        {phone.append(user.getHomePhone());}
+//        if(user.getCellPhone()!=null)
+//        {cell.append(user.getCellPhone());}
+//        if(user.getGrade()!=null)
+//        {grade.append(user.getGrade());}
+//        if(user.getTeacherName()!=null)
+//        {teacher.append(user.getTeacherName());}
+
+        String birthday = "";
+
+        if(user.getBirthYear()!=null && user.getBirthMonth()!=null){
+            birthday = ""+user.getBirthMonth().toString()+" / "+user.getBirthYear().toString();
+        }
+
+        setTextValueHelper(R.id.txtDisplayName, user.getName());
+        setTextValueHelper(R.id.txtDisplayEmail, user.getEmail());
+        setTextValueHelper(R.id.txtDisplayBirthday, birthday);
+        setTextValueHelper(R.id.txtDisplayPhone, user.getHomePhone());
+        setTextValueHelper(R.id.txtDisplayCell, user.getCellPhone());
+        setTextValueHelper(R.id.txtDisplayGrade, user.getGrade());
+        setTextValueHelper(R.id.txtDisplayTeacherName, user.getTeacherName());
+
+    }
+
+    private void setTextValueHelper(int userInputResourceID, String value) {
+        TextView txtValue = (TextView) findViewById(userInputResourceID);
+        txtValue.setText(value);
     }
 
     public void verifyMonitoredUsersList(){

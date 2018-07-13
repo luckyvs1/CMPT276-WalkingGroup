@@ -230,7 +230,6 @@ public class User extends IdItemBase implements Serializable{
 
     // Groups
     // -------------------------------------------------------------------------------------------
-    @JsonIgnore
     public List<Group> getMemberOfGroups() {
         return memberOfGroups;
     }
@@ -245,7 +244,6 @@ public class User extends IdItemBase implements Serializable{
         this.memberOfGroups.remove(group);
     }
 
-    @JsonIgnore
     public List<Group> getLeadsGroups() {
         return leadsGroups;
     }

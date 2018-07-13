@@ -123,4 +123,61 @@
         android:text="Edit"
         tools:layout_editor_absoluteX="148dp"
         tools:layout_editor_absoluteY="484dp" />
+
+    <TextView
+        android:id="@+id/txtDisplayName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/detailName"
+        android:layout_marginStart="135dp" />
+
+    <TextView
+        android:id="@+id/txtDisplayBirthday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtDisplayName"
+        android:layout_alignTop="@+id/detailBirthday" />
+
+    <TextView
+        android:id="@+id/txtDisplayAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtDisplayName"
+        android:layout_alignTop="@+id/detailAddress" />
+
+    <TextView
+        android:id="@+id/txtDisplayPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtDisplayName"
+        android:layout_alignTop="@+id/detailPhone" />
+
+    <TextView
+        android:id="@+id/txtDisplayCell"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/detailCell"
+        android:layout_alignStart="@+id/txtDisplayName" />
+
+    <TextView
+        android:id="@+id/txtDisplayEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtDisplayName"
+        android:layout_alignTop="@+id/detailEmail" />
+
+    <TextView
+        android:id="@+id/txtDisplayGrade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtDisplayName"
+        android:layout_alignTop="@+id/detailGrade" />
+
+    <TextView
+        android:id="@+id/txtDisplayTeacherName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtDisplayName"
+        android:layout_alignTop="@+id/detailTeacher" />
 </RelativeLayout>
