@@ -72,6 +72,10 @@
     <string name="newMessage_groupListTitle">My Groups</string>
     <string name="newMessage_newMessageText">+</string>
     <string name="chatActivity_EditTextHint">Message</string>
+    <string name="btn_setActiveGroup_text">walk</string>
+    <string name="start_walk_group_name">Started uploading GPS location with group name:</string>
+    <string name="btn_stop_upload">Stop Upload</string>
+    <string name="btn_tracker">Tracker</string>
     <string name="settings">Settings</string>
     <string name="sign_up_user">Sign Up User</string>
     <string name="home_phone">Home Phone</string>
@@ -95,5 +99,4 @@
     <string name="mm">mm</string>
     <string name="UpdateUserInformatonSuccessfully">User Information Updated Successfully</string>
     <string name="profile">Profile</string>
-
 </resources>

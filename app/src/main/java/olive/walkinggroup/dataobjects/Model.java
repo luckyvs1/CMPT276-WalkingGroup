@@ -26,6 +26,7 @@ public class Model {
     private static WGServerProxy proxy;
 
     private static Model instance;
+    private static Group activeGroup;
 
 
     private Model(){
@@ -45,6 +46,18 @@ public class Model {
         proxy = ProxyBuilder.getProxy(apiKey, token);
     }
 
+    public static Group getActiveGroup() {
+        return activeGroup;
+    }
+
+    public static void setActiveGroup(Group activeGroup) {
+        Model.activeGroup = activeGroup;
+    }
+
+    public static boolean activeGroupSelected() {
+        return activeGroup != null;
+    }
+
     public User getCurrentUser() {
         return currentUser;
     }
@@ -55,5 +68,9 @@ public class Model {
 
     public WGServerProxy getProxy() {
         return proxy;
+    }
+
+    public void clearActiveGroup() {
+        activeGroup = null;
     }
 }
