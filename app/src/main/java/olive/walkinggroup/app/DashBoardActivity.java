@@ -43,6 +43,30 @@ public class DashBoardActivity extends AppCompatActivity {
         // Todo: check new messages, display "!" on R.id.dashBoard_messagesText
 
         setupLogoutButton();
+        setupStopUploadButton();
+    }
+
+    private void setupStopUploadButton() {
+        Button btn = findViewById(R.id.btnStopUpload);
+        btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                if (!uploadGpsLocation.activeGroupSelected()) {
+                        notifyUserViaLogAndToast("No active walking group selected");
+                    } else {
+                        if (uploadGpsLocation.hasArrived()) {
+                            notifyUserViaLogAndToast("Stopping upload");
+                            uploadGpsLocation.stop();
+                        } else {
+                            notifyUserViaLogAndToast("You have not arrived at destination location");
+                        }
+                    }
+                }
+
+        });
+
+
+
     }
 
     private void displayUserName() {
@@ -136,7 +160,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
     private void notifyUserViaLogAndToast(String message) {
-        Toast.makeText(DashBoardActivity.this, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(DashBoardActivity.this, message, Toast.LENGTH_SHORT).show();
         Log.i("App", message);
     }
 }
