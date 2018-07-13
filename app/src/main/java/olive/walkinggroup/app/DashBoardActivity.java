@@ -30,11 +30,22 @@ public class DashBoardActivity extends AppCompatActivity {
         setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class);
         setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class);
         setupSimpleButtonActivityChange(R.id.dashBoard_viewMyGroupsBtn, ListGroupsActivity.class);
-        setupSimpleButtonActivityChange(R.id.toUserSettings, UserSettingsActivity.class);
+        setupSettingsButton();
         setupMessagesButton();
         // Todo: check new messages, display "!" on R.id.dashBoard_messagesText
 
         setupLogoutButton();
+    }
+
+    private void setupSettingsButton() {
+        Button btn = (Button) findViewById(R.id.toUserProfile);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = ChildrenDetail.makeIntent(DashBoardActivity.this, instance.getCurrentUser());
+                startActivity(intent);
+            }
+        });
     }
 
     private void displayUserName() {

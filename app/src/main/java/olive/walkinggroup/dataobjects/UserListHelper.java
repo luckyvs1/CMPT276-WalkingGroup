@@ -108,6 +108,30 @@ public class UserListHelper {
         return user.getId() != null && (idList.contains(user.getId().intValue()));
     }
 
+    // Return true if user is a leader of group which current user belongs to
+    private boolean isGroupLeaderForCurrentUser(User currentUser, User user) {
+        Boolean isCurrentUsersGroupLeader = false;
+        List<Group> memberGroupList = currentUser.getMemberOfGroups();
+        List<Group> groupLeaderList = user.getLeadsGroups();
+
+        for (int i = 0; i < memberGroupList.size(); i++) {
+            for(int j = 0; j < groupLeaderList.size(); j++) {
+                if(memberGroupList.get(i).getId() == groupLeaderList.get(j).getId()) {
+                    isCurrentUsersGroupLeader = true;
+                }
+            }
+        }
+        return isCurrentUsersGroupLeader;
+    }
+
+    // Return true if current user and the user are the same individual
+    private boolean sameUser(User currentUser, User user) {
+        Boolean isSameUser = false;
+        if(currentUser.getId() == user.getId()){
+            isSameUser = true;
+        }
+        return isSameUser;
+    }
 
     public static List<User> sortUsers(List<User> listToSort) {
         Collections.sort(listToSort, new UserComparator());

@@ -1,5 +1,6 @@
 package olive.walkinggroup.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -92,12 +93,18 @@ public class EditUserInformationActivity extends AppCompatActivity {
     private void updateUserResponse(User updatedUser) {
 
         if(editUserEmail != null) {
-            Toast.makeText(EditUserInformationActivity.this, R.string.UpdateUserInformatonSuccessfully, Toast.LENGTH_LONG).show();
             user = updatedUser;
         } else {
             instance.setCurrentUser(updatedUser);
             currentUser = updatedUser;
         }
+        returnUserObject(updatedUser);
+    }
+
+    private void returnUserObject(User updatedUser) {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("updatedUser",updatedUser);
+        setResult(Activity.RESULT_OK,returnIntent);
         finish();
     }
 

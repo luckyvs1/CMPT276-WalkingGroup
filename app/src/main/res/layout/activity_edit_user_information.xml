@@ -19,7 +19,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView26"
+                android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/name" />
@@ -35,7 +35,7 @@
                 android:inputType="textPersonName" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/txtEmailAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/email_address" />
@@ -51,7 +51,7 @@
                 android:inputType="textEmailAddress" />
 
             <TextView
-                android:id="@+id/textView24"
+                android:id="@+id/txtCellphone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/cell_phone" />
@@ -67,7 +67,7 @@
                 android:inputType="phone" />
 
             <TextView
-                android:id="@+id/textView25"
+                android:id="@+id/txtHomephone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/home_phone" />
@@ -83,7 +83,7 @@
                 android:inputType="phone" />
 
             <TextView
-                android:id="@+id/textView20"
+                android:id="@+id/txtEmergencyContact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/emergency_contact_information" />
@@ -99,7 +99,7 @@
                 android:inputType="textMultiLine" />
 
             <TextView
-                android:id="@+id/textView21"
+                android:id="@+id/txtAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/address" />
@@ -115,7 +115,7 @@
                 android:inputType="textPostalAddress" />
 
             <TextView
-                android:id="@+id/textView19"
+                android:id="@+id/txtGrade"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/school_grade" />
@@ -131,7 +131,7 @@
                 android:inputType="none|numberSigned|numberDecimal" />
 
             <TextView
-                android:id="@+id/textView22"
+                android:id="@+id/txtTeachername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/teacher_name" />
@@ -147,7 +147,7 @@
                 android:inputType="textPersonName" />
 
             <TextView
-                android:id="@+id/textView23"
+                android:id="@+id/txtBirthYear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/birth_year" />
@@ -160,10 +160,10 @@
                 android:layout_below="@+id/txtSetName"
                 android:ems="10"
                 android:hint="@string/yyyy"
-                android:inputType="number|numberSigned|numberDecimal" />
+                android:inputType="number|numberSigned" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/txtBirthMonth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/birth_month" />
@@ -176,7 +176,7 @@
                 android:layout_below="@+id/txtSetBirthyear"
                 android:ems="10"
                 android:hint="@string/mm"
-                android:inputType="number|numberSigned|numberDecimal" />
+                android:inputType="number|numberSigned" />
 
             <Button
                 android:id="@+id/btnSubmitEditUser"
@@ -202,7 +202,7 @@
     </ScrollView>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txtTitle"
         android:layout_width="167dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

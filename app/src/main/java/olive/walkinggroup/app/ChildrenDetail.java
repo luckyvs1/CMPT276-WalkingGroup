@@ -1,5 +1,6 @@
 package olive.walkinggroup.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +46,7 @@ public class ChildrenDetail extends AppCompatActivity {
         populateView();
         verifyMonitoredUsersList();
         registerClickCallback();
+        setupEditButton();
     }
 
     private void setView() {
@@ -111,6 +114,41 @@ public class ChildrenDetail extends AppCompatActivity {
             }
         });
     }
+
+    private void setupEditButton() {
+        Button editBtn = (Button) findViewById(R.id.btnEditInformation);
+
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String email;
+
+                if (user != null) {
+                    email = user.getEmail();
+                } else  {
+                    email = instance.getCurrentUser().getEmail();
+                }
+                Intent intent = EditUserInformationActivity.makeIntent(ChildrenDetail.this, email);
+                startActivityForResult(intent, 1);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                user = (User) data.getSerializableExtra("updatedUser");
+
+                populateView();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivityResult
 
     public static Intent makeIntent(Context context, User user) {
         Intent intent = new Intent (context, ChildrenDetail.class);
