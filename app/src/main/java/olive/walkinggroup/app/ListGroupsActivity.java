@@ -35,7 +35,6 @@ import retrofit2.Call;
 
 public class ListGroupsActivity extends AppCompatActivity {
     public static final String TAG = "ListGroupsActivity";
-    private static final String ACTIVE_GROUP_KEY = "ListGroupsActivity - ActiveGroup";
     private Model model = Model.getInstance();
     private User currentUser = model.getCurrentUser();
     private List<Group> userGroups;
@@ -170,11 +169,6 @@ public class ListGroupsActivity extends AppCompatActivity {
         hideLoadingCircle();
     }
 
-    public static Group getGroupFromIntent(Intent intent) {
-        Serializable serializable = intent.getSerializableExtra(ACTIVE_GROUP_KEY);
-        return (Group)serializable;
-    }
-
     private class GroupListAdapter extends ArrayAdapter<Group> {
         public GroupListAdapter() {
             super(ListGroupsActivity.this, R.layout.list_groups_item, userGroups);
@@ -208,8 +202,10 @@ public class ListGroupsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra(ACTIVE_GROUP_KEY, currentGroup);
                 setResult(Activity.RESULT_OK, intent);
+
+                model.setActiveGroup(currentGroup);
+
                 finish();
             }
         });

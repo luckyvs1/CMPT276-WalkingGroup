@@ -30,15 +30,15 @@ public class UploadGpsLocation {
 
     private GpsLocation currentUserLocation = new GpsLocation();
     private GpsLocation activeGroupDestLocation = new GpsLocation();
+    private Group activeGroup;
     private boolean hasArrived;
-    private boolean activeGroupSelected;
 
     private static final int NUM_MS_IN_S = 1000;
     private static final int NUM_S_IN_MIN = 60;
 
     private static final int UPLOAD_RATE_S = 1;
     private static final int UPLOAD_DELAY_S = 0;
-    private static final int STOP_UPLOAD_DELAY_MIN = 1;
+    private static final int STOP_UPLOAD_DELAY_MIN = 10;
     private static final String TIMESTAMP_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
 
     public UploadGpsLocation(Activity activity) {
@@ -50,33 +50,43 @@ public class UploadGpsLocation {
 
     }
 
-    public void start(Group group) {
-        stop();
-        setGroupDestLocation(group);
-        activeGroupSelected = true;
-        currentLocationHelper.getLocationPermission();
-        uploadTimer = new Timer();
-        uploadTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                getLocationAndUploadToServer();
-                if (hasArrivedAtDestLocation() && !hasArrived) {
-                    hasArrived = true;
-                    startAutoStopTimer();
+    public void start() {
+        cancelTimers();
+        hasArrived = false;
+        activeGroup = instance.getActiveGroup();
+        if (instance.activeGroupSelected()) {
+            setGroupDestLocation();
+            currentLocationHelper.getLocationPermission();
+            uploadTimer = new Timer();
+            uploadTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    getLocationAndUploadToServer();
+                    if (hasArrivedAtDestLocation() && !hasArrived) {
+                        Log.i("MyApp", "UploadGpsLocation arrived in destination location");
+                        hasArrived = true;
+                        startAutoStopTimer();
+                    }
+
+
                 }
-
-
-            }
-        },UPLOAD_DELAY_S, UPLOAD_RATE_S*NUM_MS_IN_S);
+            }, UPLOAD_DELAY_S, UPLOAD_RATE_S * NUM_MS_IN_S);
+        } else {
+            Log.i("MyApp", "UploadGpsLocation (start() -> Group is null)");
+        }
 
 
     }
 
-    private void setGroupDestLocation(Group group) {
-        activeGroupDestLocation.setLat(group.getEndPoint().latitude);
-        activeGroupDestLocation.setLng(group.getEndPoint().longitude);
+    private void setGroupDestLocation() {
+        if (instance.activeGroupSelected()) {
+            activeGroupDestLocation.setLat(activeGroup.getEndPoint().latitude);
+            activeGroupDestLocation.setLng(activeGroup.getEndPoint().longitude);
 
-        Log.i("MyApp: ", "UploadGpsLocation: " + group.getEndPoint().toString());
+            Log.i("MyApp: ", "UploadGpsLocation: " + activeGroup.getEndPoint().toString());
+        } else {
+            Log.i("MyApp", "UploadGpsLocation (setGroupDestLocation() -> Group is null)");
+        }
     }
 
     private boolean hasArrivedAtDestLocation() {
@@ -100,10 +110,14 @@ public class UploadGpsLocation {
 
     public void stop() {
         Log.i("MyApp", "UploadGpsLocation: stop upload.");
+        cancelTimers();
+        hasArrived = false;
+        instance.clearActiveGroup();
+    }
+
+    private void cancelTimers() {
         autoStopTimer.cancel();
         uploadTimer.cancel();
-        hasArrived = false;
-        activeGroupSelected = false;
     }
 
     private void getLocationAndUploadToServer() {
@@ -119,13 +133,16 @@ public class UploadGpsLocation {
                         if (task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
                             if (currentLocation != null) {
-//                                LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                                LatLng currentLatLng = new LatLng(0,0);
+                                LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+//                                LatLng currentLatLng = new LatLng(0,0);
                                 
                                 currentUserLocation.setLat(currentLatLng.latitude);
                                 currentUserLocation.setLng(currentLatLng.longitude);
 
                                 uploadGpsLocationToServer(currentLatLng);
+
+                                // TODO: retrieve updated user information from server instead?
+                                instance.getCurrentUser().setLastGpsLocation(currentUserLocation);
                             }
                         } else {
                             // Cannot find current location
@@ -153,10 +170,6 @@ public class UploadGpsLocation {
 
     public boolean hasArrived() {
         return hasArrived;
-    }
-
-    public boolean activeGroupSelected() {
-        return activeGroupSelected;
     }
 
     private void setLastGpsLocationReturned(GpsLocation returnedGpsLocation) {

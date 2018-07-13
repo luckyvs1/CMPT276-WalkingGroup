@@ -52,7 +52,7 @@ public class DashBoardActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                if (!uploadGpsLocation.activeGroupSelected()) {
+                if (!instance.activeGroupSelected()) {
                         notifyUserViaLogAndToast("No active walking group selected");
                     } else {
                         if (uploadGpsLocation.hasArrived()) {
@@ -123,6 +123,9 @@ public class DashBoardActivity extends AppCompatActivity {
                 // Stop Gps location upload
                 uploadGpsLocation.stop();
 
+                // Clear active group from model
+                instance.clearActiveGroup();
+
                 // End the activity
                 finish();
             }
@@ -151,9 +154,10 @@ public class DashBoardActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_CODE_VIEW_GROUPS_START_WALK:
                 if (resultCode == Activity.RESULT_OK) {
-                    Group activeGroup = ListGroupsActivity.getGroupFromIntent(data);
+                    Group activeGroup = instance.getActiveGroup();
                     notifyUserViaLogAndToast(getString(R.string.start_walk_group_name) + activeGroup.getGroupDescription());
-                    uploadGpsLocation.start(activeGroup);
+
+                    uploadGpsLocation.start();
                 }
         }
     }
