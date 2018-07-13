@@ -1,5 +1,6 @@
 package olive.walkinggroup.app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -9,31 +10,64 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.GpsLocation;
+import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.UploadGpsLocation;
 
 public class DashBoardActivity extends AppCompatActivity {
-    
+
+    private static final int REQUEST_CODE_VIEW_GROUPS_START_WALK = 0;
     private Model instance;
+    private UploadGpsLocation uploadGpsLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
 
+        uploadGpsLocation = new UploadGpsLocation(this);
+
         instance = Model.getInstance();
 
         displayUserName();
 
-        setupSimpleButtonActivityChange(R.id.toMonitor, MonitorActivity.class);
-        setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class);
-        setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class);
-        setupSimpleButtonActivityChange(R.id.dashBoard_viewMyGroupsBtn, ListGroupsActivity.class);
+        setupSimpleButtonActivityChange(R.id.toMonitor, MonitorActivity.class, false);
+        setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class, false);
+        setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class, false);
+        setupSimpleButtonActivityChange(R.id.dashBoard_viewMyGroupsBtn, ListGroupsActivity.class, true);
+        setupSimpleButtonActivityChange(R.id.btnTracker, TrackerActivity.class, false);
         setupMessagesButton();
         // Todo: check new messages, display "!" on R.id.dashBoard_messagesText
 
         setupLogoutButton();
+        setupStopUploadButton();
+    }
+
+    private void setupStopUploadButton() {
+        Button btn = findViewById(R.id.btnStopUpload);
+        btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                if (!instance.activeGroupSelected()) {
+                        notifyUserViaLogAndToast("No active walking group selected");
+                    } else {
+                        if (uploadGpsLocation.hasArrived()) {
+                            notifyUserViaLogAndToast("Stopping upload");
+                            uploadGpsLocation.stop();
+                        } else {
+                            notifyUserViaLogAndToast("You have not arrived at destination location");
+                        }
+                    }
+                }
+
+        });
+
+
+
     }
 
     private void displayUserName() {
@@ -46,13 +80,17 @@ public class DashBoardActivity extends AppCompatActivity {
         }
     }                   
 
-    private void setupSimpleButtonActivityChange(int buttonId, Class activityName) {
+    private void setupSimpleButtonActivityChange(int buttonId, Class activityName, boolean forResult) {
         Button btn = (Button) findViewById(buttonId);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashBoardActivity.this, activityName);
-                startActivity(intent);
+                if (!forResult) {
+                    startActivity(intent);
+                } else {
+                    startActivityForResult(intent, REQUEST_CODE_VIEW_GROUPS_START_WALK);
+                }
             }
         });
     }
@@ -82,6 +120,12 @@ public class DashBoardActivity extends AppCompatActivity {
                 storeToSharedPreferences("Token", nullValue);
                 storeToSharedPreferences("UserEmail", nullValue);
 
+                // Stop Gps location upload
+                uploadGpsLocation.stop();
+
+                // Clear active group from model
+                instance.clearActiveGroup();
+
                 // End the activity
                 finish();
             }
@@ -105,4 +149,26 @@ public class DashBoardActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_VIEW_GROUPS_START_WALK:
+                if (resultCode == Activity.RESULT_OK) {
+                    Group activeGroup = instance.getActiveGroup();
+                    notifyUserViaLogAndToast(getString(R.string.start_walk_group_name) + activeGroup.getGroupDescription());
+
+                    uploadGpsLocation.start();
+                }
+        }
+    }
+
+
+
+    private void notifyUserViaLogAndToast(String message) {
+        Toast.makeText(DashBoardActivity.this, message, Toast.LENGTH_SHORT).show();
+        Log.i("App", message);
+    }
 }
+
+
+

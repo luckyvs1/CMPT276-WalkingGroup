@@ -17,16 +17,15 @@
 
         <TextView
             android:id="@+id/groupListItem_groupDescription"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="20sp"
+            android:layout_width="268dp"
+            android:layout_height="70dp"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_above="@id/groupListItem_tagContainer"
-            android:maxLines="2"
             android:ellipsize="end"
-            android:textColor="#000"
+            android:maxLines="2"
             android:padding="10dp"
-            />
+            android:textColor="#000"
+            android:textSize="20sp" />
 
         <LinearLayout
             android:id="@+id/groupListItem_tagContainer"
@@ -120,6 +119,15 @@
                 />
 
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_setActiveGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:focusable="false"
+            android:text="@string/btn_setActiveGroup_text" />
 
     </RelativeLayout>
 </RelativeLayout>
