@@ -27,40 +27,42 @@ public class UploadGpsLocation {
     private User user;
     private Timer uploadTimer = new Timer();
     private Timer autoStopTimer = new Timer();
-    private boolean hasArrivedAtDestLocation;
 
     private GpsLocation currentUserLocation = new GpsLocation();
     private GpsLocation activeGroupDestLocation = new GpsLocation();
+    private boolean hasArrived;
 
     private static final int NUM_MS_IN_S = 1000;
     private static final int NUM_S_IN_MIN = 60;
 
-    private static final int UPLOAD_RATE_S = 30;
+    private static final int UPLOAD_RATE_S = 1;
     private static final int UPLOAD_DELAY_S = 0;
     private static final int STOP_UPLOAD_DELAY_MIN = 10;
     private static final String TIMESTAMP_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
 
     public UploadGpsLocation(Activity activity) {
         currentLocationHelper = new CurrentLocationHelper(activity);
-        hasArrivedAtDestLocation = false;
         this.activity = activity;
-
+        hasArrived = false;
         instance = Model.getInstance();
         user = instance.getCurrentUser();
 
     }
 
-    public void start() {
+    public void start(Group group) {
         stop();
+        setGroupDestLocation(group);
         currentLocationHelper.getLocationPermission();
         uploadTimer = new Timer();
         uploadTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (hasArrivedAtDestLocation) {
+                getLocationAndUploadToServer();
+                if (hasArrivedAtDestLocation() && !hasArrived) {
+                    hasArrived = true;
                     startAutoStopTimer();
                 }
-                getLocationAndUploadToServer();
+
 
             }
         },UPLOAD_DELAY_S, UPLOAD_RATE_S*NUM_MS_IN_S);
@@ -68,7 +70,21 @@ public class UploadGpsLocation {
 
     }
 
+    private void setGroupDestLocation(Group group) {
+        activeGroupDestLocation.setLat(group.getEndPoint().latitude);
+        activeGroupDestLocation.setLng(group.getEndPoint().longitude);
+
+        Log.i("MyApp: ", "UploadGpsLocation: " + group.getEndPoint().toString());
+    }
+
+    private boolean hasArrivedAtDestLocation() {
+        return activeGroupDestLocation.getLng() == currentUserLocation.getLng() &&
+                activeGroupDestLocation.getLat() == currentUserLocation.getLat();
+    }
+
     private void startAutoStopTimer() {
+        Log.i("MyApp", "UploadGpsLocation: startAutoStopTimer");
+
         autoStopTimer = new Timer();
         autoStopTimer.schedule(new TimerTask() {
             @Override
@@ -80,6 +96,8 @@ public class UploadGpsLocation {
 
 
     public void stop() {
+        Log.i("MyApp", "UploadGpsLocation: stop upload.");
+
         uploadTimer.cancel();
     }
 
@@ -97,7 +115,10 @@ public class UploadGpsLocation {
                             Location currentLocation = (Location) task.getResult();
                             if (currentLocation != null) {
 //                                LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                                LatLng currentLatLng = new LatLng(1.23, 1.23);
+                                LatLng currentLatLng = new LatLng(49.265286595441665,-122.94297393411398 );
+                                
+                                currentUserLocation.setLat(currentLatLng.latitude);
+                                currentUserLocation.setLng(currentLatLng.longitude);
 
                                 uploadGpsLocationToServer(currentLatLng);
                             }
@@ -129,7 +150,4 @@ public class UploadGpsLocation {
         // callback
     }
 
-    public void setHasArrivedAtDestLocation(boolean hasArrivedAtDestLocation) {
-        this.hasArrivedAtDestLocation = hasArrivedAtDestLocation;
-    }
 }

@@ -30,6 +30,7 @@ public class DashBoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dash_board);
 
         uploadGpsLocation = new UploadGpsLocation(this);
+
         instance = Model.getInstance();
 
         displayUserName();
@@ -125,10 +126,9 @@ public class DashBoardActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_CODE_VIEW_GROUPS_START_WALK:
                 if (resultCode == Activity.RESULT_OK) {
-
                     Group activeGroup = ListGroupsActivity.getGroupFromIntent(data);
                     notifyUserViaLogAndToast(getString(R.string.start_walk_group_name) + activeGroup.getGroupDescription());
-                    uploadGpsLocation.start();
+                    uploadGpsLocation.start(activeGroup);
                 }
         }
     }
