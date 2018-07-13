@@ -36,7 +36,7 @@ public class UploadGpsLocation {
     private static final int NUM_MS_IN_S = 1000;
     private static final int NUM_S_IN_MIN = 60;
 
-    private static final int UPLOAD_RATE_S = 1;
+    private static final int UPLOAD_RATE_S = 30;
     private static final int UPLOAD_DELAY_S = 0;
     private static final int STOP_UPLOAD_DELAY_MIN = 10;
     private static final String TIMESTAMP_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
