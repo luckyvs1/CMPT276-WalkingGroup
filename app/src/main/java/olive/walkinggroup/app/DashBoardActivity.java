@@ -39,6 +39,7 @@ public class DashBoardActivity extends AppCompatActivity {
         setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class, false);
         setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class, false);
         setupSimpleButtonActivityChange(R.id.dashBoard_viewMyGroupsBtn, ListGroupsActivity.class, true);
+        setupSimpleButtonActivityChange(R.id.btnTracker, TrackerActivity.class, false);
         setupMessagesButton();
         // Todo: check new messages, display "!" on R.id.dashBoard_messagesText
 

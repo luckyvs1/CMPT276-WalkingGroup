@@ -80,6 +80,7 @@ public class UploadGpsLocation {
     }
 
     private boolean hasArrivedAtDestLocation() {
+        // TODO: Use a range the user can enter that determines if the user has arrived at destination location
         return activeGroupDestLocation.getLng() == currentUserLocation.getLng() &&
                 activeGroupDestLocation.getLat() == currentUserLocation.getLat();
     }
