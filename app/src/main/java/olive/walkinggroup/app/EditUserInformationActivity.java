@@ -73,7 +73,7 @@ public class EditUserInformationActivity extends AppCompatActivity {
 
 
     private void setupConfirmEditUserBtn() {
-        Button editUser = (Button) findViewById(R.id.btnSubmitEditUser);
+        Button editUser = (Button) findViewById(R.id.btnSubmitUser);
         editUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
