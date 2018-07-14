@@ -35,8 +35,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
         instance = Model.getInstance();
 
-        displayUserName();
-
         setupSimpleButtonActivityChange(R.id.toMonitor, MonitorActivity.class, false);
         setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class, false);
         setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class, false);
@@ -51,14 +49,19 @@ public class DashBoardActivity extends AppCompatActivity {
         updateCurrentUser();
     }
 
-    private void updateCurrentUser() {
-        Call<User> caller = instance.getProxy().getUserByEmail(instance.getCurrentUser().getEmail());
-        ProxyBuilder.callProxy(DashBoardActivity.this, caller, returnedUser -> getUserByEmailResponse(returnedUser));
+    protected void onResume() {
+        super.onResume();
+        updateCurrentUser();
     }
 
-    private void getUserByEmailResponse(User userFromEmail) {
+    private void updateCurrentUser() {
+        Call<User> caller = instance.getProxy().getUserById(instance.getCurrentUser().getId());
+        ProxyBuilder.callProxy(DashBoardActivity.this, caller, returnedUser -> getUserById(returnedUser));
+    }
 
+    private void getUserById(User userFromEmail) {
         instance.setCurrentUser(userFromEmail);
+        displayUserName();
     }
 
     private void setupStopUploadButton() {
@@ -79,8 +82,6 @@ public class DashBoardActivity extends AppCompatActivity {
                 }
 
         });
-
-
 
     }
 

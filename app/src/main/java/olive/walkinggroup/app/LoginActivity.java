@@ -69,6 +69,18 @@ public class LoginActivity extends AppCompatActivity {
 
         instance.setCurrentUser(userFromEmail);
 
+        updateCurrentUserByID(Long.valueOf(instance.getCurrentUser().getId()));
+
+    }
+
+    private void updateCurrentUserByID(Long aLong) {
+        Call<User> caller = instance.getProxy().getUserById(aLong);
+        ProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> getUserByID(returnedUser));
+    }
+
+    private void getUserByID(User returnedUser) {
+
+        instance.setCurrentUser(returnedUser);
         // If the current user is not null
         if (instance.getCurrentUser().getId() != null) {
             Toast.makeText(LoginActivity.this, "Logged in as:  " + instance.getCurrentUser().getName(), Toast.LENGTH_LONG).show();
@@ -166,7 +178,7 @@ public class LoginActivity extends AppCompatActivity {
     // Response for call back from the login user
     private void loginUserResponse(Void returnedNothing) {
         // Navigate user to the next activity
-        updateCurrentUser(instance.getCurrentUser().getEmail());
+        updateCurrentUserByID(instance.getCurrentUser().getId());
     }
 
     // Handle the token by generating a new Proxy which is encoded with it.
