@@ -179,7 +179,7 @@
                 android:inputType="number|numberSigned" />
 
             <Button
-                android:id="@+id/btnSubmitUser"
+                android:id="@+id/btnSubmitEditUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -188,7 +188,7 @@
                 tools:text="Submit" />
 
             <Button
-                android:id="@+id/btnCancelSignUp"
+                android:id="@+id/btnCancelEditUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

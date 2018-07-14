@@ -70,7 +70,7 @@
                 android:selectAllOnFocus="false" />
 
             <Button
-                android:id="@+id/btnSubmitUser"
+                android:id="@+id/btnSubmitSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

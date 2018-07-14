@@ -62,7 +62,7 @@ public class EditUserInformationActivity extends AppCompatActivity {
     }
 
     private void setupCancelBtn() {
-        Button cancelSignUp = (Button) findViewById(R.id.btnCancelSignUp);
+        Button cancelSignUp = (Button) findViewById(R.id.btnCancelEditUser);
         cancelSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +73,7 @@ public class EditUserInformationActivity extends AppCompatActivity {
 
 
     private void setupConfirmEditUserBtn() {
-        Button editUser = (Button) findViewById(R.id.btnSubmitSignup);
+        Button editUser = (Button) findViewById(R.id.btnSubmitEditUser);
         editUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
