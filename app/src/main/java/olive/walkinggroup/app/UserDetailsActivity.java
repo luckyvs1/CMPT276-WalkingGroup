@@ -55,7 +55,8 @@ public class UserDetailsActivity extends AppCompatActivity {
         setTextValueHelper(R.id.txtDisplayCell, user.getCellPhone());
         setTextValueHelper(R.id.txtDisplayGrade, user.getGrade());
         setTextValueHelper(R.id.txtDisplayTeacherName, user.getTeacherName());
-        setTextValueHelper(R.id.txtDisplayTeacherName, user.getEmergencyContactInfo());
+        setTextValueHelper(R.id.txtDisplayEmergencyContact, user.getEmergencyContactInfo());
+        setTextValueHelper(R.id.txtDisplayAddress, user.getAddress());
 
     }
 

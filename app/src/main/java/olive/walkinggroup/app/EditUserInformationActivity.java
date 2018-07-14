@@ -23,6 +23,7 @@ public class EditUserInformationActivity extends AppCompatActivity {
     private User user;
     private User currentUser;
     private String editUserEmail;
+    private User dummyUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,7 @@ public class EditUserInformationActivity extends AppCompatActivity {
 
         instance = Model.getInstance();
         currentUser = instance.getCurrentUser();
+        dummyUser = new User();
 
         extractDataFromIntent();
 
@@ -81,9 +83,9 @@ public class EditUserInformationActivity extends AppCompatActivity {
 
                 // Make server call
                 if(editUserEmail != null){
-                    caller = instance.getProxy().updateUser(user.getId(), user);
+                    caller = instance.getProxy().updateUser(user.getId(), dummyUser);
                 } else {
-                    caller = instance.getProxy().updateUser(currentUser.getId(), currentUser);
+                    caller = instance.getProxy().updateUser(currentUser.getId(), dummyUser);
                 }
                 ProxyBuilder.callProxy(EditUserInformationActivity.this, caller, updatedUser -> updateUserResponse(updatedUser));
             }
@@ -110,6 +112,8 @@ public class EditUserInformationActivity extends AppCompatActivity {
 
     // Set the user details from the edit user information activity
     private void setUserDetails() {
+        //Todo: Currently update user does not work if public List<Group> getLeadsGroups() is not JsonIgnore
+        //Todo: If public List<Group> getLeadsGroups() is JsonIgnore then rendering group list does not work
         try {
             String name = getUserInput(R.id.txtSetName);
             String email = getUserInput(R.id.txtSetEmail);
@@ -124,42 +128,23 @@ public class EditUserInformationActivity extends AppCompatActivity {
             Integer intBirthYear;
             Integer intBirthMonth;
 
-            if (birthYear != null && editUserEmail == null) {
-                intBirthYear = Integer.valueOf(birthYear);
-                currentUser.setBirthYear(intBirthYear);
+            dummyUser.setName(name);
+            dummyUser.setEmail(email);
+            dummyUser.setAddress(address);
+            dummyUser.setTeacherName(teacherName);
+            dummyUser.setGrade(grade);
+            dummyUser.setHomePhone(homePhone);
+            dummyUser.setCellPhone(cellPhone);
+            dummyUser.setEmergencyContactInfo(emergencyContactInformation);
 
-            } else if (birthYear != null && editUserEmail != null) {
+            if(birthYear != null){
                 intBirthYear = Integer.valueOf(birthYear);
-                user.setBirthYear(intBirthYear);
+                dummyUser.setBirthYear(intBirthYear);
             }
 
-            if (birthMonth != null && editUserEmail == null) {
+            if(birthMonth != null){
                 intBirthMonth = Integer.valueOf(birthMonth);
-                currentUser.setBirthMonth(intBirthMonth);
-            } else if (birthMonth != null && editUserEmail != null) {
-                intBirthMonth = Integer.valueOf(birthMonth);
-                user.setBirthMonth(intBirthMonth);
-            }
-
-            if(editUserEmail == null) {
-                // Update the details of the user instance
-                currentUser.setName(name);
-                currentUser.setEmail(email);
-                currentUser.setAddress(address);
-                currentUser.setTeacherName(teacherName);
-                currentUser.setGrade(grade);
-                currentUser.setCellPhone(cellPhone);
-                currentUser.setHomePhone(homePhone);
-                currentUser.setEmergencyContactInfo(emergencyContactInformation);
-            } else {
-                user.setName(name);
-                user.setEmail(email);
-                user.setCellPhone(cellPhone);
-                user.setHomePhone(homePhone);
-                user.setEmergencyContactInfo(emergencyContactInformation);
-                user.setAddress(address);
-                user.setGrade(grade);
-                user.setTeacherName(teacherName);
+                dummyUser.setBirthMonth(intBirthMonth);
             }
 
         } catch (NullPointerException e ) {
