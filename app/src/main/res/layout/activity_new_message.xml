@@ -36,7 +36,7 @@
     </RelativeLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/newMessage_toUserInputContainer"
+        android:id="@+id/messagesActivity_toUserInputContainer"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         app:layout_constraintTop_toBottomOf="@id/newMessage_header"
@@ -46,7 +46,7 @@
         >
 
     <TextView
-        android:id="@+id/newMessage_toUserInputPrompt"
+        android:id="@+id/messagesActivity_toUserInputPrompt"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,11 +57,11 @@
         />
 
     <Spinner
-        android:id="@+id/newMessage_toUserDropdown"
+        android:id="@+id/messagesActivity_toUserDropdown"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:layout_constraintStart_toEndOf="@id/newMessage_toUserInputPrompt"
-        app:layout_constraintEnd_toStartOf="@id/newMessage_newMessageBtn"
+        app:layout_constraintStart_toEndOf="@id/messagesActivity_toUserInputPrompt"
+        app:layout_constraintEnd_toStartOf="@id/messagesActivity_newMessageBtn"
         app:layout_constraintWidth_default="spread"
         android:spinnerMode="dropdown"
         >
@@ -69,7 +69,7 @@
     </Spinner>
 
     <RelativeLayout
-        android:id="@+id/newMessage_newMessageBtn"
+        android:id="@+id/messagesActivity_newMessageBtn"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,16 +79,16 @@
         >
 
         <ImageView
-            android:id="@+id/newMessage_newMessageIcon"
+            android:id="@+id/messagesActivity_newMessageIcon"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/ic_message_black"
             android:layout_centerInParent="true"
-            android:layout_toEndOf="@id/newMessage_newMessageText"
+            android:layout_toEndOf="@id/messagesActivity_newMessageText"
             />
 
         <TextView
-            android:id="@+id/newMessage_newMessageText"
+            android:id="@+id/messagesActivity_newMessageText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

@@ -13,14 +13,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -34,10 +28,17 @@ import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 
 public class MessagesActivity extends AppCompatActivity {
-    private List<Message> allMessagesList = new ArrayList<>();
+    //private List<Message> allMessagesList = new ArrayList<>();
+    private List<Message> allMyRegularList = new ArrayList<>();
+    private List<Message> allEmergencyMessageList = new ArrayList<>();
 
-    private List<List<Message>> myMessagesList = new ArrayList<>();
+    private List<List<Message>> myGroupedEmergencyList = new ArrayList<>();
+    private List<List<Message>> myGroupedRegularList = new ArrayList<>();
+    private List<List<Message>> myGroupedMessagesList = new ArrayList<>();
+
+    // TODO: detailedContactList may not be aligned if server packet transfer has delay. Align if necessary.
     private List<Message> displayList = new ArrayList<>();
+    private List<Integer> contactIdList = new ArrayList<>();
     private List<User> detailedContactList = new ArrayList<>();
 
     private Model model;
@@ -53,72 +54,12 @@ public class MessagesActivity extends AppCompatActivity {
         currentUser = model.getCurrentUser();
         format = new SimpleDateFormat("MMM dd (EEE) hh:mmaaa", Locale.getDefault());
 
-        getAllMessages();
+        getEmergencyMessages();
         setupNewMessagesBtn();
     }
 
-    // Get all messages from server
-    private void getAllMessages() {
-        Call<List<Message>> caller = model.getProxy().getMessages();
-        ProxyBuilder.callProxy(this, caller, returnedList -> onGetAllMessagesResponse(returnedList));
-    }
-
-    private void onGetAllMessagesResponse(List<Message> returnedList) {
-        //allMessagesList = returnedList;
-        allMessagesList = MessageHelper.makeTestList();
-        buildMyMessagesList();
-    }
-
-    // Get only messages related to user, put in myMessagesList, grouped by contact
-    private void buildMyMessagesList() {
-        for (int i = 0; i < allMessagesList.size(); i++) {
-            Message currentMessage = allMessagesList.get(i);
-
-            // Add to list if message is related to currentUser
-            if (MessageHelper.getMessageContactId(currentMessage) > 0) {
-                addToMyMessagesList(currentMessage);
-            }
-        }
-
-        // Sort list chronologically, latest on top
-        myMessagesList = MessageHelper.sortMessageListOfList(myMessagesList);
-        buildDisplayList();
-        populateList();
-    }
-
-    // Put message to list corresponding to contact
-    private void addToMyMessagesList(Message message) {
-        long messageContactId = MessageHelper.getMessageContactId(message);
-
-        // Search for List<Messages> associated with contact in myMessagesList
-        for (int i = 0; i < myMessagesList.size(); i++) {
-            List<Message> currentList = myMessagesList.get(i);
-            Message currentListHead = currentList.get(0);
-
-            if (MessageHelper.getMessageContactId(currentListHead) == messageContactId) {
-                currentList.add(message);
-                return;
-            }
-        }
-
-        // Contact not yet exist. Create new list with contact Messages
-        List<Message> newList = new ArrayList<>();
-        newList.add(message);
-        myMessagesList.add(newList);
-    }
-
-    // Get latest Message from each contact, from index 0 of sorted Message Lists.
-    private void buildDisplayList() {
-        for (int i = 0; i < myMessagesList.size(); i++) {
-            displayList.add(myMessagesList.get(i).get(0));
-        }
-    }
-
-    private void populateList() {
-        ListView listView = findViewById(R.id.messagesActivity_messagesList);
-        MyMessagesListAdapter adapter = new MyMessagesListAdapter();
-        listView.setAdapter(adapter);
-    }
+    // Setup UI elements:
+    // ---------------------------------------------------------------------------------------------
 
     private void setupNewMessagesBtn() {
         RelativeLayout btn = findViewById(R.id.messagesActivity_newMessageBtn);
@@ -129,6 +70,80 @@ public class MessagesActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    // Server calls:
+    // ---------------------------------------------------------------------------------------------
+    // Get emergency messages sent to currentUser, read and unread
+    private void getEmergencyMessages() {
+        Call<List<Message>> caller = model.getProxy().getMessages(currentUser.getId(), true);
+        ProxyBuilder.callProxy(this, caller, emergencyList -> onGetEmergencyMessagesResponse(emergencyList));
+    }
+
+    private void onGetEmergencyMessagesResponse(List<Message> emergencyList) {
+        myGroupedEmergencyList = MessageHelper.groupByContact(emergencyList);
+        MessageHelper.sortMessageListOfList(myGroupedEmergencyList);
+
+        getToCurrentUserMessages();
+    }
+
+    // Get regular messages sent to currentUser, read and unread
+    private void getToCurrentUserMessages() {
+        Call<List<Message>> caller = model.getProxy().getMessages(currentUser.getId(), false);
+        ProxyBuilder.callProxy(this, caller, messagesList -> onGetToCurrentUserMessagesResponse(messagesList));
+    }
+
+    private void onGetToCurrentUserMessagesResponse(List<Message> messagesList) {
+        myGroupedRegularList = MessageHelper.groupByContact(messagesList);
+        MessageHelper.sortMessageListOfList(myGroupedRegularList);
+
+        myGroupedMessagesList.addAll(myGroupedEmergencyList);
+        myGroupedMessagesList.addAll(myGroupedRegularList);
+
+        buildContactIdList();
+    }
+
+    // Get id of each contact
+    private void buildContactIdList() {
+        for (int i = 0; i < myGroupedMessagesList.size(); i++) {
+            Message currentListHead = myGroupedMessagesList.get(i).get(0);
+            long id = MessageHelper.getMessageContactId(currentListHead);
+
+            contactIdList.add((int) id);
+        }
+        getDetailedContactList();
+    }
+
+    // Get detailed info of each contact (User)
+    private void getDetailedContactList() {
+        for (int i = 0; i < contactIdList.size(); i++) {
+            Call<User> caller = model.getProxy().getUserById((long) contactIdList.get(i));
+            ProxyBuilder.callProxy(this, caller, detailedUser -> onGetDetailedContactListResponse(detailedUser));
+        }
+    }
+
+    private void onGetDetailedContactListResponse(User detailedUser) {
+        detailedContactList.add(detailedUser);
+
+        if (detailedContactList.size() == contactIdList.size()) {
+            buildDisplayList();
+        }
+    }
+
+    // Get latest Message from each contact, from index 0 of sorted Message Lists.
+    private void buildDisplayList() {
+        for (int i = 0; i < myGroupedRegularList.size(); i++) {
+            displayList.add(myGroupedRegularList.get(i).get(0));
+        }
+    }
+
+
+    // Populate Message ListView:
+    // ---------------------------------------------------------------------------------------------
+    private void populateList() {
+        ListView listView = findViewById(R.id.messagesActivity_messagesList);
+        MyMessagesListAdapter adapter = new MyMessagesListAdapter();
+        listView.setAdapter(adapter);
     }
 
     //PRECOND: displayList contains full User details
@@ -148,21 +163,17 @@ public class MessagesActivity extends AppCompatActivity {
             Message currentMessage = displayList.get(position);
 
             TextView contactNameTextView = itemView.findViewById(R.id.listMessageItem_userName);
+            TextView messageHeaderTextView = itemView.findViewById(R.id.listMessageItem_headerText);
             TextView latestMessageTextView = itemView.findViewById(R.id.listMessageItem_latestMessage);
             TextView timestampTextView = itemView.findViewById(R.id.listMessageItem_timestamp);
 
-            String messageText = "";
+            List<String> parsedMessage = MessageHelper.parseMessageText(currentMessage.getText());
+            String headerText = parsedMessage.get(0);
+            String bodyText = parsedMessage.get(1);
 
-            if (Objects.equals(currentMessage.getToUser().getId(), currentUser.getId())) {
-                // If currentUser is receiver
-                contactNameTextView.setText(currentMessage.getFromUser().getName());
-            } else if (Objects.equals(currentMessage.getFromUser().getId(), currentUser.getId())) {
-                // If currentUser is sender
-                contactNameTextView.setText(currentMessage.getToUser().getName());
-                messageText += getResources().getString(R.string.messagesActivity_youTag);
-            }
-            messageText += currentMessage.getText();
-            latestMessageTextView.setText(messageText);
+            contactNameTextView.setText(detailedContactList.get(position).getName());
+            messageHeaderTextView.setText(headerText);
+            latestMessageTextView.setText(bodyText);
             timestampTextView.setText(format.format(currentMessage.getTimestamp()));
 
             return itemView;
@@ -174,7 +185,7 @@ public class MessagesActivity extends AppCompatActivity {
         messageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                List<Message> clickedMessageList = myMessagesList.get(position);
+                List<Message> clickedMessageList = myGroupedRegularList.get(position);
                 User clickedContact = detailedContactList.get(position);
 
                 Intent intent = ChatActivity.makeIntent(MessagesActivity.this, clickedMessageList, clickedContact);

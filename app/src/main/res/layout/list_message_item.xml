@@ -23,6 +23,16 @@
             />
 
         <TextView
+            android:id="@+id/listMessageItem_headerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:text="@string/sampleText"
+            />
+
+        <TextView
             android:id="@+id/listMessageItem_latestMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

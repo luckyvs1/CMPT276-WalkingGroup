@@ -45,8 +45,7 @@ public class ChatActivity extends AppCompatActivity {
     public static Intent makeIntent(Context context, List<Message> list, User user) {
         Intent intent = new Intent(context, ChatActivity.class);
         //intent.putParcelableArrayListExtra("messageList", list);
-        intent.putExtra("user", user);
-
+        intent.putExtra("toUser", user);
         return intent;
     }
 

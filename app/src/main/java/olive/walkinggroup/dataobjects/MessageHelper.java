@@ -1,5 +1,7 @@
 package olive.walkinggroup.dataobjects;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -8,6 +10,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import olive.walkinggroup.proxy.ProxyBuilder;
+import retrofit2.Call;
+
 /**
  * Helper class for Message class.
  * Contains methods that are used in Message related activities.
@@ -15,6 +20,40 @@ import java.util.Objects;
 
 public class MessageHelper {
 
+    // PRECOND: messageList contains messages for one user only
+    // Note: this uses a slow sorting algorithm.
+    public static List<List<Message>> groupByContact(List<Message> messageList) {
+        List<List<Message>> myMessagesListOfList = new ArrayList<>();
+
+        for (int i = 0; i < messageList.size(); i++) {
+            Message currentMessage = messageList.get(i);
+            addToMyMessagesList(currentMessage, myMessagesListOfList);
+        }
+
+        return myMessagesListOfList;
+    }
+
+    public static void addToMyMessagesList(Message message, List<List<Message>> myMessagesListOfList) {
+        long messageContactId = getMessageContactId(message);
+
+        // Search for List<Messages> associated with contact in myMessagesList
+        for (int i = 0; i < myMessagesListOfList.size(); i++) {
+            List<Message> currentList = myMessagesListOfList.get(i);
+            Message currentListHead = currentList.get(0);
+
+            if (MessageHelper.getMessageContactId(currentListHead) == messageContactId) {
+                currentList.add(message);
+                return;
+            }
+        }
+
+        // Contact not yet exist. Create new list with contact Messages
+        List<Message> newList = new ArrayList<>();
+        newList.add(message);
+        myMessagesListOfList.add(newList);
+    }
+
+    // When displaying sent messages also:
     // The contact can be either the sender or the receiver, and is not currentUser.
     // If the message is not related to currentUser (currentUser is not sender nor receiver),
     // the contact is returned as null
@@ -88,6 +127,25 @@ public class MessageHelper {
             return 0;
         }
     }
+
+    public static List<String> parseMessageText(String messageText) {
+        List<String> returnList = new ArrayList<>();
+
+        String headerTag = "<header>";
+        int headerTagSize = headerTag.length();
+
+        int firstIndex = messageText.indexOf(headerTag);
+        int lastIndex = messageText.lastIndexOf(headerTag);
+
+        String header = messageText.substring((firstIndex + headerTagSize), lastIndex);
+        returnList.add(header);
+        String body = messageText.substring((lastIndex + headerTagSize));
+        returnList.add(body);
+
+        return returnList;
+    }
+
+
 
     public static List<Message> makeTestList() {
         Model model = Model.getInstance();
