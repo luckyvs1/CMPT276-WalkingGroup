@@ -2,6 +2,7 @@ package olive.walkinggroup.dataobjects;
 
 import android.util.Log;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -170,6 +171,7 @@ public class User extends IdItemBase implements Serializable{
 
     // Monitoring
     // -------------------------------------------------------------------------------------------
+    @JsonIgnore
     public List<User> getMonitoredByUsers() {
         return monitoredByUsers;
     }
@@ -184,6 +186,7 @@ public class User extends IdItemBase implements Serializable{
         this.monitoredByUsers.remove(user);
     }
 
+    @JsonIgnore
     public List<User> getMonitorsUsers() {
         return monitorsUsers;
     }
@@ -200,7 +203,7 @@ public class User extends IdItemBase implements Serializable{
         this.monitorsUsers.remove(user);
     }
 
-    @JsonIgnoreProperties
+    @JsonIgnore
     public String[] getMonitorsUsersDescriptions() {
         int size =monitorsUsers.size();
         monitorsUsers = UserListHelper.sortUsers(monitorsUsers);
@@ -212,7 +215,7 @@ public class User extends IdItemBase implements Serializable{
         return descriptions;
     }
 
-    @JsonIgnoreProperties
+    @JsonIgnore
     public String[] getMonitoredByUsersDescriptions() {
         int size = monitoredByUsers.size();
         monitoredByUsers = UserListHelper.sortUsers(monitoredByUsers);
@@ -223,6 +226,7 @@ public class User extends IdItemBase implements Serializable{
         }
         return descriptions;
     }
+
 
     // Groups
     // -------------------------------------------------------------------------------------------

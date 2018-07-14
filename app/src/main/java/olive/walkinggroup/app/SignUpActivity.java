@@ -56,21 +56,30 @@ public class SignUpActivity extends AppCompatActivity {
 
     // Set the user details from the signup activity
     private void setUserDetails() {
-        String name = getUserInput(R.id.txtSetName);
-        String email = getUserInput(R.id.txtSetEmail);
-        String password = getUserInput(R.id.txtSetPassword);
 
-        // Update the details of the user instance
-        currentUser.setName(name);
-        currentUser.setPassword(password);
-        currentUser.setEmail(email);
+        try {
+            String name = getUserInput(R.id.txtSetName);
+            String email = getUserInput(R.id.txtSetEmail);
+            String password = getUserInput(R.id.txtSetPassword);
+
+            // Update the details of the user instance
+            currentUser.setName(name);
+            currentUser.setPassword(password);
+            currentUser.setEmail(email);
+
+        } catch (NullPointerException e ) {
+            Toast.makeText(SignUpActivity.this, R.string.SignupErrorMessage, Toast.LENGTH_LONG).show();
+        } catch (NumberFormatException e) {
+            Toast.makeText(SignUpActivity.this, R.string.SignupErrorMessage, Toast.LENGTH_LONG).show();
+        }
+
     }
 
     private String getUserInput(int userInputResourceID) {
         EditText userText = (EditText) findViewById(userInputResourceID);
 
         // https://stackoverflow.com/questions/11535011/edittext-field-is-required-before-moving-on-to-another-activity#11535058
-        if(TextUtils.isEmpty(userText.getText())) {
+        if(TextUtils.isEmpty(userText.getText()) && ((userInputResourceID == R.id.txtSetPassword) || (userInputResourceID == R.id.txtSetEmail) || (userInputResourceID == R.id.txtSetName))) {
             userText.setError(getString(R.string.invalidInput));
         }
         return userText.getText().toString();

@@ -26,6 +26,9 @@ public interface WGServerProxy {
     // -----------------------------
     // Users
     // -----------------------------
+    @POST("/users/{id}")
+    Call<User> updateUser(@Path("id") Long userId, @Body User user);
+
     @POST("/users/signup")
     Call<User> createUser(@Body User user);
 

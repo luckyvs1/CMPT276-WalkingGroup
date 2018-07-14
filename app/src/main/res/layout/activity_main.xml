@@ -6,71 +6,76 @@
     android:layout_height="match_parent"
     tools:context=".app.LoginActivity">
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="208dp"
-        android:layout_toEndOf="@+id/txtEmail"
-        android:text="@string/login"
-        tools:text="Login" />
-
-    <EditText
-        android:id="@+id/txtGetPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/txtPassword"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="45dp"
-        android:ems="10"
-        android:hint="@string/password123"
-        android:inputType="textPassword"
-        tools:layout_editor_absoluteX="101dp"
-        tools:layout_editor_absoluteY="70dp" />
-
-    <TextView
-        android:id="@+id/txtPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="441dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="181dp"
-        android:text="@string/caption_password"
-        tools:layout_editor_absoluteX="25dp"
-        tools:layout_editor_absoluteY="79dp"
-        tools:text="Password:" />
+        android:layout_marginTop="70dp"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/btnLogin"
-        android:layout_marginEnd="92dp"
-        android:text="@string/sign_up"
-        tools:text="Sign Up" />
+        <TextView
+            android:id="@+id/txtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/txtGetEmail"
+            android:layout_alignParentStart="true"
+            android:text="@string/email"
+            tools:text="Email:" />
 
-    <TextView
-        android:id="@+id/txtEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/txtPassword"
-        android:layout_marginTop="119dp"
-        android:text="@string/email"
-        tools:text="Email:" />
+        <EditText
+            android:id="@+id/txtGetEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/txtPassword"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="-100dp"
+            android:ems="10"
+            android:hint="@string/valid_email_com"
+            android:inputType="textEmailAddress" />
 
-    <EditText
-        android:id="@+id/txtGetEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/txtEmail"
-        android:layout_alignStart="@+id/txtGetPassword"
-        android:ems="10"
-        android:hint="@string/valid_email_com"
-        android:inputType="textEmailAddress" />
+        <TextView
+            android:id="@+id/txtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="100dp"
+            android:text="@string/caption_password"
+            tools:layout_editor_absoluteX="25dp"
+            tools:layout_editor_absoluteY="79dp"
+            tools:text="Password:" />
+
+        <EditText
+            android:id="@+id/txtGetPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtPassword"
+            android:ems="10"
+            android:hint="@string/password123"
+            android:inputType="textPassword"
+            tools:layout_editor_absoluteX="101dp"
+            tools:layout_editor_absoluteY="70dp" />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtGetPassword"
+            android:text="@string/login"
+            tools:text="Login" />
+
+        <Button
+            android:id="@+id/btnSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/btnLogin"
+            android:text="@string/sign_up"
+            tools:text="Sign Up" />
+    </LinearLayout>
 
     <!--
             Loading progress bar. Using code from:

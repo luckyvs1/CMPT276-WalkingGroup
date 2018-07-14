@@ -14,6 +14,7 @@ import olive.walkinggroup.dataobjects.User;
 
 public class ParentDetail extends AppCompatActivity {
     User user;
+    Model instance;
 
     TextView name;
     TextView birthday;
@@ -28,7 +29,9 @@ public class ParentDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_children_detail);
+        setContentView(R.layout.activity_user_details);
+
+        instance = Model.getInstance();
 
         extractDataFromIntent();
         setView();

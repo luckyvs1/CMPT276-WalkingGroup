@@ -6,90 +6,97 @@
     android:layout_height="match_parent"
     tools:context=".app.SignUpActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="381dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
-        android:text="@string/name"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="70dp"
-        tools:text="Name: " />
+        android:layout_marginTop="48dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnSubmitSignup"
+            android:layout_alignParentStart="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView26"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/name" />
+
+            <EditText
+                android:id="@+id/txtSetName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txtSetPassword"
+                android:ems="10"
+                android:hint="@string/first_lastname"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/email_address" />
+
+            <EditText
+                android:id="@+id/txtSetEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:ems="10"
+                android:hint="@string/valid_email_com"
+                android:inputType="textEmailAddress" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/password" />
+
+            <EditText
+                android:id="@+id/txtSetPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txtSetEmail"
+                android:ems="10"
+                android:hint="@string/password123"
+                android:inputType="textPassword"
+                android:selectAllOnFocus="false" />
+
+            <Button
+                android:id="@+id/btnSubmitSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:text="@string/submit"
+                tools:text="Submit" />
+
+            <Button
+                android:id="@+id/btnCancelSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/btnSubmitSignup"
+                android:layout_marginEnd="0dp"
+                android:text="@string/cancel"
+                tools:text="Cancel" />
+        </LinearLayout>
+    </ScrollView>
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:id="@+id/txtTitle"
+        android:layout_width="101dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/textView"
-        android:layout_marginTop="111dp"
-        android:text="@string/email"
-        tools:text="Email: " />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/textView"
-        android:layout_marginTop="188dp"
-        android:text="@string/password"
-        tools:text="Password:" />
-
-    <EditText
-        android:id="@+id/txtSetPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView3"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="57dp"
-        android:ems="10"
-        android:hint="@string/password123"
-        android:inputType="textPassword" />
-
-    <EditText
-        android:id="@+id/txtSetEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/txtSetPassword"
-        android:layout_marginTop="96dp"
-        android:ems="10"
-        android:hint="@string/valid_email_com"
-        android:inputType="textEmailAddress" />
-
-    <EditText
-        android:id="@+id/txtSetName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView"
-        android:layout_alignStart="@+id/txtSetPassword"
-        android:ems="10"
-        android:hint="@string/first_lastname"
-        android:inputType="textPersonName" />
-
-    <Button
-        android:id="@+id/btnSubmitSignup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="162dp"
-        android:layout_toEndOf="@+id/textView2"
-        android:text="@string/submit"
-        tools:text="Submit" />
-
-    <Button
-        android:id="@+id/btnCancelSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/btnSubmitSignup"
-        android:layout_marginEnd="90dp"
-        android:text="@string/cancel"
-        tools:text="Cancel" />
+        android:layout_centerHorizontal="true"
+        android:text="@string/sign_up_user" />
 
 
     <!--

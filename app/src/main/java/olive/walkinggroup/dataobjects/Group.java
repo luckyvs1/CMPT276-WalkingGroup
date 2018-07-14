@@ -1,5 +1,6 @@
 package olive.walkinggroup.dataobjects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -129,6 +130,7 @@ public class Group extends IdItemBase implements Serializable{
         return (Objects.equals(leader.getId(), user.getId()));
     }
 
+    @JsonIgnore
     public int getMemberListIndex(User user) {
         if (!(isMember(user))) {
             return -1;

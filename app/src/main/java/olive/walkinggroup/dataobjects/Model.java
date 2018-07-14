@@ -4,6 +4,9 @@ import android.content.res.Resources;
 import android.provider.Settings;
 import android.util.Log;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import olive.walkinggroup.R;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import olive.walkinggroup.proxy.WGServerProxy;

@@ -13,10 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import olive.walkinggroup.R;
-import olive.walkinggroup.dataobjects.GpsLocation;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.UploadGpsLocation;
+import olive.walkinggroup.dataobjects.User;
+import olive.walkinggroup.proxy.ProxyBuilder;
+import retrofit2.Call;
 
 public class DashBoardActivity extends AppCompatActivity {
 
@@ -40,11 +42,23 @@ public class DashBoardActivity extends AppCompatActivity {
         setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class, false);
         setupSimpleButtonActivityChange(R.id.dashBoard_viewMyGroupsBtn, ListGroupsActivity.class, true);
         setupSimpleButtonActivityChange(R.id.btnTracker, TrackerActivity.class, false);
+        setupSettingsButton();
         setupMessagesButton();
         // Todo: check new messages, display "!" on R.id.dashBoard_messagesText
 
         setupLogoutButton();
         setupStopUploadButton();
+        updateCurrentUser();
+    }
+
+    private void updateCurrentUser() {
+        Call<User> caller = instance.getProxy().getUserByEmail(instance.getCurrentUser().getEmail());
+        ProxyBuilder.callProxy(DashBoardActivity.this, caller, returnedUser -> getUserByEmailResponse(returnedUser));
+    }
+
+    private void getUserByEmailResponse(User userFromEmail) {
+
+        instance.setCurrentUser(userFromEmail);
     }
 
     private void setupStopUploadButton() {
@@ -68,6 +82,17 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void setupSettingsButton() {
+        Button btn = (Button) findViewById(R.id.toUserProfile);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = UserDetailsActivity.makeIntent(DashBoardActivity.this, instance.getCurrentUser());
+                startActivity(intent);
+            }
+        });
     }
 
     private void displayUserName() {

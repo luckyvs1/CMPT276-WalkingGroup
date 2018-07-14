@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -96,7 +98,7 @@ public class UserListHelper {
     }
 
     // Return true if user is on List<User> monitorsUsers of currentUser
-    private boolean isOnMonitorsUserList(User currentUser, User user) {
+    public static boolean isOnMonitorsUserList(User currentUser, User user) {
         List<User> monitorList = currentUser.getMonitorsUsers();
         List<Integer> idList = new ArrayList<>();
 
@@ -108,6 +110,32 @@ public class UserListHelper {
         return user.getId() != null && (idList.contains(user.getId().intValue()));
     }
 
+
+    //Todo: Verify if the function is correct or utilize new function to check for group leader
+    // Return true if user is a leader of group which current user belongs to
+//    private boolean isGroupLeaderForCurrentUser(User currentUser, User user) {
+//        Boolean isCurrentUsersGroupLeader = false;
+//        List<Group> memberGroupList = currentUser.getMemberOfGroups();
+//        List<Group> groupLeaderList = user.getLeadsGroups();
+//
+//        for (int i = 0; i < memberGroupList.size(); i++) {
+//            for(int j = 0; j < groupLeaderList.size(); j++) {
+//                if(memberGroupList.get(i).getId() == groupLeaderList.get(j).getId()) {
+//                    isCurrentUsersGroupLeader = true;
+//
+//            }
+//        }
+//        return isCurrentUsersGroupLeader;
+//    }
+
+    // Return true if current user and the user are the same individual
+    public static boolean sameUser(User currentUser, User user) {
+        Boolean isSameUser = false;
+        if(currentUser.getId().intValue() == user.getId().intValue()){
+            isSameUser = true;
+        }
+        return isSameUser;
+    }
 
     public static List<User> sortUsers(List<User> listToSort) {
         Collections.sort(listToSort, new UserComparator());

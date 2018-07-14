@@ -65,18 +65,20 @@ public class LoginActivity extends AppCompatActivity {
         ProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> getUserByEmailResponse(returnedUser));
     }
 
-    private void getUserByEmailResponse(User userFromEmail){
+    private void getUserByEmailResponse(User userFromEmail) {
+
         instance.setCurrentUser(userFromEmail);
 
         // If the current user is not null
-        if(instance.getCurrentUser().getId() != null) {
-            //dialog.dismiss();
+        if (instance.getCurrentUser().getId() != null) {
             Toast.makeText(LoginActivity.this, "Logged in as:  " + instance.getCurrentUser().getName(), Toast.LENGTH_LONG).show();
             hideLoadingCircle();
             goToDashBoardActivity();
         } else {
+            hideLoadingCircle();
             Toast.makeText(LoginActivity.this, R.string.loginError, Toast.LENGTH_LONG).show();
         }
+
     }
 
     private void setupLoginBtn() {
@@ -170,6 +172,7 @@ public class LoginActivity extends AppCompatActivity {
     // Handle the token by generating a new Proxy which is encoded with it.
     private void onReceiveToken(String token) {
         // Replace the current proxy with one that uses the token!
+
         instance.updateProxy(token);
         instance.setCurrentUser(user);
 
