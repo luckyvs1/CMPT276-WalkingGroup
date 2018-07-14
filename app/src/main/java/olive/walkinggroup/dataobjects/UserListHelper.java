@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -120,7 +122,7 @@ public class UserListHelper {
 //            for(int j = 0; j < groupLeaderList.size(); j++) {
 //                if(memberGroupList.get(i).getId() == groupLeaderList.get(j).getId()) {
 //                    isCurrentUsersGroupLeader = true;
-//                }
+//
 //            }
 //        }
 //        return isCurrentUsersGroupLeader;
@@ -128,13 +130,13 @@ public class UserListHelper {
 
     //Todo: Verify if the function is correct or utilize new function to check if user is current user
     // Return true if current user and the user are the same individual
-//    private boolean sameUser(User currentUser, User user) {
-//        Boolean isSameUser = false;
-//        if(currentUser.getId() == user.getId()){
-//            isSameUser = true;
-//        }
-//        return isSameUser;
-//    }
+    public static boolean sameUser(User currentUser, User user) {
+        Boolean isSameUser = false;
+        if(currentUser.getId().intValue() == user.getId().intValue()){
+            isSameUser = true;
+        }
+        return isSameUser;
+    }
 
     public static List<User> sortUsers(List<User> listToSort) {
         Collections.sort(listToSort, new UserComparator());

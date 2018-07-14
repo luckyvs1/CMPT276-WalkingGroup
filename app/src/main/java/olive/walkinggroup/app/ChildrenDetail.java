@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,15 +27,6 @@ public class ChildrenDetail extends AppCompatActivity {
     private Model instance = Model.getInstance();
     User user;
 
-    TextView name;
-    TextView birthday;
-    TextView address;
-    TextView phone;
-    TextView cell;
-    TextView email;
-    TextView grade;
-    TextView teacher;
-    ListView contactList;
     List <User> parentList;
 
     @Override
@@ -43,59 +35,13 @@ public class ChildrenDetail extends AppCompatActivity {
         setContentView(R.layout.activity_children_detail);
 
         extractDataFromIntent();
-//        setView();
         populateView();
         verifyMonitoredUsersList();
         registerClickCallback();
         setupEditButton();
     }
 
-//    private void setView() {
-//        name = findViewById(R.id.detailName);
-//        birthday = findViewById(R.id.detailBirthday);
-//        address = findViewById(R.id.detailAddress);
-//        phone = findViewById(R.id.detailPhone);
-//        cell = findViewById(R.id.detailCell);
-//        email = findViewById(R.id.detailEmail);
-//        grade = findViewById(R.id.detailGrade);
-//        teacher = findViewById(R.id.detailTeacher);
-//        contactList = findViewById(R.id.IMonitor);
-//    }
-
-//    private void populateView(){
-//        name.append(user.getName());
-//        email.append(user.getEmail());
-//
-//        if (user.getBirthYear()!=null && user.getBirthMonth()!=null)
-//        {birthday.append(""+user.getBirthMonth()+" / "+user.getBirthYear().toString());}
-//        if(user.getAddress()!=null)
-//        {address.append(user.getAddress());}
-//        if(user.getHomePhone()!=null)
-//        {phone.append(user.getHomePhone());}
-//        if(user.getCellPhone()!=null)
-//        {cell.append(user.getCellPhone());}
-//        if(user.getGrade()!=null)
-//        {grade.append(user.getGrade());}
-//        if(user.getTeacherName()!=null)
-//        {teacher.append(user.getTeacherName());}
-//    }
-
     private void populateView(){
-//        name.append(user.getName());
-//        email.append(user.getEmail());
-
-//        if (user.getBirthYear()!=null && user.getBirthMonth()!=null)
-//        {birthday.append(""+user.getBirthMonth()+" / "+user.getBirthYear().toString());}
-//        if(user.getAddress()!=null)
-//        {address.append(user.getAddress());}
-//        if(user.getHomePhone()!=null)
-//        {phone.append(user.getHomePhone());}
-//        if(user.getCellPhone()!=null)
-//        {cell.append(user.getCellPhone());}
-//        if(user.getGrade()!=null)
-//        {grade.append(user.getGrade());}
-//        if(user.getTeacherName()!=null)
-//        {teacher.append(user.getTeacherName());}
 
         String birthday = "";
 
@@ -162,15 +108,17 @@ public class ChildrenDetail extends AppCompatActivity {
             public void onClick(View v) {
 
                 String email;
-                Boolean editPermission;
+                Boolean editPermission = false;
+                Boolean sameindividual = false;
 
                 if (user != null) {
                     email = user.getEmail();
 
                     //Todo: Implement a more permanent solution after permission settings have been determined
                     editPermission = UserListHelper.isOnMonitorsUserList(instance.getCurrentUser(), user);
+                    sameindividual =  UserListHelper.sameUser(instance.getCurrentUser(), user);
 
-                    if(editPermission){
+                    if(editPermission || sameindividual){
                         Toast.makeText(ChildrenDetail.this, "Permission available to edit this profile", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(ChildrenDetail.this, "Permission unavailable to edit this profile", Toast.LENGTH_LONG).show();
@@ -178,11 +126,12 @@ public class ChildrenDetail extends AppCompatActivity {
 
                 } else  {
                     editPermission = true;
+                    sameindividual = true;
                     email = instance.getCurrentUser().getEmail();
                 }
 
 
-                if(editPermission) {
+                if(editPermission || sameindividual) {
                     Intent intent = EditUserInformationActivity.makeIntent(ChildrenDetail.this, email);
                     startActivityForResult(intent, 1);
                 }
