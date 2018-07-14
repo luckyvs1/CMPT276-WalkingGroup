@@ -95,7 +95,7 @@ public class MonitorActivity extends AppCompatActivity {
     private void getUserByEmailResponse(User userFromEmail){
         editUser = userFromEmail;
 
-        Intent intent = ChildrenDetail.makeIntent(MonitorActivity.this, editUser);
+        Intent intent = UserDetailsActivity.makeIntent(MonitorActivity.this, editUser);
         startActivity(intent);
     }
 

@@ -236,7 +236,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                Intent intent = ChildrenDetail.makeIntent (GroupDetailsActivity.this, memberList.get(position));
+                Intent intent = UserDetailsActivity.makeIntent (GroupDetailsActivity.this, memberList.get(position));
                 startActivity(intent);
             }
         });

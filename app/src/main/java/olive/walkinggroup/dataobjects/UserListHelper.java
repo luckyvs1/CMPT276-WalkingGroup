@@ -128,7 +128,6 @@ public class UserListHelper {
 //        return isCurrentUsersGroupLeader;
 //    }
 
-    //Todo: Verify if the function is correct or utilize new function to check if user is current user
     // Return true if current user and the user are the same individual
     public static boolean sameUser(User currentUser, User user) {
         Boolean isSameUser = false;

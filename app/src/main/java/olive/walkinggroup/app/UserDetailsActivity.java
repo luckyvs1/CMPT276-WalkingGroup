@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,7 +22,7 @@ import olive.walkinggroup.dataobjects.UserListHelper;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 
-public class ChildrenDetail extends AppCompatActivity {
+public class UserDetailsActivity extends AppCompatActivity {
     private Model instance = Model.getInstance();
     User user;
 
@@ -32,7 +31,7 @@ public class ChildrenDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_children_detail);
+        setContentView(R.layout.activity_user_details);
 
         extractDataFromIntent();
         populateView();
@@ -94,8 +93,8 @@ public class ChildrenDetail extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                Toast.makeText(ChildrenDetail.this,parentList.get(position).getName(),Toast.LENGTH_SHORT).show();
-                Intent intent = ChildrenDetail.makeIntent (ChildrenDetail.this, parentList.get(position));
+                Toast.makeText(UserDetailsActivity.this,parentList.get(position).getName(),Toast.LENGTH_SHORT).show();
+                Intent intent = UserDetailsActivity.makeIntent (UserDetailsActivity.this, parentList.get(position));
                 startActivity(intent);
             }
         });
@@ -120,9 +119,9 @@ public class ChildrenDetail extends AppCompatActivity {
                     sameindividual =  UserListHelper.sameUser(instance.getCurrentUser(), user);
 
                     if(editPermission || sameindividual){
-                        Toast.makeText(ChildrenDetail.this, R.string.PermissionAvailableToEdit, Toast.LENGTH_LONG).show();
+                        Toast.makeText(UserDetailsActivity.this, R.string.PermissionAvailableToEdit, Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(ChildrenDetail.this, R.string.PermissionUnavailableToEdit, Toast.LENGTH_LONG).show();
+                        Toast.makeText(UserDetailsActivity.this, R.string.PermissionUnavailableToEdit, Toast.LENGTH_LONG).show();
                     }
 
                 } else  {
@@ -133,7 +132,7 @@ public class ChildrenDetail extends AppCompatActivity {
 
 
                 if(editPermission || sameindividual) {
-                    Intent intent = EditUserInformationActivity.makeIntent(ChildrenDetail.this, email);
+                    Intent intent = EditUserInformationActivity.makeIntent(UserDetailsActivity.this, email);
                     startActivityForResult(intent, 1);
                 }
             }
@@ -156,7 +155,7 @@ public class ChildrenDetail extends AppCompatActivity {
     }//onActivityResult
 
     public static Intent makeIntent(Context context, User user) {
-        Intent intent = new Intent (context, ChildrenDetail.class);
+        Intent intent = new Intent (context, UserDetailsActivity.class);
         intent.putExtra("Children", user);
         return intent;
     }

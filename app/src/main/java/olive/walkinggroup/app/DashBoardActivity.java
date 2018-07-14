@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import olive.walkinggroup.R;
-import olive.walkinggroup.dataobjects.GpsLocation;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.UploadGpsLocation;
@@ -76,7 +75,7 @@ public class DashBoardActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = ChildrenDetail.makeIntent(DashBoardActivity.this, instance.getCurrentUser());
+                Intent intent = UserDetailsActivity.makeIntent(DashBoardActivity.this, instance.getCurrentUser());
                 startActivity(intent);
             }
         });
