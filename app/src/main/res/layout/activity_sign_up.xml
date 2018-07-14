@@ -16,7 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btnSubmitUser"
+            android:layout_above="@+id/btnSubmitSignup"
             android:layout_alignParentStart="true"
             android:orientation="vertical">
 
@@ -83,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="66dp"
                 android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/btnSubmitUser"
+                android:layout_alignTop="@+id/btnSubmitSignup"
                 android:layout_marginEnd="0dp"
                 android:text="@string/cancel"
                 tools:text="Cancel" />

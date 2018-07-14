@@ -121,11 +121,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".app.ViewUserInformationActivity"
-            android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
 
         <activity android:name=".app.TrackerActivity"></activity>
 

@@ -38,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void setupConfirmSignupBtn() {
-        Button confirmBtn = (Button) findViewById(R.id.btnSubmitUser);
+        Button confirmBtn = (Button) findViewById(R.id.btnSubmitSignup);
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +150,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void showLoadingCircle() {
         RelativeLayout loadingCircle = findViewById(R.id.signup_loading);
         Button cancelButton =  (Button) findViewById(R.id.btnCancelSignUp);
-        Button signupButton =  (Button) findViewById(R.id.btnSubmitUser);
+        Button signupButton =  (Button) findViewById(R.id.btnSubmitSignup);
 
         if (loadingCircle != null) {
             loadingCircle.setVisibility(View.VISIBLE);
@@ -162,7 +162,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void hideLoadingCircle() {
         RelativeLayout loadingCircle = findViewById(R.id.signup_loading);
         Button cancelButton =  (Button) findViewById(R.id.btnCancelSignUp);
-        Button signupButton =  (Button) findViewById(R.id.btnSubmitUser);
+        Button signupButton =  (Button) findViewById(R.id.btnSubmitSignup);
 
         if (loadingCircle != null) {
             loadingCircle.setVisibility(View.GONE);
