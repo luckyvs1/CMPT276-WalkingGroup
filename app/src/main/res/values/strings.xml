@@ -99,4 +99,6 @@
     <string name="mm">mm</string>
     <string name="UpdateUserInformatonSuccessfully">User Information Updated Successfully</string>
     <string name="profile">Profile</string>
+    <string name="PermissionAvailableToEdit">Permission available to edit this profile</string>
+    <string name="PermissionUnavailableToEdit">Permission unavailable to edit this profile</string>
 </resources>

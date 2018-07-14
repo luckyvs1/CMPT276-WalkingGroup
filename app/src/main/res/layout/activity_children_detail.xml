@@ -95,13 +95,24 @@
         android:textSize="15sp" />
 
     <TextView
-        android:id="@+id/contactTitle"
+        android:id="@+id/detailEmergencyContact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="340dp"
+        android:text="Emergency Contact:"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/contactTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="380dp"
         android:text="Contact List: "
         android:textSize="15sp" />
 
@@ -109,9 +120,10 @@
         android:id="@+id/monitorsMe"
         android:layout_width="150dp"
         android:layout_height="160dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/detailName"
-        android:layout_marginTop="370dp" />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="420dp"/>
 
     <Button
         android:id="@+id/btnEditInformation"
@@ -181,4 +193,11 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/txtDisplayName"
         android:layout_alignTop="@+id/detailTeacher" />
+
+    <TextView
+        android:id="@+id/txtDisplayEmergencyContact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/detailEmergencyContact"
+        android:layout_toEndOf="@+id/monitorsMe" />
 </RelativeLayout>

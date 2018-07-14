@@ -56,6 +56,7 @@ public class ChildrenDetail extends AppCompatActivity {
         setTextValueHelper(R.id.txtDisplayCell, user.getCellPhone());
         setTextValueHelper(R.id.txtDisplayGrade, user.getGrade());
         setTextValueHelper(R.id.txtDisplayTeacherName, user.getTeacherName());
+        setTextValueHelper(R.id.txtDisplayTeacherName, user.getEmergencyContactInfo());
 
     }
 
@@ -94,7 +95,7 @@ public class ChildrenDetail extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 Toast.makeText(ChildrenDetail.this,parentList.get(position).getName(),Toast.LENGTH_SHORT).show();
-                Intent intent = ParentDetail.makeIntent (ChildrenDetail.this, parentList.get(position));
+                Intent intent = ChildrenDetail.makeIntent (ChildrenDetail.this, parentList.get(position));
                 startActivity(intent);
             }
         });
@@ -119,9 +120,9 @@ public class ChildrenDetail extends AppCompatActivity {
                     sameindividual =  UserListHelper.sameUser(instance.getCurrentUser(), user);
 
                     if(editPermission || sameindividual){
-                        Toast.makeText(ChildrenDetail.this, "Permission available to edit this profile", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ChildrenDetail.this, R.string.PermissionAvailableToEdit, Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(ChildrenDetail.this, "Permission unavailable to edit this profile", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ChildrenDetail.this, R.string.PermissionUnavailableToEdit, Toast.LENGTH_LONG).show();
                     }
 
                 } else  {
