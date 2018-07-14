@@ -18,6 +18,7 @@ import java.util.List;
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
+import olive.walkinggroup.dataobjects.UserListHelper;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 
@@ -161,14 +162,30 @@ public class ChildrenDetail extends AppCompatActivity {
             public void onClick(View v) {
 
                 String email;
+                Boolean editPermission;
 
                 if (user != null) {
                     email = user.getEmail();
+
+                    //Todo: Implement a more permanent solution after permission settings have been determined
+                    editPermission = UserListHelper.isOnMonitorsUserList(instance.getCurrentUser(), user);
+
+                    if(editPermission){
+                        Toast.makeText(ChildrenDetail.this, "Permission available to edit this profile", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(ChildrenDetail.this, "Permission unavailable to edit this profile", Toast.LENGTH_LONG).show();
+                    }
+
                 } else  {
+                    editPermission = true;
                     email = instance.getCurrentUser().getEmail();
                 }
-                Intent intent = EditUserInformationActivity.makeIntent(ChildrenDetail.this, email);
-                startActivityForResult(intent, 1);
+
+
+                if(editPermission) {
+                    Intent intent = EditUserInformationActivity.makeIntent(ChildrenDetail.this, email);
+                    startActivityForResult(intent, 1);
+                }
             }
         });
     }
@@ -183,7 +200,7 @@ public class ChildrenDetail extends AppCompatActivity {
                 populateView();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
+                // No result code currently unused
             }
         }
     }//onActivityResult

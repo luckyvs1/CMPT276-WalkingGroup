@@ -96,7 +96,7 @@ public class UserListHelper {
     }
 
     // Return true if user is on List<User> monitorsUsers of currentUser
-    private boolean isOnMonitorsUserList(User currentUser, User user) {
+    public static boolean isOnMonitorsUserList(User currentUser, User user) {
         List<User> monitorList = currentUser.getMonitorsUsers();
         List<Integer> idList = new ArrayList<>();
 
@@ -108,30 +108,33 @@ public class UserListHelper {
         return user.getId() != null && (idList.contains(user.getId().intValue()));
     }
 
+
+    //Todo: Verify if the function is correct or utilize new function to check for group leader
     // Return true if user is a leader of group which current user belongs to
-    private boolean isGroupLeaderForCurrentUser(User currentUser, User user) {
-        Boolean isCurrentUsersGroupLeader = false;
-        List<Group> memberGroupList = currentUser.getMemberOfGroups();
-        List<Group> groupLeaderList = user.getLeadsGroups();
+//    private boolean isGroupLeaderForCurrentUser(User currentUser, User user) {
+//        Boolean isCurrentUsersGroupLeader = false;
+//        List<Group> memberGroupList = currentUser.getMemberOfGroups();
+//        List<Group> groupLeaderList = user.getLeadsGroups();
+//
+//        for (int i = 0; i < memberGroupList.size(); i++) {
+//            for(int j = 0; j < groupLeaderList.size(); j++) {
+//                if(memberGroupList.get(i).getId() == groupLeaderList.get(j).getId()) {
+//                    isCurrentUsersGroupLeader = true;
+//                }
+//            }
+//        }
+//        return isCurrentUsersGroupLeader;
+//    }
 
-        for (int i = 0; i < memberGroupList.size(); i++) {
-            for(int j = 0; j < groupLeaderList.size(); j++) {
-                if(memberGroupList.get(i).getId() == groupLeaderList.get(j).getId()) {
-                    isCurrentUsersGroupLeader = true;
-                }
-            }
-        }
-        return isCurrentUsersGroupLeader;
-    }
-
+    //Todo: Verify if the function is correct or utilize new function to check if user is current user
     // Return true if current user and the user are the same individual
-    private boolean sameUser(User currentUser, User user) {
-        Boolean isSameUser = false;
-        if(currentUser.getId() == user.getId()){
-            isSameUser = true;
-        }
-        return isSameUser;
-    }
+//    private boolean sameUser(User currentUser, User user) {
+//        Boolean isSameUser = false;
+//        if(currentUser.getId() == user.getId()){
+//            isSameUser = true;
+//        }
+//        return isSameUser;
+//    }
 
     public static List<User> sortUsers(List<User> listToSort) {
         Collections.sort(listToSort, new UserComparator());
