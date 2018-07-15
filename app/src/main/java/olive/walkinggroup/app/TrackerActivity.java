@@ -2,8 +2,10 @@ package olive.walkinggroup.app;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -50,7 +52,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
 
     private void onGetMonitorUsers(List<User> returnedUsers) {
         monitorUsers = UserListHelper.sortUsers(returnedUsers);
-
+        hideLoadingCircle();
         populateUserList();
     }
 
@@ -71,5 +73,14 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+    }
+
+
+    private void hideLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.trackUsers_loading);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
+        }
     }
 }
