@@ -146,8 +146,8 @@ public class NewMessageActivity extends AppCompatActivity {
                 Integer selectedUserId = selectedUser.getId().intValue();
                 List<Message> messageList = contactMessagesList.get(messageContactIdList.indexOf(selectedUserId));
 
-                Intent intent = ChatActivity.makeIntent(NewMessageActivity.this, messageList, selectedUser);
-                startActivity(intent);
+                //Intent intent = ChatActivity.makeIntent(NewMessageActivity.this, messageList, selectedUser);
+                //startActivity(intent);
                 finish();
             }
         });

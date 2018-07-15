@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             android:textColor="#000"
             android:textSize="13sp"
-            android:textStyle="bold"
             android:text="@string/sampleText"
             />
 

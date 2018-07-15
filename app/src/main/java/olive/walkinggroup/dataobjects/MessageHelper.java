@@ -20,6 +20,8 @@ import retrofit2.Call;
 
 public class MessageHelper {
 
+    private static final String HEADER_TAG = "<!header>";
+
     // PRECOND: messageList contains messages for one user only
     // Note: this uses a slow sorting algorithm.
     public static List<List<Message>> groupByContact(List<Message> messageList) {
@@ -33,6 +35,7 @@ public class MessageHelper {
         return myMessagesListOfList;
     }
 
+    // Add a message to corresponding List in Message List of List (Grouped by contact)
     public static void addToMyMessagesList(Message message, List<List<Message>> myMessagesListOfList) {
         long messageContactId = getMessageContactId(message);
 
@@ -128,14 +131,19 @@ public class MessageHelper {
         }
     }
 
+    /* Parse a message into header and body.
+     * The header of a message is the String in between two headerTags "<!header>".
+     * The body of a message is the String following the last HEADER_TAG
+     * For example: the message text "<!header>Bob's Group<!header>Hello, World!"
+     * has a header "Bob's Group" and a body "Hello, World!".
+     * Returns a List<String> where header is at index 0, body at index 1.
+     */
     public static List<String> parseMessageText(String messageText) {
         List<String> returnList = new ArrayList<>();
+        int headerTagSize = HEADER_TAG.length();
 
-        String headerTag = "<header>";
-        int headerTagSize = headerTag.length();
-
-        int firstIndex = messageText.indexOf(headerTag);
-        int lastIndex = messageText.lastIndexOf(headerTag);
+        int firstIndex = messageText.indexOf(HEADER_TAG);
+        int lastIndex = messageText.lastIndexOf(HEADER_TAG);
 
         String header = messageText.substring((firstIndex + headerTagSize), lastIndex);
         returnList.add(header);
@@ -145,7 +153,9 @@ public class MessageHelper {
         return returnList;
     }
 
-
+    public static String constructMessageText(String headerText, String bodyText) {
+        return (HEADER_TAG + headerText + HEADER_TAG + bodyText);
+    }
 
     public static List<Message> makeTestList() {
         Model model = Model.getInstance();
