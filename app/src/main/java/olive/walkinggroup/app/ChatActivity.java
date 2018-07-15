@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -82,6 +83,13 @@ public class ChatActivity extends AppCompatActivity {
 
         getDataFromIntent();
         getChatLog();
+
+        // Hide Input UI on readOnly mode. (Can make more elegant?)
+        if (readOnly) {
+            ConstraintLayout inputContainer = findViewById(R.id.chatActivity_inputContainer);
+            inputContainer.setVisibility(View.GONE);
+        }
+
         initializeHeaderText();
         setupSendButton();
     }
@@ -119,7 +127,7 @@ public class ChatActivity extends AppCompatActivity {
                 EditText input = findViewById(R.id.chatActivity_input);
                 String inputText = input.getText().toString();
 
-                if (inputText.replaceAll("\\s", "").equals("")) {
+                if (inputText.replaceAll("\\s", "").equals("") || readOnly) {
                     return;
                 }
 
