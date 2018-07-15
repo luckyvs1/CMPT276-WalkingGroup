@@ -1,19 +1,27 @@
 package olive.walkinggroup.app;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.CurrentLocationHelper;
+import olive.walkinggroup.dataobjects.GpsLocation;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
@@ -22,10 +30,11 @@ import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 
 
+
 public class TrackerActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private List<User> monitorUsers;
+    private List<User> listUsers;
 
     private Model instance;
     private User currentUser;
@@ -40,8 +49,10 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
         instance = Model.getInstance();
         currentUser = instance.getCurrentUser();
 
-        getMonitorUsersFromServer();
+
         initializeMap();
+        getMonitorUsersFromServer();
+
 
     }
 
@@ -51,13 +62,16 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void onGetMonitorUsers(List<User> returnedUsers) {
-        monitorUsers = UserListHelper.sortUsers(returnedUsers);
+        listUsers = UserListHelper.sortUsers(returnedUsers);
         hideLoadingCircle();
         populateUserList();
+
+        populateUserMarkers();
+
     }
 
     private void populateUserList() {
-        userListHelper = new UserListHelper(this, monitorUsers, currentUser);
+        userListHelper = new UserListHelper(this, listUsers, currentUser);
 
         ArrayAdapter<User> adapter = userListHelper.getAdapter();
         ListView listView = findViewById(R.id.listView_trackUsers);
@@ -75,6 +89,17 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
+    private void populateUserMarkers() {
+        for (int i = 0; i < listUsers.size(); i++) {
+            User user = listUsers.get(i);
+            LatLng location = gpsLocationToLatLng(user.getLastGpsLocation());
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(location)
+                    .title(user.getName()));
+        }
+    }
+
+
 
     private void hideLoadingCircle() {
         RelativeLayout loadingCircle = findViewById(R.id.trackUsers_loading);
@@ -82,5 +107,14 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
         if (loadingCircle != null) {
             loadingCircle.setVisibility(View.GONE);
         }
+    }
+    
+    private LatLng gpsLocationToLatLng(GpsLocation gpsLocation) {
+        return new LatLng(gpsLocation.getLat(), gpsLocation.getLng());
+    }
+
+
+    private void moveCamera(LatLng latLng, float zoom) {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 }
