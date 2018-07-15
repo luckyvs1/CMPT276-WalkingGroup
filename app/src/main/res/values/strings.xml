@@ -67,6 +67,7 @@
     <string name="dashBoard_messagesText">!</string>
     <string name="messagesActivity_headerText">Messages</string>
     <string name="messagesActivity_newMessageBtnText">+</string>
+    <string name="messagesActivity_youTag">You:\ </string>
     <string name="newMessage_headerText">Compose New Message</string>
     <string name="newMessage_toUserInputPrompt">To:</string>
     <string name="newMessage_groupListTitle">My Groups</string>

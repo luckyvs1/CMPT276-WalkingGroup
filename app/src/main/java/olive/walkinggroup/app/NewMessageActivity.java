@@ -7,74 +7,147 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.Group;
+import olive.walkinggroup.dataobjects.Message;
+import olive.walkinggroup.dataobjects.MessageHelper;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
-import olive.walkinggroup.dataobjects.UserListHelper;
+import olive.walkinggroup.proxy.ProxyBuilder;
+import retrofit2.Call;
 
 public class NewMessageActivity extends AppCompatActivity {
     private Model model;
     private User currentUser;
     private Spinner dropdown;
-    private List<User> contactList;
-    private List<String> contactLabelList;
+
+    // Note: contactIdList may not be aligned with the other 2 contact lists
+    private List<Integer> contactIdList = new ArrayList<>();
+    private List<Integer> groupIdList = new ArrayList<>();
+    private List<Group> groupDetailedList = new ArrayList<>();
+    private List<User> contactDetailedList = new ArrayList<>();
+    private List<String> contactLabelList = new ArrayList<>();
+
+    private List<Integer> messageContactIdList = new ArrayList<>();
+    private List<List<Message>> contactMessagesList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_message);
 
-        dropdown = findViewById(R.id.newMessage_toUserDropdown);
+        dropdown = findViewById(R.id.messagesActivity_toUserDropdown);
         model = Model.getInstance();
         currentUser = model.getCurrentUser();
-        contactList = getTestList();
-        buildContactLabelList();
-
-        setupNewMessageBtn();
-        setupToUserDropdown();
+        getContactIdList();
     }
 
-    private List<User> getTestList() {
-        List<User> returnList = new ArrayList<>();
-        User user1 = new User();
-        user1.setId((long) 9990);
-        user1.setName("Test Subject1");
-        user1.setEmail("sub1@test.com");
-        returnList.add(user1);
+    // Contacts include:
+    // - Users who I monitor/ monitors me
+    // - Users who are leaders of groups I'm in
+    // - Members of groups I lead are in another list
+    private void getContactIdList() {
+        List<User> monitorList = currentUser.getMonitoredByUsers();
+        monitorList.addAll(currentUser.getMonitorsUsers());
 
-        User user2 = new User();
-        user2.setId((long) 9991);
-        user2.setName("Test Subject2");
-        user2.setEmail("sub2@test.com");
-        returnList.add(user2);
+        for (int i = 0; i < monitorList.size(); i++) {
+            Integer id = monitorList.get(i).getId().intValue();
+            if (!contactIdList.contains(id)) {
+                contactIdList.add(id);
+            }
+        }
+        List<Group> memberOfGroups = currentUser.getMemberOfGroups();
 
-        return returnList;
+        for (int i = 0; i < memberOfGroups.size(); i++) {
+            groupIdList.add(memberOfGroups.get(i).getId().intValue());
+        }
+
+        getGroupDetailedList();
     }
 
-    private void buildContactLabelList() {
-        contactLabelList = new ArrayList<>();
-
-        for (int i = 0; i < contactList.size(); i++) {
-            User currUser = contactList.get(i);
-            contactLabelList.add(currUser.getName());
+    private void getGroupDetailedList() {
+        for (int i = 0; i < groupIdList.size(); i++) {
+            long id = groupIdList.get(i);
+            Call<Group> caller = model.getProxy().getGroupById(id);
+            ProxyBuilder.callProxy(this, caller, returnedGroup -> onGetGroupDetailedListResponse(returnedGroup));
         }
     }
 
+    private void onGetGroupDetailedListResponse(Group returnedGroup) {
+        groupDetailedList.add(returnedGroup);
+        contactIdList.add(returnedGroup.getLeader().getId().intValue());
+
+        if (groupDetailedList.size() == groupIdList.size()) {
+            getContactDetailedList();
+        }
+    }
+
+    private void getContactDetailedList() {
+        for (int i = 0; i < contactIdList.size(); i++) {
+            Call<User> caller = model.getProxy().getUserById((long) contactIdList.get(i));
+            ProxyBuilder.callProxy(this, caller, returnedUser -> onGetContactListResponse(returnedUser));
+        }
+    }
+
+    private void onGetContactListResponse(User returnedUser) {
+        contactDetailedList.add(returnedUser);
+
+        if (contactDetailedList.size() == contactIdList.size()) {
+            buildContactLabelList();
+        }
+    }
+
+    private void buildContactLabelList() {
+        for (int i = 0; i < contactDetailedList.size(); i++) {
+            contactLabelList.add(contactDetailedList.get(i).getName());
+        }
+
+        buildContactMessagesList();
+    }
+
+    private void buildContactMessagesList() {
+        Call<List<Message>> caller = model.getProxy().getMessages();
+        ProxyBuilder.callProxy(this, caller, fullMessagesList -> onBuildContactMessagesListResponse(fullMessagesList));
+    }
+
+    private void onBuildContactMessagesListResponse(List<Message> fullMessagesList) {
+        for (int i = 0; i < fullMessagesList.size(); i++) {
+            Message message = fullMessagesList.get(i);
+            long messageContactLongId = MessageHelper.getMessageContactId(message);
+            Integer messageContactId = (int) (long) messageContactLongId;
+
+            if (messageContactIdList.contains(messageContactId)) {
+                List<Message> list = contactMessagesList.get(messageContactIdList.indexOf(messageContactId));
+                list.add(message);
+            } else {
+                List<Message> newList = new ArrayList<>();
+                newList.add(message);
+                contactMessagesList.add(newList);
+                messageContactIdList.add(messageContactId);
+            }
+        }
+
+        setupToUserDropdown();
+        setupNewMessageBtn();
+    }
+
     private void setupNewMessageBtn() {
-        RelativeLayout btn = findViewById(R.id.newMessage_newMessageBtn);
+        RelativeLayout btn = findViewById(R.id.messagesActivity_newMessageBtn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User selectedUser = contactList.get(dropdown.getSelectedItemPosition());
+                // contactDetailedList and contactLabelList are aligned
+                User selectedUser = contactDetailedList.get(dropdown.getSelectedItemPosition());
+                Integer selectedUserId = selectedUser.getId().intValue();
+                List<Message> messageList = contactMessagesList.get(messageContactIdList.indexOf(selectedUserId));
 
-                Intent intent = new Intent(NewMessageActivity.this, ChatActivity.class);
-                intent.putExtra("toUser", selectedUser);
-                startActivity(intent);
+                //Intent intent = ChatActivity.makeIntent(NewMessageActivity.this, messageList, selectedUser);
+                //startActivity(intent);
                 finish();
             }
         });
