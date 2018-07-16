@@ -62,6 +62,7 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         updateCurrentUser();
     }
 
+    @Override
     protected void onResume() {
         super.onResume();
         updateCurrentUser();
