@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import olive.walkinggroup.R;
@@ -35,6 +36,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
 
     private GoogleMap mMap;
     private List<User> listUsers;
+    private List<Marker> userMarkers = new ArrayList<>();
 
     private Model instance;
     private User currentUser;
@@ -66,6 +68,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
         hideLoadingCircle();
         populateUserList();
 
+        setupListOnItemClickListeners();
         populateUserMarkers();
 
     }
@@ -96,6 +99,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(location)
                     .title(user.getName()));
+            userMarkers.add(marker);
         }
     }
 
@@ -113,8 +117,24 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
         return new LatLng(gpsLocation.getLat(), gpsLocation.getLng());
     }
 
+    private void setupListOnItemClickListeners() {
+        ListView list = findViewById(R.id.listView_trackUsers);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                User user = listUsers.get(position);
+                LatLng location = gpsLocationToLatLng(user.getLastGpsLocation());
+                moveCamera(location, CurrentLocationHelper.DEFAULT_ZOOM);
+
+            }
+        });
+    }
+
+
 
     private void moveCamera(LatLng latLng, float zoom) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
+
+
 }
