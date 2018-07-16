@@ -1,8 +1,8 @@
 package olive.walkinggroup.app;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,11 +19,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.CurrentLocationHelper;
 import olive.walkinggroup.dataobjects.GpsLocation;
-import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.dataobjects.UserListHelper;
@@ -38,10 +39,14 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     private List<User> listUsers;
     private List<Marker> userMarkers = new ArrayList<>();
 
+    private Timer updateMarkersTimer = new Timer();
+
     private Model instance;
     private User currentUser;
 
     private UserListHelper userListHelper;
+
+    private static final int UPDATE_MARKERS_DELAY_S = 30;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +59,36 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
 
         initializeMap();
         getMonitorUsersFromServer();
+        setupUpdateMarkersTimer();
 
+
+    }
+
+    private void setupUpdateMarkersTimer() {
+        updateMarkersTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (listUsers != null) {
+                    updateGpsLocationFromServer();
+                    Log.i("MyApp", "Update markers");
+                }
+            }
+        }, 0, UPDATE_MARKERS_DELAY_S*1000);
+    }
+
+    private void updateGpsLocationFromServer() {
+        for (int i = 0; i < listUsers.size(); i++) {
+            Call<GpsLocation> caller = instance.getProxy().getLastGpsLocation(listUsers.get(i).getId());
+            int position = i;
+            ProxyBuilder.callProxy(this, caller, gpsLocation -> onGetLastGpsLocation(gpsLocation, position));
+
+        }
+
+    }
+
+    private void onGetLastGpsLocation(GpsLocation gpsLocation, int position) {
+        LatLng location = gpsLocationToLatLng(gpsLocation);
+        userMarkers.get(position).setPosition(location);
 
     }
 
@@ -122,9 +156,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                User user = listUsers.get(position);
-                LatLng location = gpsLocationToLatLng(user.getLastGpsLocation());
-                moveCamera(location, CurrentLocationHelper.DEFAULT_ZOOM);
+                moveCamera(userMarkers.get(position).getPosition(), CurrentLocationHelper.DEFAULT_ZOOM);
 
             }
         });

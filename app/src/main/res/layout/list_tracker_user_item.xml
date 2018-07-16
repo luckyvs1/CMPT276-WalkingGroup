@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    >
+
+    <TextView
+        android:id="@+id/listMembers_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/listMembers_tagContainer"
+        android:textColor="#000"
+        android:textSize="17sp"
+        android:text="@string/sampleText"
+        />
+
+    <TextView
+        android:id="@+id/listMembers_lastUpdated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/listMembers_name"
+        android:layout_marginTop="2dp"
+        android:text="@string/sampleText"
+        android:textSize="15sp" />
+
+</RelativeLayout>
