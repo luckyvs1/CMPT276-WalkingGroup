@@ -50,6 +50,37 @@ public class UserListHelper {
             super(activity, R.layout.list_user_item, userList);
         }
 
+        private void setupMemberNameView(View itemView, User user) {
+            TextView nameView = itemView.findViewById(R.id.listMembers_name);
+            String nameText = user.getName();
+            nameView.setText(nameText);
+        }
+
+        private void setupMemberEmailView(View itemView, User user) {
+            TextView emailView = itemView.findViewById(R.id.listMembers_email);
+            String emailText = user.getEmail();
+            emailView.setText(emailText);
+        }
+
+        private void displayTag(View itemView, User user) {
+            RelativeLayout youTag = itemView.findViewById(R.id.listUsers_youTag);
+            youTag.setVisibility(View.GONE);
+
+            RelativeLayout monitorTag = itemView.findViewById(R.id.listUsers_monitorTag);
+            monitorTag.setVisibility(View.GONE);
+
+            if ((Objects.equals(currentUser.getId(), user.getId()))) {
+                youTag.setVisibility(View.VISIBLE);
+            }
+
+            if ((isOnMonitorsUserList(currentUser, user))) {
+                monitorTag.setVisibility(View.VISIBLE);
+            }
+
+            //Todo: add tag for users who monitors me, and leader of groups
+        }
+
+
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -65,37 +96,10 @@ public class UserListHelper {
 
             return itemView;
         }
+
+
     }
 
-    private void setupMemberNameView(View itemView, User user) {
-        TextView nameView = itemView.findViewById(R.id.listMembers_name);
-        String nameText = user.getName();
-        nameView.setText(nameText);
-    }
-
-    private void setupMemberEmailView(View itemView, User user) {
-        TextView emailView = itemView.findViewById(R.id.listMembers_email);
-        String emailText = user.getEmail();
-        emailView.setText(emailText);
-    }
-
-    private void displayTag(View itemView, User user) {
-        RelativeLayout youTag = itemView.findViewById(R.id.listUsers_youTag);
-        youTag.setVisibility(View.GONE);
-
-        RelativeLayout monitorTag = itemView.findViewById(R.id.listUsers_monitorTag);
-        monitorTag.setVisibility(View.GONE);
-
-        if ((Objects.equals(currentUser.getId(), user.getId()))) {
-            youTag.setVisibility(View.VISIBLE);
-        }
-
-        if ((isOnMonitorsUserList(currentUser, user))) {
-            monitorTag.setVisibility(View.VISIBLE);
-        }
-
-        //Todo: add tag for users who monitors me, and leader of groups
-    }
 
     // Return true if user is on List<User> monitorsUsers of currentUser
     public static boolean isOnMonitorsUserList(User currentUser, User user) {
