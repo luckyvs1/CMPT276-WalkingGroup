@@ -116,10 +116,12 @@ public class SignUpActivity extends AppCompatActivity {
         Toast.makeText(SignUpActivity.this, "Logged in as:  " + currentUser.getName(), Toast.LENGTH_LONG).show();
 
         String userEmail = instance.getCurrentUser().getEmail();
+        String userPassword = currentUser.getPassword();
 
         //Store token and email using shared preferences
         storeToSharedPreferences("Token", token);
         storeToSharedPreferences("UserEmail", userEmail);
+        storeToSharedPreferences("userPasword", userPassword);
     }
 
     // Store the resource to shared preferences

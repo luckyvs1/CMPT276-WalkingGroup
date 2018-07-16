@@ -189,10 +189,12 @@ public class LoginActivity extends AppCompatActivity {
         instance.setCurrentUser(user);
 
         String userEmail = instance.getCurrentUser().getEmail();
+        String userPassword = user.getPassword();
 
         //Store token and email using shared preferences
         storeToSharedPreferences("Token", token);
         storeToSharedPreferences("UserEmail", userEmail);
+        storeToSharedPreferences("userPassword", userPassword);
     }
 
     // Store the resource to shared preferences
