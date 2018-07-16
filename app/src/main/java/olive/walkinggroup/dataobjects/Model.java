@@ -7,6 +7,8 @@ import android.util.Log;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.List;
+
 import olive.walkinggroup.R;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import olive.walkinggroup.proxy.WGServerProxy;
@@ -27,7 +29,7 @@ public class Model {
 
     private static Model instance;
     private static Group activeGroup;
-
+    private static List<Message> messageList;
 
     private Model(){
         // Prevent external instancing
@@ -70,7 +72,15 @@ public class Model {
         return proxy;
     }
 
-    public void clearActiveGroup() {
+    public static void clearActiveGroup() {
         activeGroup = null;
+    }
+
+    public List<Message> getMessageList() {
+        return messageList;
+    }
+
+    public static void setMessageList(List<Message> messageList) {
+        Model.messageList = messageList;
     }
 }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="10"
+        >
+
+        <TextView
+            android:id="@+id/listMessageItem_userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:text="@string/sampleText"
+            />
+
+        <TextView
+            android:id="@+id/listMessageItem_headerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="13sp"
+            android:text="@string/sampleText"
+            />
+
+        <TextView
+            android:id="@+id/listMessageItem_latestMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="13sp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:text="@string/sampleText"
+            />
+
+        <TextView
+            android:id="@+id/listMessageItem_timestamp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sampleText"
+            android:textSize="13sp"
+            />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/listMessageItem_alertIcon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_alert_red"
+        android:layout_weight="90"
+        android:visibility="gone"
+        />
+
+</LinearLayout>

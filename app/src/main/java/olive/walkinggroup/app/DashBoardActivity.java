@@ -12,8 +12,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+import java.util.Objects;
+
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
+import olive.walkinggroup.dataobjects.Message;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.UploadGpsLocation;
 import olive.walkinggroup.dataobjects.User;
@@ -49,9 +53,13 @@ public class DashBoardActivity extends AppCompatActivity {
         updateCurrentUser();
     }
 
+
+
+    @Override
     protected void onResume() {
         super.onResume();
         updateCurrentUser();
+        setupMessagesButton();
     }
 
     private void updateCurrentUser() {
@@ -123,6 +131,8 @@ public class DashBoardActivity extends AppCompatActivity {
 
     private void setupMessagesButton() {
         RelativeLayout btn = findViewById(R.id.dashBoard_messagesBtn);
+        getUnreadMessages();
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +140,26 @@ public class DashBoardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void getUnreadMessages() {
+        Call<List<Message>> caller = instance.getProxy().getUnreadMessages(instance.getCurrentUser().getId(), false);
+        ProxyBuilder.callProxy(this, caller, returnedList -> onGetUnreadMessagesResponse(returnedList));
+    }
+
+    private void onGetUnreadMessagesResponse(List<Message> returnedList) {
+        int numUnreadMessages = returnedList.size();
+        // Exclude messages sent by self to self
+        for (int i = 0; i < returnedList.size(); i++) {
+            Message currentMessage = returnedList.get(i);
+            if (Objects.equals(currentMessage.getFromUser().getId(), instance.getCurrentUser().getId())) {
+                numUnreadMessages--;
+            }
+        }
+
+        String displayText = "" + numUnreadMessages;
+        TextView textView = findViewById(R.id.dashBoard_messagesText);
+        textView.setText(displayText);
     }
 
     private void setupLogoutButton() {
