@@ -39,6 +39,7 @@ public class ListGroupsActivity extends AppCompatActivity {
     private User currentUser = model.getCurrentUser();
     private List<Group> userGroups;
     private List<Group> monitorUserGroupsList;
+    private boolean isReload = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class ListGroupsActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
+        if (hasFocus && isReload) {
             if (currentUser != null) {
                 showLoadingCircle();
                 updateUserInfo();
@@ -67,11 +68,13 @@ public class ListGroupsActivity extends AppCompatActivity {
     }
 
     private void updateUserInfo() {
+        Log.d(TAG, "updateUserInfo");
         Call<User> caller = model.getProxy().getUserById(currentUser.getId());
         ProxyBuilder.callProxy(this, caller, updatedUser -> onUpdateUserInfoResponse(updatedUser));
     }
 
     private void onUpdateUserInfoResponse(User updatedUser) {
+        Log.d(TAG, "onUpdateUserInfoResponse");
         currentUser = updatedUser;
 
         if (currentUser.getMonitorsUsers().size() == 0) {
@@ -81,6 +84,7 @@ public class ListGroupsActivity extends AppCompatActivity {
     }
 
     private void getCurrentUserGroupList() {
+        Log.d(TAG, "getCurrentUserGroupList");
         List<Group> groupList = new ArrayList<>();
 
         if (currentUser != null) {
@@ -95,6 +99,7 @@ public class ListGroupsActivity extends AppCompatActivity {
                 }
             }
         }
+        Log.d(TAG, "getCurrentUserGroupList: assign userGroups");
         userGroups = groupList;
 
         if (currentUser != null) {
@@ -103,8 +108,9 @@ public class ListGroupsActivity extends AppCompatActivity {
                     // Skip getting monitor user details if currentUser does not monitor anyone
                     getGroupDetails();
                 }
-                // TODO: currently omitting monitor tag.
-                getMonitorsUserListWithFullDetails(new ArrayList<>());
+                // TODO: For issue #55: currently omitting monitor tag.
+                //getMonitorsUserList();
+                getGroupDetails();
             }
         }
     }
@@ -119,11 +125,14 @@ public class ListGroupsActivity extends AppCompatActivity {
     }
 
     private void getMonitorsUserList() {
+        Log.d(TAG, "getMonitorsUserList");
+
         Call<List<User>> caller = model.getProxy().getMonitorsUsers(currentUser.getId());
         ProxyBuilder.callProxy(this, caller, returnedList -> getMonitorsUserListWithFullDetails(returnedList));
     }
 
     private void getMonitorsUserListWithFullDetails(List<User> monitorsUserIdList) {
+        Log.d(TAG, "getMonitorsUserListWithFullDetails");
         monitorUserGroupsList = new ArrayList<>();
 
         for (int i = 0; i < monitorsUserIdList.size(); i++) {
@@ -133,6 +142,7 @@ public class ListGroupsActivity extends AppCompatActivity {
     }
 
     private void getMonitorUserGroupList(User detailedUser) {
+        Log.d(TAG, "getMonitorUserGroupList");
         List<Group> monitorUserGroups = detailedUser.getMemberOfGroups();
 
         for (int i = 0; i < monitorUserGroups.size(); i++) {
@@ -151,11 +161,13 @@ public class ListGroupsActivity extends AppCompatActivity {
     }
 
     private void getGroupDetails() {
+        Log.d(TAG, "getGroupDetails");
         Call<List<Group>> caller = model.getProxy().getGroups();
         ProxyBuilder.callProxy(this, caller, returnedGroups -> onGetGroupDetailsResponse(returnedGroups));
     }
 
     private void onGetGroupDetailsResponse(List<Group> returnedGroups) {
+        Log.d(TAG, "onGetGroupDetailsResponse");
         List<Group> groupList = new ArrayList<>();
 
         for (int i = 0; i < returnedGroups.size(); i++) {
@@ -171,10 +183,12 @@ public class ListGroupsActivity extends AppCompatActivity {
     }
 
     private void populateGroupList() {
+        Log.d(TAG, "populateGroupList");
         ArrayAdapter<Group> adapter = new GroupListAdapter();
         ListView groupList = findViewById(R.id.listGroups_groupList);
         groupList.setAdapter(adapter);
         hideLoadingCircle();
+        isReload = true;
     }
 
     private class GroupListAdapter extends ArrayAdapter<Group> {
