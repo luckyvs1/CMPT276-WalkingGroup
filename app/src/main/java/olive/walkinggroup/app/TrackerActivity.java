@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,6 +17,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +50,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
 
     private UserListHelper userListHelper;
 
-    private static final int UPDATE_MARKERS_DELAY_S = 30;
+    private static final int UPDATE_MARKERS_DELAY_S = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +74,6 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
             public void run() {
                 if (listUsers != null) {
                     updateGpsLocationFromServer();
-                    Log.i("MyApp", "Update markers");
                 }
             }
         }, 0, UPDATE_MARKERS_DELAY_S*1000);
@@ -90,11 +92,24 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     private void onGetLastGpsLocation(GpsLocation gpsLocation, int position) {
         LatLng location = gpsLocationToLatLng(gpsLocation);
         userMarkers.get(position).setPosition(location);
-        updateTrackUserLastUpdated();
+        updateLastUpdatedTextView(gpsLocation, position);
     }
 
-    private void updateTrackUserLastUpdated() {
+    private void updateLastUpdatedTextView(GpsLocation gpsLocation, int position) {
+        ListView listView = findViewById(R.id.listView_trackUsers);
+        View view = listView.getChildAt(position - listView.getFirstVisiblePosition());
+
+        if (view == null) {
+            Log.i("MyApp", "Null view");
+            return;
+        }
+
+        TextView textView = view.findViewById(R.id.trackUser_lastUpdated);
+        GetLastUpdated getLastUpdated = new GetLastUpdated();
+        String timestamp = gpsLocation.getTimestamp();
+        textView.setText(getLastUpdated.getLastUpdatedString(timestamp));
     }
+
 
     private void getMonitorUsersFromServer() {
         Call<List<User>> caller = instance.getProxy().getMonitorsUsers(currentUser.getId());
@@ -108,6 +123,9 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
 
         setupListOnItemClickListeners();
         populateUserMarkers();
+
+
+
 
     }
 
@@ -165,10 +183,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     }
     
     private LatLng gpsLocationToLatLng(GpsLocation gpsLocation) {
-        if (gpsLocation != null) {
             return new LatLng(gpsLocation.getLat(), gpsLocation.getLng());
-        }
-        return null;
     }
 
     private void setupListOnItemClickListeners() {
