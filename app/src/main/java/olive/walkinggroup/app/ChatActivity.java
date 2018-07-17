@@ -118,6 +118,11 @@ public class ChatActivity extends AppCompatActivity {
 
     private void getChatLog() {
         List<Message> messageList = model.getMessageList();
+
+        if (messageList == null) {
+            return;
+        }
+
         // Reverse list to make latest message on bottom
         Collections.reverse(messageList);
 
@@ -134,6 +139,7 @@ public class ChatActivity extends AppCompatActivity {
         if (emergency) {
             String helpText = "HELP!";
             input.setText(helpText);
+            input.setSelection(helpText.length());
         }
     }
 

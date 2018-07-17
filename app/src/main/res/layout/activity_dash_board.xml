@@ -50,6 +50,16 @@
                 android:layout_toEndOf="@id/dashBoard_messagesText"
                 />
 
+            <ImageView
+                android:id="@+id/dashBoard_emergencyIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_alert_red"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@id/dashBoard_messagesText"
+                android:visibility="invisible"
+                />
+
             <TextView
                 android:id="@+id/dashBoard_messagesText"
                 android:layout_width="wrap_content"
@@ -57,7 +67,6 @@
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="#d0ffffff"
-                android:text="@string/dashBoard_messagesText"
                 android:padding="2dp"
                 android:layout_centerVertical="true"
                 android:layout_alignBottom="@id/dashBoard_messagesIcon"

@@ -3,16 +3,19 @@ package olive.walkinggroup.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,6 +56,7 @@ public class DashBoardActivity extends AppCompatActivity {
         setupLogoutButton();
 
         setupTrackerButton();
+        setupPanicButton();
         setupStopUploadButton();
     }
 
@@ -114,6 +118,23 @@ public class DashBoardActivity extends AppCompatActivity {
         }
         TextView textView = findViewById(R.id.dashBoard_messagesText);
         textView.setText(displayText);
+
+        getEmergencyMessages();
+    }
+
+    private void getEmergencyMessages() {
+        Call<List<Message>> caller = instance.getProxy().getUnreadMessages(instance.getCurrentUser().getId(), true);
+        ProxyBuilder.callProxy(this, caller, returnedList -> onGetEmergencyMessagesResponse(returnedList));
+    }
+
+    private void onGetEmergencyMessagesResponse(List<Message> returnedList) {
+        ImageView alertIcon = findViewById(R.id.dashBoard_emergencyIcon);
+
+        if (returnedList.size() == 0) {
+            alertIcon.setVisibility(View.INVISIBLE);
+            return;
+        }
+        alertIcon.setVisibility(View.VISIBLE);
     }
 
     // Center Menu
@@ -198,6 +219,7 @@ public class DashBoardActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Model.setMessageList(new ArrayList<>());
                 Intent intent = ChatActivity.makeIntent(DashBoardActivity.this, "Emergency Message", false, true, false, null);
                 startActivity(intent);
             }
