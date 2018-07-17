@@ -58,14 +58,17 @@ public class SignUpActivity extends AppCompatActivity {
     private void setUserDetails() {
 
         try {
-            String name = getUserInput(R.id.txtSetName);
-            String email = getUserInput(R.id.txtSetEmail);
-            String password = getUserInput(R.id.txtSetPassword);
+            String userName = getUserInput(R.id.txtSetName);
+            String userEmail = getUserInput(R.id.txtSetEmail);
+            String userPassword = getUserInput(R.id.txtSetPassword);
 
             // Update the details of the user instance
-            currentUser.setName(name);
-            currentUser.setPassword(password);
-            currentUser.setEmail(email);
+            currentUser.setName(userName);
+            currentUser.setPassword(userPassword);
+            currentUser.setEmail(userEmail);
+
+            storeToSharedPreferences("UserEmail", userEmail);
+            storeToSharedPreferences("UserPassword", userPassword);
 
         } catch (NullPointerException e ) {
             Toast.makeText(SignUpActivity.this, R.string.SignupErrorMessage, Toast.LENGTH_LONG).show();
@@ -115,13 +118,8 @@ public class SignUpActivity extends AppCompatActivity {
         instance.updateProxy(token);
         Toast.makeText(SignUpActivity.this, "Logged in as:  " + currentUser.getName(), Toast.LENGTH_LONG).show();
 
-        String userEmail = instance.getCurrentUser().getEmail();
-        String userPassword = currentUser.getPassword();
-
         //Store token and email using shared preferences
         storeToSharedPreferences("Token", token);
-        storeToSharedPreferences("UserEmail", userEmail);
-        storeToSharedPreferences("userPasword", userPassword);
     }
 
     // Store the resource to shared preferences

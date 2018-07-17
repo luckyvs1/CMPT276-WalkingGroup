@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -95,9 +96,11 @@ public class EditUserInformationActivity extends AppCompatActivity {
 
     private void updateUserResponse(User updatedUser) {
 
+        Toast.makeText(EditUserInformationActivity.this, editUserEmail, Toast.LENGTH_LONG).show();
         if(editUserEmail != null) {
             user = updatedUser;
             returnUserObject(updatedUser);
+            Toast.makeText(EditUserInformationActivity.this, "bahsahsah", Toast.LENGTH_LONG).show();
         } else {
 //            instance.setCurrentUser(updatedUser);
 //            currentUser = updatedUser;
@@ -106,14 +109,18 @@ public class EditUserInformationActivity extends AppCompatActivity {
     }
 
     private void checkUserChangedEmail(User updatedUser) {
-        if(currentUser.getEmail() != updatedUser.getEmail()){
+        if(!updatedUser.getEmail().equals(currentUser.getEmail())){
 
-            String userPassword = getFromSharedPreferences("userPassword");
-            storeToSharedPreferences("userEmail", updatedUser.getEmail());
+            Log.i("MyApp", "Email changed");
+            String userPassword = getFromSharedPreferences("UserPassword");
+            storeToSharedPreferences("UserEmail", updatedUser.getEmail());
+            Toast.makeText(EditUserInformationActivity.this, "Same email @12121211", Toast.LENGTH_LONG).show();
             //Login the user to update the token and set the updated user as the current user
             instance.setCurrentUser(updatedUser);
             currentUser = instance.getCurrentUser();
             currentUser.setPassword(userPassword);
+            // Remove the token from the proxy
+            instance.updateProxy(null);
             loginUserGetToken();
 
         }
@@ -269,6 +276,10 @@ public class EditUserInformationActivity extends AppCompatActivity {
     private void extractDataFromIntent() {
         Intent intent = getIntent();
         editUserEmail = intent.getStringExtra("Email");
+
+        if(editUserEmail.equals(currentUser.getEmail())){
+            editUserEmail = null;
+        }
     }
 
     // Login Functionality
@@ -276,11 +287,16 @@ public class EditUserInformationActivity extends AppCompatActivity {
     private void loginUserGetToken() {
 
         Toast.makeText(EditUserInformationActivity.this, "called login user", Toast.LENGTH_LONG).show();
+        Log.i("MyApp", "called login user");
         // Register for token received:
         ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
 
+        User dummy = new User();
+        dummy.setEmail(currentUser.getEmail());
+        dummy.setPassword(currentUser.getPassword());
+
         // Make call
-        Call<Void> caller = instance.getProxy().login(currentUser);
+        Call<Void> caller = instance.getProxy().login(dummy);
         ProxyBuilder.callProxy(EditUserInformationActivity.this, caller, returnedNothing -> loginUserResponse(returnedNothing));
 
     }
@@ -292,6 +308,8 @@ public class EditUserInformationActivity extends AppCompatActivity {
         // Navigate user to the next activity
 
         Toast.makeText(EditUserInformationActivity.this, "Login user response", Toast.LENGTH_LONG).show();
+        Log.i("MyApp", "login user response");
+
         returnUserObject(currentUser);
 
     }
@@ -299,10 +317,8 @@ public class EditUserInformationActivity extends AppCompatActivity {
     // Handle the token by generating a new Proxy which is encoded with it.
     private void onReceiveToken(String token) {
         // Replace the current proxy with one that uses the token!
-
         instance.updateProxy(token);
-
-
+        Log.i("MyApp", "Received token");
         Toast.makeText(EditUserInformationActivity.this, "Received token", Toast.LENGTH_LONG).show();
 
         //Store token and email using shared preferences

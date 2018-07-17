@@ -38,7 +38,9 @@ public class LoginActivity extends AppCompatActivity {
         if(tokenAvailable){
             Toast.makeText(LoginActivity.this, "Logging in, please wait!", Toast.LENGTH_LONG).show();
             String userEmail = getFromSharedPreferences("UserEmail");
+            String userPassword = getFromSharedPreferences("UserPassword");
             user.setEmail(userEmail);
+            user.setPassword(userPassword);
             updateCurrentUser(userEmail);
         }
 
@@ -126,12 +128,17 @@ public class LoginActivity extends AppCompatActivity {
 
     // Get the user details from the login activity
     private void setUserDetails() {
-        String email = getUserInput(R.id.txtGetEmail);
-        String password = getUserInput(R.id.txtGetPassword);
+        String userEmail = getUserInput(R.id.txtGetEmail);
+        String userPassword = getUserInput(R.id.txtGetPassword);
 
         // Update the details of the user instance
-        user.setPassword(password);
-        user.setEmail(email);
+        user.setPassword(userPassword);
+        user.setEmail(userEmail);
+
+        instance.setCurrentUser(user);
+
+        storeToSharedPreferences("UserEmail", userEmail);
+        storeToSharedPreferences("UserPassword", userPassword);
     }
 
     private String getUserInput(int userInputResourceID) {
@@ -186,15 +193,9 @@ public class LoginActivity extends AppCompatActivity {
         // Replace the current proxy with one that uses the token!
 
         instance.updateProxy(token);
-        instance.setCurrentUser(user);
-
-        String userEmail = instance.getCurrentUser().getEmail();
-        String userPassword = user.getPassword();
 
         //Store token and email using shared preferences
         storeToSharedPreferences("Token", token);
-        storeToSharedPreferences("UserEmail", userEmail);
-        storeToSharedPreferences("userPassword", userPassword);
     }
 
     // Store the resource to shared preferences

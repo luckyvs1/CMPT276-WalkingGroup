@@ -79,8 +79,8 @@ public class DashBoardActivity extends AppCompatActivity {
         ProxyBuilder.callProxy(DashBoardActivity.this, caller, returnedUser -> getUserById(returnedUser));
     }
 
-    private void getUserById(User userFromEmail) {
-        instance.setCurrentUser(userFromEmail);
+    private void getUserById(User updatedUser) {
+        instance.setCurrentUser(updatedUser);
         displayUserName();
     }
 
