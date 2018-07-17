@@ -90,8 +90,16 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void onGetLastGpsLocation(GpsLocation gpsLocation, int position) {
-        LatLng location = gpsLocationToLatLng(gpsLocation);
-        userMarkers.get(position).setPosition(location);
+        if (gpsLocation.getTimestamp() != null) {
+
+            LatLng location = gpsLocationToLatLng(gpsLocation);
+            Marker marker = userMarkers.get(position);
+            marker.setPosition(location);
+            marker.setVisible(true);
+        }
+
+
+
         updateLastUpdatedTextView(gpsLocation, position);
     }
 
@@ -100,7 +108,6 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
         View view = listView.getChildAt(position - listView.getFirstVisiblePosition());
 
         if (view == null) {
-            Log.i("MyApp", "Null view");
             return;
         }
 
@@ -123,8 +130,6 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
 
         setupListOnItemClickListeners();
         populateUserMarkers();
-
-
 
 
     }
