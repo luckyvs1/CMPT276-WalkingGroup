@@ -137,12 +137,15 @@ public class DashBoardActivity extends AppCompatActivity {
 
     private void onGetEmergencyMessagesResponse(List<Message> returnedList) {
         ImageView alertIcon = findViewById(R.id.dashBoard_emergencyIcon);
+        ImageView messageIcon = findViewById(R.id.dashBoard_messagesIcon);
 
         if (returnedList.size() == 0) {
             alertIcon.setVisibility(View.INVISIBLE);
+            messageIcon.setVisibility(View.VISIBLE);
             return;
         }
         alertIcon.setVisibility(View.VISIBLE);
+        messageIcon.setVisibility(View.INVISIBLE);
     }
 
     // Center Menu
