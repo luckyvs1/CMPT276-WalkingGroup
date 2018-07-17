@@ -135,12 +135,14 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     private void populateUserMarkers() {
         for (int i = 0; i < listUsers.size(); i++) {
             User user = listUsers.get(i);
-            LatLng location = gpsLocationToLatLng(user.getLastGpsLocation());
+
             Marker marker;
-            if (location != null) {
+            if (user.getLastGpsLocation().getTimestamp() != null) {
+                 LatLng location = gpsLocationToLatLng(user.getLastGpsLocation());
                  marker = mMap.addMarker(new MarkerOptions()
                     .position(location)
-                    .title(user.getName()));
+                    .title(user.getName())
+                     .visible(true));
 
             } else {
                 marker = mMap.addMarker(new MarkerOptions()
@@ -174,8 +176,10 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                moveCamera(userMarkers.get(position).getPosition(), CurrentLocationHelper.DEFAULT_ZOOM);
-
+                Marker marker = userMarkers.get(position);
+                if (marker.isVisible()) {
+                    moveCamera(userMarkers.get(position).getPosition(), CurrentLocationHelper.DEFAULT_ZOOM);
+                }
             }
         });
     }
