@@ -91,8 +91,33 @@ public class UploadGpsLocation {
 
     private boolean hasArrivedAtDestLocation() {
         // TODO: Use a range the user can enter that determines if the user has arrived at destination location
-        return activeGroupDestLocation.getLng() == currentUserLocation.getLng() &&
-                activeGroupDestLocation.getLat() == currentUserLocation.getLat();
+        // Using a fixed distance instead of a range
+        Integer distanceWithinLocationInMeters = 100;
+        Boolean arrivedAtLocation = false;
+
+        // Haversine pseudocode from:https://community.esri.com/groups/coordinate-reference-systems/blog/2017/10/05/haversine-formula
+        Integer EARTH_RADIUS_METERS = 6371000;
+        Double phi_1 = Math.toRadians(activeGroupDestLocation.getLat());
+        Double phi_2 = Math.toRadians(currentUserLocation.getLat());
+
+        Double delta_phi = Math.toRadians(activeGroupDestLocation.getLat() - currentUserLocation.getLat());
+        Double delta_lambda = Math.toRadians(activeGroupDestLocation.getLng() - currentUserLocation.getLng());
+
+
+        //a = sin²(φB - φA/2) + cos φA * cos φB * sin²(λB - λA/2)
+        //c = 2 * atan2( √a, √(1−a) )
+        //d = R ⋅ c
+
+        Double a = Math.pow(Math.sin(delta_phi / 2.0), 2) + Math.cos(phi_1) * Math.cos(phi_2) * Math.pow(Math.sin(delta_lambda / 2.0), 2);
+
+        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        Double meters = EARTH_RADIUS_METERS * c;
+
+        if(meters <= distanceWithinLocationInMeters) {
+            arrivedAtLocation = true;
+        }
+        return arrivedAtLocation;
     }
 
     private void startAutoStopTimer() {
