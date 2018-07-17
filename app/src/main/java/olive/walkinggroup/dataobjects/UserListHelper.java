@@ -1,26 +1,21 @@
 package olive.walkinggroup.dataobjects;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
 import olive.walkinggroup.R;
-import olive.walkinggroup.app.GroupDetailsActivity;
 
 /**
  * UserListHelper class allows generating an ArrayAdapter to be used in a ListView of users
@@ -33,12 +28,15 @@ public class UserListHelper {
     private List<User> userList;
     private User currentUser;
     private MemberListAdapter adapter;
+    private TrackerListAdapter trackerListAdapter;
 
     public UserListHelper(Activity activity, List<User> userList, User currentUser) {
         this.activity = activity;
         this.userList = userList;
         this.currentUser = currentUser;
         adapter = new MemberListAdapter();
+        trackerListAdapter = new TrackerListAdapter();
+
     }
 
     public MemberListAdapter getAdapter() {
@@ -51,7 +49,7 @@ public class UserListHelper {
         }
 
         private void setupMemberNameView(View itemView, User user) {
-            TextView nameView = itemView.findViewById(R.id.listMembers_name);
+            TextView nameView = itemView.findViewById(R.id.trackUser_name);
             String nameText = user.getName();
             nameView.setText(nameText);
         }
@@ -94,11 +92,56 @@ public class UserListHelper {
             setupMemberEmailView(itemView, user);
             displayTag(itemView, user);
 
+
+
             return itemView;
         }
 
 
     }
+
+    public TrackerListAdapter getTrackerListAdapter() {
+        return trackerListAdapter;
+    }
+
+    private class TrackerListAdapter extends ArrayAdapter<User> {
+        public TrackerListAdapter() {
+            super(activity, R.layout.list_tracker_user_item, userList);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = activity.getLayoutInflater().inflate(R.layout.list_tracker_user_item, parent, false);
+            }
+            User user = userList.get(position);
+
+            setupTrackUserNameView(itemView, user);
+            setupTrackUserLastUpdatedView(itemView, user);
+
+
+            return itemView;
+        }
+
+        private void setupTrackUserLastUpdatedView(View itemView, User user) {
+            TextView textView = itemView.findViewById(R.id.trackUser_lastUpdated);
+
+            GetLastUpdated getLastUpdated = new GetLastUpdated();
+            String lastUpdated = getLastUpdated.getLastUpdatedString(user.getLastGpsLocation().getTimestamp());
+
+            textView.setText(lastUpdated);
+        }
+
+        private void setupTrackUserNameView(View itemView, User user) {
+            TextView textView = itemView.findViewById(R.id.trackUser_name);
+            textView.setText(user.getName());
+        }
+
+    }
+
+
 
 
     // Return true if user is on List<User> monitorsUsers of currentUser
@@ -171,4 +214,6 @@ public class UserListHelper {
             return 0;
         }
     }
+
+
 }

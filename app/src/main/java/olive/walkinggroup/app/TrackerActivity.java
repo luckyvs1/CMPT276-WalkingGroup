@@ -24,6 +24,7 @@ import java.util.TimerTask;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.CurrentLocationHelper;
+import olive.walkinggroup.dataobjects.GetLastUpdated;
 import olive.walkinggroup.dataobjects.GpsLocation;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
@@ -89,7 +90,10 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     private void onGetLastGpsLocation(GpsLocation gpsLocation, int position) {
         LatLng location = gpsLocationToLatLng(gpsLocation);
         userMarkers.get(position).setPosition(location);
+        updateTrackUserLastUpdated();
+    }
 
+    private void updateTrackUserLastUpdated() {
     }
 
     private void getMonitorUsersFromServer() {
@@ -110,9 +114,11 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     private void populateUserList() {
         userListHelper = new UserListHelper(this, listUsers, currentUser);
 
-        ArrayAdapter<User> adapter = userListHelper.getAdapter();
+        ArrayAdapter<User> adapter = userListHelper.getTrackerListAdapter();
         ListView listView = findViewById(R.id.listView_trackUsers);
         listView.setAdapter(adapter);
+
+
     }
 
     private void initializeMap() {
@@ -130,9 +136,18 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
         for (int i = 0; i < listUsers.size(); i++) {
             User user = listUsers.get(i);
             LatLng location = gpsLocationToLatLng(user.getLastGpsLocation());
-            Marker marker = mMap.addMarker(new MarkerOptions()
+            Marker marker;
+            if (location != null) {
+                 marker = mMap.addMarker(new MarkerOptions()
                     .position(location)
                     .title(user.getName()));
+
+            } else {
+                marker = mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(0,0))
+                        .title(user.getName())
+                        .visible(false));
+            }
             userMarkers.add(marker);
         }
     }
@@ -148,7 +163,10 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     }
     
     private LatLng gpsLocationToLatLng(GpsLocation gpsLocation) {
-        return new LatLng(gpsLocation.getLat(), gpsLocation.getLng());
+        if (gpsLocation != null) {
+            return new LatLng(gpsLocation.getLat(), gpsLocation.getLng());
+        }
+        return null;
     }
 
     private void setupListOnItemClickListeners() {
@@ -166,6 +184,12 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
 
     private void moveCamera(LatLng latLng, float zoom) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+    }
+
+    @Override
+    public void onBackPressed() {
+      updateMarkersTimer.cancel();
+      finish();
     }
 
 
