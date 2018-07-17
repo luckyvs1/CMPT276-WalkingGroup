@@ -32,7 +32,7 @@ import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 
 public class DashBoardActivity extends AppCompatActivity {
-
+    private static final String TAG = "DashBoardActivity";
     private static final int REQUEST_CODE_VIEW_GROUPS_START_WALK = 0;
     private static final int GET_UNREAD_MESSAGES_INTERVAL = 60000;
     private Model instance;
@@ -99,6 +99,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private Runnable GetUnreadMessagesRunnable = new Runnable() {
         @Override
         public void run() {
+            Log.d(TAG, "Getting messages from server...");
             getUnreadMessages();
             handler.postDelayed(GetUnreadMessagesRunnable, GET_UNREAD_MESSAGES_INTERVAL);
         }
