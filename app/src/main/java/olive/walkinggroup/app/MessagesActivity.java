@@ -36,8 +36,6 @@ public class MessagesActivity extends AppCompatActivity {
     public static final String TAG = "MessagesActivity";
 
     private List<List<Message>> myGroupedMessagesList = new ArrayList<>();
-
-    // TODO: detailedContactList may not be aligned if server packet transfer has delay. Align if necessary.
     private List<Message> displayList = new ArrayList<>();
     private List<Integer> contactIdList = new ArrayList<>();
     private List<User> detailedContactList = new ArrayList<>();
@@ -72,9 +70,13 @@ public class MessagesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        myGroupedMessagesList = new ArrayList<>();
+        displayList = new ArrayList<>();
+        contactIdList = new ArrayList<>();
+        detailedContactList = new ArrayList<>();
+        userLeadList = new ArrayList<>();
         detailedLeadList = new ArrayList<>();
         dropdownLabelList = new ArrayList<>();
-        userLeadList = new ArrayList<>();
 
         getMyMessages();
         setupNewMessagesBtn();
@@ -209,10 +211,8 @@ public class MessagesActivity extends AppCompatActivity {
         for (int i = 0; i < myGroupedMessagesList.size(); i++) {
             Message currentListHead = myGroupedMessagesList.get(i).get(0);
             long id = MessageHelper.getMessageContactId(currentListHead);
-
             contactIdList.add((int) id);
         }
-
         getDetailedContactList();
     }
 
@@ -236,8 +236,6 @@ public class MessagesActivity extends AppCompatActivity {
 
     // Get latest Message from each contact, from index 0 of sorted Message Lists.
     private void buildDisplayList() {
-        displayList = new ArrayList<>();
-
         for (int i = 0; i < myGroupedMessagesList.size(); i++) {
             displayList.add(myGroupedMessagesList.get(i).get(0));
         }
@@ -252,8 +250,6 @@ public class MessagesActivity extends AppCompatActivity {
         MyMessagesListAdapter adapter = new MyMessagesListAdapter();
         listView.setAdapter(adapter);
         registerItemOnClick();
-
-        Log.d(TAG, "displayList:\n" + displayList.toString());
     }
 
     //PRECOND: displayList contains full User details
@@ -283,7 +279,7 @@ public class MessagesActivity extends AppCompatActivity {
             String headerText = parsedMessage.get(0);
             String bodyText = parsedMessage.get(1);
 
-            contactNameTextView.setText(detailedContactList.get(position).getName());
+            contactNameTextView.setText(MessageHelper.getContactNameFromDetailedContactList(MessageHelper.getMessageContactId(currentMessage), detailedContactList));
             messageHeaderTextView.setText(headerText);
             latestMessageTextView.setText(bodyText);
             timestampTextView.setText(format.format(currentMessage.getTimestamp()));
