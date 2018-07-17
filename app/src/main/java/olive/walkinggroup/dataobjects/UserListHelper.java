@@ -33,11 +33,13 @@ public class UserListHelper {
     private List<User> userList;
     private User currentUser;
     private MemberListAdapter adapter;
+    private static List<User> monitorList;
 
-    public UserListHelper(Activity activity, List<User> userList, User currentUser) {
+    public UserListHelper(Activity activity, List<User> userList, User currentUser, List<User> monitorList) {
         this.activity = activity;
         this.userList = userList;
         this.currentUser = currentUser;
+        UserListHelper.monitorList = monitorList;
         adapter = new MemberListAdapter();
     }
 
@@ -99,7 +101,6 @@ public class UserListHelper {
 
     // Return true if user is on List<User> monitorsUsers of currentUser
     public static boolean isOnMonitorsUserList(User currentUser, User user) {
-        List<User> monitorList = currentUser.getMonitorsUsers();
         List<Integer> idList = new ArrayList<>();
 
         for (int i = 0; i < monitorList.size(); i++) {
