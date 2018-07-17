@@ -95,15 +95,10 @@ public class EditUserInformationActivity extends AppCompatActivity {
     }
 
     private void updateUserResponse(User updatedUser) {
-
-        Toast.makeText(EditUserInformationActivity.this, editUserEmail, Toast.LENGTH_LONG).show();
         if(editUserEmail != null) {
             user = updatedUser;
             returnUserObject(updatedUser);
-            Toast.makeText(EditUserInformationActivity.this, "bahsahsah", Toast.LENGTH_LONG).show();
         } else {
-//            instance.setCurrentUser(updatedUser);
-//            currentUser = updatedUser;
             checkUserChangedEmail(updatedUser);
         }
     }
@@ -111,16 +106,12 @@ public class EditUserInformationActivity extends AppCompatActivity {
     private void checkUserChangedEmail(User updatedUser) {
         if(!updatedUser.getEmail().equals(currentUser.getEmail())){
 
-            Log.i("MyApp", "Email changed");
             String userPassword = getFromSharedPreferences("UserPassword");
             storeToSharedPreferences("UserEmail", updatedUser.getEmail());
-            Toast.makeText(EditUserInformationActivity.this, "Same email @12121211", Toast.LENGTH_LONG).show();
+
             //Login the user to update the token and set the updated user as the current user
             instance.setCurrentUser(updatedUser);
-            currentUser = instance.getCurrentUser();
-            currentUser.setPassword(userPassword);
-            // Remove the token from the proxy
-            instance.updateProxy(null);
+            instance.getCurrentUser().setPassword(userPassword);
             loginUserGetToken();
 
         }
@@ -277,6 +268,8 @@ public class EditUserInformationActivity extends AppCompatActivity {
         Intent intent = getIntent();
         editUserEmail = intent.getStringExtra("Email");
 
+
+        // If the user is editing current user's information
         if(editUserEmail.equals(currentUser.getEmail())){
             editUserEmail = null;
         }
@@ -306,10 +299,6 @@ public class EditUserInformationActivity extends AppCompatActivity {
     // Response for call back from the login user
     private void loginUserResponse(Void returnedNothing) {
         // Navigate user to the next activity
-
-        Toast.makeText(EditUserInformationActivity.this, "Login user response", Toast.LENGTH_LONG).show();
-        Log.i("MyApp", "login user response");
-
         returnUserObject(currentUser);
 
     }
@@ -318,8 +307,6 @@ public class EditUserInformationActivity extends AppCompatActivity {
     private void onReceiveToken(String token) {
         // Replace the current proxy with one that uses the token!
         instance.updateProxy(token);
-        Log.i("MyApp", "Received token");
-        Toast.makeText(EditUserInformationActivity.this, "Received token", Toast.LENGTH_LONG).show();
 
         //Store token and email using shared preferences
         storeToSharedPreferences("Token", token);
