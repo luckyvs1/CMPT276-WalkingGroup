@@ -18,6 +18,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
@@ -31,6 +33,7 @@ import retrofit2.Call;
 public class DashBoardActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_VIEW_GROUPS_START_WALK = 0;
+    private static final int GET_UNREAD_MESSAGES_INTERVAL = 60000;
     private Model instance;
     private UploadGpsLocation uploadGpsLocation;
 
@@ -45,7 +48,10 @@ public class DashBoardActivity extends AppCompatActivity {
         updateCurrentUser();
 
         setupMessagesButton();
-        // Todo: check new messages, display "!" on R.id.dashBoard_messagesText
+        getUnreadMessages();
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new GetUnreadMessages(), 0, GET_UNREAD_MESSAGES_INTERVAL);
 
         displayUserName();
         setupSimpleButtonActivityChange(R.id.toMonitor, MonitorActivity.class, false);
@@ -63,8 +69,8 @@ public class DashBoardActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        setupMessagesButton();
+        updateCurrentUser();
+        getUnreadMessages();
     }
 
     private void updateCurrentUser() {
@@ -73,7 +79,6 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void getUserByEmailResponse(User userFromEmail) {
-
         instance.setCurrentUser(userFromEmail);
     }
 
@@ -84,8 +89,6 @@ public class DashBoardActivity extends AppCompatActivity {
     // -------------------------------
     private void setupMessagesButton() {
         RelativeLayout btn = findViewById(R.id.dashBoard_messagesBtn);
-        getUnreadMessages();
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +96,12 @@ public class DashBoardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private class GetUnreadMessages extends TimerTask {
+        public void run() {
+            getUnreadMessages();
+        }
     }
 
     private void getUnreadMessages() {
@@ -110,7 +119,6 @@ public class DashBoardActivity extends AppCompatActivity {
                 numUnreadMessages--;
             }
         }
-
         String displayText = "";
 
         if (numUnreadMessages > 0) {
@@ -129,12 +137,15 @@ public class DashBoardActivity extends AppCompatActivity {
 
     private void onGetEmergencyMessagesResponse(List<Message> returnedList) {
         ImageView alertIcon = findViewById(R.id.dashBoard_emergencyIcon);
+        ImageView messageIcon = findViewById(R.id.dashBoard_messagesIcon);
 
         if (returnedList.size() == 0) {
             alertIcon.setVisibility(View.INVISIBLE);
+            messageIcon.setVisibility(View.VISIBLE);
             return;
         }
         alertIcon.setVisibility(View.VISIBLE);
+        messageIcon.setVisibility(View.INVISIBLE);
     }
 
     // Center Menu

@@ -16,12 +16,15 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
@@ -34,6 +37,7 @@ import retrofit2.Call;
 
 public class MessagesActivity extends AppCompatActivity {
     public static final String TAG = "MessagesActivity";
+    private static final int AUTO_REFRESH_PERIOD = 60000;
 
     private List<List<Message>> myGroupedMessagesList = new ArrayList<>();
     private List<Message> displayList = new ArrayList<>();
@@ -58,18 +62,25 @@ public class MessagesActivity extends AppCompatActivity {
         model = Model.getInstance();
         currentUser = model.getCurrentUser();
         format = new SimpleDateFormat("MMM dd (EEE) hh:mm aaa", Locale.getDefault());
-
         dropdown = findViewById(R.id.messagesActivity_toUserDropdown);
 
-        getMyMessages();
-        setupNewMessagesBtn();
-        setupDropdownList();
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new ReloadUI(), 0, AUTO_REFRESH_PERIOD);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        reloadUI();
+    }
 
+    private class ReloadUI extends TimerTask {
+        public void run() {
+            reloadUI();
+        }
+    }
+
+    private void reloadUI() {
         myGroupedMessagesList = new ArrayList<>();
         displayList = new ArrayList<>();
         contactIdList = new ArrayList<>();
@@ -175,6 +186,8 @@ public class MessagesActivity extends AppCompatActivity {
     // ---------------------------------------------------------------------------------------------
 
     private void getMyMessages() {
+        showLoadingCircle();
+
         Call<List<Message>> caller = model.getProxy().getMessages(currentUser.getId());
         ProxyBuilder.callProxy(this, caller, returnedList -> onGetMyMessagesResponse(returnedList));
     }
@@ -249,7 +262,9 @@ public class MessagesActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.messagesActivity_messagesList);
         MyMessagesListAdapter adapter = new MyMessagesListAdapter();
         listView.setAdapter(adapter);
+
         registerItemOnClick();
+        hideLoadingCircle();
     }
 
     //PRECOND: displayList contains full User details
@@ -322,6 +337,22 @@ public class MessagesActivity extends AppCompatActivity {
         for (int i = 0; i < messageList.size(); i++) {
             Call<Message> caller = model.getProxy().markMessageAsRead(messageList.get(i).getId(), true);
             ProxyBuilder.callProxy(MessagesActivity.this, caller, null);
+        }
+    }
+
+    private void showLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.messagesActivity_loading);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.messagesActivity_loading);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
         }
     }
 }

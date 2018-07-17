@@ -114,27 +114,26 @@
     </ListView>
 
     <!--
+    Loading progress bar. Using code from:
+    https://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff
+    -->
+
     <RelativeLayout
-        android:id="@+id/messagesActivity_newMessageBtn"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:background="@drawable/background_round_button_theme_light"
+        android:id="@+id/messagesActivity_loading"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/listGroups_header"
+        app:layout_constraintTop_toBottomOf="@id/messagesActivity_toUserInputContainer"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="15dp"
-        android:elevation="5dp"
+        android:gravity="center"
+        android:background="#fff"
         >
 
-        <TextView
+        <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/messagesActivity_newMessageBtnText"
-            android:textSize="28sp"
-            android:textColor="#d0ffffff"
+            android:indeterminate="true"
             />
-
     </RelativeLayout>
-    -->
 
 </android.support.constraint.ConstraintLayout>
