@@ -86,6 +86,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/sampleText"
         android:textSize="18sp"
+        android:textColor="#000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dashBoard_header"
         />
@@ -146,53 +147,25 @@
             />
     </LinearLayout>
 
-    <!--
-    <Button
-        android:id="@+id/btnStopUpload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="444dp"
-        android:text="@string/btn_stop_upload"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.272" />
-
-    <Button
-        android:id="@+id/btnTracker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="444dp"
-        android:text="@string/btn_tracker"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.272" />
-    -->
-
     <LinearLayout
         android:id="@+id/dashBoard_bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
         android:background="#fff"
         android:elevation="5dp"
+        android:baselineAligned="false"
         app:layout_constraintBottom_toBottomOf="parent"
         >
 
         <LinearLayout
             android:id="@+id/btnTracker"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_weight="10"
-            android:paddingBottom="5dp"
+            android:layout_weight="1"
             android:background="@drawable/background_header_button"
             >
 
@@ -206,7 +179,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tracker"
+                android:text="@string/dashBoard_trackerText"
                 android:textColor="#000"
                 android:textSize="12sp"
                 />
@@ -216,12 +189,11 @@
         <LinearLayout
             android:id="@+id/dashBoard_panicBtn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_weight="10"
+            android:layout_weight="1"
             android:background="@drawable/background_header_button"
-            android:paddingBottom="5dp"
             >
 
             <ImageView
@@ -234,7 +206,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Panic!"
+                android:text="@string/dashBoard_panicText"
                 android:textColor="#000"
                 android:textSize="12sp"
                 />
@@ -244,12 +216,11 @@
         <LinearLayout
             android:id="@+id/btnStopUpload"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_weight="10"
+            android:layout_weight="1"
             android:background="@drawable/background_header_button"
-            android:paddingBottom="5dp"
             >
 
             <ImageView
@@ -262,7 +233,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Stop Upload"
+                android:text="@string/dashBoard_stopUploadText"
                 android:textColor="#000"
                 android:textSize="12sp"
                 />

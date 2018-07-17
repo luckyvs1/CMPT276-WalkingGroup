@@ -71,8 +71,6 @@ public class DashBoardActivity extends AppCompatActivity {
         getUnreadMessages();
     }
 
-
-
     private void updateCurrentUser() {
         Call<User> caller = instance.getProxy().getUserByEmail(instance.getCurrentUser().getEmail());
         ProxyBuilder.callProxy(DashBoardActivity.this, caller, returnedUser -> getUserByEmailResponse(returnedUser));

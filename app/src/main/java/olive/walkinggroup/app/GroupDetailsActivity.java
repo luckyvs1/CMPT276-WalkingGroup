@@ -142,7 +142,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, currentUser, group.getGroupDescription(), "add");
+                Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, group.getGroupDescription(), "add");
                 startActivityForResult(intent, REQUEST_CODE_ADD);
             }
         });
@@ -153,7 +153,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, currentUser, group.getGroupDescription(), "remove");
+                Intent intent = SelectUserActivity.makeIntent(GroupDetailsActivity.this, group, group.getGroupDescription(), "remove");
                 startActivityForResult(intent, REQUEST_CODE_REMOVE);
             }
         });

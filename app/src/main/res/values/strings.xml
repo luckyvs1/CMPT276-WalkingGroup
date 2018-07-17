@@ -102,4 +102,7 @@
     <string name="profile">Profile</string>
     <string name="PermissionAvailableToEdit">Permission available to edit this profile</string>
     <string name="PermissionUnavailableToEdit">Permission unavailable to edit this profile</string>
+    <string name="dashBoard_stopUploadText">Stop Upload</string>
+    <string name="dashBoard_panicText">Panic!</string>
+    <string name="dashBoard_trackerText">Tracker</string>
 </resources>
