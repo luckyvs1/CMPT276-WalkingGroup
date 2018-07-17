@@ -64,7 +64,7 @@ public class MessagesActivity extends AppCompatActivity {
 
         model = Model.getInstance();
         currentUser = model.getCurrentUser();
-        format = new SimpleDateFormat("MMM dd (EEE) hh:mmaaa", Locale.getDefault());
+        format = new SimpleDateFormat("MMM dd (EEE) hh:mm aaa", Locale.getDefault());
 
         dropdown = findViewById(R.id.messagesActivity_toUserDropdown);
 
@@ -84,12 +84,12 @@ public class MessagesActivity extends AppCompatActivity {
 
     // Setup UI elements:
     // ---------------------------------------------------------------------------------------------
-    // TODO: If currentUser is not a member / leader of any groups, are they still able to send any messages?
-    // (Currently they cannot. Change the following methods if otherwise)
     private void setupDropdownList() {
-        if (currentUser.getMemberOfGroups().size() == 0 && currentUser.getLeadsGroups().size() == 0) {
-            return;
-        }
+        // TODO: If currentUser is not a member / leader of any groups, are they still able to send any messages?
+        // (Currently they cannot. Change the following methods if otherwise)
+//        if (currentUser.getMemberOfGroups().size() == 0 && currentUser.getLeadsGroups().size() == 0) {
+//            return;
+//        }
 
         buildDetailedGroupList();
     }
@@ -160,14 +160,14 @@ public class MessagesActivity extends AppCompatActivity {
 
                 if (isMember && dropdownSelectedPosition == 0) {
                     // Send to "My Parents & Leaders"
-                    Intent intent = ChatActivity.makeIntent(MessagesActivity.this, "My Parents & Leaders", false, false, null);
+                    Intent intent = ChatActivity.makeIntent(MessagesActivity.this, "My Parents & Leaders", false, false, false, null);
                     startActivity(intent);
                     return;
                 }
 
                 // Send to a group currentUser leads
                 Group sendToGroup = detailedLeadList.get(dropdownSelectedPosition - positionDisplacement);
-                Intent intent = ChatActivity.makeIntent(MessagesActivity.this, sendToGroup.getGroupDescription(), false, true, sendToGroup);
+                Intent intent = ChatActivity.makeIntent(MessagesActivity.this, sendToGroup.getGroupDescription(), false, false, true, sendToGroup);
                 startActivity(intent);
             }
         });
@@ -336,7 +336,7 @@ public class MessagesActivity extends AppCompatActivity {
                 // Open chat activity in read-only mode, displaying the messages
                 Model.setMessageList(clickedMessageList);
                 Log.d(TAG, "clicked message list:\n" + clickedMessageList);
-                Intent intent = ChatActivity.makeIntent(MessagesActivity.this, clickedContact.getName(), true, false, null);
+                Intent intent = ChatActivity.makeIntent(MessagesActivity.this, clickedContact.getName(), true, false, false, null);
                 startActivity(intent);
             }
         });
