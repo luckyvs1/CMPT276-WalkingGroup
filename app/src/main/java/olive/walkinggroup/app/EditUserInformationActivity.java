@@ -3,6 +3,7 @@ package olive.walkinggroup.app;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -96,11 +97,41 @@ public class EditUserInformationActivity extends AppCompatActivity {
 
         if(editUserEmail != null) {
             user = updatedUser;
+            returnUserObject(updatedUser);
         } else {
-            instance.setCurrentUser(updatedUser);
-            currentUser = updatedUser;
+//            instance.setCurrentUser(updatedUser);
+//            currentUser = updatedUser;
+            checkUserChangedEmail(updatedUser);
         }
-        returnUserObject(updatedUser);
+    }
+
+    private void checkUserChangedEmail(User updatedUser) {
+        if(currentUser.getEmail() != updatedUser.getEmail()){
+
+            String userPassword = getFromSharedPreferences("userPassword");
+            storeToSharedPreferences("userEmail", updatedUser.getEmail());
+            //Login the user to update the token and set the updated user as the current user
+            instance.setCurrentUser(updatedUser);
+            currentUser = instance.getCurrentUser();
+            currentUser.setPassword(userPassword);
+            loginUserGetToken();
+
+        }
+    }
+
+    // Get the resource from shared preferences
+    private String getFromSharedPreferences(String keyName) {
+        SharedPreferences userPrefs = getSharedPreferences("userValues", MODE_PRIVATE);
+        String extractedResource = userPrefs.getString(keyName, null);
+        return extractedResource;
+    }
+
+    // Store the resource to shared preferences
+    private void storeToSharedPreferences(String keyName, String value) {
+        SharedPreferences userPrefs = getSharedPreferences("userValues", MODE_PRIVATE);
+        SharedPreferences.Editor editor = userPrefs.edit();
+        editor.putString(keyName,value);
+        editor.commit();
     }
 
     private void returnUserObject(User updatedUser) {
@@ -238,6 +269,44 @@ public class EditUserInformationActivity extends AppCompatActivity {
     private void extractDataFromIntent() {
         Intent intent = getIntent();
         editUserEmail = intent.getStringExtra("Email");
+    }
+
+    // Login Functionality
+    // -------------------------------------------------------------------------------------------
+    private void loginUserGetToken() {
+
+        Toast.makeText(EditUserInformationActivity.this, "called login user", Toast.LENGTH_LONG).show();
+        // Register for token received:
+        ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
+
+        // Make call
+        Call<Void> caller = instance.getProxy().login(currentUser);
+        ProxyBuilder.callProxy(EditUserInformationActivity.this, caller, returnedNothing -> loginUserResponse(returnedNothing));
+
+    }
+
+    // Login actually completes by calling this; nothing to do as it was all done
+    // when we got the token.
+    // Response for call back from the login user
+    private void loginUserResponse(Void returnedNothing) {
+        // Navigate user to the next activity
+
+        Toast.makeText(EditUserInformationActivity.this, "Login user response", Toast.LENGTH_LONG).show();
+        returnUserObject(currentUser);
+
+    }
+
+    // Handle the token by generating a new Proxy which is encoded with it.
+    private void onReceiveToken(String token) {
+        // Replace the current proxy with one that uses the token!
+
+        instance.updateProxy(token);
+
+
+        Toast.makeText(EditUserInformationActivity.this, "Received token", Toast.LENGTH_LONG).show();
+
+        //Store token and email using shared preferences
+        storeToSharedPreferences("Token", token);
     }
 
 }
