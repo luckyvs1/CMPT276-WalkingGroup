@@ -135,6 +135,8 @@ public class EditUserInformationActivity extends AppCompatActivity {
     }
 
     private void returnUserObject(User updatedUser) {
+
+        Toast.makeText(EditUserInformationActivity.this, R.string.ProfileUpdateSuccess, Toast.LENGTH_LONG).show();
         Intent returnIntent = new Intent();
         returnIntent.putExtra("updatedUser",updatedUser);
         setResult(Activity.RESULT_OK,returnIntent);
@@ -280,9 +282,6 @@ public class EditUserInformationActivity extends AppCompatActivity {
     // Login Functionality
     // -------------------------------------------------------------------------------------------
     private void loginUserGetToken() {
-
-        Toast.makeText(EditUserInformationActivity.this, "called login user", Toast.LENGTH_LONG).show();
-        Log.i("MyApp", "called login user");
         // Register for token received:
         ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
 
