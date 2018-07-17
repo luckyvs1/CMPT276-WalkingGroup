@@ -18,6 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +38,13 @@ import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 
+/**
+ *
+ *
+ *
+ * Note: Emergency messages must have toGroup set to false.
+ */
+
 public class ChatActivity extends AppCompatActivity {
     private static final int MARGIN = 150;
     private DateFormat dateFormat;
@@ -49,13 +58,15 @@ public class ChatActivity extends AppCompatActivity {
 
     private String headerText;
     private Boolean readOnly;
+    private Boolean emergency;
     private Boolean toGroup;
     private Group group;
 
-    public static Intent makeIntent(Context context, String headerText, Boolean readOnly, Boolean toGroup, Group group) {
+    public static Intent makeIntent(Context context, String headerText, Boolean readOnly, Boolean emergency, Boolean toGroup, Group group) {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("headerText", headerText);
         intent.putExtra("readOnly", readOnly);
+        intent.putExtra("emergency", emergency);
         intent.putExtra("toGroup", toGroup);
         intent.putExtra("group", group);
         return intent;
@@ -100,12 +111,18 @@ public class ChatActivity extends AppCompatActivity {
 
         headerText = intent.getStringExtra("headerText");
         readOnly = intent.getBooleanExtra("readOnly", true);
+        emergency = intent.getBooleanExtra("emergency", false);
         toGroup = intent.getBooleanExtra("toGroup", false);
         group = (Group) intent.getSerializableExtra("group");
     }
 
     private void getChatLog() {
         List<Message> messageList = model.getMessageList();
+
+        if (messageList == null) {
+            return;
+        }
+
         // Reverse list to make latest message on bottom
         Collections.reverse(messageList);
 
@@ -117,6 +134,13 @@ public class ChatActivity extends AppCompatActivity {
     private void initializeHeaderText() {
         TextView textView = findViewById(R.id.chatActivity_headerText);
         textView.setText(headerText);
+
+        EditText input = findViewById(R.id.chatActivity_input);
+        if (emergency) {
+            String helpText = "HELP!";
+            input.setText(helpText);
+            input.setSelection(helpText.length());
+        }
     }
 
     private void setupSendButton() {
@@ -127,7 +151,7 @@ public class ChatActivity extends AppCompatActivity {
                 EditText input = findViewById(R.id.chatActivity_input);
                 String inputText = input.getText().toString();
 
-                if (inputText.replaceAll("\\s", "").equals("") || readOnly) {
+                if (inputText.replaceAll("\\s", "").equals("") && !emergency) {
                     return;
                 }
 
@@ -140,10 +164,8 @@ public class ChatActivity extends AppCompatActivity {
                 message.setFromUser(dummy);
                 message.setText(messageText);
                 message.setTimestamp(Calendar.getInstance().getTime());
-
-                // TODO: let user choose if emergency or not
-                message.setEmergency(false);
-
+                message.setEmergency(emergency);
+                // Add to local list
                 addMessage(message);
                 // Send message to server
                 sendMessage(message);
@@ -156,7 +178,12 @@ public class ChatActivity extends AppCompatActivity {
         String bodyText = input.getText().toString();
         String messageText = "";
 
-        // TODO: move to string.xml
+        // TODO: move string to string.xml
+        if (emergency) {
+            messageText = MessageHelper.constructMessageText("Emergency!", bodyText);
+            return messageText;
+        }
+
         if (toGroup) {
             messageText = MessageHelper.constructMessageText("To: " + group.getGroupDescription(), bodyText);
         } else {
@@ -171,6 +198,7 @@ public class ChatActivity extends AppCompatActivity {
             Call<List<Message>> caller = model.getProxy().newMessageToGroup(group.getId(), message);
             ProxyBuilder.callProxy(ChatActivity.this, caller, null);
         } else {
+            // Include case for emergency.
             Call<List<Message>> caller = model.getProxy().newMessageToParentsOf(currentUser.getId(), message);
             ProxyBuilder.callProxy(ChatActivity.this, caller, null);
         }
