@@ -2,6 +2,7 @@ package olive.walkinggroup.app;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -52,7 +53,8 @@ public class MessagesActivity extends AppCompatActivity {
     private User currentUser;
     private Spinner dropdown;
     private Boolean isMemberOrChild;
-    SimpleDateFormat format;
+    private SimpleDateFormat format;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +66,8 @@ public class MessagesActivity extends AppCompatActivity {
         format = new SimpleDateFormat("MMM dd (EEE) hh:mm aaa", Locale.getDefault());
         dropdown = findViewById(R.id.messagesActivity_toUserDropdown);
 
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new ReloadUI(), 0, AUTO_REFRESH_PERIOD);
+        handler.post(ReloadUIRunnable);
+        showLoadingCircle();
     }
 
     @Override
@@ -74,11 +76,13 @@ public class MessagesActivity extends AppCompatActivity {
         reloadUI();
     }
 
-    private class ReloadUI extends TimerTask {
+    private Runnable ReloadUIRunnable = new Runnable() {
+        @Override
         public void run() {
             reloadUI();
+            handler.postDelayed(ReloadUIRunnable, AUTO_REFRESH_PERIOD);
         }
-    }
+    };
 
     private void reloadUI() {
         myGroupedMessagesList = new ArrayList<>();
@@ -186,8 +190,6 @@ public class MessagesActivity extends AppCompatActivity {
     // ---------------------------------------------------------------------------------------------
 
     private void getMyMessages() {
-        showLoadingCircle();
-
         Call<List<Message>> caller = model.getProxy().getMessages(currentUser.getId());
         ProxyBuilder.callProxy(this, caller, returnedList -> onGetMyMessagesResponse(returnedList));
     }

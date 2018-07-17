@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private static final int GET_UNREAD_MESSAGES_INTERVAL = 60000;
     private Model instance;
     private UploadGpsLocation uploadGpsLocation;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +46,10 @@ public class DashBoardActivity extends AppCompatActivity {
 
         uploadGpsLocation = new UploadGpsLocation(this);
         instance = Model.getInstance();
-
         updateCurrentUser();
 
         setupMessagesButton();
-        getUnreadMessages();
-
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new GetUnreadMessages(), 0, GET_UNREAD_MESSAGES_INTERVAL);
+        handler.post(GetUnreadMessagesRunnable);
 
         displayUserName();
         setupSimpleButtonActivityChange(R.id.toMonitor, MonitorActivity.class, false);
@@ -72,6 +70,8 @@ public class DashBoardActivity extends AppCompatActivity {
         updateCurrentUser();
         getUnreadMessages();
     }
+
+
 
     private void updateCurrentUser() {
         Call<User> caller = instance.getProxy().getUserByEmail(instance.getCurrentUser().getEmail());
@@ -98,11 +98,13 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private class GetUnreadMessages extends TimerTask {
+    private Runnable GetUnreadMessagesRunnable = new Runnable() {
+        @Override
         public void run() {
             getUnreadMessages();
+            handler.postDelayed(GetUnreadMessagesRunnable, GET_UNREAD_MESSAGES_INTERVAL);
         }
-    }
+    };
 
     private void getUnreadMessages() {
         Call<List<Message>> caller = instance.getProxy().getUnreadMessages(instance.getCurrentUser().getId(), false);
