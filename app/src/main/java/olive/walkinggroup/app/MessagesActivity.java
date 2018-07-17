@@ -7,11 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -35,14 +35,7 @@ import retrofit2.Call;
 public class MessagesActivity extends AppCompatActivity {
     public static final String TAG = "MessagesActivity";
 
-    private List<Message> allMyRegularList = new ArrayList<>();
-    private List<Message> allEmergencyMessageList = new ArrayList<>();
-
-    private List<List<Message>> myGroupedEmergencyList = new ArrayList<>();
-    private List<List<Message>> myGroupedRegularList = new ArrayList<>();
     private List<List<Message>> myGroupedMessagesList = new ArrayList<>();
-
-    // TODO: detailedContactList may not be aligned if server packet transfer has delay. Align if necessary.
     private List<Message> displayList = new ArrayList<>();
     private List<Integer> contactIdList = new ArrayList<>();
     private List<User> detailedContactList = new ArrayList<>();
@@ -54,7 +47,7 @@ public class MessagesActivity extends AppCompatActivity {
     private Model model;
     private User currentUser;
     private Spinner dropdown;
-    private Boolean isMember;
+    private Boolean isMemberOrChild;
     SimpleDateFormat format;
 
     @Override
@@ -64,11 +57,11 @@ public class MessagesActivity extends AppCompatActivity {
 
         model = Model.getInstance();
         currentUser = model.getCurrentUser();
-        format = new SimpleDateFormat("MMM dd (EEE) hh:mmaaa", Locale.getDefault());
+        format = new SimpleDateFormat("MMM dd (EEE) hh:mm aaa", Locale.getDefault());
 
         dropdown = findViewById(R.id.messagesActivity_toUserDropdown);
 
-        getEmergencyMessages();
+        getMyMessages();
         setupNewMessagesBtn();
         setupDropdownList();
     }
@@ -77,27 +70,33 @@ public class MessagesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        getEmergencyMessages();
+        myGroupedMessagesList = new ArrayList<>();
+        displayList = new ArrayList<>();
+        contactIdList = new ArrayList<>();
+        detailedContactList = new ArrayList<>();
+        userLeadList = new ArrayList<>();
+        detailedLeadList = new ArrayList<>();
+        dropdownLabelList = new ArrayList<>();
+
+        getMyMessages();
         setupNewMessagesBtn();
         setupDropdownList();
     }
 
     // Setup UI elements:
     // ---------------------------------------------------------------------------------------------
-    // TODO: If currentUser is not a member / leader of any groups, are they still able to send any messages?
-    // (Currently they cannot. Change the following methods if otherwise)
     private void setupDropdownList() {
-        if (currentUser.getMemberOfGroups().size() == 0 && currentUser.getLeadsGroups().size() == 0) {
-            return;
-        }
+        // TODO: If currentUser is not a member / leader of any groups, are they still able to send any messages?
+        // (Currently they cannot. Change the following methods if otherwise)
+//        if (currentUser.getMemberOfGroups().size() == 0 && currentUser.getLeadsGroups().size() == 0) {
+//            return;
+//        }
 
         buildDetailedGroupList();
     }
 
     private void buildDetailedGroupList() {
-        userLeadList = new ArrayList<>();
         userLeadList = currentUser.getLeadsGroups();
-
         // Skip getting group name if currentUser does not lead any group
         if (userLeadList.size() == 0) {
             buildDropdownLabelList();
@@ -111,7 +110,6 @@ public class MessagesActivity extends AppCompatActivity {
     }
 
     private void onBuildDetailedGroupListResponse(Group detailedGroup) {
-        detailedLeadList = new ArrayList<>();
         detailedLeadList.add(detailedGroup);
 
         if (detailedLeadList.size() == userLeadList.size()) {
@@ -120,14 +118,11 @@ public class MessagesActivity extends AppCompatActivity {
     }
 
     private void buildDropdownLabelList() {
-        isMember = false;
-        dropdownLabelList = new ArrayList<>();
+        isMemberOrChild = false;
 
-        Log.d(TAG, "buildDropdownLabelList: start");
-
-        if (currentUser.getMemberOfGroups().size() > 0) {
+        if (currentUser.getMemberOfGroups().size() > 0 || currentUser.getMonitoredByUsers().size() > 0) {
             dropdownLabelList.add("My Parents & Leaders");
-            isMember = true;
+            isMemberOrChild = true;
 
             Log.d(TAG, "User is a member of groups");
         }
@@ -135,7 +130,6 @@ public class MessagesActivity extends AppCompatActivity {
         for (int i = 0; i < detailedLeadList.size(); i++) {
             dropdownLabelList.add(detailedLeadList.get(i).getGroupDescription());
         }
-
         populateDropdownList();
     }
 
@@ -144,7 +138,6 @@ public class MessagesActivity extends AppCompatActivity {
         dropdown.setAdapter(adapter);
     }
 
-
     private void setupNewMessagesBtn() {
         RelativeLayout btn = findViewById(R.id.messagesActivity_newMessageBtn);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -152,22 +145,27 @@ public class MessagesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Model.setMessageList(new ArrayList<>());
                 int dropdownSelectedPosition = dropdown.getSelectedItemPosition();
+                // If dropdown list is empty, disable onClick
+                if (dropdownSelectedPosition < 0) {
+                    return;
+                }
 
+                // List would have 1 more item if currentUser is a child or member of a group
                 int positionDisplacement = 0;
-                if (isMember) {
+                if (isMemberOrChild) {
                     positionDisplacement = 1;
                 }
 
-                if (isMember && dropdownSelectedPosition == 0) {
+                if (isMemberOrChild && dropdownSelectedPosition == 0) {
                     // Send to "My Parents & Leaders"
-                    Intent intent = ChatActivity.makeIntent(MessagesActivity.this, "My Parents & Leaders", false, false, null);
+                    Intent intent = ChatActivity.makeIntent(MessagesActivity.this, "My Parents & Leaders", false, false, false, null);
                     startActivity(intent);
                     return;
                 }
 
                 // Send to a group currentUser leads
                 Group sendToGroup = detailedLeadList.get(dropdownSelectedPosition - positionDisplacement);
-                Intent intent = ChatActivity.makeIntent(MessagesActivity.this, sendToGroup.getGroupDescription(), false, true, sendToGroup);
+                Intent intent = ChatActivity.makeIntent(MessagesActivity.this, sendToGroup.getGroupDescription(), false, false, true, sendToGroup);
                 startActivity(intent);
             }
         });
@@ -175,36 +173,15 @@ public class MessagesActivity extends AppCompatActivity {
 
     // Message List server calls:
     // ---------------------------------------------------------------------------------------------
-    // Get emergency messages sent to currentUser, read and unread
-    private void getEmergencyMessages() {
-        Call<List<Message>> caller = model.getProxy().getMessages(currentUser.getId(), true);
-        ProxyBuilder.callProxy(this, caller, emergencyList -> onGetEmergencyMessagesResponse(emergencyList));
+
+    private void getMyMessages() {
+        Call<List<Message>> caller = model.getProxy().getMessages(currentUser.getId());
+        ProxyBuilder.callProxy(this, caller, returnedList -> onGetMyMessagesResponse(returnedList));
     }
 
-    private void onGetEmergencyMessagesResponse(List<Message> emergencyList) {
-        myGroupedMessagesList = new ArrayList<>();
-        myGroupedEmergencyList = MessageHelper.groupByContact(removeSelfMessages(emergencyList));
-        MessageHelper.sortMessageListOfList(myGroupedEmergencyList);
-
-        getToCurrentUserMessages();
-    }
-
-    // Get regular messages sent to currentUser, read and unread
-    private void getToCurrentUserMessages() {
-        Call<List<Message>> caller = model.getProxy().getMessages(currentUser.getId(), false);
-        ProxyBuilder.callProxy(this, caller, messagesList -> onGetToCurrentUserMessagesResponse(messagesList));
-    }
-
-    private void onGetToCurrentUserMessagesResponse(List<Message> messagesList) {
-        myGroupedRegularList = new ArrayList<>();
-        myGroupedRegularList = MessageHelper.groupByContact(removeSelfMessages(messagesList));
-        MessageHelper.sortMessageListOfList(myGroupedRegularList);
-
-        myGroupedMessagesList = new ArrayList<>();
-        myGroupedMessagesList.addAll(myGroupedEmergencyList);
-        myGroupedMessagesList.addAll(myGroupedRegularList);
-
-        Log.d(TAG, "myGroupedMessagesList:\n" + myGroupedMessagesList.toString());
+    private void onGetMyMessagesResponse(List<Message> returnedList) {
+        myGroupedMessagesList = MessageHelper.groupByContact(removeSelfMessages(returnedList));
+        myGroupedMessagesList = MessageHelper.sortMessageListOfList(myGroupedMessagesList);
 
         buildContactIdList();
     }
@@ -215,7 +192,7 @@ public class MessagesActivity extends AppCompatActivity {
 
         for (int i = 0; i < messageList.size(); i++) {
             Message message = messageList.get(i);
-
+            // Mark self-messages as read in background
             if (Objects.equals(message.getFromUser().getId(), currentUser.getId())) {
                 Call<Message> caller = model.getProxy().markMessageAsRead(message.getId(), true);
                 ProxyBuilder.callProxy(MessagesActivity.this, caller, null);
@@ -234,10 +211,8 @@ public class MessagesActivity extends AppCompatActivity {
         for (int i = 0; i < myGroupedMessagesList.size(); i++) {
             Message currentListHead = myGroupedMessagesList.get(i).get(0);
             long id = MessageHelper.getMessageContactId(currentListHead);
-
             contactIdList.add((int) id);
         }
-
         getDetailedContactList();
     }
 
@@ -261,8 +236,6 @@ public class MessagesActivity extends AppCompatActivity {
 
     // Get latest Message from each contact, from index 0 of sorted Message Lists.
     private void buildDisplayList() {
-        displayList = new ArrayList<>();
-
         for (int i = 0; i < myGroupedMessagesList.size(); i++) {
             displayList.add(myGroupedMessagesList.get(i).get(0));
         }
@@ -277,8 +250,6 @@ public class MessagesActivity extends AppCompatActivity {
         MyMessagesListAdapter adapter = new MyMessagesListAdapter();
         listView.setAdapter(adapter);
         registerItemOnClick();
-
-        Log.d(TAG, "displayList:\n" + displayList.toString());
     }
 
     //PRECOND: displayList contains full User details
@@ -302,15 +273,20 @@ public class MessagesActivity extends AppCompatActivity {
             TextView messageHeaderTextView = itemView.findViewById(R.id.listMessageItem_headerText);
             TextView latestMessageTextView = itemView.findViewById(R.id.listMessageItem_latestMessage);
             TextView timestampTextView = itemView.findViewById(R.id.listMessageItem_timestamp);
+            ImageView emergencyIcon = itemView.findViewById(R.id.listMessageItem_alertIcon);
 
             List<String> parsedMessage = MessageHelper.parseMessageText(currentMessage.getText());
             String headerText = parsedMessage.get(0);
             String bodyText = parsedMessage.get(1);
 
-            contactNameTextView.setText(detailedContactList.get(position).getName());
+            contactNameTextView.setText(MessageHelper.getContactNameFromDetailedContactList(MessageHelper.getMessageContactId(currentMessage), detailedContactList));
             messageHeaderTextView.setText(headerText);
             latestMessageTextView.setText(bodyText);
             timestampTextView.setText(format.format(currentMessage.getTimestamp()));
+
+            if (currentMessage.isEmergency()) {
+                emergencyIcon.setVisibility(View.VISIBLE);
+            }
 
             if (!isRead) {
                 contactNameTextView.setTypeface(contactNameTextView.getTypeface(), Typeface.BOLD);
@@ -327,7 +303,7 @@ public class MessagesActivity extends AppCompatActivity {
         messageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                List<Message> clickedMessageList = myGroupedRegularList.get(position);
+                List<Message> clickedMessageList = myGroupedMessagesList.get(position);
                 User clickedContact = detailedContactList.get(position);
 
                 // Mark all unread messages as read
@@ -336,7 +312,7 @@ public class MessagesActivity extends AppCompatActivity {
                 // Open chat activity in read-only mode, displaying the messages
                 Model.setMessageList(clickedMessageList);
                 Log.d(TAG, "clicked message list:\n" + clickedMessageList);
-                Intent intent = ChatActivity.makeIntent(MessagesActivity.this, clickedContact.getName(), true, false, null);
+                Intent intent = ChatActivity.makeIntent(MessagesActivity.this, clickedContact.getName(), true, false, false, null);
                 startActivity(intent);
             }
         });

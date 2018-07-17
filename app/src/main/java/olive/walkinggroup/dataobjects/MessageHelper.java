@@ -157,6 +157,32 @@ public class MessageHelper {
         return (HEADER_TAG + headerText + HEADER_TAG + bodyText);
     }
 
+    public static List<User> alignUserPositionById(List<Message> messageList, List<User> listToAlign) {
+        List<User> returnList = new ArrayList<>();
+
+        for (int i = 0; i < listToAlign.size(); i++) {
+            for (int j = 0; j < messageList.size(); j++) {
+                long messageContactId = getMessageContactId(messageList.get(j));
+
+                if (Objects.equals(messageContactId, listToAlign.get(i).getId())) {
+                    returnList.add(listToAlign.get(i));
+                    break;
+                }
+            }
+        }
+        return returnList;
+    }
+
+    public static String getContactNameFromDetailedContactList(long id, List<User> detailedContactList) {
+        for (int i = 0; i < detailedContactList.size(); i++) {
+            if (detailedContactList.get(i).getId() == id) {
+                return detailedContactList.get(i).getName();
+            }
+        }
+
+        return "";
+    }
+
     public static List<Message> makeTestList() {
         Model model = Model.getInstance();
         User currentUser = model.getCurrentUser();
