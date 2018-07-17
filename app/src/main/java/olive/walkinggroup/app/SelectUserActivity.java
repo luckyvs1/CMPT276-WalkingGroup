@@ -185,7 +185,7 @@ public class SelectUserActivity extends AppCompatActivity {
         // Sort user list
         userDetailedList = UserListHelper.sortUsers(userDetailedList);
 
-        userListHelper = new UserListHelper(SelectUserActivity.this, userDetailedList, currentUser);
+        userListHelper = new UserListHelper(SelectUserActivity.this, userDetailedList, currentUser, userMonitorList);
         ArrayAdapter<User> adapter = userListHelper.getAdapter();
         ListView userListView = findViewById(R.id.selectUser_userList);
         userListView.setAdapter(adapter);
@@ -216,6 +216,7 @@ public class SelectUserActivity extends AppCompatActivity {
         String titleText;
         if (userIdOnlyList.size() == 0) {
             titleText = "No available user to " + addOrRemove + ".";
+            hideLoadingCircle();
         } else {
             titleText = "Select user to " + addOrRemove + ":";
         }

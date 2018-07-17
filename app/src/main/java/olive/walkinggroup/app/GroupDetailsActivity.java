@@ -59,6 +59,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private Model model;
     private User currentUser;
+    private List<User> monitorList = new ArrayList<>();
     private UserListHelper userListHelper;
 
     @Override
@@ -133,8 +134,18 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
             Log.d(TAG, "Showing user on Member list: " + detailedUser.toString());
 
             memberList.add(detailedUser);
-            populateMemberList();
+            getMonitorUserList();
         }
+    }
+
+    private void getMonitorUserList() {
+        Call<List<User>> caller = model.getProxy().getMonitorsUsers(currentUser.getId());
+        ProxyBuilder.callProxy(this, caller, detailedList -> onGetMonitorUserListResponse(detailedList));
+    }
+
+    private void onGetMonitorUserListResponse(List<User> detailedList) {
+        monitorList = detailedList;
+        populateMemberList();
     }
 
     private void setupAddUserButton() {
@@ -222,7 +233,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         // Sort memberList
         memberList = UserListHelper.sortUsers(memberList);
 
-        userListHelper = new UserListHelper(this, memberList, currentUser);
+        userListHelper = new UserListHelper(this, memberList, currentUser, monitorList);
         ArrayAdapter<User> adapter = userListHelper.getAdapter();
         ListView memberListView = findViewById(R.id.groupDetail_memberList);
         memberListView.setAdapter(adapter);
