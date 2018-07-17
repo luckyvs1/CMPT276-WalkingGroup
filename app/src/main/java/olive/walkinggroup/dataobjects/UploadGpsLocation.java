@@ -33,6 +33,9 @@ public class UploadGpsLocation {
     private Group activeGroup;
     private boolean hasArrived;
 
+    private static final int EARTH_RADIUS_METERS = 6371000;
+    private static final int DISTANCE_WITHIN_LOCATION_METERS = 100;
+
     private static final int NUM_MS_IN_S = 1000;
     private static final int NUM_S_IN_MIN = 60;
 
@@ -92,11 +95,9 @@ public class UploadGpsLocation {
     private boolean hasArrivedAtDestLocation() {
         // TODO: Use a range the user can enter that determines if the user has arrived at destination location
         // Using a fixed distance instead of a range
-        Integer distanceWithinLocationInMeters = 100;
         Boolean arrivedAtLocation = false;
 
         // Haversine pseudocode from:https://community.esri.com/groups/coordinate-reference-systems/blog/2017/10/05/haversine-formula
-        Integer EARTH_RADIUS_METERS = 6371000;
         Double phi_1 = Math.toRadians(activeGroupDestLocation.getLat());
         Double phi_2 = Math.toRadians(currentUserLocation.getLat());
 
@@ -106,15 +107,15 @@ public class UploadGpsLocation {
 
         //a = sin²(φB - φA/2) + cos φA * cos φB * sin²(λB - λA/2)
         //c = 2 * atan2( √a, √(1−a) )
-        //d = R ⋅ c
+        //d = R ⋅ c -- distanceInMeters
 
         Double a = Math.pow(Math.sin(delta_phi / 2.0), 2) + Math.cos(phi_1) * Math.cos(phi_2) * Math.pow(Math.sin(delta_lambda / 2.0), 2);
 
         Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-        Double meters = EARTH_RADIUS_METERS * c;
+        Double distanceInMeters = EARTH_RADIUS_METERS * c;
 
-        if(meters <= distanceWithinLocationInMeters) {
+        if(distanceInMeters <= DISTANCE_WITHIN_LOCATION_METERS) {
             arrivedAtLocation = true;
         }
         return arrivedAtLocation;

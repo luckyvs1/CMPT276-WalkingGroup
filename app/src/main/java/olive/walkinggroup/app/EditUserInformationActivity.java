@@ -3,8 +3,10 @@ package olive.walkinggroup.app;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -85,7 +87,7 @@ public class EditUserInformationActivity extends AppCompatActivity {
                 if(editUserEmail != null){
                     caller = instance.getProxy().updateUser(user.getId(), dummyUser);
                 } else {
-                    caller = instance.getProxy().updateUser(currentUser.getId(), dummyUser);
+                    caller = instance.getProxy().updateUser(instance.getCurrentUser().getId(), dummyUser);
                 }
                 ProxyBuilder.callProxy(EditUserInformationActivity.this, caller, updatedUser -> updateUserResponse(updatedUser));
             }
@@ -93,17 +95,48 @@ public class EditUserInformationActivity extends AppCompatActivity {
     }
 
     private void updateUserResponse(User updatedUser) {
-
         if(editUserEmail != null) {
             user = updatedUser;
+            returnUserObject(updatedUser);
         } else {
-            instance.setCurrentUser(updatedUser);
-            currentUser = updatedUser;
+            checkUserChangedEmail(updatedUser);
         }
-        returnUserObject(updatedUser);
+    }
+
+    private void checkUserChangedEmail(User updatedUser) {
+        if(!updatedUser.getEmail().equals(currentUser.getEmail())){
+
+            String userPassword = getFromSharedPreferences("UserPassword");
+            storeToSharedPreferences("UserEmail", updatedUser.getEmail());
+
+            //Login the user to update the token and set the updated user as the current user
+            instance.setCurrentUser(updatedUser);
+            instance.getCurrentUser().setPassword(userPassword);
+            loginUserGetToken();
+
+        } else {
+            returnUserObject(updatedUser);
+        }
+    }
+
+    // Get the resource from shared preferences
+    private String getFromSharedPreferences(String keyName) {
+        SharedPreferences userPrefs = getSharedPreferences("userValues", MODE_PRIVATE);
+        String extractedResource = userPrefs.getString(keyName, null);
+        return extractedResource;
+    }
+
+    // Store the resource to shared preferences
+    private void storeToSharedPreferences(String keyName, String value) {
+        SharedPreferences userPrefs = getSharedPreferences("userValues", MODE_PRIVATE);
+        SharedPreferences.Editor editor = userPrefs.edit();
+        editor.putString(keyName,value);
+        editor.commit();
     }
 
     private void returnUserObject(User updatedUser) {
+
+        Toast.makeText(EditUserInformationActivity.this, R.string.ProfileUpdateSuccess, Toast.LENGTH_LONG).show();
         Intent returnIntent = new Intent();
         returnIntent.putExtra("updatedUser",updatedUser);
         setResult(Activity.RESULT_OK,returnIntent);
@@ -238,6 +271,46 @@ public class EditUserInformationActivity extends AppCompatActivity {
     private void extractDataFromIntent() {
         Intent intent = getIntent();
         editUserEmail = intent.getStringExtra("Email");
+
+
+        // If the user is editing current user's information
+        if(editUserEmail.equals(currentUser.getEmail())){
+            editUserEmail = null;
+        }
+    }
+
+    // Login Functionality
+    // -------------------------------------------------------------------------------------------
+    private void loginUserGetToken() {
+        // Register for token received:
+        ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
+
+        User dummy = new User();
+        dummy.setEmail(instance.getCurrentUser().getEmail());
+        dummy.setPassword(instance.getCurrentUser().getPassword());
+
+        // Make call
+        Call<Void> caller = instance.getProxy().login(dummy);
+        ProxyBuilder.callProxy(EditUserInformationActivity.this, caller, returnedNothing -> loginUserResponse(returnedNothing));
+
+    }
+
+    // Login actually completes by calling this; nothing to do as it was all done
+    // when we got the token.
+    // Response for call back from the login user
+    private void loginUserResponse(Void returnedNothing) {
+        // Navigate user to the next activity
+        returnUserObject(instance.getCurrentUser());
+
+    }
+
+    // Handle the token by generating a new Proxy which is encoded with it.
+    private void onReceiveToken(String token) {
+        // Replace the current proxy with one that uses the token!
+        instance.updateProxy(token);
+
+        //Store token and email using shared preferences
+        storeToSharedPreferences("Token", token);
     }
 
 }

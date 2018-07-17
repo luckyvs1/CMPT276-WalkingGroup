@@ -37,6 +37,23 @@ public class MonitorActivity extends AppCompatActivity {
         setupIMonitorButton();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCurrentUser();
+        verifyIMonitorList();
+        verifyMonitoredUsersList();
+    }
+
+    private void updateCurrentUser() {
+        Call<User> caller = instance.getProxy().getUserById(instance.getCurrentUser().getId());
+        ProxyBuilder.callProxy(MonitorActivity.this, caller, returnedUser -> getUserById(returnedUser));
+    }
+
+    private void getUserById(User updatedUser) {
+        instance.setCurrentUser(updatedUser);
+    }
+
     //New Code Starts
     public void verifyMonitoredUsersList(){
         Call<List<User>> caller = instance.getProxy().getMonitoredByUsers(user.getId());
