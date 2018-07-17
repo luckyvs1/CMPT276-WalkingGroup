@@ -66,8 +66,6 @@ public class MessagesActivity extends AppCompatActivity {
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new ReloadUI(), 0, AUTO_REFRESH_PERIOD);
-
-        //reloadUI();
     }
 
     @Override
@@ -188,6 +186,8 @@ public class MessagesActivity extends AppCompatActivity {
     // ---------------------------------------------------------------------------------------------
 
     private void getMyMessages() {
+        showLoadingCircle();
+
         Call<List<Message>> caller = model.getProxy().getMessages(currentUser.getId());
         ProxyBuilder.callProxy(this, caller, returnedList -> onGetMyMessagesResponse(returnedList));
     }
@@ -262,7 +262,9 @@ public class MessagesActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.messagesActivity_messagesList);
         MyMessagesListAdapter adapter = new MyMessagesListAdapter();
         listView.setAdapter(adapter);
+
         registerItemOnClick();
+        hideLoadingCircle();
     }
 
     //PRECOND: displayList contains full User details
@@ -335,6 +337,22 @@ public class MessagesActivity extends AppCompatActivity {
         for (int i = 0; i < messageList.size(); i++) {
             Call<Message> caller = model.getProxy().markMessageAsRead(messageList.get(i).getId(), true);
             ProxyBuilder.callProxy(MessagesActivity.this, caller, null);
+        }
+    }
+
+    private void showLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.messagesActivity_loading);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.messagesActivity_loading);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
         }
     }
 }
