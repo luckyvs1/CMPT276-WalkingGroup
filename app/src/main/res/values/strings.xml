@@ -102,4 +102,5 @@
     <string name="profile">Profile</string>
     <string name="PermissionAvailableToEdit">Permission available to edit this profile</string>
     <string name="PermissionUnavailableToEdit">Permission unavailable to edit this profile</string>
+    <string name="LoginErrorMessage">An error occurred, please login again.</string>
 </resources>

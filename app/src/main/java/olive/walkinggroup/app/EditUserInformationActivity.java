@@ -87,7 +87,7 @@ public class EditUserInformationActivity extends AppCompatActivity {
                 if(editUserEmail != null){
                     caller = instance.getProxy().updateUser(user.getId(), dummyUser);
                 } else {
-                    caller = instance.getProxy().updateUser(currentUser.getId(), dummyUser);
+                    caller = instance.getProxy().updateUser(instance.getCurrentUser().getId(), dummyUser);
                 }
                 ProxyBuilder.callProxy(EditUserInformationActivity.this, caller, updatedUser -> updateUserResponse(updatedUser));
             }
@@ -114,6 +114,8 @@ public class EditUserInformationActivity extends AppCompatActivity {
             instance.getCurrentUser().setPassword(userPassword);
             loginUserGetToken();
 
+        } else {
+            returnUserObject(updatedUser);
         }
     }
 
@@ -285,8 +287,8 @@ public class EditUserInformationActivity extends AppCompatActivity {
         ProxyBuilder.setOnTokenReceiveCallback(token -> onReceiveToken(token));
 
         User dummy = new User();
-        dummy.setEmail(currentUser.getEmail());
-        dummy.setPassword(currentUser.getPassword());
+        dummy.setEmail(instance.getCurrentUser().getEmail());
+        dummy.setPassword(instance.getCurrentUser().getPassword());
 
         // Make call
         Call<Void> caller = instance.getProxy().login(dummy);
@@ -299,7 +301,7 @@ public class EditUserInformationActivity extends AppCompatActivity {
     // Response for call back from the login user
     private void loginUserResponse(Void returnedNothing) {
         // Navigate user to the next activity
-        returnUserObject(currentUser);
+        returnUserObject(instance.getCurrentUser());
 
     }
 

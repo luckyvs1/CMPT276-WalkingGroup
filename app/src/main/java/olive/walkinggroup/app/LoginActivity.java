@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
@@ -24,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     private Model instance;
     private User user;
     private Boolean tokenAvailable;
+    private static final int HIDE_LOADING_SCREEN_INTERVAL = 12000;
+    private Timer timer = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +46,32 @@ public class LoginActivity extends AppCompatActivity {
             String userPassword = getFromSharedPreferences("UserPassword");
             user.setEmail(userEmail);
             user.setPassword(userPassword);
-            updateCurrentUser(userEmail);
+            //updateCurrentUser(userEmail);
+            loginUserGetToken();
+
+            // If the server wipe affected the user email cancel loading screen task
+            timer.schedule(new hideLoading(), HIDE_LOADING_SCREEN_INTERVAL);
         }
 
         setupLoginBtn();
         setupSignupBtn();
 
+    }
+
+    // Timer task to update UI
+    // https://stackoverflow.com/questions/6242268/repeat-a-task-with-a-time-delay/6242292#6242292
+    private class hideLoading extends TimerTask {
+        @Override
+        public void run() {
+            // use runOnUiThread(Runnable action)
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(LoginActivity.this, R.string.LoginErrorMessage, Toast.LENGTH_LONG).show();
+                    hideLoadingCircle();
+                }
+            });
+        }
     }
 
     // By pass login screen if the user already has a token
@@ -185,7 +210,9 @@ public class LoginActivity extends AppCompatActivity {
     // Response for call back from the login user
     private void loginUserResponse(Void returnedNothing) {
         // Navigate user to the next activity
-        updateCurrentUser(instance.getCurrentUser().getEmail());
+        updateCurrentUser(user.getEmail());
+        timer.cancel();
+        timer.purge();
     }
 
     // Handle the token by generating a new Proxy which is encoded with it.
