@@ -63,8 +63,6 @@ public class DashBoardActivity extends AppCompatActivity {
         setupStopUploadButton();
     }
 
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -297,6 +295,4 @@ public class DashBoardActivity extends AppCompatActivity {
         Log.i("App", message);
     }
 }
-
-
 

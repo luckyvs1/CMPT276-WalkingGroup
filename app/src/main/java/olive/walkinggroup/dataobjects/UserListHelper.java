@@ -102,6 +102,11 @@ public class UserListHelper {
     // Return true if user is on List<User> monitorsUsers of currentUser
     public static boolean isOnMonitorsUserList(User currentUser, User user) {
         List<Integer> idList = new ArrayList<>();
+        monitorList = currentUser.getMonitorsUsers();
+
+        if (monitorList == null) {
+            return false;
+        }
 
         for (int i = 0; i < monitorList.size(); i++) {
             Integer id = monitorList.get(i).getId().intValue();
