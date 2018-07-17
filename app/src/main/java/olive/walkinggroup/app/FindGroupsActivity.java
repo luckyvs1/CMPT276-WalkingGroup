@@ -24,6 +24,7 @@ import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.CurrentLocationHelper;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 
@@ -58,6 +59,22 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         setupCreateGroupButton();
         currentLocationHelper = new CurrentLocationHelper(this);
         currentLocationHelper.getLocationPermission();
+        updateCurrentUser();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCurrentUser();
+    }
+
+    private void updateCurrentUser() {
+        Call<User> caller = model.getProxy().getUserById(model.getCurrentUser().getId());
+        ProxyBuilder.callProxy(FindGroupsActivity.this, caller, returnedUser -> getUserById(returnedUser));
+    }
+
+    private void getUserById(User userFromEmail) {
+        model.setCurrentUser(userFromEmail);
     }
 
     private void setupMyLocationButton() {

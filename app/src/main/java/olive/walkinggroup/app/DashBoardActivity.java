@@ -53,7 +53,6 @@ public class DashBoardActivity extends AppCompatActivity {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new GetUnreadMessages(), 0, GET_UNREAD_MESSAGES_INTERVAL);
 
-        displayUserName();
         setupSimpleButtonActivityChange(R.id.toMonitor, MonitorActivity.class, false);
         setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class, false);
         setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class, false);
@@ -66,6 +65,8 @@ public class DashBoardActivity extends AppCompatActivity {
         setupStopUploadButton();
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -74,12 +75,13 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void updateCurrentUser() {
-        Call<User> caller = instance.getProxy().getUserByEmail(instance.getCurrentUser().getEmail());
-        ProxyBuilder.callProxy(DashBoardActivity.this, caller, returnedUser -> getUserByEmailResponse(returnedUser));
+        Call<User> caller = instance.getProxy().getUserById(instance.getCurrentUser().getId());
+        ProxyBuilder.callProxy(DashBoardActivity.this, caller, returnedUser -> getUserById(returnedUser));
     }
 
-    private void getUserByEmailResponse(User userFromEmail) {
-        instance.setCurrentUser(userFromEmail);
+    private void getUserById(User updatedUser) {
+        instance.setCurrentUser(updatedUser);
+        displayUserName();
     }
 
     // UI Logic

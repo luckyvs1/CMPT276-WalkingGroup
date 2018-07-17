@@ -25,6 +25,8 @@ import retrofit2.Call;
 public class UserDetailsActivity extends AppCompatActivity {
     private Model instance = Model.getInstance();
     User user;
+    private Boolean editPermission = false;
+    private Boolean sameindividual = false;
 
     List <User> parentList;
 
@@ -34,10 +36,26 @@ public class UserDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_details);
 
         extractDataFromIntent();
+        checkToDisplayEdit();
         populateView();
         verifyMonitoredUsersList();
         registerClickCallback();
         setupEditButton();
+    }
+
+    private void checkToDisplayEdit() {
+        if(user != null){
+            editPermission = UserListHelper.isOnMonitorsUserList(instance.getCurrentUser(), user);
+            sameindividual =  UserListHelper.sameUser(instance.getCurrentUser(), user);
+
+            Button editBtn = (Button) findViewById(R.id.btnEditInformation);
+
+            if(editPermission || sameindividual){
+                editBtn.setVisibility(View.VISIBLE);
+            } else {
+                editBtn.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void populateView(){
@@ -109,8 +127,6 @@ public class UserDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String email;
-                Boolean editPermission = false;
-                Boolean sameindividual = false;
 
                 if (user != null) {
                     email = user.getEmail();

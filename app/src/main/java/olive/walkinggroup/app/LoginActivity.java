@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
@@ -24,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     private Model instance;
     private User user;
     private Boolean tokenAvailable;
+    private static final int HIDE_LOADING_SCREEN_INTERVAL = 12000;
+    private Timer timer = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +43,35 @@ public class LoginActivity extends AppCompatActivity {
         if(tokenAvailable){
             Toast.makeText(LoginActivity.this, "Logging in, please wait!", Toast.LENGTH_LONG).show();
             String userEmail = getFromSharedPreferences("UserEmail");
+            String userPassword = getFromSharedPreferences("UserPassword");
             user.setEmail(userEmail);
-            updateCurrentUser(userEmail);
+            user.setPassword(userPassword);
+            //updateCurrentUser(userEmail);
+            loginUserGetToken();
+
+            // If the server wipe affected the user email cancel loading screen task
+            timer.schedule(new hideLoading(), HIDE_LOADING_SCREEN_INTERVAL);
         }
 
         setupLoginBtn();
         setupSignupBtn();
 
+    }
+
+    // Timer task to update UI
+    // https://stackoverflow.com/questions/6242268/repeat-a-task-with-a-time-delay/6242292#6242292
+    private class hideLoading extends TimerTask {
+        @Override
+        public void run() {
+            // use runOnUiThread(Runnable action)
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(LoginActivity.this, R.string.LoginErrorMessage, Toast.LENGTH_LONG).show();
+                    hideLoadingCircle();
+                }
+            });
+        }
     }
 
     // By pass login screen if the user already has a token
@@ -69,6 +96,18 @@ public class LoginActivity extends AppCompatActivity {
 
         instance.setCurrentUser(userFromEmail);
 
+        updateCurrentUserByID(Long.valueOf(instance.getCurrentUser().getId()));
+
+    }
+
+    private void updateCurrentUserByID(Long aLong) {
+        Call<User> caller = instance.getProxy().getUserById(aLong);
+        ProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> getUserByID(returnedUser));
+    }
+
+    private void getUserByID(User returnedUser) {
+
+        instance.setCurrentUser(returnedUser);
         // If the current user is not null
         if (instance.getCurrentUser().getId() != null) {
             Toast.makeText(LoginActivity.this, "Logged in as:  " + instance.getCurrentUser().getName(), Toast.LENGTH_LONG).show();
@@ -114,12 +153,17 @@ public class LoginActivity extends AppCompatActivity {
 
     // Get the user details from the login activity
     private void setUserDetails() {
-        String email = getUserInput(R.id.txtGetEmail);
-        String password = getUserInput(R.id.txtGetPassword);
+        String userEmail = getUserInput(R.id.txtGetEmail);
+        String userPassword = getUserInput(R.id.txtGetPassword);
 
         // Update the details of the user instance
-        user.setPassword(password);
-        user.setEmail(email);
+        user.setPassword(userPassword);
+        user.setEmail(userEmail);
+
+        instance.setCurrentUser(user);
+
+        storeToSharedPreferences("UserEmail", userEmail);
+        storeToSharedPreferences("UserPassword", userPassword);
     }
 
     private String getUserInput(int userInputResourceID) {
@@ -166,7 +210,9 @@ public class LoginActivity extends AppCompatActivity {
     // Response for call back from the login user
     private void loginUserResponse(Void returnedNothing) {
         // Navigate user to the next activity
-        updateCurrentUser(instance.getCurrentUser().getEmail());
+        updateCurrentUser(user.getEmail());
+        timer.cancel();
+        timer.purge();
     }
 
     // Handle the token by generating a new Proxy which is encoded with it.
@@ -174,13 +220,9 @@ public class LoginActivity extends AppCompatActivity {
         // Replace the current proxy with one that uses the token!
 
         instance.updateProxy(token);
-        instance.setCurrentUser(user);
-
-        String userEmail = instance.getCurrentUser().getEmail();
 
         //Store token and email using shared preferences
         storeToSharedPreferences("Token", token);
-        storeToSharedPreferences("UserEmail", userEmail);
     }
 
     // Store the resource to shared preferences

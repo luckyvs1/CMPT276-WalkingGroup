@@ -113,20 +113,20 @@ public class UserListHelper {
 
     //Todo: Verify if the function is correct or utilize new function to check for group leader
     // Return true if user is a leader of group which current user belongs to
-//    private boolean isGroupLeaderForCurrentUser(User currentUser, User user) {
-//        Boolean isCurrentUsersGroupLeader = false;
-//        List<Group> memberGroupList = currentUser.getMemberOfGroups();
-//        List<Group> groupLeaderList = user.getLeadsGroups();
-//
-//        for (int i = 0; i < memberGroupList.size(); i++) {
-//            for(int j = 0; j < groupLeaderList.size(); j++) {
-//                if(memberGroupList.get(i).getId() == groupLeaderList.get(j).getId()) {
-//                    isCurrentUsersGroupLeader = true;
-//
-//            }
-//        }
-//        return isCurrentUsersGroupLeader;
-//    }
+    public static boolean isGroupLeaderForCurrentUser(User currentUser, User user) {
+        Boolean isCurrentUsersGroupLeader = false;
+        List<Group> memberGroupList = currentUser.getMemberOfGroups();
+        List<Group> groupLeaderList = user.getLeadsGroups();
+
+        for (int i = 0; i < memberGroupList.size(); i++) {
+            for(int j = 0; j < groupLeaderList.size(); j++) {
+                if(memberGroupList.get(i).getId().intValue() == groupLeaderList.get(j).getId().intValue()) {
+                    isCurrentUsersGroupLeader = true;
+                }
+            }
+        }
+        return isCurrentUsersGroupLeader;
+    }
 
     // Return true if current user and the user are the same individual
     public static boolean sameUser(User currentUser, User user) {

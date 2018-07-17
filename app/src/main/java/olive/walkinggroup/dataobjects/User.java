@@ -171,7 +171,6 @@ public class User extends IdItemBase implements Serializable{
 
     // Monitoring
     // -------------------------------------------------------------------------------------------
-    @JsonIgnore
     public List<User> getMonitoredByUsers() {
         return monitoredByUsers;
     }
@@ -186,7 +185,6 @@ public class User extends IdItemBase implements Serializable{
         this.monitoredByUsers.remove(user);
     }
 
-    @JsonIgnore
     public List<User> getMonitorsUsers() {
         return monitorsUsers;
     }
