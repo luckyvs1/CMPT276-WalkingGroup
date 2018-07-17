@@ -69,33 +69,35 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
         model = Model.getInstance();
         currentUser = model.getCurrentUser();
-
         group = (Group) getIntent().getSerializableExtra("group");
-        updateGroupDetails();
 
+        updateGroupDetails();
+        initializeMap();
         setupAddUserButton();
         setupRemoveUserButton();
-        initializeMap();
     }
 
+    // Server Calls:
+    // ---------------------------------------------------------------------------------------------
     private void updateGroupDetails() {
-        Call<List<Group>> caller = model.getProxy().getGroups();
-        ProxyBuilder.callProxy(this, caller, returnedGroups -> onUpdateGroupDetailsProxyResponse(returnedGroups));
+        Call<Group> caller = model.getProxy().getGroupById(group.getId());
+        ProxyBuilder.callProxy(this, caller, returnedGroup -> onUpdateGroupDetailsProxyResponse(returnedGroup));
     }
 
-    private void onUpdateGroupDetailsProxyResponse(List<Group> returnedGroups) {
-        for (int i = 0; i < returnedGroups.size(); i++) {
-            if (Objects.equals(group.getId(), returnedGroups.get(i).getId())) {
-                group = returnedGroups.get(i);
-                break;
-            }
-        }
-        updateLeaderInfo();
+    private void onUpdateGroupDetailsProxyResponse(Group returnedGroup) {
+        group = returnedGroup;
         initializeText();
+        updateLeaderInfo();
 
         if (group.getMemberUsers().size() == 0) {
             hideLoadingCircle();
         }
+    }
+
+    private void initializeText() {
+        TextView groupDescriptionView = findViewById(R.id.groupDetail_groupDescription);
+        groupDescriptionView.setText(group.getGroupDescription());
+        groupDescriptionView.setSelected(true);
     }
 
     private void updateLeaderInfo() {
@@ -123,17 +125,15 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
         for (int i = 0; i < userList.size(); i++) {
             User user = userList.get(i);
-
             Call<User> caller = model.getProxy().getUserById(user.getId());
             ProxyBuilder.callProxy(this, caller, detailedUser -> onBuildMemberListProxyResponse(detailedUser));
         }
     }
 
     private void onBuildMemberListProxyResponse(User detailedUser) {
-        if (detailedUser != null) {
-            Log.d(TAG, "Showing user on Member list: " + detailedUser.toString());
+        memberList.add(detailedUser);
 
-            memberList.add(detailedUser);
+        if (group.getMemberUsers().size() == memberList.size()) {
             getMonitorUserList();
         }
     }
@@ -146,6 +146,32 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     private void onGetMonitorUserListResponse(List<User> detailedList) {
         monitorList = detailedList;
         populateMemberList();
+    }
+
+    // UI Logic:
+    // ---------------------------------------------------------------------------------------------
+    private void populateMemberList() {
+        // Sort memberList
+        memberList = UserListHelper.sortUsers(memberList);
+
+        userListHelper = new UserListHelper(this, memberList, currentUser, monitorList);
+        ArrayAdapter<User> adapter = userListHelper.getAdapter();
+        ListView memberListView = findViewById(R.id.groupDetail_memberList);
+        memberListView.setAdapter(adapter);
+
+        hideLoadingCircle();
+        registerClickCallback();
+    }
+
+    private void registerClickCallback() {
+        ListView list = (ListView) findViewById(R.id.groupDetail_memberList);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                Intent intent = UserDetailsActivity.makeIntent (GroupDetailsActivity.this, memberList.get(position));
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupAddUserButton() {
@@ -170,19 +196,9 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         });
     }
 
-    private void initializeText() {
-        TextView groupDescriptionView = findViewById(R.id.groupDetail_groupDescription);
-        groupDescriptionView.setText(group.getGroupDescription());
-        groupDescriptionView.setSelected(true);
-    }
-
     private void initializeMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.groupDetail_map);
         mapFragment.getMapAsync(GroupDetailsActivity.this);
-    }
-
-    private void moveCamera(LatLng latLng, float zoom) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
     private void displayYouTag() {
@@ -213,9 +229,6 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                         .position(group.getEndPoint())
                         .title("Destination"));
 
-                // Focus camera on meet-up location
-                //moveCamera(group.getStartPoint(), DEFAULT_ZOOM);
-
                 moveCameraToShowPoints(group.getStartPoint(), group.getEndPoint());
             }
         }
@@ -226,33 +239,27 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         builder.include(point1);
         builder.include(point2);
         LatLngBounds bounds = builder.build();
-        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200, 200, 0));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200, 200, 0));
     }
 
-    private void populateMemberList() {
-        // Sort memberList
-        memberList = UserListHelper.sortUsers(memberList);
+    private void showLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.groupDetail_loading);
 
-        userListHelper = new UserListHelper(this, memberList, currentUser, monitorList);
-        ArrayAdapter<User> adapter = userListHelper.getAdapter();
-        ListView memberListView = findViewById(R.id.groupDetail_memberList);
-        memberListView.setAdapter(adapter);
-
-        hideLoadingCircle();
-        registerClickCallback();
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.VISIBLE);
+        }
     }
 
-    private void registerClickCallback() {
-        ListView list = (ListView) findViewById(R.id.groupDetail_memberList);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                Intent intent = UserDetailsActivity.makeIntent (GroupDetailsActivity.this, memberList.get(position));
-                startActivity(intent);
-            }
-        });
+    private void hideLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.groupDetail_loading);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
+        }
     }
 
+    // Add / Remove User logic:
+    // ---------------------------------------------------------------------------------------------
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         showLoadingCircle();
@@ -326,21 +333,5 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private void onRemoveMemberResponse(Void returnNothing) {
         Log.d(TAG, "Removed user from group.");
-    }
-
-    private void showLoadingCircle() {
-        RelativeLayout loadingCircle = findViewById(R.id.groupDetail_loading);
-
-        if (loadingCircle != null) {
-            loadingCircle.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void hideLoadingCircle() {
-        RelativeLayout loadingCircle = findViewById(R.id.groupDetail_loading);
-
-        if (loadingCircle != null) {
-            loadingCircle.setVisibility(View.GONE);
-        }
     }
 }
