@@ -21,7 +21,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -127,26 +129,32 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void onGetUsers(List<User> returnedUsers) {
-
-
-
-
-
+        List<User> monitorUsers = new ArrayList<>();
         for (int i = 0; i < returnedUsers.size(); i++) {
             User user = returnedUsers.get(i);
-            if (UserListHelper.isGroupLeaderForCurrentUser(currentUser, user) ||
-                    UserListHelper.isOnMonitorsUserList(currentUser, user)) {
-                listTrackUsers.add(user);
+            if (UserListHelper.isOnMonitorsUserList(currentUser, user)) {
+                monitorUsers.add(user);
             }
         }
 
-        Log.i("MyApp", listTrackUsers.toString());
+        List<User> leadersOfMonitorUsers = new ArrayList<>();
+        for (int i = 0; i < monitorUsers.size(); i++) {
+            for (int j = 0; j < returnedUsers.size(); j++) {
+                if (UserListHelper.isGroupLeaderForCurrentUser(monitorUsers.get(i),returnedUsers.get(j))) {
+                    leadersOfMonitorUsers.add(returnedUsers.get(j));
+                }
+            }
+        }
+        Set<User> listTrackUsersTemp = new LinkedHashSet<>();
+
+        listTrackUsersTemp.addAll(monitorUsers);
+        listTrackUsersTemp.addAll(leadersOfMonitorUsers);
+
+        listTrackUsers.addAll(listTrackUsersTemp);
+
+        listTrackUsers = UserListHelper.sortUsers(listTrackUsers);
 
         hideLoadingCircle();
-
-
-
-
         populateUserList();
 
         setupListOnItemClickListeners();

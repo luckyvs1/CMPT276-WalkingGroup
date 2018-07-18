@@ -120,9 +120,27 @@ public class UserListHelper {
 
             setupTrackUserNameView(itemView, user);
             setupTrackUserLastUpdatedView(itemView, user);
+            displayTag(itemView, user);
 
 
             return itemView;
+        }
+
+        private void displayTag(View itemView, User user) {
+            RelativeLayout leaderTag = itemView.findViewById(R.id.trackUserItem_leaderTag);
+            leaderTag.setVisibility(View.GONE);
+
+            RelativeLayout monitorTag = itemView.findViewById(R.id.trackUserItem_monitorTag);
+            monitorTag.setVisibility(View.GONE);
+
+            if (isGroupLeaderForCurrentUser(currentUser, user)) {
+                leaderTag.setVisibility(View.VISIBLE);
+            }
+
+            if (isOnMonitorsUserList(currentUser, user)) {
+                monitorTag.setVisibility(View.VISIBLE);
+            }
+
         }
 
         private void setupTrackUserLastUpdatedView(View itemView, User user) {
