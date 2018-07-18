@@ -115,38 +115,6 @@
                 android:inputType="textPostalAddress" />
 
             <TextView
-                android:id="@+id/txtGrade"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/school_grade" />
-
-            <EditText
-                android:id="@+id/txtSetGrade"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/btnSubmitSignup"
-                android:layout_alignParentStart="true"
-                android:ems="10"
-                android:hint="@string/grade"
-                android:inputType="none|numberSigned|numberDecimal" />
-
-            <TextView
-                android:id="@+id/txtTeachername"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/teacher_name" />
-
-            <EditText
-                android:id="@+id/txtSetTeachername"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/txtSetHomephone"
-                android:ems="10"
-                android:hint="@string/teacher_name"
-                android:inputType="textPersonName" />
-
-            <TextView
                 android:id="@+id/txtBirthYear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -177,6 +145,38 @@
                 android:ems="10"
                 android:hint="@string/mm"
                 android:inputType="number|numberSigned" />
+
+            <TextView
+                android:id="@+id/txtGrade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/school_grade" />
+
+            <EditText
+                android:id="@+id/txtSetGrade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/btnSubmitSignup"
+                android:layout_alignParentStart="true"
+                android:ems="10"
+                android:hint="@string/grade"
+                android:inputType="none|numberSigned|numberDecimal" />
+
+            <TextView
+                android:id="@+id/txtTeachername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/teacher_name" />
+
+            <EditText
+                android:id="@+id/txtSetTeachername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txtSetHomephone"
+                android:ems="10"
+                android:hint="@string/teacher_name"
+                android:inputType="textPersonName" />
 
             <Button
                 android:id="@+id/btnSubmitEditUser"
