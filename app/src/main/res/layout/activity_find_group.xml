@@ -1,68 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/findGroup_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="56dp"
+        android:elevation="5dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary"
         >
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/findGroup_headerTitle"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:id="@+id/findGroup_header"
-            android:elevation="5dp"
-            android:background="@color/colorPrimary"
-            >
-
-            <TextView
-                android:id="@+id/findGroup_headerTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="6dp"
-                android:layout_toStartOf="@id/findGroup_createGroupBtn"
-                android:padding="10dp"
-                android:textColor="#fff"
-                android:textStyle="bold"
-                android:text="@string/findGroup_headerTitle"
-                />
-
-            <RelativeLayout
-                android:id="@+id/findGroup_createGroupBtn"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/background_header_button"
-                android:padding="10dp"
-                >
-
-                <ImageView
-                    android:layout_centerInParent="true"
-                    android:id="@+id/groupDetail_addIcon"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_group_add_white"
-                    />
-
-            </RelativeLayout>
-
-        </RelativeLayout>
-
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/findGroup_map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".MapsActivity"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="6dp"
+            android:layout_toStartOf="@id/findGroup_createGroupBtn"
+            android:padding="10dp"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:text="@string/findGroup_headerTitle"
             />
 
-    </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/findGroup_createGroupBtn"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/background_header_button"
+            android:padding="10dp"
+            >
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:id="@+id/groupDetail_addIcon"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_group_add_white"
+                />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/findGroup_map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        map:layout_constraintTop_toBottomOf="@id/findGroup_header"
+        map:layout_constraintBottom_toBottomOf="parent"
+        tools:context=".MapsActivity"
+        />
+
+    <!--
+    Loading progress bar. Using code from:
+    https://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff
+    -->
+
+    <RelativeLayout
+        android:id="@+id/findGroup_loading"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:background="#eeeeee"
+        app:layout_constraintTop_toBottomOf="@id/findGroup_header"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/findGroup_myLocationBtn"
@@ -71,6 +88,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:background="@drawable/background_round_button_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:elevation="5dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="70dp">
@@ -82,6 +101,6 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_my_location"
             />
-
     </RelativeLayout>
-</RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
