@@ -63,6 +63,7 @@ public class MonitorActivity extends AppCompatActivity {
     private void setMonitoredByUsersList(List<User>list){
         user.setMonitoredByUsers(list);
         populateMonitorsMe();
+        registerClickCallBack(R.id.monitorsMe);
     }
     //New Code Ends
 
@@ -86,11 +87,11 @@ public class MonitorActivity extends AppCompatActivity {
     private void setIMonitorList(List<User>list){
         user.setMonitorsUsers(list);
         populateIMonitor();
-        registerClickCallBack();
+        registerClickCallBack(R.id.IMonitor);
     }
 
-    private void registerClickCallBack() {
-        ListView list = (ListView) findViewById(R.id.IMonitor);
+    private void registerClickCallBack(int resourceID) {
+        ListView list = (ListView) findViewById(resourceID);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
