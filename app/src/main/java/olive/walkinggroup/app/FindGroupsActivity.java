@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -37,16 +38,20 @@ import retrofit2.Call;
  * Part of the code used is from a Google Maps API video course, modified to fit this use case.
  * https://www.youtube.com/playlist?list=PLgCYzUzKIBE-vInwQhGSdnbyJ62nixHCt
  * by CodingWithMitch
+ *
+ * After clicking the create group button and coming back, the activity reloads the markers after
+ * RELOAD_DELAY milliseconds. (Increase this time if new marker does not show up after creation)
  */
 
 public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private static final String TAG = "FindGroupsActivity";
-
+    private static final int RELOAD_DELAY = 1000;
 
     private CurrentLocationHelper currentLocationHelper;
-
     private GoogleMap mMap;
     private Model model;
+    private Boolean isReload = false;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +68,12 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        updateCurrentUser();
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus && isReload) {
+            showLoadingCircle();
+            handler.postDelayed(reloadMapRunnable, RELOAD_DELAY);
+        }
     }
 
     private void updateCurrentUser() {
@@ -96,6 +104,7 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
             public void onClick(View v) {
                 Intent intent = new Intent(FindGroupsActivity.this, CreateGroupActivity.class);
                 startActivity(intent);
+                isReload = true;
             }
         });
     }
@@ -143,7 +152,12 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         }
     }
 
-
+    private Runnable reloadMapRunnable = new Runnable() {
+        @Override
+        public void run() {
+            populateMapWithMarkers();
+        }
+    };
 
     private void populateMapWithMarkers() {
         Call<List<Group>> caller = model.getProxy().getGroups();
@@ -159,6 +173,8 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
                 }
             }
         }
+        hideLoadingCircle();
+        isReload = true;
     }
 
     private void addMarker(Group group){
@@ -177,7 +193,23 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
         Intent intent = new Intent(FindGroupsActivity.this, GroupDetailsActivity.class);
         intent.putExtra("group", group);
         startActivity(intent);
-
+        isReload = false;
         return false;
+    }
+
+    private void showLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.findGroup_loading);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.findGroup_loading);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
+        }
     }
 }

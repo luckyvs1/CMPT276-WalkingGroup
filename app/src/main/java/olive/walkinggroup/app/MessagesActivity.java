@@ -17,15 +17,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
@@ -66,7 +63,7 @@ public class MessagesActivity extends AppCompatActivity {
         format = new SimpleDateFormat("MMM dd (EEE) hh:mm aaa", Locale.getDefault());
         dropdown = findViewById(R.id.messagesActivity_toUserDropdown);
 
-        handler.post(ReloadUIRunnable);
+        handler.post(reloadUIRunnable);
         showLoadingCircle();
     }
 
@@ -77,11 +74,11 @@ public class MessagesActivity extends AppCompatActivity {
         reloadUI();
     }
 
-    private Runnable ReloadUIRunnable = new Runnable() {
+    private Runnable reloadUIRunnable = new Runnable() {
         @Override
         public void run() {
             reloadUI();
-            handler.postDelayed(ReloadUIRunnable, AUTO_REFRESH_PERIOD);
+            handler.postDelayed(reloadUIRunnable, AUTO_REFRESH_PERIOD);
         }
     };
 

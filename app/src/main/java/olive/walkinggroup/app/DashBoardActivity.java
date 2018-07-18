@@ -3,7 +3,6 @@ package olive.walkinggroup.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,8 +18,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
@@ -49,7 +46,7 @@ public class DashBoardActivity extends AppCompatActivity {
         updateCurrentUser();
 
         setupMessagesButton();
-        handler.post(GetUnreadMessagesRunnable);
+        handler.post(getUnreadMessagesRunnable);
 
         setupSimpleButtonActivityChange(R.id.toMonitor, MonitorActivity.class, false);
         setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class, false);
@@ -96,12 +93,12 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private Runnable GetUnreadMessagesRunnable = new Runnable() {
+    private Runnable getUnreadMessagesRunnable = new Runnable() {
         @Override
         public void run() {
             Log.d(TAG, "Getting messages from server...");
             getUnreadMessages();
-            handler.postDelayed(GetUnreadMessagesRunnable, GET_UNREAD_MESSAGES_INTERVAL);
+            handler.postDelayed(getUnreadMessagesRunnable, GET_UNREAD_MESSAGES_INTERVAL);
         }
     };
 
