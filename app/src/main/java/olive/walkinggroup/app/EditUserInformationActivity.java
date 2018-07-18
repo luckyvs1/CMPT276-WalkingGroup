@@ -117,14 +117,12 @@ public class EditUserInformationActivity extends AppCompatActivity {
             value = Integer.valueOf(userText.getText().toString());
             if((value <= 0 || value > 12)) {
                 userText.setError("Please enter a valid birth month between 1 - 12");
-                Toast.makeText(EditUserInformationActivity.this, "Please enter a valid birth month between 1 - 12", Toast.LENGTH_LONG).show();
                 inputValid = false;
             }
         } else if (!TextUtils.isEmpty(userText.getText()) && (userInputResourceID == R.id.txtSetBirthyear)) {
             value = Integer.valueOf(userText.getText().toString());
             if ((value < START_YEAR || value > CURRENT_YEAR)) {
                 userText.setError("Please enter a valid birth year between 1900 - " + CURRENT_YEAR);
-                Toast.makeText(EditUserInformationActivity.this, "Please enter a valid birth year between 1900 - 2018", Toast.LENGTH_LONG).show();
                 inputValid = false;
             }
         }
