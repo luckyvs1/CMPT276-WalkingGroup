@@ -29,6 +29,7 @@ import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.CurrentLocationHelper;
 import olive.walkinggroup.dataobjects.GetLastUpdated;
 import olive.walkinggroup.dataobjects.GpsLocation;
+import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.dataobjects.UserListHelper;
@@ -40,7 +41,9 @@ import retrofit2.Call;
 public class TrackerActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private List<User> listUsers;
+
+
+    private List<User> listTrackUsers = new ArrayList<>();
     private List<Marker> userMarkers = new ArrayList<>();
 
     private Timer updateMarkersTimer = new Timer();
@@ -62,7 +65,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
 
 
         initializeMap();
-        getMonitorUsersFromServer();
+        getUsersFromServer();
         setupUpdateMarkersTimer();
 
 
@@ -72,7 +75,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
         updateMarkersTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (listUsers != null) {
+                if (listTrackUsers != null) {
                     updateGpsLocationFromServer();
                 }
             }
@@ -80,8 +83,8 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void updateGpsLocationFromServer() {
-        for (int i = 0; i < listUsers.size(); i++) {
-            Call<GpsLocation> caller = instance.getProxy().getLastGpsLocation(listUsers.get(i).getId());
+        for (int i = 0; i < listTrackUsers.size(); i++) {
+            Call<GpsLocation> caller = instance.getProxy().getLastGpsLocation(listTrackUsers.get(i).getId());
             int position = i;
             ProxyBuilder.callProxy(this, caller, gpsLocation -> onGetLastGpsLocation(gpsLocation, position));
 
@@ -118,14 +121,32 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
 
-    private void getMonitorUsersFromServer() {
-        Call<List<User>> caller = instance.getProxy().getMonitorsUsers(currentUser.getId());
-        ProxyBuilder.callProxy(this, caller, returnedUsers -> onGetMonitorUsers(returnedUsers));
+    private void getUsersFromServer() {
+        Call<List<User>> caller = instance.getProxy().getUsers();
+        ProxyBuilder.callProxy(this, caller, returnedUsers -> onGetUsers(returnedUsers));
     }
 
-    private void onGetMonitorUsers(List<User> returnedUsers) {
-        listUsers = UserListHelper.sortUsers(returnedUsers);
+    private void onGetUsers(List<User> returnedUsers) {
+
+
+
+
+
+        for (int i = 0; i < returnedUsers.size(); i++) {
+            User user = returnedUsers.get(i);
+            if (UserListHelper.isGroupLeaderForCurrentUser(currentUser, user) ||
+                    UserListHelper.isOnMonitorsUserList(currentUser, user)) {
+                listTrackUsers.add(user);
+            }
+        }
+
+        Log.i("MyApp", listTrackUsers.toString());
+
         hideLoadingCircle();
+
+
+
+
         populateUserList();
 
         setupListOnItemClickListeners();
@@ -135,7 +156,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void populateUserList() {
-        userListHelper = new UserListHelper(this, listUsers, currentUser);
+        userListHelper = new UserListHelper(this, listTrackUsers, currentUser);
 
         ArrayAdapter<User> adapter = userListHelper.getTrackerListAdapter();
         ListView listView = findViewById(R.id.listView_trackUsers);
@@ -156,8 +177,8 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void populateUserMarkers() {
-        for (int i = 0; i < listUsers.size(); i++) {
-            User user = listUsers.get(i);
+        for (int i = 0; i < listTrackUsers.size(); i++) {
+            User user = listTrackUsers.get(i);
 
             Marker marker;
             if (user.getLastGpsLocation().getTimestamp() != null) {
