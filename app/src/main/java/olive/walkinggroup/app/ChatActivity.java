@@ -237,7 +237,11 @@ public class ChatActivity extends AppCompatActivity {
                 textView.setTextColor(Color.BLACK);
             } else {
                 textContainer.setLayoutParams(receiveParams);
-                textContainer.setBackground(getDrawable(R.drawable.background_chat_receive));
+                if (currentMessage.isEmergency()) {
+                    textContainer.setBackground(getDrawable(R.drawable.background_chat_receive_emergency));
+                } else {
+                    textContainer.setBackground(getDrawable(R.drawable.background_chat_receive));
+                }
                 textView.setTextColor(Color.WHITE);
             }
 

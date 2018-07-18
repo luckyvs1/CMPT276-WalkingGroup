@@ -39,6 +39,7 @@ public class ListGroupsActivity extends AppCompatActivity {
     private User currentUser = model.getCurrentUser();
     private List<Group> userGroups;
     private List<Group> monitorUserGroupsList;
+    private boolean isReload = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class ListGroupsActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
+        if (hasFocus && isReload) {
             if (currentUser != null) {
                 showLoadingCircle();
                 updateUserInfo();
@@ -67,11 +68,13 @@ public class ListGroupsActivity extends AppCompatActivity {
     }
 
     private void updateUserInfo() {
+        Log.d(TAG, "updateUserInfo");
         Call<User> caller = model.getProxy().getUserById(currentUser.getId());
         ProxyBuilder.callProxy(this, caller, updatedUser -> onUpdateUserInfoResponse(updatedUser));
     }
 
     private void onUpdateUserInfoResponse(User updatedUser) {
+        Log.d(TAG, "onUpdateUserInfoResponse");
         currentUser = updatedUser;
 
         if (currentUser.getMonitorsUsers().size() == 0) {
@@ -81,6 +84,7 @@ public class ListGroupsActivity extends AppCompatActivity {
     }
 
     private void getCurrentUserGroupList() {
+        Log.d(TAG, "getCurrentUserGroupList");
         List<Group> groupList = new ArrayList<>();
 
         if (currentUser != null) {
@@ -89,26 +93,48 @@ public class ListGroupsActivity extends AppCompatActivity {
             // Prevent duplicates
             for (int i = 0; i < memberGroup.size(); i++) {
                 Group currentGroup = memberGroup.get(i);
+
                 if (!(groupIsInList(groupList, currentGroup))) {
                     groupList.add(currentGroup);
                 }
             }
         }
+        Log.d(TAG, "getCurrentUserGroupList: assign userGroups");
         userGroups = groupList;
+
         if (currentUser != null) {
             if (currentUser.getMonitorsUsers() != null) {
                 if (currentUser.getMonitorsUsers().size() == 0) {
+                    // Skip getting monitor user details if currentUser does not monitor anyone
                     getGroupDetails();
                 }
-                getMonitorsUserListWithFullDetails();
+                // TODO: For issue #55: currently omitting monitor tag.
+                //getMonitorsUserList();
+                getGroupDetails();
             }
         }
     }
 
-    private void getMonitorsUserListWithFullDetails() {
+    private boolean groupIsInList(List<Group> groupList, Group group) {
+        List<Integer> groupListId = new ArrayList<>();
+
+        for (int i = 0; i < groupList.size(); i++) {
+            groupListId.add(groupList.get(i).getId().intValue());
+        }
+        return (groupListId.contains(group.getId().intValue()));
+    }
+
+    private void getMonitorsUserList() {
+        Log.d(TAG, "getMonitorsUserList");
+
+        Call<List<User>> caller = model.getProxy().getMonitorsUsers(currentUser.getId());
+        ProxyBuilder.callProxy(this, caller, returnedList -> getMonitorsUserListWithFullDetails(returnedList));
+    }
+
+    private void getMonitorsUserListWithFullDetails(List<User> monitorsUserIdList) {
+        Log.d(TAG, "getMonitorsUserListWithFullDetails");
         monitorUserGroupsList = new ArrayList<>();
 
-        List<User> monitorsUserIdList = currentUser.getMonitorsUsers();
         for (int i = 0; i < monitorsUserIdList.size(); i++) {
             Call<User> caller = model.getProxy().getUserById(monitorsUserIdList.get(i).getId());
             ProxyBuilder.callProxy(this, caller, detailedUser -> getMonitorUserGroupList(detailedUser));
@@ -116,6 +142,7 @@ public class ListGroupsActivity extends AppCompatActivity {
     }
 
     private void getMonitorUserGroupList(User detailedUser) {
+        Log.d(TAG, "getMonitorUserGroupList");
         List<Group> monitorUserGroups = detailedUser.getMemberOfGroups();
 
         for (int i = 0; i < monitorUserGroups.size(); i++) {
@@ -133,21 +160,14 @@ public class ListGroupsActivity extends AppCompatActivity {
         getGroupDetails();
     }
 
-    private boolean groupIsInList(List<Group> groupList, Group group) {
-        List<Integer> groupListId = new ArrayList<>();
-
-        for (int i = 0; i < groupList.size(); i++) {
-            groupListId.add(groupList.get(i).getId().intValue());
-        }
-        return (groupListId.contains(group.getId().intValue()));
-    }
-
     private void getGroupDetails() {
+        Log.d(TAG, "getGroupDetails");
         Call<List<Group>> caller = model.getProxy().getGroups();
         ProxyBuilder.callProxy(this, caller, returnedGroups -> onGetGroupDetailsResponse(returnedGroups));
     }
 
     private void onGetGroupDetailsResponse(List<Group> returnedGroups) {
+        Log.d(TAG, "onGetGroupDetailsResponse");
         List<Group> groupList = new ArrayList<>();
 
         for (int i = 0; i < returnedGroups.size(); i++) {
@@ -163,10 +183,12 @@ public class ListGroupsActivity extends AppCompatActivity {
     }
 
     private void populateGroupList() {
+        Log.d(TAG, "populateGroupList");
         ArrayAdapter<Group> adapter = new GroupListAdapter();
         ListView groupList = findViewById(R.id.listGroups_groupList);
         groupList.setAdapter(adapter);
         hideLoadingCircle();
+        isReload = true;
     }
 
     private class GroupListAdapter extends ArrayAdapter<Group> {
@@ -182,15 +204,12 @@ public class ListGroupsActivity extends AppCompatActivity {
                 itemView = getLayoutInflater().inflate(R.layout.list_groups_item, parent, false);
             }
 
-
             Group currentGroup = userGroups.get(position);
 
-
-
+            setupButtons(itemView, currentGroup);
             setupGroupDescriptionView(itemView, currentGroup);
             setupNumMembersView(itemView, currentGroup);
             displayTags(itemView, currentGroup);
-            setupButtons(itemView, currentGroup);
 
             return itemView;
         }

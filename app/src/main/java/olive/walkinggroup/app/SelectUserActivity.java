@@ -38,17 +38,17 @@ public class SelectUserActivity extends AppCompatActivity {
     private static final String TAG = "SelectUserActivity";
     private Group group;
     private User currentUser;
-    private List<User> userIdOnlyList;
-    private List<User> userDetailedList;
+    private List<User> userIdOnlyList = new ArrayList<>();
+    private List<User> userDetailedList = new ArrayList<>();
+    private List<User> userMonitorList = new ArrayList<>();
     private String headerText;
     private String addOrRemove;
     private UserListHelper userListHelper;
     private Model model;
 
-    public static Intent makeIntent(Context context, Group group, User currentUser, String headerText, String addOrRemove) {
+    public static Intent makeIntent(Context context, Group group, String headerText, String addOrRemove) {
         Intent intent = new Intent(context, SelectUserActivity.class);
         intent.putExtra("group", group);
-        intent.putExtra("currentUser", currentUser);
         intent.putExtra("headerText", headerText);
         intent.putExtra("addOrRemove", addOrRemove);
 
@@ -61,99 +61,19 @@ public class SelectUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_user);
 
         model = Model.getInstance();
-        userDetailedList = new ArrayList<>();
+        currentUser = model.getCurrentUser();
 
         getDataFromIntent();
         initializeHeaderText();
-        updateGroupDetails();
-        registerItemOnClick();
-    }
-
-    private void updateGroupDetails() {
-        Call<List<Group>> caller = model.getProxy().getGroups();
-        ProxyBuilder.callProxy(this, caller, returnedGroups -> onUpdateGroupDetailsRespond(returnedGroups));
-    }
-
-    private void onUpdateGroupDetailsRespond(List<Group> returnedGroups) {
-        for (int i = 0; i < returnedGroups.size(); i++) {
-            if (Objects.equals(group.getId(), returnedGroups.get(i).getId())) {
-                group = returnedGroups.get(i);
-                break;
-            }
-        }
-
-        getUserList();
         setupCancelButton();
-        initializeMessage();
+        updateGroupDetails();
     }
 
     private void getDataFromIntent() {
         Intent intent = getIntent();
         group = (Group) intent.getSerializableExtra("group");
-        currentUser = (User) intent.getSerializableExtra("currentUser");
         headerText = intent.getStringExtra("headerText");
         addOrRemove = intent.getStringExtra("addOrRemove");
-    }
-
-    private void getUserList() {
-        switch (addOrRemove) {
-            case "add":
-                List<User> addableUsers = new ArrayList<>();
-                if (!(group.isMember(currentUser))) {
-                    if (!Objects.equals(group.getLeader().getId(), currentUser.getId())) {
-                        addableUsers.add(currentUser);
-                    }
-                }
-
-                for (int i = 0; i < currentUser.getMonitorsUsers().size(); i++) {
-                    User user = currentUser.getMonitorsUsers().get(i);
-                    if (!(group.isMember(user))) {
-                        if (!Objects.equals(group.getLeader().getId(), user.getId())) {
-                            addableUsers.add(user);
-                        }
-                    }
-                }
-                userIdOnlyList = addableUsers;
-
-                getDetailedUserList();
-                break;
-
-            case "remove":
-                List<User> removableUsers = new ArrayList<>();
-                if (group.isLeader(currentUser)) {
-                    removableUsers = group.getMemberUsers();
-                } else {
-                    if (group.isMember(currentUser)) {
-                        removableUsers.add(currentUser);
-                    }
-                    for (int i = 0; i < currentUser.getMonitorsUsers().size(); i++) {
-                        User user = currentUser.getMonitorsUsers().get(i);
-                        if (group.isMember(user)) {
-                            removableUsers.add(user);
-                        }
-                    }
-                }
-                userIdOnlyList = removableUsers;
-
-                getDetailedUserList();
-                break;
-
-            default:
-                userIdOnlyList = new ArrayList<>();
-                break;
-        }
-    }
-
-    private void getDetailedUserList() {
-        for (int i = 0; i < userIdOnlyList.size(); i++) {
-            Call<User> caller = model.getProxy().getUserById(userIdOnlyList.get(i).getId());
-            ProxyBuilder.callProxy(this, caller, detailedUser -> onGetDetailedUserListResponse(detailedUser));
-        }
-    }
-
-    private void onGetDetailedUserListResponse(User detailedUser) {
-        userDetailedList.add(detailedUser);
-        populateUserList();
     }
 
     private void setupCancelButton() {
@@ -171,28 +91,107 @@ public class SelectUserActivity extends AppCompatActivity {
         headerTextView.setText(headerText);
     }
 
-    private void initializeMessage() {
-        TextView titleTextView = findViewById(R.id.selectUser_titleText);
-        String titleText;
-        if (userIdOnlyList.size() == 0) {
-            titleText = "No available user to " + addOrRemove + ".";
-        } else {
-            titleText = "Select user to " + addOrRemove + ":";
+    // Server Calls:
+    // ---------------------------------------------------------------------------------------------
+    // Get latest details of group from server
+    private void updateGroupDetails() {
+        Call<Group> caller = model.getProxy().getGroupById(group.getId());
+        ProxyBuilder.callProxy(this, caller, detailedGroup -> onUpdateGroupDetailsRespond(detailedGroup));
+    }
+
+    private void onUpdateGroupDetailsRespond(Group detailedGroup) {
+        group = detailedGroup;
+        getUserMonitorList();
+    }
+
+    private void getUserMonitorList() {
+        Call<List<User>> caller = model.getProxy().getMonitorsUsers(currentUser.getId());
+        ProxyBuilder.callProxy(this, caller, monitorList -> onGetUserMonitorListResponse(monitorList));
+    }
+
+    private void onGetUserMonitorListResponse(List<User> monitorList) {
+        userMonitorList = monitorList;
+        getUserList();
+    }
+
+    // Get a list of available User (id only) to add/remove. Store to userIdOnlyList
+    private void getUserList() {
+        switch (addOrRemove) {
+            case "add":
+                List<User> addableUsers = new ArrayList<>();
+                if (!(group.isMember(currentUser))) {
+                    if (!Objects.equals(group.getLeader().getId(), currentUser.getId())) {
+                        addableUsers.add(currentUser);
+                    }
+                }
+
+                for (int i = 0; i < userMonitorList.size(); i++) {
+                    User user = userMonitorList.get(i);
+                    Log.d(TAG, "addable user: " + user);
+                    if (!(group.isMember(user))) {
+                        if (!Objects.equals(group.getLeader().getId(), user.getId())) {
+                            addableUsers.add(user);
+                        }
+                    }
+                }
+                userIdOnlyList = addableUsers;
+                initializeMessage();
+                getDetailedUserList();
+                break;
+
+            case "remove":
+                List<User> removableUsers = new ArrayList<>();
+                if (group.isLeader(currentUser)) {
+                    removableUsers = group.getMemberUsers();
+                } else {
+                    if (group.isMember(currentUser)) {
+                        removableUsers.add(currentUser);
+                    }
+                    for (int i = 0; i < userMonitorList.size(); i++) {
+                        User user = userMonitorList.get(i);
+                        if (group.isMember(user)) {
+                            removableUsers.add(user);
+                        }
+                    }
+                }
+                userIdOnlyList = removableUsers;
+                initializeMessage();
+                getDetailedUserList();
+                break;
+
+            default:
+                userIdOnlyList = new ArrayList<>();
+                break;
         }
-        titleTextView.setText(titleText);
+    }
+
+    // Get details of User from userIdOnlyList
+    private void getDetailedUserList() {
+        for (int i = 0; i < userIdOnlyList.size(); i++) {
+            Call<User> caller = model.getProxy().getUserById(userIdOnlyList.get(i).getId());
+            ProxyBuilder.callProxy(this, caller, detailedUser -> onGetDetailedUserListResponse(detailedUser));
+        }
+    }
+
+    private void onGetDetailedUserListResponse(User detailedUser) {
+        userDetailedList.add(detailedUser);
+
+        if (userDetailedList.size() == userIdOnlyList.size()) {
+            populateUserList();
+        }
     }
 
     private void populateUserList() {
         // Sort user list
         userDetailedList = UserListHelper.sortUsers(userDetailedList);
 
-        userListHelper = new UserListHelper(SelectUserActivity.this, userDetailedList, currentUser, null);
+        userListHelper = new UserListHelper(SelectUserActivity.this, userDetailedList, currentUser, userMonitorList);
         ArrayAdapter<User> adapter = userListHelper.getAdapter();
         ListView userListView = findViewById(R.id.selectUser_userList);
         userListView.setAdapter(adapter);
 
         registerItemOnClick();
-        Log.d(TAG, "populateUserList: finish");
+        hideLoadingCircle();
     }
 
     private void registerItemOnClick() {
@@ -210,5 +209,25 @@ public class SelectUserActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void initializeMessage() {
+        TextView titleTextView = findViewById(R.id.selectUser_titleText);
+        String titleText;
+        if (userIdOnlyList.size() == 0) {
+            titleText = "No available user to " + addOrRemove + ".";
+            hideLoadingCircle();
+        } else {
+            titleText = "Select user to " + addOrRemove + ":";
+        }
+        titleTextView.setText(titleText);
+    }
+
+    private void hideLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.selectUser_loading);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
+        }
     }
 }

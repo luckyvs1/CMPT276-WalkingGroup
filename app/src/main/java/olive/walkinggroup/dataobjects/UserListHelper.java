@@ -1,21 +1,26 @@
 package olive.walkinggroup.dataobjects;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.app.GroupDetailsActivity;
 
 /**
  * UserListHelper class allows generating an ArrayAdapter to be used in a ListView of users
@@ -27,15 +32,15 @@ public class UserListHelper {
     private Activity activity;
     private List<User> userList;
     private User currentUser;
-    private List<User> allUsers;
     private MemberListAdapter adapter;
     private TrackerListAdapter trackerListAdapter;
+    private static List<User> monitorList;
 
-    public UserListHelper(Activity activity, List<User> userList, User currentUser, List<User> allUsers) {
+    public UserListHelper(Activity activity, List<User> userList, User currentUser, List<User> monitorList) {
         this.activity = activity;
         this.userList = userList;
-        this.allUsers = allUsers;
         this.currentUser = currentUser;
+        UserListHelper.monitorList = monitorList;
         adapter = new MemberListAdapter();
         trackerListAdapter = new TrackerListAdapter();
 
@@ -135,8 +140,8 @@ public class UserListHelper {
             RelativeLayout monitorTag = itemView.findViewById(R.id.trackUserItem_monitorTag);
             monitorTag.setVisibility(View.GONE);
 
-            for (int i = 0; i < allUsers.size(); i++) {
-                if (isGroupLeaderForCurrentUser(allUsers.get(i),user)) {
+            for (int i = 0; i < monitorList.size(); i++) {
+                if (isGroupLeaderForCurrentUser(monitorList.get(i),user)) {
                     leaderTag.setVisibility(View.VISIBLE);
                 }
             }
@@ -168,8 +173,12 @@ public class UserListHelper {
 
     // Return true if user is on List<User> monitorsUsers of currentUser
     public static boolean isOnMonitorsUserList(User currentUser, User user) {
-        List<User> monitorList = currentUser.getMonitorsUsers();
         List<Integer> idList = new ArrayList<>();
+        List<User> monitorList = currentUser.getMonitorsUsers();
+
+        if (monitorList == null) {
+            return false;
+        }
 
         for (int i = 0; i < monitorList.size(); i++) {
             Integer id = monitorList.get(i).getId().intValue();

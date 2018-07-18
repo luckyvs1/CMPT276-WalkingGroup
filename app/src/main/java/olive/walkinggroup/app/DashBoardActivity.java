@@ -3,7 +3,7 @@ package olive.walkinggroup.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,8 +18,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
@@ -31,11 +29,12 @@ import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 
 public class DashBoardActivity extends AppCompatActivity {
-
+    private static final String TAG = "DashBoardActivity";
     private static final int REQUEST_CODE_VIEW_GROUPS_START_WALK = 0;
     private static final int GET_UNREAD_MESSAGES_INTERVAL = 60000;
     private Model instance;
     private UploadGpsLocation uploadGpsLocation;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +43,10 @@ public class DashBoardActivity extends AppCompatActivity {
 
         uploadGpsLocation = new UploadGpsLocation(this);
         instance = Model.getInstance();
-
         updateCurrentUser();
 
         setupMessagesButton();
-        getUnreadMessages();
-
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new GetUnreadMessages(), 0, GET_UNREAD_MESSAGES_INTERVAL);
+        handler.post(getUnreadMessagesRunnable);
 
         setupSimpleButtonActivityChange(R.id.toMonitor, MonitorActivity.class, false);
         setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class, false);
@@ -64,8 +59,6 @@ public class DashBoardActivity extends AppCompatActivity {
         setupPanicButton();
         setupStopUploadButton();
     }
-
-
 
     @Override
     protected void onResume() {
@@ -100,11 +93,14 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
-    private class GetUnreadMessages extends TimerTask {
+    private Runnable getUnreadMessagesRunnable = new Runnable() {
+        @Override
         public void run() {
+            Log.d(TAG, "Getting messages from server...");
             getUnreadMessages();
+            handler.postDelayed(getUnreadMessagesRunnable, GET_UNREAD_MESSAGES_INTERVAL);
         }
-    }
+    };
 
     private void getUnreadMessages() {
         Call<List<Message>> caller = instance.getProxy().getUnreadMessages(instance.getCurrentUser().getId(), false);
@@ -163,7 +159,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setupSettingsButton() {
-        Button btn = (Button) findViewById(R.id.toUserProfile);
+        LinearLayout btn = findViewById(R.id.toUserProfile);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,7 +170,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setupSimpleButtonActivityChange(int buttonId, Class activityName, boolean forResult) {
-        Button btn = (Button) findViewById(buttonId);
+        LinearLayout btn = findViewById(buttonId);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,7 +185,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setupLogoutButton() {
-        Button logout = (Button) findViewById(R.id.btnLogout);
+        LinearLayout logout = findViewById(R.id.btnLogout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -297,6 +293,4 @@ public class DashBoardActivity extends AppCompatActivity {
         Log.i("App", message);
     }
 }
-
-
 

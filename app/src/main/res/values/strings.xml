@@ -46,7 +46,7 @@
     <string name="title_map_activity">Map Activity</string>
     <string name="dashboard_monitorBtn">Monitor</string>
     <string name="dashboard_mapBtn">Map</string>
-    <string name="dashboard_createGroupBtn">Create Group</string>
+    <string name="dashboard_createGroupBtn">New Group</string>
     <string name="dashboard_logoutBtn">Logout</string>
     <string name="monitorAct_monitorTitle">Monitor</string>
     <string name="caption_whoMonitorsMe">Who monitors me</string>
@@ -114,4 +114,7 @@
     <string name="last_updated_months_ago">month(s) ago</string>
     <string name="last_updated_years_ago">year(s) ago</string>
     <string name="last_updated_never">Last updated: never</string>
+    <string name="dashBoard_stopUploadText">Stop Upload</string>
+    <string name="dashBoard_panicText">Panic!</string>
+    <string name="dashBoard_trackerText">Tracker</string>
 </resources>
