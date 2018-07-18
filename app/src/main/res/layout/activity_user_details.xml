@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="Name: "
+        android:text="@string/view_name"
         android:textSize="15sp" />
 
     <TextView
@@ -25,7 +25,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="60dp"
-        android:text="Birthday: "
+        android:text="@string/birthday"
         android:textSize="15sp" />
 
     <TextView
@@ -36,7 +36,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="100dp"
-        android:text="Address: "
+        android:text="@string/view_address"
         android:textSize="15sp" />
 
     <TextView
@@ -47,7 +47,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="140dp"
-        android:text="Home Phone: "
+        android:text="@string/view_home_phone"
         android:textSize="15sp" />
 
     <TextView
@@ -58,7 +58,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="180dp"
-        android:text="Cell Phone: "
+        android:text="@string/view_cell_phone"
         android:textSize="15sp" />
 
     <TextView
@@ -69,7 +69,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="220dp"
-        android:text="Email: "
+        android:text="@string/email"
         android:textSize="15sp" />
 
     <TextView
@@ -80,7 +80,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="260dp"
-        android:text="Current Grade: "
+        android:text="@string/current_grade"
         android:textSize="15sp" />
 
     <TextView
@@ -91,7 +91,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="300dp"
-        android:text="Teacher Name: "
+        android:text="@string/set_teacher_name"
         android:textSize="15sp" />
 
     <TextView
@@ -102,7 +102,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="340dp"
-        android:text="Emergency Contact:"
+        android:text="@string/emergency_contact"
         android:textSize="15sp"/>
 
     <TextView
@@ -113,7 +113,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="380dp"
-        android:text="Contact List: "
+        android:text="@string/monitored_by"
         android:textSize="15sp" />
 
     <ListView
@@ -133,7 +133,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="51dp"
         android:layout_marginEnd="40dp"
-        android:text="Edit"
+        android:text="@string/edit"
         tools:layout_editor_absoluteX="148dp"
         tools:layout_editor_absoluteY="484dp" />
 

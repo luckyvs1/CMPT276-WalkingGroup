@@ -107,4 +107,15 @@
     <string name="dashBoard_stopUploadText">Stop Upload</string>
     <string name="dashBoard_panicText">Panic!</string>
     <string name="dashBoard_trackerText">Tracker</string>
+    <string name="edit">Edit</string>
+    <string name="monitored_by">Monitored By:</string>
+    <string name="emergency_contact">Emergency Contact:</string>
+    <string name="set_teacher_name">Teacher Name:</string>
+    <string name="current_grade">Current Grade:</string>
+    <string name="view_email">Email:</string>
+    <string name="view_cell_phone">Cell Phone:</string>
+    <string name="view_home_phone">Home Phone:</string>
+    <string name="view_address">Address:</string>
+    <string name="birthday">Birthday:</string>
+    <string name="view_name">Name:</string>
 </resources>

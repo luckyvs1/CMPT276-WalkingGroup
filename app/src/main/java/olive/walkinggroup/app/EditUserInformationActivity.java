@@ -6,12 +6,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.text.TextUtils;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
@@ -21,11 +22,15 @@ import retrofit2.Call;
 
 public class EditUserInformationActivity extends AppCompatActivity {
 
+
     private Model instance;
     private User user;
     private User currentUser;
     private String editUserEmail;
     private User dummyUser;
+    private Calendar calendar = Calendar.getInstance();
+    private static final int START_YEAR = 1900;
+    private final int CURRENT_YEAR = calendar.get(Calendar.YEAR);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,19 +84,52 @@ public class EditUserInformationActivity extends AppCompatActivity {
         editUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Boolean birthMonthValid = true;
+                Boolean birthYearValid = true;
+
                 setUserDetails();
 
-                Call<User> caller;
+                birthMonthValid = isInputValid(R.id.txtSetBirthmonth);
+                birthYearValid = isInputValid(R.id.txtSetBirthyear);
 
-                // Make server call
-                if(editUserEmail != null){
-                    caller = instance.getProxy().updateUser(user.getId(), dummyUser);
-                } else {
-                    caller = instance.getProxy().updateUser(instance.getCurrentUser().getId(), dummyUser);
+                if(birthMonthValid && birthYearValid) {
+                    Call<User> caller;
+
+                    // Make server call
+                    if(editUserEmail != null){
+                        caller = instance.getProxy().updateUser(user.getId(), dummyUser);
+                    } else {
+                        caller = instance.getProxy().updateUser(instance.getCurrentUser().getId(), dummyUser);
+                    }
+                    ProxyBuilder.callProxy(EditUserInformationActivity.this, caller, updatedUser -> updateUserResponse(updatedUser));
                 }
-                ProxyBuilder.callProxy(EditUserInformationActivity.this, caller, updatedUser -> updateUserResponse(updatedUser));
             }
         });
+    }
+
+    private boolean isInputValid(int userInputResourceID) {
+        boolean inputValid = true;
+        int value;
+
+        EditText userText = (EditText) findViewById(userInputResourceID);
+
+        if (!TextUtils.isEmpty(userText.getText()) && (userInputResourceID == R.id.txtSetBirthmonth)) {
+            value = Integer.valueOf(userText.getText().toString());
+            if((value <= 0 || value > 12)) {
+                userText.setError("Please enter a valid birth month between 1 - 12");
+                Toast.makeText(EditUserInformationActivity.this, "Please enter a valid birth month between 1 - 12", Toast.LENGTH_LONG).show();
+                inputValid = false;
+            }
+        } else if (!TextUtils.isEmpty(userText.getText()) && (userInputResourceID == R.id.txtSetBirthyear)) {
+            value = Integer.valueOf(userText.getText().toString());
+            if ((value < START_YEAR || value > CURRENT_YEAR)) {
+                userText.setError("Please enter a valid birth year between 1900 - " + CURRENT_YEAR);
+                Toast.makeText(EditUserInformationActivity.this, "Please enter a valid birth year between 1900 - 2018", Toast.LENGTH_LONG).show();
+                inputValid = false;
+            }
+        }
+
+        return inputValid;
     }
 
     private void updateUserResponse(User updatedUser) {
@@ -115,6 +153,7 @@ public class EditUserInformationActivity extends AppCompatActivity {
             loginUserGetToken();
 
         } else {
+            instance.setCurrentUser(updatedUser);
             returnUserObject(updatedUser);
         }
     }
@@ -192,6 +231,8 @@ public class EditUserInformationActivity extends AppCompatActivity {
         EditText userText = (EditText) findViewById(userInputResourceID);
 
         // https://stackoverflow.com/questions/11535011/edittext-field-is-required-before-moving-on-to-another-activity#11535058
+
+        // Check if email or name fields are empty then throw error
         if(TextUtils.isEmpty(userText.getText()) && ((userInputResourceID == R.id.txtSetEmail) || (userInputResourceID == R.id.txtSetName))) {
             userText.setError(getString(R.string.invalidInput));
         } else if (TextUtils.isEmpty(userText.getText())) {
