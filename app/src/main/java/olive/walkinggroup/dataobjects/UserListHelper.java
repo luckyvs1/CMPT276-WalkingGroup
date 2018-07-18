@@ -150,7 +150,7 @@ public class UserListHelper {
         private void setupTrackUserLastUpdatedView(View itemView, User user) {
             TextView textView = itemView.findViewById(R.id.trackUser_lastUpdated);
 
-            GetLastUpdated getLastUpdated = new GetLastUpdated();
+            GetLastUpdated getLastUpdated = new GetLastUpdated(activity);
             String lastUpdated = getLastUpdated.getLastUpdatedString(user.getLastGpsLocation().getTimestamp());
 
             textView.setText(lastUpdated);

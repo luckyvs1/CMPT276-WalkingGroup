@@ -120,7 +120,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
         }
 
         TextView textView = view.findViewById(R.id.trackUser_lastUpdated);
-        GetLastUpdated getLastUpdated = new GetLastUpdated();
+        GetLastUpdated getLastUpdated = new GetLastUpdated(this);
         String timestamp = gpsLocation.getTimestamp();
         textView.setText(getLastUpdated.getLastUpdatedString(timestamp));
     }
