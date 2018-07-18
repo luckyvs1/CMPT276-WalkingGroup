@@ -8,6 +8,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ *  GetLastUpdated class provides pattern and locale for generating timestamps, and generating a last updated
+ *  string from a timestamp.
+ */
+
 public class GetLastUpdated {
     public static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
     public static final Locale LOCALE = Locale.CANADA;
