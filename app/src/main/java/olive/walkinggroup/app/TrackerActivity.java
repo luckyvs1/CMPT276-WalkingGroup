@@ -131,6 +131,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void onGetUsers(List<User> returnedUsers) {
+        // Get monitored users of current user
         monitorUsers = new ArrayList<>();
         for (int i = 0; i < returnedUsers.size(); i++) {
             User user = returnedUsers.get(i);
@@ -139,6 +140,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
             }
         }
 
+        // Get leaders of current user
         List<User> leadersOfMonitorUsers = new ArrayList<>();
         for (int i = 0; i < monitorUsers.size(); i++) {
             for (int j = 0; j < returnedUsers.size(); j++) {
@@ -147,18 +149,17 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
                 }
             }
         }
-        Set<User> listTrackUsersTemp = new LinkedHashSet<>();
 
+        // Remove dupes using LinkedHasSet
+        Set<User> listTrackUsersTemp = new LinkedHashSet<>();
         listTrackUsersTemp.addAll(monitorUsers);
         listTrackUsersTemp.addAll(leadersOfMonitorUsers);
 
         listTrackUsers.addAll(listTrackUsersTemp);
-
         listTrackUsers = UserListHelper.sortUsers(listTrackUsers);
 
         hideLoadingCircle();
         populateUserList();
-
         setupListOnItemClickListeners();
         populateUserMarkers();
 
