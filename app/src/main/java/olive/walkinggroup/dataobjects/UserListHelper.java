@@ -33,6 +33,7 @@ public class UserListHelper {
     private List<User> userList;
     private User currentUser;
     private MemberListAdapter adapter;
+    private TrackerListAdapter trackerListAdapter;
     private static List<User> monitorList;
 
     public UserListHelper(Activity activity, List<User> userList, User currentUser, List<User> monitorList) {
@@ -41,6 +42,8 @@ public class UserListHelper {
         this.currentUser = currentUser;
         UserListHelper.monitorList = monitorList;
         adapter = new MemberListAdapter();
+        trackerListAdapter = new TrackerListAdapter();
+
     }
 
     public MemberListAdapter getAdapter() {
@@ -51,6 +54,37 @@ public class UserListHelper {
         public MemberListAdapter() {
             super(activity, R.layout.list_user_item, userList);
         }
+
+        private void setupMemberNameView(View itemView, User user) {
+            TextView nameView = itemView.findViewById(R.id.trackUser_name);
+            String nameText = user.getName();
+            nameView.setText(nameText);
+        }
+
+        private void setupMemberEmailView(View itemView, User user) {
+            TextView emailView = itemView.findViewById(R.id.listMembers_email);
+            String emailText = user.getEmail();
+            emailView.setText(emailText);
+        }
+
+        private void displayTag(View itemView, User user) {
+            RelativeLayout youTag = itemView.findViewById(R.id.listUsers_youTag);
+            youTag.setVisibility(View.GONE);
+
+            RelativeLayout monitorTag = itemView.findViewById(R.id.listUsers_monitorTag);
+            monitorTag.setVisibility(View.GONE);
+
+            if ((Objects.equals(currentUser.getId(), user.getId()))) {
+                youTag.setVisibility(View.VISIBLE);
+            }
+
+            if ((isOnMonitorsUserList(currentUser, user))) {
+                monitorTag.setVisibility(View.VISIBLE);
+            }
+
+            //Todo: add tag for users who monitors me, and leader of groups
+        }
+
 
         @NonNull
         @Override
@@ -65,44 +99,82 @@ public class UserListHelper {
             setupMemberEmailView(itemView, user);
             displayTag(itemView, user);
 
+
+
             return itemView;
         }
+
+
     }
 
-    private void setupMemberNameView(View itemView, User user) {
-        TextView nameView = itemView.findViewById(R.id.listMembers_name);
-        String nameText = user.getName();
-        nameView.setText(nameText);
+    public TrackerListAdapter getTrackerListAdapter() {
+        return trackerListAdapter;
     }
 
-    private void setupMemberEmailView(View itemView, User user) {
-        TextView emailView = itemView.findViewById(R.id.listMembers_email);
-        String emailText = user.getEmail();
-        emailView.setText(emailText);
-    }
-
-    private void displayTag(View itemView, User user) {
-        RelativeLayout youTag = itemView.findViewById(R.id.listUsers_youTag);
-        youTag.setVisibility(View.GONE);
-
-        RelativeLayout monitorTag = itemView.findViewById(R.id.listUsers_monitorTag);
-        monitorTag.setVisibility(View.GONE);
-
-        if ((Objects.equals(currentUser.getId(), user.getId()))) {
-            youTag.setVisibility(View.VISIBLE);
+    private class TrackerListAdapter extends ArrayAdapter<User> {
+        public TrackerListAdapter() {
+            super(activity, R.layout.list_tracker_user_item, userList);
         }
 
-        if ((isOnMonitorsUserList(currentUser, user))) {
-            monitorTag.setVisibility(View.VISIBLE);
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = activity.getLayoutInflater().inflate(R.layout.list_tracker_user_item, parent, false);
+            }
+            User user = userList.get(position);
+
+            setupTrackUserNameView(itemView, user);
+            setupTrackUserLastUpdatedView(itemView, user);
+            displayTag(itemView, user);
+
+
+            return itemView;
         }
 
-        //Todo: add tag for users who monitors me, and leader of groups
+        private void displayTag(View itemView, User user) {
+            RelativeLayout leaderTag = itemView.findViewById(R.id.trackUserItem_leaderTag);
+            leaderTag.setVisibility(View.GONE);
+
+            RelativeLayout monitorTag = itemView.findViewById(R.id.trackUserItem_monitorTag);
+            monitorTag.setVisibility(View.GONE);
+
+            for (int i = 0; i < monitorList.size(); i++) {
+                if (isGroupLeaderForCurrentUser(monitorList.get(i),user)) {
+                    leaderTag.setVisibility(View.VISIBLE);
+                }
+            }
+
+            if (isOnMonitorsUserList(currentUser, user)) {
+                monitorTag.setVisibility(View.VISIBLE);
+            }
+
+        }
+
+        private void setupTrackUserLastUpdatedView(View itemView, User user) {
+            TextView textView = itemView.findViewById(R.id.trackUser_lastUpdated);
+
+            GetLastUpdated getLastUpdated = new GetLastUpdated(activity);
+            String lastUpdated = getLastUpdated.getLastUpdatedString(user.getLastGpsLocation().getTimestamp());
+
+            textView.setText(lastUpdated);
+        }
+
+        private void setupTrackUserNameView(View itemView, User user) {
+            TextView textView = itemView.findViewById(R.id.trackUser_name);
+            textView.setText(user.getName());
+        }
+
     }
+
+
+
 
     // Return true if user is on List<User> monitorsUsers of currentUser
     public static boolean isOnMonitorsUserList(User currentUser, User user) {
         List<Integer> idList = new ArrayList<>();
-        monitorList = currentUser.getMonitorsUsers();
+        List<User> monitorList = currentUser.getMonitorsUsers();
 
         if (monitorList == null) {
             return false;
@@ -173,4 +245,6 @@ public class UserListHelper {
             return 0;
         }
     }
+
+
 }

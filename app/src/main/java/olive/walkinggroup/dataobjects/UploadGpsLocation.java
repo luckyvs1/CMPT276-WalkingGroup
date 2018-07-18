@@ -20,6 +20,12 @@ import java.util.TimerTask;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 
+/**
+ * UploadGpsLocation class allow starting and stopping of uploading the gps location of the current user.  The
+ * class also auto stops the timer if the user has arrived within a fixed distance from their active walking
+ * group's destination location.
+ */
+
 public class UploadGpsLocation {
     private CurrentLocationHelper currentLocationHelper;
     private Activity activity;
@@ -42,7 +48,6 @@ public class UploadGpsLocation {
     private static final int UPLOAD_RATE_S = 30;
     private static final int UPLOAD_DELAY_S = 0;
     private static final int STOP_UPLOAD_DELAY_MIN = 10;
-    private static final String TIMESTAMP_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
 
     public UploadGpsLocation(Activity activity) {
         currentLocationHelper = new CurrentLocationHelper(activity);
@@ -93,7 +98,6 @@ public class UploadGpsLocation {
     }
 
     private boolean hasArrivedAtDestLocation() {
-        // TODO: Use a range the user can enter that determines if the user has arrived at destination location
         // Using a fixed distance instead of a range
         Boolean arrivedAtLocation = false;
 
@@ -184,7 +188,7 @@ public class UploadGpsLocation {
     }
 
     private void uploadGpsLocationToServer(LatLng latLng) {
-        String timeStamp = new SimpleDateFormat(TIMESTAMP_PATTERN, Locale.CANADA).format(new Date());
+        String timeStamp = new SimpleDateFormat(GetLastUpdated.PATTERN, GetLastUpdated.LOCALE).format(new Date());
         GpsLocation lastGpsLocation = new GpsLocation(latLng.latitude, latLng.longitude, timeStamp);
         Call<GpsLocation> caller = instance.getProxy().setLastGpsLocation(user.getId(), lastGpsLocation);
         ProxyBuilder.callProxy(activity, caller, returnedGpsLocation -> setLastGpsLocationReturned(returnedGpsLocation));

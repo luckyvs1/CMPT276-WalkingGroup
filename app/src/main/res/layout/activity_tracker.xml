@@ -1,18 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.TrackerActivity">
+    android:orientation="vertical"
+    tools:context=".app.GroupDetailsActivity"
+    >
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/tracker_map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="385dp"
-        android:layout_height="265dp"
-        tools:context=".MapsActivity" />
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="50"
+        android:orientation="vertical"
+        android:id="@+id/groupDetail_mapFragmentContainer"
+        >
+
+        <RelativeLayout
+            android:id="@+id/groupDetails_mapContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/groupDetail_header"
+            >
+
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:map="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/tracker_map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".MapsActivity" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="50"
+        android:orientation="vertical"
+        >
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
+            android:background="#eeeeee"
+            >
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/listView_trackUsers"
+                android:animateLayoutChanges="true"
+                android:background="@drawable/background_rectangle_rounded_white"
+                android:scrollbars="none"
+                >
+            </ListView>
+
+            <!--
+            Loading progress bar. Using code from:
+            https://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff
+            -->
+
+            <RelativeLayout
+                android:id="@+id/trackUsers_loading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                >
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

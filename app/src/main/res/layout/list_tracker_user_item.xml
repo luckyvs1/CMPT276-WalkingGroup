@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="57dp"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/trackUser_name"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@id/listMembers_tagContainer"
+        android:text="@string/sampleText"
+        android:textColor="#000"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/trackUser_lastUpdated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/sampleText"
+        android:textSize="15sp" />
+
+
+    <LinearLayout
+        android:id="@+id/trackUserItem_tagContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:gravity="start"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/trackUserItem_leaderTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/background_tag_leader"
+            android:elevation="1dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:paddingEnd="12dp"
+                android:paddingStart="12dp"
+                android:text="@string/groupListItem_leaderTagText"
+                android:textColor="#fff"
+                android:textSize="17sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/trackUserItem_monitorTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/background_tag_monitor"
+            android:elevation="1dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:paddingEnd="12dp"
+                android:paddingStart="12dp"
+                android:text="@string/groupListItem_monitorTagText"
+                android:textColor="#fff"
+                android:textSize="17sp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

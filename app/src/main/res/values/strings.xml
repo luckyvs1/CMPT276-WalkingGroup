@@ -104,6 +104,16 @@
     <string name="PermissionUnavailableToEdit">Permission unavailable to edit this profile</string>
     <string name="LoginErrorMessage">An error occurred, please login again.</string>
     <string name="ProfileUpdateSuccess">Successfully updated profile information.</string>
+    <string name="last_updated_about">Last updated: about</string>
+    <string name="last_updated_error">Error</string>
+    <string name="last_updated_less_secs">less than a second ago</string>
+    <string name="last_updated_secs_ago">second(s) ago</string>
+    <string name="last_updated_mins_ago">minute(s) ago</string>
+    <string name="last_updated_hours_ago">hour(s) ago</string>
+    <string name="last_updated_days_ago">day(s) ago</string>
+    <string name="last_updated_months_ago">month(s) ago</string>
+    <string name="last_updated_years_ago">year(s) ago</string>
+    <string name="last_updated_never">Last updated: never</string>
     <string name="dashBoard_stopUploadText">Stop Upload</string>
     <string name="dashBoard_panicText">Panic!</string>
     <string name="dashBoard_trackerText">Tracker</string>
