@@ -57,8 +57,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
 
     private UserListHelper userListHelper;
 
-    private static final int UPDATE_MARKERS_DELAY_S = 1;
-    private List<User> allUsers;
+    private static final int UPDATE_DELAY_S = 30;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +83,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
                     updateGpsLocationFromServer();
                 }
             }
-        }, 0, UPDATE_MARKERS_DELAY_S*1000);
+        }, 0, UPDATE_DELAY_S*1000);
     }
 
     private void updateGpsLocationFromServer() {
@@ -132,7 +131,6 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void onGetUsers(List<User> returnedUsers) {
-        allUsers = returnedUsers;
         monitorUsers = new ArrayList<>();
         for (int i = 0; i < returnedUsers.size(); i++) {
             User user = returnedUsers.get(i);
