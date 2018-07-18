@@ -186,7 +186,7 @@ public class SelectUserActivity extends AppCompatActivity {
         // Sort user list
         userDetailedList = UserListHelper.sortUsers(userDetailedList);
 
-        userListHelper = new UserListHelper(SelectUserActivity.this, userDetailedList, currentUser);
+        userListHelper = new UserListHelper(SelectUserActivity.this, userDetailedList, currentUser, null);
         ArrayAdapter<User> adapter = userListHelper.getAdapter();
         ListView userListView = findViewById(R.id.selectUser_userList);
         userListView.setAdapter(adapter);

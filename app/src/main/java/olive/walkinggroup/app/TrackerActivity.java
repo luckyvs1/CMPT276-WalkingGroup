@@ -49,6 +49,8 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     private List<Marker> userMarkers = new ArrayList<>();
 
     private Timer updateMarkersTimer = new Timer();
+    List<User> monitorUsers = new ArrayList<>();
+
 
     private Model instance;
     private User currentUser;
@@ -56,6 +58,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     private UserListHelper userListHelper;
 
     private static final int UPDATE_MARKERS_DELAY_S = 1;
+    private List<User> allUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +132,8 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void onGetUsers(List<User> returnedUsers) {
-        List<User> monitorUsers = new ArrayList<>();
+        allUsers = returnedUsers;
+        monitorUsers = new ArrayList<>();
         for (int i = 0; i < returnedUsers.size(); i++) {
             User user = returnedUsers.get(i);
             if (UserListHelper.isOnMonitorsUserList(currentUser, user)) {
@@ -164,7 +168,7 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void populateUserList() {
-        userListHelper = new UserListHelper(this, listTrackUsers, currentUser);
+        userListHelper = new UserListHelper(this, listTrackUsers, currentUser, monitorUsers);
 
         ArrayAdapter<User> adapter = userListHelper.getTrackerListAdapter();
         ListView listView = findViewById(R.id.listView_trackUsers);

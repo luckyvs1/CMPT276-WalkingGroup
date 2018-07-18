@@ -27,12 +27,14 @@ public class UserListHelper {
     private Activity activity;
     private List<User> userList;
     private User currentUser;
+    private List<User> allUsers;
     private MemberListAdapter adapter;
     private TrackerListAdapter trackerListAdapter;
 
-    public UserListHelper(Activity activity, List<User> userList, User currentUser) {
+    public UserListHelper(Activity activity, List<User> userList, User currentUser, List<User> allUsers) {
         this.activity = activity;
         this.userList = userList;
+        this.allUsers = allUsers;
         this.currentUser = currentUser;
         adapter = new MemberListAdapter();
         trackerListAdapter = new TrackerListAdapter();
@@ -133,8 +135,10 @@ public class UserListHelper {
             RelativeLayout monitorTag = itemView.findViewById(R.id.trackUserItem_monitorTag);
             monitorTag.setVisibility(View.GONE);
 
-            if (isGroupLeaderForCurrentUser(currentUser, user)) {
-                leaderTag.setVisibility(View.VISIBLE);
+            for (int i = 0; i < allUsers.size(); i++) {
+                if (isGroupLeaderForCurrentUser(allUsers.get(i),user)) {
+                    leaderTag.setVisibility(View.VISIBLE);
+                }
             }
 
             if (isOnMonitorsUserList(currentUser, user)) {

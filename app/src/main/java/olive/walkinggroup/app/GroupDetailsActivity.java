@@ -222,7 +222,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         // Sort memberList
         memberList = UserListHelper.sortUsers(memberList);
 
-        userListHelper = new UserListHelper(this, memberList, currentUser);
+        userListHelper = new UserListHelper(this, memberList, currentUser, null);
         ArrayAdapter<User> adapter = userListHelper.getAdapter();
         ListView memberListView = findViewById(R.id.groupDetail_memberList);
         memberListView.setAdapter(adapter);
