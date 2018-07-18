@@ -46,7 +46,7 @@
     <string name="title_map_activity">Map Activity</string>
     <string name="dashboard_monitorBtn">Monitor</string>
     <string name="dashboard_mapBtn">Map</string>
-    <string name="dashboard_createGroupBtn">Create Group</string>
+    <string name="dashboard_createGroupBtn">New Group</string>
     <string name="dashboard_logoutBtn">Logout</string>
     <string name="monitorAct_monitorTitle">Monitor</string>
     <string name="caption_whoMonitorsMe">Who monitors me</string>
