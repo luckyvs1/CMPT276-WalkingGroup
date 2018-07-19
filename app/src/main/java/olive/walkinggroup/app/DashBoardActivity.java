@@ -44,6 +44,7 @@ public class DashBoardActivity extends AppCompatActivity {
         uploadGpsLocation = new UploadGpsLocation(this);
         instance = Model.getInstance();
         updateCurrentUser();
+        checkIfUserIsParent();
 
         setupMessagesButton();
         handler.post(getUnreadMessagesRunnable);
@@ -60,11 +61,23 @@ public class DashBoardActivity extends AppCompatActivity {
         setupStopUploadButton();
     }
 
+    private void checkIfUserIsParent() {
+        LinearLayout trackUserBtn = findViewById(R.id.btnTracker);
+        trackUserBtn.setVisibility(View.GONE);
+        List<User> monitorList=  instance.getCurrentUser().getMonitorsUsers();
+        int monitorListSize = monitorList.size();
+
+        if(monitorListSize > 0){
+            trackUserBtn.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         updateCurrentUser();
         getUnreadMessages();
+        checkIfUserIsParent();
     }
 
     private void updateCurrentUser() {
