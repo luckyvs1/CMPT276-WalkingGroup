@@ -116,6 +116,7 @@ public class DashBoardActivity extends AppCompatActivity {
     };
 
     private void getUnreadMessages() {
+        Log.e(TAG, "getting unread messages. User id = " + instance.getCurrentUser().getId());
         Call<List<Message>> caller = instance.getProxy().getUnreadMessages(instance.getCurrentUser().getId(), false);
         ProxyBuilder.callProxy(this, caller, returnedList -> onGetUnreadMessagesResponse(returnedList));
     }
@@ -142,6 +143,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void getEmergencyMessages() {
+        Log.e(TAG, "getting emergency messages. User id = " + instance.getCurrentUser().getId());
         Call<List<Message>> caller = instance.getProxy().getUnreadMessages(instance.getCurrentUser().getId(), true);
         ProxyBuilder.callProxy(this, caller, returnedList -> onGetEmergencyMessagesResponse(returnedList));
     }

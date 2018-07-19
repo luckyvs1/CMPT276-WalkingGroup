@@ -193,6 +193,11 @@ public class MessagesActivity extends AppCompatActivity {
     }
 
     private void onGetMyMessagesResponse(List<Message> returnedList) {
+        if (returnedList.size() == 0) {
+            hideLoadingCircle();
+            return;
+        }
+
         myGroupedMessagesList = MessageHelper.groupByContact(removeSelfMessages(returnedList));
         myGroupedMessagesList = MessageHelper.sortMessageListOfList(myGroupedMessagesList);
 
