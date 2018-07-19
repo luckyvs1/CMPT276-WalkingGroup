@@ -11,21 +11,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -103,6 +100,7 @@ public class ChatActivity extends AppCompatActivity {
 
         initializeHeaderText();
         setupSendButton();
+        setupModeSwitch();
     }
 
 
@@ -233,16 +231,23 @@ public class ChatActivity extends AppCompatActivity {
 
             if (isSender) {
                 textContainer.setLayoutParams(sendParams);
-                textContainer.setBackground(getDrawable(R.drawable.background_chat_send));
                 textView.setTextColor(Color.BLACK);
+
+                if (currentMessage.isEmergency()) {
+                    textContainer.setBackground(getDrawable(R.drawable.background_chat_send_emergency));
+                } else {
+                    textContainer.setBackground(getDrawable(R.drawable.background_chat_send));
+                }
+
             } else {
                 textContainer.setLayoutParams(receiveParams);
+                textView.setTextColor(Color.WHITE);
+
                 if (currentMessage.isEmergency()) {
                     textContainer.setBackground(getDrawable(R.drawable.background_chat_receive_emergency));
                 } else {
                     textContainer.setBackground(getDrawable(R.drawable.background_chat_receive));
                 }
-                textView.setTextColor(Color.WHITE);
             }
 
             return itemView;
@@ -253,4 +258,26 @@ public class ChatActivity extends AppCompatActivity {
         return (Objects.equals(message.getFromUser().getId(), currentUser.getId()));
     }
 
+
+    private void setupModeSwitch() {
+        if (toGroup) {
+            ConstraintLayout container = findViewById(R.id.chatActivity_modeSelectContainer);
+            container.setVisibility(View.VISIBLE);
+        } else {
+            return;
+        }
+
+        Switch btn = findViewById(R.id.chatActivity_modeSwitch);
+        btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    emergency = true;
+                } else {
+                    emergency = false;
+                }
+            }
+        });
+
+    }
 }

@@ -44,6 +44,7 @@ public class DashBoardActivity extends AppCompatActivity {
         uploadGpsLocation = new UploadGpsLocation(this);
         instance = Model.getInstance();
         updateCurrentUser();
+        checkIfUserIsParent();
 
         setupMessagesButton();
         handler.post(getUnreadMessagesRunnable);
@@ -60,11 +61,23 @@ public class DashBoardActivity extends AppCompatActivity {
         setupStopUploadButton();
     }
 
+    private void checkIfUserIsParent() {
+        LinearLayout trackUserBtn = findViewById(R.id.btnTracker);
+        trackUserBtn.setVisibility(View.GONE);
+        List<User> monitorList=  instance.getCurrentUser().getMonitorsUsers();
+        int monitorListSize = monitorList.size();
+
+        if(monitorListSize > 0){
+            trackUserBtn.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         updateCurrentUser();
         getUnreadMessages();
+        checkIfUserIsParent();
     }
 
     private void updateCurrentUser() {
@@ -159,7 +172,8 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setupSettingsButton() {
-        LinearLayout btn = findViewById(R.id.toUserProfile);
+//        LinearLayout btn = findViewById(R.id.toUserProfile);
+        Button btn = findViewById(R.id.toUserProfile);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,7 +184,8 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setupSimpleButtonActivityChange(int buttonId, Class activityName, boolean forResult) {
-        LinearLayout btn = findViewById(buttonId);
+//        LinearLayout btn = findViewById(buttonId);
+        Button btn = findViewById(buttonId);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,7 +200,8 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setupLogoutButton() {
-        LinearLayout logout = findViewById(R.id.btnLogout);
+//        LinearLayout logout = findViewById(R.id.btnLogout);
+        Button logout = findViewById(R.id.btnLogout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
