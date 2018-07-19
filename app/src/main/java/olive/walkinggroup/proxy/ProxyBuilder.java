@@ -146,7 +146,7 @@ public class ProxyBuilder {
             private void showFailure(String message) {
                 Log.e("ProxyBuilder", message);
                 if (context != null) {
-                    Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(context, message, Toast.LENGTH_LONG).show();
                 }
             }
         });

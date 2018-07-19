@@ -74,7 +74,6 @@ public class UploadGpsLocation {
                     getLocationAndUploadToServer();
                     if (hasArrivedAtDestLocation() && !hasArrived) {
                         Log.i("MyApp", "UploadGpsLocation arrived in destination location");
-                        Toast.makeText(activity, activity.getString(R.string.upload_gps_has_arrived), Toast.LENGTH_LONG ).show();
                         hasArrived = true;
                         startAutoStopTimer();
                     }
