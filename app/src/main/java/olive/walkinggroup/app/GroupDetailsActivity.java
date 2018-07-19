@@ -120,21 +120,17 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
         buildMemberList();
         displayYouTag();
-        setUpLeaderOnClick(groupLeader);
     }
 
     private void setUpLeaderOnClick(User leader){
-        if (checkChildrenInGroup() == true||(checkStatusInGroup()) == true) {
-            RelativeLayout leaderTag = findViewById(R.id.groupDetail_leaderContainer);
-            leaderTag.setOnClickListener(new AdapterView.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(GroupDetailsActivity.this,"Clicked",Toast.LENGTH_LONG).show();
-                    Intent intent = ParentDetail.makeIntent(GroupDetailsActivity.this, leader);
-                    startActivity(intent);
-                }
-            });
-        }
+        RelativeLayout leaderTag = findViewById(R.id.groupDetail_leaderContainer);
+        leaderTag.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = ParentDetail.makeIntent(GroupDetailsActivity.this, leader);
+                startActivity(intent);
+            }
+        });
     }
 
     private void buildMemberList() {
@@ -165,6 +161,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         monitorList = detailedList;
         if (checkChildrenInGroup()==true|| checkStatusInGroup()==true){
             populateMemberList();
+            setUpLeaderOnClick(groupLeader);
         }
         else{hideLoadingCircle();}
     }
@@ -363,7 +360,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         boolean inGroup = false;
         for (int i = 0; i < memberList.size() ; i++){
             for (int j = 0; j < currentUser.getMonitorsUsers().size() ;j++){
-                if ((memberList.get(i).getId()).equals(currentUser.getMonitorsUsers().get(j).getId())){
+                if ((group.getMemberUsers().get(i).getId()).equals(currentUser.getMonitorsUsers().get(j).getId())){
                     inGroup = true;
                 }
             }
@@ -375,12 +372,12 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         //If user is in the group
         boolean status = false;
         for (int i = 0; i < memberList.size() ;i++){
-            if(currentUser.getId().equals(memberList.get(i).getId())){
+            if((group.getMemberUsers().get(i).getId()).equals(currentUser.getId())){
                 status = true;
             }
         }
         //If user is the leader of the group
-        if((group.getLeader()).equals(currentUser)){
+        if((group.getLeader().getId()).equals(currentUser.getId())){
             status = true;
         }
         return status;
