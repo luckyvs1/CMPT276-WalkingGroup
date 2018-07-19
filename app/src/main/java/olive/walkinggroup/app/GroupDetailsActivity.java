@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -59,6 +60,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private Model model;
     private User currentUser;
+    private User groupLeader;
     private List<User> monitorList = new ArrayList<>();
     private UserListHelper userListHelper;
 
@@ -109,6 +111,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void onUpdateLeaderInfoResponse(User detailedLeader) {
+        groupLeader = detailedLeader;
         TextView leaderNameView = findViewById(R.id.groupDetail_leaderName);
         TextView leaderEmailView = findViewById(R.id.groupDetail_leaderEmail);
 
@@ -117,6 +120,17 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
         buildMemberList();
         displayYouTag();
+    }
+
+    private void setUpLeaderOnClick(User leader){
+        RelativeLayout leaderTag = findViewById(R.id.groupDetail_leaderContainer);
+        leaderTag.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = ParentDetail.makeIntent(GroupDetailsActivity.this, leader);
+                startActivity(intent);
+            }
+        });
     }
 
     private void buildMemberList() {
@@ -145,7 +159,11 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private void onGetMonitorUserListResponse(List<User> detailedList) {
         monitorList = detailedList;
-        populateMemberList();
+        if (checkChildrenInGroup()==true|| checkStatusInGroup()==true){
+            populateMemberList();
+            setUpLeaderOnClick(groupLeader);
+        }
+        else{hideLoadingCircle();}
     }
 
     // UI Logic:
@@ -161,6 +179,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
         hideLoadingCircle();
         registerClickCallback();
+
     }
 
     private void registerClickCallback() {
@@ -272,6 +291,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
                     populateMemberList();
                     addNewMemberToServer(userToAdd);
+                    setUpLeaderOnClick(groupLeader);
                     break;
                 }
 
@@ -290,6 +310,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
                     populateMemberList();
                     removeMemberFromGroup(userToRemove);
+                    finish();
                     break;
                 }
 
@@ -333,5 +354,33 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private void onRemoveMemberResponse(Void returnNothing) {
         Log.d(TAG, "Removed user from group.");
+    }
+
+    private boolean checkChildrenInGroup(){
+        //If user has a children in the group
+        boolean inGroup = false;
+        for (int i = 0; i < memberList.size() ; i++){
+            for (int j = 0; j < currentUser.getMonitorsUsers().size() ;j++){
+                if ((group.getMemberUsers().get(i).getId()).equals(currentUser.getMonitorsUsers().get(j).getId())){
+                    inGroup = true;
+                }
+            }
+        }
+        return inGroup;
+    }
+
+    private boolean checkStatusInGroup(){
+        //If user is in the group
+        boolean status = false;
+        for (int i = 0; i < memberList.size() ;i++){
+            if((group.getMemberUsers().get(i).getId()).equals(currentUser.getId())){
+                status = true;
+            }
+        }
+        //If user is the leader of the group
+        if((group.getLeader().getId()).equals(currentUser.getId())){
+            status = true;
+        }
+        return status;
     }
 }
