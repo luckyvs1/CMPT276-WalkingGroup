@@ -260,6 +260,10 @@ public class MessagesActivity extends AppCompatActivity {
             displayList.add(myGroupedMessagesList.get(i).get(0));
         }
 
+        if (displayList.size() == 0) {
+            hideLoadingCircle();
+        }
+
         populateList();
     }
 
