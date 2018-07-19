@@ -127,7 +127,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         leaderTag.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = ParentDetail.makeIntent(GroupDetailsActivity.this, leader);
+                Intent intent = UserDetailsActivity.makeIntent(GroupDetailsActivity.this, leader);
                 startActivity(intent);
             }
         });

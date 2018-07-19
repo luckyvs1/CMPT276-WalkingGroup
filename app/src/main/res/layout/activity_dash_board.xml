@@ -261,7 +261,6 @@
             android:layout_weight="1"
             >
 
-
             <LinearLayout
                 android:id="@+id/toMonitor"
                 android:layout_width="0dp"
