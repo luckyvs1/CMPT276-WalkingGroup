@@ -177,9 +177,11 @@ public class MessagesActivity extends AppCompatActivity {
                 }
 
                 // Send to a group currentUser leads
-                Group sendToGroup = detailedLeadList.get(dropdownSelectedPosition - positionDisplacement);
-                Intent intent = ChatActivity.makeIntent(MessagesActivity.this, sendToGroup.getGroupDescription(), false, false, true, sendToGroup);
-                startActivity(intent);
+                if ((dropdownSelectedPosition - positionDisplacement) >= 0 && detailedLeadList.size() > 0) {
+                    Group sendToGroup = detailedLeadList.get(dropdownSelectedPosition - positionDisplacement);
+                    Intent intent = ChatActivity.makeIntent(MessagesActivity.this, sendToGroup.getGroupDescription(), false, false, true, sendToGroup);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -193,6 +195,11 @@ public class MessagesActivity extends AppCompatActivity {
     }
 
     private void onGetMyMessagesResponse(List<Message> returnedList) {
+        if (returnedList.size() == 0) {
+            hideLoadingCircle();
+            return;
+        }
+
         myGroupedMessagesList = MessageHelper.groupByContact(removeSelfMessages(returnedList));
         myGroupedMessagesList = MessageHelper.sortMessageListOfList(myGroupedMessagesList);
 
