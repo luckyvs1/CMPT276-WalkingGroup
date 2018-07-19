@@ -106,7 +106,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtUserName"
+        app:layout_constraintTop_toBottomOf="@id/dashBoard_userNameContainer"
         app:layout_constraintBottom_toTopOf="@id/dashBoard_bottomBar"
         >
 
@@ -168,8 +168,6 @@
     <!--android:layout_marginTop="20dp"-->
     <!--android:layout_marginBottom="40dp"-->
     <!--&gt;-->
-
-    <!--&lt;!&ndash; Row 1 &ndash;&gt;-->
 
     <!--<LinearLayout-->
     <!--android:id="@+id/toMap"-->
@@ -254,8 +252,6 @@
     <!--/>-->
 
     <!--</LinearLayout>-->
-
-    <!--&lt;!&ndash; Row 2 &ndash;&gt;-->
 
     <!--<LinearLayout-->
     <!--android:id="@+id/toMonitor"-->

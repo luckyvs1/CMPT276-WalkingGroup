@@ -128,4 +128,5 @@
     <string name="view_address">Address:</string>
     <string name="view_birthday">Birthday:</string>
     <string name="view_name">Name:</string>
+    <string name="chatActivity_modeText">Send as emergency:</string>
 </resources>

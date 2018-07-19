@@ -281,6 +281,11 @@ public class MessagesActivity extends AppCompatActivity {
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.list_message_item, parent, false);
             }
+
+            if (displayList == null || displayList.size() == 0) {
+                return itemView;
+            }
+
             Message currentMessage = displayList.get(position);
             Boolean isRead = currentMessage.isRead();
 
