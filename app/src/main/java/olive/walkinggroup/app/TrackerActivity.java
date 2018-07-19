@@ -108,6 +108,23 @@ public class TrackerActivity extends AppCompatActivity implements OnMapReadyCall
 
 
         updateLastUpdatedTextView(gpsLocation, position);
+        updateTimestampTextView(gpsLocation, position);
+    }
+
+    private void updateTimestampTextView(GpsLocation gpsLocation, int position) {
+        ListView listView = findViewById(R.id.listView_trackUsers);
+        View view = listView.getChildAt(position - listView.getFirstVisiblePosition());
+
+        if (view == null) {
+            return;
+        }
+        String timestamp = gpsLocation.getTimestamp();
+        TextView textView = view.findViewById(R.id.trackUser_timestamp);
+        textView.setText("");
+        if (timestamp != null) {
+            String text = getString(R.string.track_user_timestamp) + " " + gpsLocation.getTimestamp();
+            textView.setText(text);
+        }
     }
 
     private void updateLastUpdatedTextView(GpsLocation gpsLocation, int position) {
