@@ -203,6 +203,10 @@ public class MessagesActivity extends AppCompatActivity {
         myGroupedMessagesList = MessageHelper.groupByContact(removeSelfMessages(returnedList));
         myGroupedMessagesList = MessageHelper.sortMessageListOfList(myGroupedMessagesList);
 
+        if (myGroupedMessagesList.size() == 0) {
+            hideLoadingCircle();
+        }
+
         buildContactIdList();
     }
 
@@ -233,6 +237,11 @@ public class MessagesActivity extends AppCompatActivity {
             long id = MessageHelper.getMessageContactId(currentListHead);
             contactIdList.add((int) id);
         }
+
+        if (contactIdList.size() == 0) {
+            hideLoadingCircle();
+        }
+
         getDetailedContactList();
     }
 
