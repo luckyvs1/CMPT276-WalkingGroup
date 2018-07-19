@@ -209,12 +209,16 @@ public class EditUserInformationActivity extends AppCompatActivity {
 
             if(birthYear != null){
                 intBirthYear = Integer.valueOf(birthYear);
-                dummyUser.setBirthYear(intBirthYear);
+                if((intBirthYear >= START_YEAR && intBirthYear <= CURRENT_YEAR)) {
+                    dummyUser.setBirthYear(intBirthYear);
+                }
             }
 
             if(birthMonth != null){
                 intBirthMonth = Integer.valueOf(birthMonth);
-                dummyUser.setBirthMonth(intBirthMonth);
+                if((intBirthMonth >= 1 && intBirthMonth <= 12)) {
+                    dummyUser.setBirthMonth(intBirthMonth);
+                }
             }
 
         } catch (NullPointerException e ) {
