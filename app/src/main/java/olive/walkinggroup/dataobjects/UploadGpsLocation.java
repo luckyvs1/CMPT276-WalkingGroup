@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -17,6 +18,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import olive.walkinggroup.R;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 
@@ -72,6 +74,7 @@ public class UploadGpsLocation {
                     getLocationAndUploadToServer();
                     if (hasArrivedAtDestLocation() && !hasArrived) {
                         Log.i("MyApp", "UploadGpsLocation arrived in destination location");
+                        Toast.makeText(activity, activity.getString(R.string.upload_gps_has_arrived), Toast.LENGTH_LONG ).show();
                         hasArrived = true;
                         startAutoStopTimer();
                     }
