@@ -291,6 +291,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
                     populateMemberList();
                     addNewMemberToServer(userToAdd);
+                    setUpLeaderOnClick(groupLeader);
                     break;
                 }
 
