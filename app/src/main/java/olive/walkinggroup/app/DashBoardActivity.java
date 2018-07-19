@@ -159,7 +159,8 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setupSettingsButton() {
-        LinearLayout btn = findViewById(R.id.toUserProfile);
+//        LinearLayout btn = findViewById(R.id.toUserProfile);
+        Button btn = findViewById(R.id.toUserProfile);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,7 +171,8 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setupSimpleButtonActivityChange(int buttonId, Class activityName, boolean forResult) {
-        LinearLayout btn = findViewById(buttonId);
+//        LinearLayout btn = findViewById(buttonId);
+        Button btn = findViewById(buttonId);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,7 +187,8 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setupLogoutButton() {
-        LinearLayout logout = findViewById(R.id.btnLogout);
+//        LinearLayout logout = findViewById(R.id.btnLogout);
+        Button logout = findViewById(R.id.btnLogout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
