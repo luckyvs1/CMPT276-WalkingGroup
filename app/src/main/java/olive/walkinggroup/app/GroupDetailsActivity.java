@@ -60,6 +60,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private Model model;
     private User currentUser;
+    private User groupLeader;
     private List<User> monitorList = new ArrayList<>();
     private UserListHelper userListHelper;
 
@@ -110,6 +111,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void onUpdateLeaderInfoResponse(User detailedLeader) {
+        groupLeader = detailedLeader;
         TextView leaderNameView = findViewById(R.id.groupDetail_leaderName);
         TextView leaderEmailView = findViewById(R.id.groupDetail_leaderEmail);
 
@@ -118,14 +120,17 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
         buildMemberList();
         displayYouTag();
+        setUpLeaderOnClick(groupLeader);
+    }
 
-        if (checkChildrenInGroup()==true||(checkStatusInGroup())==true) {
+    private void setUpLeaderOnClick(User leader){
+        if (checkChildrenInGroup() == true||(checkStatusInGroup()) == true) {
             RelativeLayout leaderTag = findViewById(R.id.groupDetail_leaderContainer);
             leaderTag.setOnClickListener(new AdapterView.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(GroupDetailsActivity.this,"Clicked",Toast.LENGTH_LONG).show();
-                    Intent intent = ParentDetail.makeIntent(GroupDetailsActivity.this, detailedLeader);
+                    Intent intent = ParentDetail.makeIntent(GroupDetailsActivity.this, leader);
                     startActivity(intent);
                 }
             });
@@ -149,10 +154,6 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         if (group.getMemberUsers().size() == memberList.size()) {
             getMonitorUserList();
         }
-        if(checkStatusInGroup()==true||checkChildrenInGroup()==true){
-            populateMemberList();
-        }
-        else{hideLoadingCircle();}
     }
 
     private void getMonitorUserList() {
@@ -162,7 +163,10 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private void onGetMonitorUserListResponse(List<User> detailedList) {
         monitorList = detailedList;
-        populateMemberList();
+        if (checkChildrenInGroup()==true|| checkStatusInGroup()==true){
+            populateMemberList();
+        }
+        else{hideLoadingCircle();}
     }
 
     // UI Logic:
@@ -177,9 +181,8 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         memberListView.setAdapter(adapter);
 
         hideLoadingCircle();
-        if (checkChildrenInGroup()==true|| checkStatusInGroup()==true){
-            registerClickCallback();
-        }
+        registerClickCallback();
+
     }
 
     private void registerClickCallback() {
@@ -370,10 +373,9 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private boolean checkStatusInGroup(){
         //If user is in the group
-        List<User> groupList = group.getMemberUsers();
         boolean status = false;
-        for (int i = 0; i < groupList.size() ;i++){
-            if(currentUser.getId().equals(groupList.get(i).getId())){
+        for (int i = 0; i < memberList.size() ;i++){
+            if(currentUser.getId().equals(memberList.get(i).getId())){
                 status = true;
             }
         }
@@ -381,6 +383,6 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         if((group.getLeader()).equals(currentUser)){
             status = true;
         }
-        return false;
+        return status;
     }
 }
