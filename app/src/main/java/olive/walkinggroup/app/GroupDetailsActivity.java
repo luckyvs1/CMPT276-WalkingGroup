@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -117,6 +118,18 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
         buildMemberList();
         displayYouTag();
+
+        if (checkChildrenInGroup()==true||(checkStatusInGroup())==true) {
+            RelativeLayout leaderTag = findViewById(R.id.groupDetail_leaderContainer);
+            leaderTag.setOnClickListener(new AdapterView.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(GroupDetailsActivity.this,"Clicked",Toast.LENGTH_LONG).show();
+                    Intent intent = ParentDetail.makeIntent(GroupDetailsActivity.this, detailedLeader);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     private void buildMemberList() {
@@ -136,6 +149,10 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         if (group.getMemberUsers().size() == memberList.size()) {
             getMonitorUserList();
         }
+        if(checkStatusInGroup()==true||checkChildrenInGroup()==true){
+            populateMemberList();
+        }
+        else{hideLoadingCircle();}
     }
 
     private void getMonitorUserList() {
@@ -160,7 +177,9 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         memberListView.setAdapter(adapter);
 
         hideLoadingCircle();
-        registerClickCallback();
+        if (checkChildrenInGroup()==true|| checkStatusInGroup()==true){
+            registerClickCallback();
+        }
     }
 
     private void registerClickCallback() {
@@ -290,6 +309,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
                     populateMemberList();
                     removeMemberFromGroup(userToRemove);
+                    finish();
                     break;
                 }
 
@@ -333,5 +353,34 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private void onRemoveMemberResponse(Void returnNothing) {
         Log.d(TAG, "Removed user from group.");
+    }
+
+    private boolean checkChildrenInGroup(){
+        //If user has a children in the group
+        boolean inGroup = false;
+        for (int i = 0; i < memberList.size() ; i++){
+            for (int j = 0; j < currentUser.getMonitorsUsers().size() ;j++){
+                if ((memberList.get(i).getId()).equals(currentUser.getMonitorsUsers().get(j).getId())){
+                    inGroup = true;
+                }
+            }
+        }
+        return inGroup;
+    }
+
+    private boolean checkStatusInGroup(){
+        //If user is in the group
+        List<User> groupList = group.getMemberUsers();
+        boolean status = false;
+        for (int i = 0; i < groupList.size() ;i++){
+            if(currentUser.getId().equals(groupList.get(i).getId())){
+                status = true;
+            }
+        }
+        //If user is the leader of the group
+        if((group.getLeader()).equals(currentUser)){
+            status = true;
+        }
+        return false;
     }
 }
