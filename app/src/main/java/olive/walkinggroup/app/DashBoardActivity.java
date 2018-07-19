@@ -53,7 +53,7 @@ public class DashBoardActivity extends AppCompatActivity {
         setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class, false);
         setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class, false);
         setupSimpleButtonActivityChange(R.id.dashBoard_viewMyGroupsBtn, ListGroupsActivity.class, true);
-        setupSettingsButton();
+        setupProfileButton();
         setupLogoutButton();
 
         setupTrackerButton();
@@ -81,6 +81,9 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void updateCurrentUser() {
+        if (instance.getCurrentUser() == null) {
+            return;
+        }
         Call<User> caller = instance.getProxy().getUserById(instance.getCurrentUser().getId());
         ProxyBuilder.callProxy(DashBoardActivity.this, caller, returnedUser -> getUserById(returnedUser));
     }
@@ -116,7 +119,6 @@ public class DashBoardActivity extends AppCompatActivity {
     };
 
     private void getUnreadMessages() {
-        Log.e(TAG, "getting unread messages. User id = " + instance.getCurrentUser().getId());
         Call<List<Message>> caller = instance.getProxy().getUnreadMessages(instance.getCurrentUser().getId(), false);
         ProxyBuilder.callProxy(this, caller, returnedList -> onGetUnreadMessagesResponse(returnedList));
     }
@@ -143,7 +145,6 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void getEmergencyMessages() {
-        Log.e(TAG, "getting emergency messages. User id = " + instance.getCurrentUser().getId());
         Call<List<Message>> caller = instance.getProxy().getUnreadMessages(instance.getCurrentUser().getId(), true);
         ProxyBuilder.callProxy(this, caller, returnedList -> onGetEmergencyMessagesResponse(returnedList));
     }
@@ -173,9 +174,9 @@ public class DashBoardActivity extends AppCompatActivity {
         }
     }
 
-    private void setupSettingsButton() {
-//        LinearLayout btn = findViewById(R.id.toUserProfile);
-        Button btn = findViewById(R.id.toUserProfile);
+    private void setupProfileButton() {
+        LinearLayout btn = findViewById(R.id.toUserProfile);
+//        Button btn = findViewById(R.id.toUserProfile);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,8 +187,8 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setupSimpleButtonActivityChange(int buttonId, Class activityName, boolean forResult) {
-//        LinearLayout btn = findViewById(buttonId);
-        Button btn = findViewById(buttonId);
+        LinearLayout btn = findViewById(buttonId);
+//        Button btn = findViewById(buttonId);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,8 +203,8 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setupLogoutButton() {
-//        LinearLayout logout = findViewById(R.id.btnLogout);
-        Button logout = findViewById(R.id.btnLogout);
+        LinearLayout logout = findViewById(R.id.btnLogout);
+//        Button logout = findViewById(R.id.btnLogout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
