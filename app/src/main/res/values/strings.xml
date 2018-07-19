@@ -130,4 +130,5 @@
     <string name="view_name">Name:</string>
     <string name="chatActivity_modeText">Send as emergency:</string>
     <string name="track_user_timestamp">Timestamp:</string>
+    <string name="upload_gps_has_arrived">You have arrived at destination location</string>
 </resources>

@@ -254,6 +254,27 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
+    // no manual stop upload
+//    private void setupStopUploadButton() {
+//        LinearLayout btn = findViewById(R.id.btnStopUpload);
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!instance.activeGroupSelected()) {
+//                    notifyUserViaLogAndToast("No active walking group selected");
+//                } else {
+//                    if (uploadGpsLocation.hasArrived()) {
+//                        notifyUserViaLogAndToast("Stopping upload");
+//                        uploadGpsLocation.stop();
+//                    } else {
+//                        notifyUserViaLogAndToast("You have not arrived at destination location");
+//                    }
+//                }
+//            }
+//
+//        });
+//    }
+
     private void setupStopUploadButton() {
         LinearLayout btn = findViewById(R.id.btnStopUpload);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -262,12 +283,9 @@ public class DashBoardActivity extends AppCompatActivity {
                 if (!instance.activeGroupSelected()) {
                     notifyUserViaLogAndToast("No active walking group selected");
                 } else {
-                    if (uploadGpsLocation.hasArrived()) {
-                        notifyUserViaLogAndToast("Stopping upload");
-                        uploadGpsLocation.stop();
-                    } else {
-                        notifyUserViaLogAndToast("You have not arrived at destination location");
-                    }
+                    notifyUserViaLogAndToast("Stopping upload");
+                    uploadGpsLocation.stop();
+
                 }
             }
 
