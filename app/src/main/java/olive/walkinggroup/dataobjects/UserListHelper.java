@@ -127,12 +127,23 @@ public class UserListHelper {
 
             setupTrackUserNameView(itemView, user);
             setupTrackUserLastUpdatedView(itemView, user);
+            setupTrackUserTimestampView(itemView,user);
             displayTag(itemView, user);
 
 
             return itemView;
         }
 
+        private void setupTrackUserTimestampView(View itemView, User user) {
+            String timestamp = user.getLastGpsLocation().getTimestamp();
+            TextView textView = itemView.findViewById(R.id.trackUser_timestamp);
+            textView.setText("");
+            if (timestamp != null) {
+                String text = activity.getString(R.string.track_user_timestamp) + " " + timestamp;
+                textView.setText(text);
+            }
+
+        }
         private void displayTag(View itemView, User user) {
             RelativeLayout leaderTag = itemView.findViewById(R.id.trackUserItem_leaderTag);
             leaderTag.setVisibility(View.GONE);
