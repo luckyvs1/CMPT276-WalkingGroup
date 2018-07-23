@@ -216,6 +216,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 // Remove the token and email from the shared preferences
                 storeToSharedPreferences("Token", nullValue);
                 storeToSharedPreferences("UserEmail", nullValue);
+                storeToSharedPreferences("UserPassword", nullValue);
 
                 // Stop Gps location upload
                 uploadGpsLocation.stop();
