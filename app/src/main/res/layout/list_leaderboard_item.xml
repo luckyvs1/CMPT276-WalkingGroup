@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:rowCount="1"
+    android:columnCount="3">
+
+    <TextView
+        android:id="@+id/leaderboardUser_rank"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_columnWeight="10"
+        android:text="@string/rank_points_placeholder" />
+
+    <TextView
+        android:id="@+id/leaderboardUser_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_columnWeight="70"
+        android:text="@string/sampleText"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/leaderboardUser_points"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_columnWeight="20"
+        android:text="@string/rank_points_placeholder" />
+
+
+</GridLayout>
