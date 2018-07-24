@@ -12,6 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,6 +36,7 @@ public class UserListHelper {
     private User currentUser;
     private MemberListAdapter adapter;
     private TrackerListAdapter trackerListAdapter;
+    private LeaderboardListAdapter leaderboardListAdapter;
     private static List<User> monitorList;
 
     public UserListHelper(Activity activity, List<User> userList, User currentUser, List<User> monitorList) {
@@ -179,6 +182,47 @@ public class UserListHelper {
 
     }
 
+    public LeaderboardListAdapter getLeaderboardListAdapter() {
+        return leaderboardListAdapter;
+    }
+
+
+    private class LeaderboardListAdapter extends ArrayAdapter<User> {
+        public LeaderboardListAdapter() {
+            super(activity, R.layout.list_leaderboard_item, userList);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = activity.getLayoutInflater().inflate(R.layout.list_tracker_user_item, parent, false);
+            }
+            User user = userList.get(position);
+            setupLeaderboardUserNameView(itemView, user);
+            setupLeaderboardUserRankView(itemView, position);
+            setupLeaderboardUserPointsView(itemView,user);
+            return itemView;
+        }
+
+        private void setupLeaderboardUserPointsView(View itemView, User user) {
+            TextView textView = itemView.findViewById(R.id.leaderboardUser_points);
+            String points = user.getTotalPointsEarned() + "";
+            textView.setText(points);
+        }
+
+        private void setupLeaderboardUserRankView(View itemView, int position) {
+            TextView textView = itemView.findViewById(R.id.leaderboardUser_rank);
+            String rank = (position + 1) + "";
+            textView.setText(rank);
+        }
+
+        private void setupLeaderboardUserNameView(View itemView, User user) {
+            TextView textView = itemView.findViewById(R.id.leaderboardUser_name);
+            textView.setText(user.getName());
+        }
+    }
 
 
 
@@ -256,6 +300,7 @@ public class UserListHelper {
             return 0;
         }
     }
+
 
 
 }
