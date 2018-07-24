@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,6 +22,7 @@ import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Message;
 import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.UpdateUserPoints;
 import olive.walkinggroup.dataobjects.UploadGpsLocation;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
@@ -34,7 +34,9 @@ public class DashBoardActivity extends AppCompatActivity {
     private static final int GET_UNREAD_MESSAGES_INTERVAL = 60000;
     private Model instance;
     private UploadGpsLocation uploadGpsLocation;
+    private UpdateUserPoints updateUserPoints;
     private Handler handler = new Handler();
+    private Boolean hasCompletedCurrentWalk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,8 @@ public class DashBoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dash_board);
 
         uploadGpsLocation = new UploadGpsLocation(this);
+        updateUserPoints = new UpdateUserPoints(this);
+
         instance = Model.getInstance();
         updateCurrentUser();
         checkIfUserIsParent();
