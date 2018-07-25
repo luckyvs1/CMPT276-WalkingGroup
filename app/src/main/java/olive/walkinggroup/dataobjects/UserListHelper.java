@@ -214,7 +214,13 @@ public class UserListHelper {
 
         private void setupLeaderboardUserPointsView(View itemView, User user) {
             TextView textView = itemView.findViewById(R.id.leaderboardUser_points);
-            String points = user.getTotalPointsEarned() + "";
+            String points;
+            if (user.getTotalPointsEarned() == null) {
+                points = "0";
+            } else {
+                points = user.getTotalPointsEarned() + "";
+            }
+
             textView.setText(points);
         }
 
@@ -307,6 +313,31 @@ public class UserListHelper {
         }
     }
 
+    public static List<User> sortUsersByPoints(List<User> listToSort) {
+        class SortByPoints implements Comparator<User> {
+
+            @Override
+            public int compare(User o1, User o2) {
+                int userPoints1;
+                int userPoints2;
+                if (o1.getTotalPointsEarned() == null) {
+                    userPoints1 = 0;
+                } else {
+                    userPoints1 = o1.getTotalPointsEarned();
+                }
+
+                if (o2.getTotalPointsEarned() == null) {
+                    userPoints2 = 0;
+                } else {
+                    userPoints2 = o2.getTotalPointsEarned();
+                }
+                return userPoints2 - userPoints1;
+            }
+        }
+        Collections.sort(listToSort, new SortByPoints());
+        return listToSort;
+
+    }
 
 
 }

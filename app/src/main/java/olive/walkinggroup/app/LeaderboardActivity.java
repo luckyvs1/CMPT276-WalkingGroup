@@ -23,6 +23,8 @@ public class LeaderboardActivity extends AppCompatActivity {
 
     private List<User> leaderboardUsers;
 
+    private static final int LEADERBOARD_LENGTH = 100;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,14 @@ public class LeaderboardActivity extends AppCompatActivity {
 
     private void onGetAllUsers(List<User> returnedUsers) {
         // TODO: filter top 100
-        leaderboardUsers = returnedUsers;
+        returnedUsers = UserListHelper.sortUsersByPoints(returnedUsers);
+
+        if (returnedUsers.size() > LEADERBOARD_LENGTH) {
+            leaderboardUsers = returnedUsers.subList(0,LEADERBOARD_LENGTH);
+        } else {
+            leaderboardUsers = returnedUsers;
+        }
+
 
         populateUserList();
 
