@@ -1,6 +1,6 @@
 package olive.walkinggroup.dataobjects;
 
-public class StoreLogic {
+public class GameLogic {
     private int currentPoints;
     private int totalPoints;
 
@@ -19,5 +19,7 @@ public class StoreLogic {
     public void setTotalPoints(int totalPoints) {
         this.totalPoints = totalPoints;
     }
+
+
 
 }
