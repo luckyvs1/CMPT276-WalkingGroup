@@ -1,7 +1,12 @@
 package olive.walkinggroup.app;
 
+import android.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import olive.walkinggroup.R;
@@ -17,12 +22,16 @@ public class StoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
 
-        setCurrentPoints();
+        setupCurrentPoints();
+        setupScrollView();
     }
 
-    private void setCurrentPoints(){
+    private void setupCurrentPoints(){
         int currentPoints = user.getCurrentPoints();
         TextView viewPoints = findViewById(R.id.shop_currentPoint);
         viewPoints.append(" "+currentPoints);
+    }
+
+    private void setupScrollView(){
     }
 }
