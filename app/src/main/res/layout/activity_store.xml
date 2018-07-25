@@ -65,7 +65,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView5"
+                android:id="@+id/shelve_tier1"
                 android:layout_width="match_parent"
                 android:layout_height="145dp"
                 android:contentDescription="Tier 1"
@@ -74,7 +74,7 @@
                 tools:layout_editor_absoluteY="120dp" />
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/shelve_tier2"
                 android:layout_width="match_parent"
                 android:layout_height="145dp"
                 android:contentDescription="Tier 2"
@@ -83,7 +83,7 @@
                 tools:layout_editor_absoluteY="120dp" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/shelve_tier3"
                 android:layout_width="match_parent"
                 android:layout_height="145dp"
                 android:contentDescription="Tier 3"
@@ -92,7 +92,7 @@
                 tools:layout_editor_absoluteY="120dp" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/shelve_tier4"
                 android:layout_width="match_parent"
                 android:layout_height="145dp"
                 android:contentDescription="Tier 4"
@@ -101,7 +101,7 @@
                 tools:layout_editor_absoluteY="120dp" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/shelve_tier5"
                 android:layout_width="match_parent"
                 android:layout_height="145dp"
                 android:contentDescription="Tier 5"
