@@ -136,4 +136,5 @@
     <string name="leaderboard_rank_title">#</string>
     <string name="leaderboard_name_title">Name</string>
     <string name="leaderboard_points_title">Points</string>
+    <string name="leaderboard_main_title">Leaderboard</string>
 </resources>

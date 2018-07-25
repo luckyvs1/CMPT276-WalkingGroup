@@ -7,6 +7,26 @@
     android:orientation="vertical"
     tools:context=".app.LeaderboardActivity">
 
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:background="@color/colorAccent"
+        android:elevation="2dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/leaderboard_main_title"
+            android:textColor="#fff"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            />
+
+    </RelativeLayout>
+
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gridLeaderboardTitles"
         android:layout_width="match_parent"
@@ -14,6 +34,7 @@
         android:layout_height="0dp"
         android:columnCount="3"
         android:padding="5dp"
+        android:background="@color/colorPrimary"
         android:rowCount="1">
 
         <TextView
@@ -23,7 +44,7 @@
             android:layout_columnWeight="10"
             android:text="@string/leaderboard_rank_title"
             android:textAlignment="viewStart"
-            android:textColor="#000"
+            android:textColor="#FFF"
             android:textSize="14sp" />
 
         <TextView
@@ -32,7 +53,7 @@
             android:layout_height="match_parent"
             android:layout_columnWeight="65"
             android:text="@string/leaderboard_name_title"
-            android:textColor="#000"
+            android:textColor="#FFF"
             android:textSize="14sp" />
 
         <TextView
@@ -42,7 +63,7 @@
             android:layout_columnWeight="25"
             android:text="@string/leaderboard_points_title"
             android:textAlignment="textStart"
-            android:textColor="#000"
+            android:textColor="#FFF"
             android:textSize="14sp" />
 
 
@@ -51,7 +72,12 @@
     <ListView
         android:id="@+id/listLeaderboardUsers"
         android:layout_width="match_parent"
-        android:layout_weight="95"
+        android:layout_weight="90"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp" />
+
+
+
+
+
 </LinearLayout>
