@@ -21,6 +21,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.app.GroupDetailsActivity;
@@ -228,6 +230,8 @@ public class UserListHelper {
                 points = user.getTotalPointsEarned() + "";
             }
 
+
+
             textView.setText(points);
         }
 
@@ -239,7 +243,36 @@ public class UserListHelper {
 
         private void setupLeaderboardUserNameView(View itemView, User user) {
             TextView textView = itemView.findViewById(R.id.leaderboardUser_name);
-            textView.setText(user.getName());
+
+            String text = getModifiedName(user.getName());
+
+            textView.setText(text);
+        }
+
+        private String getModifiedName(String name) {
+            
+            String modifiedName = name.trim();
+            Pattern pattern = Pattern.compile("(^[a-zA-Z ,.'-]+$)");
+            Matcher matcher = pattern.matcher(modifiedName);
+            if (!matcher.find()){
+                // Not a proper name (Contains digits/special symbols)
+                Log.i("MyApp", "Test");
+                return modifiedName;
+            } else {
+                int firstSpaceIndex = modifiedName.indexOf(' ');
+                if (modifiedName.indexOf(' ') != -1) {
+                    String firstName = modifiedName.substring(0, firstSpaceIndex);
+
+                    int lastSpaceIndex = modifiedName.lastIndexOf(' ');
+                    String lastNameInitial = Character.toUpperCase(modifiedName.charAt(lastSpaceIndex + 1)) + ".";
+                    
+                    return firstName + " " + lastNameInitial;
+
+                } else {
+                    // No last name
+                    return modifiedName;
+                }
+            }
         }
     }
 
