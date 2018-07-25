@@ -139,4 +139,7 @@
     <string name="leaderboard_main_title">Leaderboard</string>
     <string name="btn_view_current_rewards">View current rewards</string>
     <string name="btn_ok_currentrewards">OK</string>
+    <string name="exclamationMark">!</string>
+    <string name="dashBoard_permissionsText">Permissions</string>
+    <string name="viewPermissions_headerText">Permissions</string>
 </resources>
