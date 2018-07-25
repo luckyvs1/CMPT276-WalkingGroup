@@ -16,6 +16,7 @@ import olive.walkinggroup.dataobjects.User;
 public class StoreActivity extends AppCompatActivity {
     private Model instance = Model.getInstance();
     private User user = instance.getCurrentUser();
+    private int totalPoints;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +28,12 @@ public class StoreActivity extends AppCompatActivity {
     }
 
     private void setupCurrentPoints(){
-        int currentPoints = user.getCurrentPoints();
+        if(user.getTotalPointsEarned()==null)
+            {totalPoints = 0;}
+        else
+            {totalPoints = user.getCurrentPoints();}
         TextView viewPoints = findViewById(R.id.shop_currentPoint);
-        viewPoints.append(" "+currentPoints);
+        viewPoints.append(" "+totalPoints);
     }
 
     private void setupScrollView(){
