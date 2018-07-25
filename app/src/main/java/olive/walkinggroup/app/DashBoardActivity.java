@@ -46,9 +46,11 @@ public class DashBoardActivity extends AppCompatActivity {
         updateCurrentUser();
         checkIfUserIsParent();
 
+        // Top
         setupMessagesButton();
         handler.post(getUnreadMessagesRunnable);
 
+        // Center
         setupSimpleButtonActivityChange(R.id.toMonitor, MonitorActivity.class, false);
         setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class, false);
         setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class, false);
@@ -56,9 +58,12 @@ public class DashBoardActivity extends AppCompatActivity {
         setupProfileButton();
         setupLogoutButton();
 
+        // Bottom
         setupTrackerButton();
         setupPanicButton();
         setupStopUploadButton();
+        setupSimpleButtonActivityChange(R.id.dashBoard_permissionsBtn, ViewPermissionsActivity.class, false);
+        notifyNewPermissionRequest();
     }
 
     private void checkIfUserIsParent() {
@@ -290,6 +295,23 @@ public class DashBoardActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    // Show a "!" next to permissions icon to signify pending request
+    private void notifyNewPermissionRequest() {
+        // if new request, show exclamation mark:
+        TextView exclamationMark = findViewById(R.id.dashBoard_permissionsExclamation);
+        if (hasPendingPermissions()) {
+            exclamationMark.setVisibility(View.VISIBLE);
+        } else {
+            exclamationMark.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private boolean hasPendingPermissions() {
+        // check if there is pending permissions.
+        // TODO: add server calls
+        return true;
     }
 
     // Other logic
