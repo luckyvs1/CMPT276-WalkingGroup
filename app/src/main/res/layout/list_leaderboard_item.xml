@@ -17,7 +17,7 @@
         android:id="@+id/leaderboardUser_name"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_columnWeight="70"
+        android:layout_columnWeight="65"
         android:text="@string/sampleText"
         android:textSize="14sp" />
 
@@ -25,7 +25,7 @@
         android:id="@+id/leaderboardUser_points"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_columnWeight="20"
+        android:layout_columnWeight="25"
         android:text="@string/rank_points_placeholder" />
 
 

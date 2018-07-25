@@ -30,7 +30,7 @@
             android:id="@+id/leaderboardTitle_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_columnWeight="70"
+            android:layout_columnWeight="65"
             android:text="@string/leaderboard_name_title"
             android:textColor="#000"
             android:textSize="14sp" />
@@ -39,7 +39,7 @@
             android:id="@+id/leaderboardTitle_points"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_columnWeight="20"
+            android:layout_columnWeight="25"
             android:text="@string/leaderboard_points_title"
             android:textAlignment="textStart"
             android:textColor="#000"

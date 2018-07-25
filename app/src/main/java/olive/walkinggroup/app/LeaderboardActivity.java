@@ -19,6 +19,7 @@ import retrofit2.Call;
 public class LeaderboardActivity extends AppCompatActivity {
 
     private Model instance;
+    private User currentUser;
     private UserListHelper userListHelper;
 
     private List<User> leaderboardUsers;
@@ -32,6 +33,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_leaderboard);
 
         instance = Model.getInstance();
+        currentUser = instance.getCurrentUser();
 
         getAllUsersFromServer();
     }
@@ -42,7 +44,6 @@ public class LeaderboardActivity extends AppCompatActivity {
     }
 
     private void onGetAllUsers(List<User> returnedUsers) {
-        // TODO: filter top 100
         returnedUsers = UserListHelper.sortUsersByPoints(returnedUsers);
 
         if (returnedUsers.size() > LEADERBOARD_LENGTH) {
@@ -59,7 +60,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     }
 
     private void populateUserList() {
-        userListHelper = new UserListHelper(this, leaderboardUsers);
+        userListHelper = new UserListHelper(this, leaderboardUsers, currentUser);
         ArrayAdapter<User> adapter = userListHelper.getLeaderboardListAdapter();
         ListView listView = findViewById(R.id.listLeaderboardUsers);
         listView.setAdapter(adapter);

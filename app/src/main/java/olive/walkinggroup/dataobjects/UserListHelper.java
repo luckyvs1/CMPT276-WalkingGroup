@@ -2,6 +2,7 @@ package olive.walkinggroup.dataobjects;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -49,9 +50,10 @@ public class UserListHelper {
 
     }
 
-    public UserListHelper(Activity activity, List<User> userList) {
+    public UserListHelper(Activity activity, List<User> userList, User currentUser) {
         this.activity = activity;
         this.userList = userList;
+        this.currentUser = currentUser;
         leaderboardListAdapter = new LeaderboardListAdapter();
     }
 
@@ -205,7 +207,12 @@ public class UserListHelper {
             if (itemView == null) {
                 itemView = activity.getLayoutInflater().inflate(R.layout.list_leaderboard_item, parent, false);
             }
+
             User user = userList.get(position);
+            if (sameUser(currentUser, user)) {
+                itemView.setBackgroundColor(Color.GREEN);
+            }
+
             setupLeaderboardUserNameView(itemView, user);
             setupLeaderboardUserRankView(itemView, position);
             setupLeaderboardUserPointsView(itemView,user);
