@@ -70,13 +70,23 @@
 
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/dashBoard_store"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
+        <RelativeLayout
+            android:id="@+id/dashBoard_StoreBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_toStartOf="@+id/dashBoard_messagesBtn"
-            app:srcCompat="@drawable/ic_store_black_24dp" />
+            android:background="@drawable/background_header_button"
+            android:padding="10dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp">
+
+            <ImageView
+                android:id="@+id/dashBoard_store"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_store_black_24dp" />
+        </RelativeLayout>
 
     </RelativeLayout>
 

@@ -165,7 +165,7 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setUpStoreButton() {
-        ImageView storeIcon = findViewById(R.id.dashBoard_store);
+        RelativeLayout storeIcon = findViewById(R.id.dashBoard_StoreBtn);
         storeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
