@@ -49,6 +49,12 @@ public class UserListHelper {
 
     }
 
+    public UserListHelper(Activity activity, List<User> userList) {
+        this.activity = activity;
+        this.userList = userList;
+        leaderboardListAdapter = new LeaderboardListAdapter();
+    }
+
     public MemberListAdapter getAdapter() {
         return adapter;
     }
@@ -197,7 +203,7 @@ public class UserListHelper {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             View itemView = convertView;
             if (itemView == null) {
-                itemView = activity.getLayoutInflater().inflate(R.layout.list_tracker_user_item, parent, false);
+                itemView = activity.getLayoutInflater().inflate(R.layout.list_leaderboard_item, parent, false);
             }
             User user = userList.get(position);
             setupLeaderboardUserNameView(itemView, user);

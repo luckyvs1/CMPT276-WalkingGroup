@@ -133,7 +133,7 @@
     <string name="upload_gps_has_arrived">You have arrived at destination location</string>
     <string name="btn_leaderboard">Leaderboard</string>
     <string name="rank_points_placeholder">000</string>
-    <string name="leaderboard_rank_title">Rank</string>
+    <string name="leaderboard_rank_title">#</string>
     <string name="leaderboard_name_title">Name</string>
     <string name="leaderboard_points_title">Points</string>
 </resources>
