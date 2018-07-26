@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.Dash;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -56,11 +58,23 @@ public class DashBoardActivity extends AppCompatActivity {
 
         setupProfileButton();
         setUpStoreButton();
+        setUpLeaderBoardButton();
         setupLogoutButton();
 
         setupTrackerButton();
         setupPanicButton();
         setupStopUploadButton();
+    }
+
+    private void setUpLeaderBoardButton() {
+        RelativeLayout relativeLayout = findViewById(R.id.dashBoard_leaderboardBtn);
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = LeaderboardActivity.makeLaunchIntent(DashBoardActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 
     private void checkIfUserIsParent() {

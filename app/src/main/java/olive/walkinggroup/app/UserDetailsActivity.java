@@ -42,7 +42,6 @@ public class UserDetailsActivity extends AppCompatActivity {
         registerClickCallback();
         setupEditButton();
     }
-
     private void checkToDisplayEdit() {
         if(user != null){
             editPermission = UserListHelper.isOnMonitorsUserList(instance.getCurrentUser(), user);
