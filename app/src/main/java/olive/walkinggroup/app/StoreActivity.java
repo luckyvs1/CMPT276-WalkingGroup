@@ -31,14 +31,14 @@ public class StoreActivity extends AppCompatActivity {
         if(user.getTotalPointsEarned()==null)
             {totalPoints = 0;}
         else
-            {totalPoints = user.getCurrentPoints();}
+            {totalPoints = user.getTotalPointsEarned();}
         TextView viewPoints = findViewById(R.id.shop_currentPoint);
         viewPoints.append(" "+totalPoints);
     }
 
     private void setupScrollView(){
         for(int i = 0 ; i < 5 ; i++){
-            
+
         }
     }
 }

@@ -52,9 +52,9 @@
 
     <ScrollView
         android:id="@+id/ShopList"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
+        android:layout_width="wrap_content"
+        android:layout_height="390"
+        android:layout_marginTop="122dp"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
