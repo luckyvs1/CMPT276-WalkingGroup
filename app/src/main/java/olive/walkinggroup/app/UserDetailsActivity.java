@@ -41,20 +41,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         verifyMonitoredUsersList();
         registerClickCallback();
         setupEditButton();
-        setupLeaderboardButton();
     }
-
-    private void setupLeaderboardButton() {
-        Button btn = findViewById(R.id.btnLeaderboard);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = LeaderboardActivity.makeLaunchIntent(UserDetailsActivity.this);
-                startActivity(intent);
-            }
-        });
-    }
-
     private void checkToDisplayEdit() {
         if(user != null){
             editPermission = UserListHelper.isOnMonitorsUserList(instance.getCurrentUser(), user);

@@ -256,7 +256,7 @@ public class UserListHelper {
             Matcher matcher = pattern.matcher(modifiedName);
             if (!matcher.find()){
                 // Not a proper name (Contains digits/special symbols)
-                Log.i("MyApp", "Test");
+
                 return modifiedName;
             } else {
                 int firstSpaceIndex = modifiedName.indexOf(' ');
