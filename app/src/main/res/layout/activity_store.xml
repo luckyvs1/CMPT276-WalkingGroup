@@ -38,7 +38,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome! Please choose your rewards!"
+            android:text="Welcome!"
             android:textSize="18sp" />
 
         <TextView
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Your current point is:"
+            android:text="Your point is:"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -64,50 +64,194 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
+            <RelativeLayout
                 android:id="@+id/shelve_tier1"
                 android:layout_width="match_parent"
-                android:layout_height="145dp"
-                android:contentDescription="Tier 1"
-                app:srcCompat="@drawable/shelf"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="120dp" />
+                android:layout_height="120dp"
+                android:background="@drawable/shelf"
+                android:orientation="vertical">
 
-            <ImageView
+                <ImageView
+                    android:id="@+id/avatar_11"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="55dp"
+                    app:srcCompat="@drawable/avatar11" />
+
+                <ImageView
+                    android:id="@+id/avatar_12"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignTop="@+id/avatar_11"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/avatar12" />
+
+                <ImageView
+                    android:id="@+id/avatar_13"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/avatar_11"
+                    android:layout_marginEnd="55dp"
+                    app:srcCompat="@drawable/avatar13" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/shelve_tier2"
                 android:layout_width="match_parent"
-                android:layout_height="145dp"
-                android:contentDescription="Tier 2"
-                app:srcCompat="@drawable/shelf"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="120dp" />
+                android:layout_height="120dp"
+                android:background="@drawable/shelf"
+                android:orientation="vertical">
 
-            <ImageView
+                <ImageView
+                    android:id="@+id/avatar_21"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="55dp"
+                    app:srcCompat="@drawable/avatar21" />
+
+                <ImageView
+                    android:id="@+id/avatar_22"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignTop="@+id/avatar_21"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/avatar22" />
+
+                <ImageView
+                    android:id="@+id/avatar_23"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/avatar_21"
+                    android:layout_marginEnd="55dp"
+                    app:srcCompat="@drawable/avatar23" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/shelve_tier3"
                 android:layout_width="match_parent"
-                android:layout_height="145dp"
-                android:contentDescription="Tier 3"
-                app:srcCompat="@drawable/shelf"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="120dp" />
+                android:layout_height="120dp"
+                android:background="@drawable/shelf"
+                android:orientation="vertical">
 
-            <ImageView
+                <ImageView
+                    android:id="@+id/avatar_31"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="55dp"
+                    app:srcCompat="@drawable/avatar31" />
+
+                <ImageView
+                    android:id="@+id/avatar_32"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignTop="@+id/avatar_31"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/avatar32" />
+
+                <ImageView
+                    android:id="@+id/avatar_33"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/avatar_31"
+                    android:layout_marginEnd="55dp"
+                    app:srcCompat="@drawable/avatar33" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/shelve_tier4"
                 android:layout_width="match_parent"
-                android:layout_height="145dp"
-                android:contentDescription="Tier 4"
-                app:srcCompat="@drawable/shelf"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="120dp" />
+                android:layout_height="120dp"
+                android:background="@drawable/shelf"
+                android:orientation="vertical">
 
-            <ImageView
+                <ImageView
+                    android:id="@+id/avatar_41"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="55dp"
+                    app:srcCompat="@drawable/avatar41" />
+
+                <ImageView
+                    android:id="@+id/avatar_42"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignTop="@+id/avatar_41"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/avatar42" />
+
+                <ImageView
+                    android:id="@+id/avatar_43"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/avatar_41"
+                    android:layout_marginEnd="55dp"
+                    app:srcCompat="@drawable/avatar43" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/shelve_tier5"
                 android:layout_width="match_parent"
-                android:layout_height="145dp"
-                android:contentDescription="Tier 5"
-                app:srcCompat="@drawable/shelf"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="164dp" />
+                android:layout_height="120dp"
+                android:background="@drawable/shelf"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/avatar_51"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="55dp"
+                    app:srcCompat="@drawable/avatar51" />
+
+                <ImageView
+                    android:id="@+id/avatar_52"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignTop="@+id/avatar_51"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/avatar52" />
+
+                <ImageView
+                    android:id="@+id/avatar_53"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/avatar_51"
+                    android:layout_marginEnd="55dp"
+                    app:srcCompat="@drawable/avatar53" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/shelve_tier6"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/shelf"
+                android:orientation="vertical">
+
+            </RelativeLayout>
+
         </LinearLayout>
     </ScrollView>
 

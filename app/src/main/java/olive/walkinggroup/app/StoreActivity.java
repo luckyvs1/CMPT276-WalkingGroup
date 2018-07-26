@@ -37,5 +37,8 @@ public class StoreActivity extends AppCompatActivity {
     }
 
     private void setupScrollView(){
+        for(int i = 0 ; i < 5 ; i++){
+            
+        }
     }
 }
