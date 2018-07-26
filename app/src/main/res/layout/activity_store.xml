@@ -53,8 +53,8 @@
     <ScrollView
         android:id="@+id/ShopList"
         android:layout_width="wrap_content"
-        android:layout_height="390"
-        android:layout_marginTop="122dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="130dp"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -98,6 +98,21 @@
                     android:layout_marginEnd="55dp"
                     app:srcCompat="@drawable/avatar13" />
 
+                <TextView
+                    android:id="@+id/cover_tier1"
+                    android:text="Get 100 Total Points to Unlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:shadowColor="#000000"
+                    android:shadowRadius="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:background="#55000000"/>
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -133,6 +148,21 @@
                     android:layout_alignTop="@+id/avatar_21"
                     android:layout_marginEnd="55dp"
                     app:srcCompat="@drawable/avatar23" />
+
+                <TextView
+                    android:id="@+id/cover_tier2"
+                    android:text="Get 200 Total Points to Unlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:shadowColor="#000000"
+                    android:shadowRadius="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:background="#55000000"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -168,6 +198,21 @@
                     android:layout_alignTop="@+id/avatar_31"
                     android:layout_marginEnd="55dp"
                     app:srcCompat="@drawable/avatar33" />
+
+                <TextView
+                    android:id="@+id/cover_tier3"
+                    android:text="Get 300 Total Points to Unlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:shadowColor="#000000"
+                    android:shadowRadius="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:background="#55000000"/>
 
             </RelativeLayout>
 
@@ -205,6 +250,21 @@
                     android:layout_marginEnd="55dp"
                     app:srcCompat="@drawable/avatar43" />
 
+                <TextView
+                    android:id="@+id/cover_tier4"
+                    android:text="Get 400 Total Points to Unlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:shadowColor="#000000"
+                    android:shadowRadius="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:background="#55000000"/>
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -241,6 +301,21 @@
                     android:layout_marginEnd="55dp"
                     app:srcCompat="@drawable/avatar53" />
 
+                <TextView
+                    android:id="@+id/cover_tier5"
+                    android:text="Get 500 Total Points to Unlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:shadowColor="#000000"
+                    android:shadowRadius="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:background="#55000000"/>
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -250,6 +325,20 @@
                 android:background="@drawable/shelf"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/cover_tier6"
+                    android:text="Coming Soon ..."
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:shadowColor="#000000"
+                    android:shadowRadius="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:background="#55000000"/>
             </RelativeLayout>
 
         </LinearLayout>
