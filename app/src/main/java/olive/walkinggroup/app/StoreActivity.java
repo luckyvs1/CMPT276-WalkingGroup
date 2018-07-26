@@ -22,14 +22,22 @@ public class StoreActivity extends AppCompatActivity {
     private Model instance = Model.getInstance();
     private User user = instance.getCurrentUser();
     private int totalPoints;
+    TextView [] coverTiers = new TextView [5];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
 
+        for(int i = 0 ; i < 5 ; i++) {
+            String ID = "cover_tier"+(i+1);
+            int resID = getResources().getIdentifier(ID,"id",getPackageName());
+            coverTiers [i] = findViewById(resID);
+        }
+
         setupCurrentPoints();
-        setupScrollView();
+        setupCoverVisibility();
+        setupTierClickable();
     }
 
     private void setupCurrentPoints(){
@@ -41,13 +49,34 @@ public class StoreActivity extends AppCompatActivity {
         viewPoints.append(" "+totalPoints);
     }
 
-    private void setupScrollView(){
-        ImageView avatar = findViewById(R.id.avatar_11);
-        avatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(StoreActivity.this,"Clicked",Toast.LENGTH_SHORT).show();
+    private void setupCoverVisibility() {
+        for(int i = 0 ; i < 5 ; i ++){
+            int targetPoints = (i+1)*100;
+            if(totalPoints >= targetPoints){
+                coverTiers[i].setVisibility(View.GONE);
             }
-        });
+        }
+    }
+
+    private void setupTierClickable(){
+        for (int i = 0 ; i < 5 ; i++) {
+            if (coverTiers[i].getVisibility() == View.GONE) {
+                setupAvatarClickable(i);
+            }
+        }
+    }
+
+    private void setupAvatarClickable(int i){
+        for (int j = 0 ; j < 3 ; j++){
+            String ID = "avatar_"+(i+1)+(j+1);
+            int resID = getResources().getIdentifier(ID,"id",getPackageName());
+            ImageView avatar = findViewById(resID);
+            avatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(StoreActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }
