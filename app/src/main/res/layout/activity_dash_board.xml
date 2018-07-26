@@ -10,69 +10,82 @@
         android:id="@+id/dashBoard_header"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:elevation="5dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:elevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        >
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dashBoard_headerText"
             android:layout_alignParentStart="true"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="#fff"
             android:layout_centerVertical="true"
-            android:padding="10dp"
             android:layout_marginStart="6dp"
-            />
+            android:padding="10dp"
+            android:text="@string/dashBoard_headerText"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:id="@+id/dashBoard_messagesBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
-            android:padding="10dp"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
             android:background="@drawable/background_header_button"
-            >
+            android:padding="10dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp">
 
             <ImageView
                 android:id="@+id/dashBoard_messagesIcon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/ic_message_white"
                 android:layout_centerInParent="true"
                 android:layout_toEndOf="@id/dashBoard_messagesText"
-                />
+                android:src="@drawable/ic_message_white" />
 
             <ImageView
                 android:id="@+id/dashBoard_emergencyIcon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/ic_alert_red"
                 android:layout_centerInParent="true"
                 android:layout_toEndOf="@id/dashBoard_messagesText"
-                android:visibility="invisible"
-                />
+                android:src="@drawable/ic_alert_red"
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/dashBoard_messagesText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/dashBoard_messagesIcon"
+                android:layout_centerVertical="true"
+                android:padding="2dp"
+                android:textColor="#d0ffffff"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="#d0ffffff"
-                android:padding="2dp"
-                android:layout_centerVertical="true"
-                android:layout_alignBottom="@id/dashBoard_messagesIcon"
-                android:visibility="visible"
-                />
+                android:visibility="visible" />
 
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/dashBoard_StoreBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toStartOf="@+id/dashBoard_messagesBtn"
+            android:background="@drawable/background_header_button"
+            android:padding="10dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp">
+
+            <ImageView
+                android:id="@+id/dashBoard_store"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_store_black_24dp" />
         </RelativeLayout>
 
     </RelativeLayout>
