@@ -51,6 +51,7 @@ public class StoreActivity extends AppCompatActivity {
 
     private void setupCoverVisibility() {
         for(int i = 0 ; i < 5 ; i ++){
+            //TODO: Set up points needed to unlock tier
             int targetPoints = (i+1)*100;
             if(totalPoints >= targetPoints){
                 coverTiers[i].setVisibility(View.GONE);
@@ -74,6 +75,7 @@ public class StoreActivity extends AppCompatActivity {
             avatar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //TODO: Avatar on click action
                     Toast.makeText(StoreActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 }
             });
