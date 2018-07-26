@@ -2,6 +2,7 @@ package olive.walkinggroup.dataobjects;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -12,12 +13,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.app.GroupDetailsActivity;
@@ -34,6 +39,7 @@ public class UserListHelper {
     private User currentUser;
     private MemberListAdapter adapter;
     private TrackerListAdapter trackerListAdapter;
+    private LeaderboardListAdapter leaderboardListAdapter;
     private static List<User> monitorList;
 
     public UserListHelper(Activity activity, List<User> userList, User currentUser, List<User> monitorList) {
@@ -44,6 +50,13 @@ public class UserListHelper {
         adapter = new MemberListAdapter();
         trackerListAdapter = new TrackerListAdapter();
 
+    }
+
+    public UserListHelper(Activity activity, List<User> userList, User currentUser) {
+        this.activity = activity;
+        this.userList = userList;
+        this.currentUser = currentUser;
+        leaderboardListAdapter = new LeaderboardListAdapter();
     }
 
     public MemberListAdapter getAdapter() {
@@ -179,6 +192,89 @@ public class UserListHelper {
 
     }
 
+    public LeaderboardListAdapter getLeaderboardListAdapter() {
+        return leaderboardListAdapter;
+    }
+
+
+    private class LeaderboardListAdapter extends ArrayAdapter<User> {
+        public LeaderboardListAdapter() {
+            super(activity, R.layout.list_leaderboard_item, userList);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = activity.getLayoutInflater().inflate(R.layout.list_leaderboard_item, parent, false);
+            }
+
+            User user = userList.get(position);
+            if (sameUser(currentUser, user)) {
+                itemView.setBackgroundColor(Color.GREEN);
+            }
+
+            setupLeaderboardUserNameView(itemView, user);
+            setupLeaderboardUserRankView(itemView, position);
+            setupLeaderboardUserPointsView(itemView,user);
+            return itemView;
+        }
+
+        private void setupLeaderboardUserPointsView(View itemView, User user) {
+            TextView textView = itemView.findViewById(R.id.leaderboardUser_points);
+            String points;
+            if (user.getTotalPointsEarned() == null) {
+                points = "0";
+            } else {
+                points = user.getTotalPointsEarned() + "";
+            }
+
+
+
+            textView.setText(points);
+        }
+
+        private void setupLeaderboardUserRankView(View itemView, int position) {
+            TextView textView = itemView.findViewById(R.id.leaderboardUser_rank);
+            String rank = (position + 1) + "";
+            textView.setText(rank);
+        }
+
+        private void setupLeaderboardUserNameView(View itemView, User user) {
+            TextView textView = itemView.findViewById(R.id.leaderboardUser_name);
+
+            String text = getModifiedName(user.getName());
+
+            textView.setText(text);
+        }
+
+        private String getModifiedName(String name) {
+            
+            String modifiedName = name.trim();
+            Pattern pattern = Pattern.compile("(^[a-zA-Z ,.'-]+$)");
+            Matcher matcher = pattern.matcher(modifiedName);
+            if (!matcher.find()){
+                // Not a proper name (Contains digits/special symbols)
+
+                return modifiedName;
+            } else {
+                int firstSpaceIndex = modifiedName.indexOf(' ');
+                if (modifiedName.indexOf(' ') != -1) {
+                    String firstName = modifiedName.substring(0, firstSpaceIndex);
+
+                    int lastSpaceIndex = modifiedName.lastIndexOf(' ');
+                    String lastNameInitial = Character.toUpperCase(modifiedName.charAt(lastSpaceIndex + 1)) + ".";
+                    
+                    return firstName + " " + lastNameInitial;
+
+                } else {
+                    // No last name
+                    return modifiedName;
+                }
+            }
+        }
+    }
 
 
 
@@ -255,6 +351,32 @@ public class UserListHelper {
             }
             return 0;
         }
+    }
+
+    public static List<User> sortUsersByPoints(List<User> listToSort) {
+        class SortByPoints implements Comparator<User> {
+
+            @Override
+            public int compare(User o1, User o2) {
+                int userPoints1;
+                int userPoints2;
+                if (o1.getTotalPointsEarned() == null) {
+                    userPoints1 = 0;
+                } else {
+                    userPoints1 = o1.getTotalPointsEarned();
+                }
+
+                if (o2.getTotalPointsEarned() == null) {
+                    userPoints2 = 0;
+                } else {
+                    userPoints2 = o2.getTotalPointsEarned();
+                }
+                return userPoints2 - userPoints1;
+            }
+        }
+        Collections.sort(listToSort, new SortByPoints());
+        return listToSort;
+
     }
 
 
