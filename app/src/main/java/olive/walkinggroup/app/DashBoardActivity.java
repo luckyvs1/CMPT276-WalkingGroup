@@ -53,7 +53,9 @@ public class DashBoardActivity extends AppCompatActivity {
         setupSimpleButtonActivityChange(R.id.toMap, FindGroupsActivity.class, false);
         setupSimpleButtonActivityChange(R.id.toCreateGroup, CreateGroupActivity.class, false);
         setupSimpleButtonActivityChange(R.id.dashBoard_viewMyGroupsBtn, ListGroupsActivity.class, true);
+
         setupProfileButton();
+        setUpStoreButton();
         setupLogoutButton();
 
         setupTrackerButton();
@@ -160,6 +162,17 @@ public class DashBoardActivity extends AppCompatActivity {
         }
         alertIcon.setVisibility(View.VISIBLE);
         messageIcon.setVisibility(View.INVISIBLE);
+    }
+
+    private void setUpStoreButton() {
+        RelativeLayout storeIcon = findViewById(R.id.dashBoard_StoreBtn);
+        storeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashBoardActivity.this, StoreActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // Center Menu
