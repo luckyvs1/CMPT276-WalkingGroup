@@ -2,11 +2,12 @@ package olive.walkinggroup.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -23,6 +24,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
 
     private Rewards rewards;
     private List<List<Integer>> iconIds;
+    ImageView previouslySelectedIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,17 +66,27 @@ public class CurrentRewardsActivity extends AppCompatActivity {
             ImageView colTwoId = itemView.findViewById(R.id.imageViewCurrentRewardItem_Col2);
             ImageView colThreeId = itemView.findViewById(R.id.imageViewCurrentRewardItem_Col3);
 
-
             setupImageViewColumn(colOneId, position, 0);
             setupImageViewColumn(colTwoId, position, 1);
             setupImageViewColumn(colThreeId, position, 2);
-
             return itemView;
         }
 
         private void setupImageViewColumn(ImageView imageView, int position, int col) {
             int imageResourceId = iconIds.get(position).get(col);
             imageView.setImageResource(imageResourceId);
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (previouslySelectedIcon != null) {
+                        previouslySelectedIcon.clearColorFilter();
+                    }
+                    imageView.setColorFilter(Color.CYAN, PorterDuff.Mode.LIGHTEN);
+                    previouslySelectedIcon = imageView;
+
+                }
+            });
 
         }
     }
