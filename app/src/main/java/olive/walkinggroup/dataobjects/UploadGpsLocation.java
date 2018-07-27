@@ -64,7 +64,9 @@ public class UploadGpsLocation {
         cancelTimers();
         hasArrived = false;
         activeGroup = instance.getActiveGroup();
+
         if (instance.activeGroupSelected()) {
+
             setGroupDestLocation();
             currentLocationHelper.getLocationPermission();
             uploadTimer = new Timer();
@@ -74,6 +76,8 @@ public class UploadGpsLocation {
                     getLocationAndUploadToServer();
                     if (hasArrivedAtDestLocation() && !hasArrived) {
                         Log.i("MyApp", "UploadGpsLocation arrived in destination location");
+                        instance.setCompletedWalkGroup(activeGroup);
+
                         hasArrived = true;
                         startAutoStopTimer();
                     }

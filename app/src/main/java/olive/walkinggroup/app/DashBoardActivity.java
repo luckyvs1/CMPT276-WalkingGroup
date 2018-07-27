@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.Dash;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private static final String TAG = "DashBoardActivity";
     private static final int REQUEST_CODE_VIEW_GROUPS_START_WALK = 0;
     private static final int GET_UNREAD_MESSAGES_INTERVAL = 60000;
+    private static final int EARTH_RADIUS_METERS = 6371000;
     private Model instance;
     private UploadGpsLocation uploadGpsLocation;
     private UpdateUserPoints updateUserPoints;
@@ -51,6 +53,7 @@ public class DashBoardActivity extends AppCompatActivity {
         instance = Model.getInstance();
         updateCurrentUser();
         checkIfUserIsParent();
+        updateUserPoints();
 
         setupMessagesButton();
         handler.post(getUnreadMessagesRunnable);
@@ -98,6 +101,7 @@ public class DashBoardActivity extends AppCompatActivity {
         updateCurrentUser();
         getUnreadMessages();
         checkIfUserIsParent();
+        updateUserPoints();
     }
 
     private void updateCurrentUser() {
@@ -323,6 +327,122 @@ public class DashBoardActivity extends AppCompatActivity {
 
         });
     }
+
+
+    // Update User Points
+    // ---------------------------------------------------------------------------------------------
+
+    private void updateUserPoints() {
+
+        if(instance.getCompletedWalkGroup() != null) {
+            Log.d("UpdatePoints", "Walk was completed");
+            double distanceWalked = getDistanceBetweenTwoPointsInM(instance.getCompletedWalkGroup().getStartPoint(), instance.getCompletedWalkGroup().getEndPoint());
+            updateUserPointsEarned(distanceWalked);
+            updateUser();
+        }
+    }
+
+    private double getDistanceBetweenTwoPointsInM(LatLng firstPoint, LatLng secondPoint) {
+
+        double destinationLatitude = secondPoint.latitude;
+        double destinationLongitude = secondPoint.longitude;
+        double meetingLatitude = firstPoint.latitude;
+        double meetingLongitude = firstPoint.longitude;
+
+        Log.d("UpdatePoints", Double.toString(destinationLatitude));
+        Log.d("UpdatePoints", Double.toString(destinationLongitude));
+        Log.d("UpdatePoints", Double.toString(meetingLatitude));
+        Log.d("UpdatePoints", Double.toString(meetingLongitude));
+
+        //Get the distance of the walk
+        // Haversine pseudocode from:https://community.esri.com/groups/coordinate-reference-systems/blog/2017/10/05/haversine-formula
+        Double phi_1 = Math.toRadians(destinationLatitude);
+        Double phi_2 = Math.toRadians(meetingLatitude);
+
+        Double delta_phi = Math.toRadians(destinationLatitude - meetingLatitude);
+        Double delta_lambda = Math.toRadians(destinationLongitude - meetingLongitude);
+
+
+        //a = sin²(φB - φA/2) + cos φA * cos φB * sin²(λB - λA/2)
+        //c = 2 * atan2( √a, √(1−a) )
+        //d = R ⋅ c -- distanceInMeters
+
+        Double a = Math.pow(Math.sin(delta_phi / 2.0), 2) + Math.cos(phi_1) * Math.cos(phi_2) * Math.pow(Math.sin(delta_lambda / 2.0), 2);
+
+        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        Double distanceInMeters = EARTH_RADIUS_METERS * c;
+
+        Log.d("UpdatePoints", Double.toString(distanceInMeters));
+
+        return distanceInMeters;
+    }
+
+    private void updateUserPointsEarned(Double distanceInMeters) {
+
+        Log.d("UpdatePoints", Double.toString(distanceInMeters));
+
+        Long distanceToPoints = (Math.round(distanceInMeters));
+
+        Log.d("UpdatePoints", Long.toString(distanceToPoints));
+
+        // Long to Integer from StackOverflow
+        Integer accumulatedPoints = distanceToPoints != null ? distanceToPoints.intValue() : null;
+
+        Log.d("UpdatePoints",Integer.toString(accumulatedPoints));
+
+        Integer currentPoints = instance.getCurrentUser().getCurrentPoints() != null ? instance.getCurrentUser().getCurrentPoints() : 0;
+        Integer totalPoints = instance.getCurrentUser().getTotalPointsEarned() != null ? instance.getCurrentUser().getTotalPointsEarned() : 0;
+
+        currentPoints += accumulatedPoints;
+        totalPoints += accumulatedPoints;
+
+        Log.d("UpdatePoints", Integer.toString(currentPoints));
+        Log.d("UpdatePoints", Integer.toString(totalPoints));
+
+        instance.getCurrentUser().setTotalPointsEarned(totalPoints);
+        instance.getCurrentUser().setCurrentPoints(currentPoints);
+
+        Log.d("UpdatePoints", Integer.toString(instance.getCurrentUser().getCurrentPoints()));
+        Log.d("UpdatePoints", Integer.toString(instance.getCurrentUser().getTotalPointsEarned()));
+    }
+
+    private void updateUser() {
+        Log.d("UpdatePoints", "Called Update User");
+
+        Integer currentPoints = instance.getCurrentUser().getCurrentPoints();
+        Integer totalPoints = instance.getCurrentUser().getTotalPointsEarned();
+
+        User dummyUser = new User();
+
+        dummyUser.setCurrentPoints(currentPoints);
+        dummyUser.setTotalPointsEarned(totalPoints);
+        dummyUser.setEmail(instance.getCurrentUser().getEmail());
+        dummyUser.setId(instance.getCurrentUser().getId());
+        dummyUser.setName(instance.getCurrentUser().getName());
+
+        Call<User> caller = instance.getProxy().updateUser(instance.getCurrentUser().getId(), dummyUser);
+        Log.d("UpdatePoints", "Called Update User after caller");
+
+        ProxyBuilder.callProxy(DashBoardActivity.this, caller, updatedUser -> updateUserResponse(updatedUser));
+        Log.d("UpdatePoints", "Called Update User after proxy builder");
+
+    }
+
+    private void updateUserResponse(User updatedUserWithPoints) {
+
+        Log.d("UpdatePoints", "The updated user is" + updatedUserWithPoints.toString());
+
+        instance.setCurrentUser(updatedUserWithPoints);
+        Log.d("UpdatePoints", Integer.toString(instance.getCurrentUser().getCurrentPoints()));
+        Log.d("UpdatePoints", Integer.toString(instance.getCurrentUser().getTotalPointsEarned()));
+
+        Log.d("UpdatePoints", "Set Group To Null");
+        instance.setCompletedWalkGroup(null);
+
+        updateCurrentUser();
+    }
+
 
     // Other logic
     // ---------------------------------------------------------------------------------------------

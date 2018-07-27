@@ -2,6 +2,8 @@ package olive.walkinggroup.dataobjects;
 
 import android.app.Activity;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 
@@ -21,12 +23,12 @@ public class UpdateUserPoints {
         activeGroup = instance.getActiveGroup();
     }
 
-    private double getDistanceBetweenTwoPointsInM(GpsLocation firstPoint, GpsLocation secondPoint) {
+    private double getDistanceBetweenTwoPointsInM(LatLng firstPoint, LatLng secondPoint) {
 
-        double destinationLatitude = secondPoint.getLat();
-        double destinationLongitude = secondPoint.getLng();
-        double meetingLatitude = firstPoint.getLat();
-        double meetingLongitude = firstPoint.getLng();
+        double destinationLatitude = secondPoint.latitude;
+        double destinationLongitude = secondPoint.longitude;
+        double meetingLatitude = firstPoint.latitude;
+        double meetingLongitude = firstPoint.longitude;
 
         //Get the distance of the walk
         // Haversine pseudocode from:https://community.esri.com/groups/coordinate-reference-systems/blog/2017/10/05/haversine-formula
@@ -62,7 +64,13 @@ public class UpdateUserPoints {
         instance.getCurrentUser().setTotalPointsEarned(totalPoints);
         instance.getCurrentUser().setCurrentPoints(currentPoints);
 
-        Call<User> caller = instance.getProxy().updateUser(instance.getCurrentUser().getId(), instance.getCurrentUser());
+        User dummyUser = new User();
+
+        dummyUser.setCurrentPoints(currentPoints);
+        dummyUser.setTotalPointsEarned(totalPoints);
+        dummyUser.setId(instance.getCurrentUser().getId());
+
+        Call<User> caller = instance.getProxy().updateUser(instance.getCurrentUser().getId(), dummyUser);
         ProxyBuilder.callProxy(activity, caller, updatedUser -> updateUserResponse(updatedUser));
     }
 
