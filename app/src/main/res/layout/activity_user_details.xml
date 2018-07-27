@@ -208,6 +208,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/btnEditInformation"
         android:layout_alignEnd="@+id/btnEditInformation"
-        android:text="View current rewards" />
+        android:text="@string/btn_view_current_rewards" />
 
 </RelativeLayout>
