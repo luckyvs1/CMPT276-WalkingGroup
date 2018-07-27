@@ -6,6 +6,7 @@ import android.graphics.Color;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * (Rewards may not be used during first project iteration or two)
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SelectedRewards {
+public class SelectedRewards implements Serializable{
 
     private String selectedTitle = "Title";
     private Integer selectedIconId = 0;
