@@ -41,7 +41,20 @@ public class UserDetailsActivity extends AppCompatActivity {
         verifyMonitoredUsersList();
         registerClickCallback();
         setupEditButton();
+        setupCurrentRewardsButton();
     }
+
+    private void setupCurrentRewardsButton() {
+        Button btn  = findViewById(R.id.btnCurrentRewards);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = CurrentRewardsActivity.makeLaunchIntent(UserDetailsActivity.this);
+                startActivity(intent);
+            }
+        });
+    }
+
     private void checkToDisplayEdit() {
         if(user != null){
             editPermission = UserListHelper.isOnMonitorsUserList(instance.getCurrentUser(), user);

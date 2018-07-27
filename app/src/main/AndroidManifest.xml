@@ -66,55 +66,55 @@
             android:name=".app.FindGroupsActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_join_group"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".app.GroupDetailsActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".app.ListGroupsActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".app.SelectUserActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".app.MessagesActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".app.ChatActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".app.UserDetailsActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".app.ParentDetail"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".app.EditUserInformationActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".app.TrackerActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".app.LeaderboardActivity"></activity>
-        <activity android:name=".app.StoreActivity"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".app.LeaderboardActivity" />
+        <activity android:name=".app.StoreActivity" />
+        <activity android:name=".app.CurrentRewardsActivity"></activity>
     </application>
 
 </manifest>
