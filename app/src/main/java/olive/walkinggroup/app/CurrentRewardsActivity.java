@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -18,24 +19,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 import olive.walkinggroup.R;
+import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.Rewards;
+import olive.walkinggroup.dataobjects.SelectedRewards;
+import olive.walkinggroup.dataobjects.User;
+import olive.walkinggroup.proxy.ProxyBuilder;
+import retrofit2.Call;
 
 public class CurrentRewardsActivity extends AppCompatActivity {
 
     private Rewards rewards;
     private List<List<Integer>> iconIds;
-    ImageView previouslySelectedIcon;
+    private ImageView previouslySelectedIcon;
+    private int selectedIconId;
+    private Model instance;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_rewards);
 
-
+        instance = Model.getInstance();
+        currentUser = instance.getCurrentUser();
 
         rewards = new Rewards(this);
         iconIds = new ArrayList<>(rewards.getUnlockedIconsUpToTier(5));
         setupListIcons();
+        setupOKButton();
+    }
+
+    private void setupOKButton() {
+        Button btn = findViewById(R.id.btnCurrentRewardsOK);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectedRewards selectedRewards = new SelectedRewards("Title", selectedIconId);
+                currentUser.setRewards(selectedRewards);
+                updateUserOnServer();
+                finish();
+            }
+        });
     }
 
     private void setupListIcons() {
@@ -47,6 +71,15 @@ public class CurrentRewardsActivity extends AppCompatActivity {
 
     public static Intent makeLaunchIntent(Context context) {
         return new Intent(context, CurrentRewardsActivity.class);
+    }
+
+    private void updateUserOnServer() {
+
+        Call<User> caller = instance.getProxy().updateUser(currentUser.getId(), currentUser);
+        ProxyBuilder.callProxy(this, caller, returnedUsers -> onUpdateUser(returnedUsers));
+    }
+
+    private void onUpdateUser(User returnedUsers) {
     }
 
     private class IconsAdapter extends ArrayAdapter<List<Integer>> {
@@ -84,8 +117,10 @@ public class CurrentRewardsActivity extends AppCompatActivity {
                     }
                     imageView.setColorFilter(Color.CYAN, PorterDuff.Mode.LIGHTEN);
                     previouslySelectedIcon = imageView;
+                    selectedIconId = imageResourceId;
 
                 }
+
             });
 
         }

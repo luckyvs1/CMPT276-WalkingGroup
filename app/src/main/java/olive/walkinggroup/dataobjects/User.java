@@ -58,7 +58,7 @@ public class User extends IdItemBase implements Serializable{
     private Integer currentPoints;
     private Integer totalPointsEarned;
     // rewards will be serialized to be the customJson
-    private EarnedRewards rewards;
+    private SelectedRewards rewards;
 
     private List<User> monitoredByUsers = new ArrayList<>();
     private List<User> monitorsUsers = new ArrayList<>();
@@ -304,7 +304,7 @@ public class User extends IdItemBase implements Serializable{
             try {
                 rewards = new ObjectMapper().readValue(
                         jsonString,
-                        EarnedRewards.class);
+                        SelectedRewards.class);
                 Log.w("USER", "De-serialized embedded rewards object: " + rewards);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -324,10 +324,10 @@ public class User extends IdItemBase implements Serializable{
         return customAsJson;
     }
 
-    public EarnedRewards getRewards() {
+    public SelectedRewards getRewards() {
         return rewards;
     }
-    public void setRewards(EarnedRewards rewards) {
+    public void setRewards(SelectedRewards rewards) {
         this.rewards = rewards;
     }
 
