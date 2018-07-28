@@ -8,9 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_rectangle_rounded_white"
-        android:layout_margin="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:elevation="5dp"
-        android:padding="10dp"
+        android:padding="8dp"
         android:orientation="vertical"
         >
 
@@ -21,104 +23,135 @@
             >
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/permissionItem_actionTxt"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/listPermission_tagContainer"
+                app:layout_constraintEnd_toStartOf="@id/permissionItem_tagContainer"
 
                 android:textSize="18sp"
                 android:textColor="#000"
                 android:textStyle="bold"
 
-                android:text="Request to join group"
+                android:text="@string/sampleText"
                 />
 
 
-            <LinearLayout
-                android:id="@+id/listPermission_tagContainer"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/permissionItem_tagContainer"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@id/permissionItem_actionTxt"
                 >
 
                 <TextView
+                    android:id="@+id/permissionItem_deniedTag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:background="@drawable/background_tag_dark_red"
                     android:gravity="center"
                     android:textColor="#fff"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/permissionItem_deniedTagTxt"
 
-                    android:text="DENIED"
                     />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/permissionItem_approvedTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_tag_navy_blue"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/permissionItem_approvedTagTxt"
+                    />
 
+                <TextView
+                    android:id="@+id/permissionItem_pendingTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_tag_teal"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/permissionItem_pendingTagTxt"
+                    />
 
-
-
+            </RelativeLayout>
 
         </android.support.constraint.ConstraintLayout>
 
         <TextView
+            android:id="@+id/permissionItem_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textColor="#000"
-
-            android:text="Bobby (email: bobby@bob.com) requests to join Jim's walking group."
+            android:text="@string/sampleText"
             />
 
         <LinearLayout
-            android:id="@+id/listPermission_authorizerContainer"
+            android:id="@+id/permissionItem_userApprovedOrDeniedContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
             >
 
             <TextView
+                android:id="@+id/permissionItem_userApprovedOrDenied"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
                 android:textSize="15sp"
                 android:textColor="#000"
-                android:textStyle="bold"
+                android:textStyle="italic"
 
                 android:background="#fff"
                 android:elevation="2dp"
-                android:padding="8dp"
+                android:padding="5dp"
                 android:layout_margin="3dp"
 
-                android:text="Denied by Bob Bob"
+                android:text="@string/sampleText"
                 />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/listPermission_actionButtonContainer"
+            android:id="@+id/permissionItem_actionButtonContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             >
 
             <Button
+                android:id="@+id/permissionItem_approveBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:background="#fff"
-                android:text="APPROVE"
+                android:text="@string/permissionItem_approveBtnTxt"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 />
 
             <Button
+                android:id="@+id/permissionItem_denyBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:background="#fff"
-                android:text="DENY"
+                android:text="@string/permissionItem_denyBtnTxt"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 />
