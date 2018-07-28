@@ -32,18 +32,6 @@ public class PointsHelper {
         return totalPoints;
     }
 
-    private void setTierPoints() {
-        int n1 = 0;
-        int n2 = 4000;
-
-        for(int i = 0 ; i < 10 ; i++){
-            int n3 = n1 + n2;
-            TierPoints[i] = n3;
-            n1 = n2;
-            n2 = n3;
-        }
-    }
-
     public int [] getTierPoints(){
         return TierPoints;
     }
@@ -59,8 +47,19 @@ public class PointsHelper {
     }
 
     public int getPointsNeeded(){
-        int points = 0;
-        points = TierPoints[currentTier+1] - currentPoints;
+        int points = TierPoints[currentTier+1] - currentPoints;
         return points;
+    }
+
+    private void setTierPoints() {
+        int n1 = 0;
+        int n2 = 4000;
+
+        for(int i = 0 ; i < 10 ; i++){
+            int n3 = n1 + n2;
+            TierPoints[i] = n3;
+            n1 = n2;
+            n2 = n3;
+        }
     }
 }
