@@ -9,6 +9,9 @@ public class PointsHelper {
     int totalPoints;
     int [] TierPoints = new int[10];
 
+    int n1 = 0;
+    int n2 = 4000;
+
     public PointsHelper(){
         if(user.getTotalPointsEarned()==null)
         {totalPoints = 0;}
@@ -52,9 +55,6 @@ public class PointsHelper {
     }
 
     private void setTierPoints() {
-        int n1 = 0;
-        int n2 = 4000;
-
         for(int i = 0 ; i < 10 ; i++){
             int n3 = n1 + n2;
             TierPoints[i] = n3;
