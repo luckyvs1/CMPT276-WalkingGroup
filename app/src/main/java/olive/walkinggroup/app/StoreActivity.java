@@ -16,12 +16,20 @@ import android.widget.Toast;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.PointsHelper;
 import olive.walkinggroup.dataobjects.User;
 
 public class StoreActivity extends AppCompatActivity {
     private Model instance = Model.getInstance();
     private User user = instance.getCurrentUser();
+    private PointsHelper pointsHelper = new PointsHelper();
+
     private int totalPoints;
+    private int currentPoints;
+    private int currentTier;
+    private int pointsNeeded;
+    private int [] TierPoints;
+
     TextView [] coverTiers = new TextView [5];
 
     @Override
@@ -29,34 +37,34 @@ public class StoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
 
+        currentTier = pointsHelper.getCurrentTier();
+        pointsNeeded = pointsHelper.getPointsNeeded();
+        TierPoints = pointsHelper.getTierPoints();
+
         for(int i = 0 ; i < 5 ; i++) {
             String ID = "cover_tier"+(i+1);
             int resID = getResources().getIdentifier(ID,"id",getPackageName());
             coverTiers [i] = findViewById(resID);
+            coverTiers[i].setText("Get "+TierPoints[i]+" Total Points to Unlock");
         }
 
-        setupCurrentPoints();
+        setupPointsView();
         setupCoverVisibility();
-        setupTierClickable();
+//        setupTierClickable();
     }
 
-    private void setupCurrentPoints(){
-        if(user.getTotalPointsEarned()==null)
-            {totalPoints = 0;}
-        else
-            {totalPoints = user.getTotalPointsEarned();}
+    private void setupPointsView(){
+        totalPoints = pointsHelper.getTotalPoints();
+        currentPoints = pointsHelper.getCurrentPoints();
         TextView viewPoints = findViewById(R.id.shop_currentPoint);
-        viewPoints.append(" "+totalPoints);
+        viewPoints.setText("Current points: "+currentPoints+"\nTotal points: "+totalPoints);
     }
 
     private void setupCoverVisibility() {
-        for(int i = 0 ; i < 5 ; i ++){
-            //TODO: Set up points needed to unlock tier
-            int targetPoints = (i+1)*100;
-            if(totalPoints >= targetPoints){
-                coverTiers[i].setVisibility(View.GONE);
-            }
+        for(int i = 0 ; i <= currentTier ; i ++){
+            coverTiers[i].setVisibility(View.GONE);
         }
+        coverTiers[currentTier+1].append("\n"+"You still need "+pointsNeeded+" points !");
     }
 
     private void setupTierClickable(){

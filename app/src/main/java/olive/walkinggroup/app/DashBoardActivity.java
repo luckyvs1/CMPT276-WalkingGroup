@@ -8,14 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.model.Dash;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +34,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private Model instance;
     private UploadGpsLocation uploadGpsLocation;
     private Handler handler = new Handler();
+    private Boolean hasCompletedCurrentWalk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +42,7 @@ public class DashBoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dash_board);
 
         uploadGpsLocation = new UploadGpsLocation(this);
+
         instance = Model.getInstance();
         updateCurrentUser();
         checkIfUserIsParent();
@@ -130,6 +129,9 @@ public class DashBoardActivity extends AppCompatActivity {
         public void run() {
             Log.d(TAG, "Getting messages from server...");
             getUnreadMessages();
+
+            //Update user when fetching messages
+            updateCurrentUser();
             handler.postDelayed(getUnreadMessagesRunnable, GET_UNREAD_MESSAGES_INTERVAL);
         }
     };
@@ -193,7 +195,8 @@ public class DashBoardActivity extends AppCompatActivity {
     // -------------------------------
     private void displayUserName() {
         try {
-            String message = "Welcome, " + instance.getCurrentUser().getName() + "!";
+            Integer currentPoints = instance.getCurrentUser().getTotalPointsEarned() != null ? instance.getCurrentUser().getTotalPointsEarned() : 0;
+            String message = "Welcome, " + instance.getCurrentUser().getName() + "! You have " + currentPoints + " points.";
             TextView userName = (TextView) findViewById(R.id.txtUserName);
             userName.setText(message);
         } catch (NullPointerException e) {
@@ -243,6 +246,7 @@ public class DashBoardActivity extends AppCompatActivity {
                 // Remove the token and email from the shared preferences
                 storeToSharedPreferences("Token", nullValue);
                 storeToSharedPreferences("UserEmail", nullValue);
+                storeToSharedPreferences("UserPassword", nullValue);
 
                 // Stop Gps location upload
                 uploadGpsLocation.stop();
@@ -318,6 +322,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
         });
     }
+
 
     // Other logic
     // ---------------------------------------------------------------------------------------------
