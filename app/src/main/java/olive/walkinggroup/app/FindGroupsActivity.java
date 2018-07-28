@@ -166,7 +166,7 @@ public class FindGroupsActivity extends FragmentActivity implements OnMapReadyCa
 
     private void markGroups(List<Group> returnedList) {
         for (Group group : returnedList) {
-            if (group.getRouteLatArray() != null && group.getRouteLngArray() != null) {
+            if (group.getRouteLatArray() != null && group.getRouteLngArray() != null && group.getLeader() != null) {
                 if (group.getRouteLatArray().length >= 2 && group.getRouteLngArray().length >= 2) {
                     addMarker(group);
                     Log.d("TAG", "Adding group to map...");
