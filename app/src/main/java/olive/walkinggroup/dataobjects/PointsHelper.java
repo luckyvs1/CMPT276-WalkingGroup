@@ -24,6 +24,14 @@ public class PointsHelper {
         currentTier = getCurrentTier();
     }
 
+    public int getCurrentPoints() {
+        return currentPoints;
+    }
+
+    public int getTotalPoints() {
+        return totalPoints;
+    }
+
     private void setTierPoints() {
         int n1 = 0;
         int n2 = 4000;
@@ -36,8 +44,12 @@ public class PointsHelper {
         }
     }
 
+    public int [] getTierPoints(){
+        return TierPoints;
+    }
+
     public int getCurrentTier() {
-        currentTier = 0;
+        currentTier = -1;
         for(int i = 0 ; i < 10 ; i++){
             if(totalPoints >= TierPoints[i]){
                 currentTier = i;
@@ -48,7 +60,7 @@ public class PointsHelper {
 
     public int getPointsNeeded(){
         int points = 0;
-        points = TierPoints[currentTier] - currentPoints;
+        points = TierPoints[currentTier+1] - currentPoints;
         return points;
     }
 }

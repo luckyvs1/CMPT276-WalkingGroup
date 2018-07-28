@@ -25,6 +25,7 @@ public class StoreActivity extends AppCompatActivity {
     private PointsHelper pointsHelper = new PointsHelper();
 
     private int totalPoints;
+    private int currentPoints;
     private int currentTier;
     private int pointsNeeded;
     private int [] TierPoints;
@@ -47,25 +48,23 @@ public class StoreActivity extends AppCompatActivity {
             coverTiers[i].setText("Get "+TierPoints[i]+" Total Points to Unlock");
         }
 
-        setupCurrentPoints();
+        setupPointsView();
         setupCoverVisibility();
-        setupTierClickable();
+//        setupTierClickable();
     }
 
-    private void setupCurrentPoints(){
-        if(user.getTotalPointsEarned()==null)
-            {totalPoints = 0;}
-        else
-            {totalPoints = user.getTotalPointsEarned();}
+    private void setupPointsView(){
+        totalPoints = pointsHelper.getTotalPoints();
+        currentPoints = pointsHelper.getCurrentPoints();
         TextView viewPoints = findViewById(R.id.shop_currentPoint);
-        viewPoints.append(" "+totalPoints);
+        viewPoints.setText("Current points: "+currentPoints+"\nTotal points: "+totalPoints);
     }
 
     private void setupCoverVisibility() {
-
         for(int i = 0 ; i <= currentTier ; i ++){
             coverTiers[i].setVisibility(View.GONE);
         }
+        coverTiers[currentTier+1].append("\n"+"You still need "+pointsNeeded+" points !");
     }
 
     private void setupTierClickable(){
