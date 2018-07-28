@@ -79,6 +79,13 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         setupRemoveUserButton();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateGroupDetails();
+    }
+
+
     // Server Calls:
     // ---------------------------------------------------------------------------------------------
     private void updateGroupDetails() {
@@ -287,11 +294,11 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
             case REQUEST_CODE_ADD:
                 if (resultCode == Activity.RESULT_OK) {
                     User userToAdd = (User) data.getSerializableExtra(SelectUserActivity.SELECT_USER_ACTIVITY_RETURN);
-                    memberList.add(userToAdd);
+                   // memberList.add(userToAdd);
 
-                    populateMemberList();
+                    //populateMemberList();
                     addNewMemberToServer(userToAdd);
-                    setUpLeaderOnClick(groupLeader);
+                    //setUpLeaderOnClick(groupLeader);
                     break;
                 }
 
@@ -308,7 +315,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                         }
                     }
 
-                    populateMemberList();
+                    //populateMemberList();
                     removeMemberFromGroup(userToRemove);
                     finish();
                     break;
@@ -345,6 +352,9 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private void onAddNewMemberResponse(List<User> listOfMembers) {
         Log.d(TAG, "Added user to group. New group member list:\n\n\n" + listOfMembers.toString());
+        //populateMemberList();
+        setUpLeaderOnClick(groupLeader);
+        updateGroupDetails();
     }
 
     private void removeMemberFromGroup(User user) {
@@ -354,6 +364,8 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private void onRemoveMemberResponse(Void returnNothing) {
         Log.d(TAG, "Removed user from group.");
+        //populateMemberList();
+        updateGroupDetails();
     }
 
     private boolean checkChildrenInGroup(){
