@@ -16,12 +16,19 @@ import android.widget.Toast;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.PointsHelper;
 import olive.walkinggroup.dataobjects.User;
 
 public class StoreActivity extends AppCompatActivity {
     private Model instance = Model.getInstance();
     private User user = instance.getCurrentUser();
+    private PointsHelper pointsHelper = new PointsHelper();
+
     private int totalPoints;
+    private int currentTier;
+    private int pointsNeeded;
+    private int [] TierPoints;
+
     TextView [] coverTiers = new TextView [5];
 
     @Override
@@ -29,10 +36,15 @@ public class StoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
 
+        currentTier = pointsHelper.getCurrentTier();
+        pointsNeeded = pointsHelper.getPointsNeeded();
+        TierPoints = pointsHelper.getTierPoints();
+
         for(int i = 0 ; i < 5 ; i++) {
             String ID = "cover_tier"+(i+1);
             int resID = getResources().getIdentifier(ID,"id",getPackageName());
             coverTiers [i] = findViewById(resID);
+            coverTiers[i].setText("Get "+TierPoints[i]+" Total Points to Unlock");
         }
 
         setupCurrentPoints();
@@ -50,12 +62,9 @@ public class StoreActivity extends AppCompatActivity {
     }
 
     private void setupCoverVisibility() {
-        for(int i = 0 ; i < 5 ; i ++){
-            //TODO: Set up points needed to unlock tier
-            int targetPoints = (i+1)*100;
-            if(totalPoints >= targetPoints){
-                coverTiers[i].setVisibility(View.GONE);
-            }
+
+        for(int i = 0 ; i <= currentTier ; i ++){
+            coverTiers[i].setVisibility(View.GONE);
         }
     }
 
