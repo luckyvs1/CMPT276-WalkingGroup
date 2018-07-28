@@ -79,11 +79,12 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         setupRemoveUserButton();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateGroupDetails();
-    }
+    //TODO: Determine if updating group details is needed on resume (reupdates if the server updated when the user is in add/remove user activity
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        updateGroupDetails();
+//    }
 
 
     // Server Calls:
@@ -352,7 +353,6 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private void onAddNewMemberResponse(List<User> listOfMembers) {
         Log.d(TAG, "Added user to group. New group member list:\n\n\n" + listOfMembers.toString());
-        populateMemberList();
     }
 
     private void removeMemberFromGroup(User user) {
@@ -362,7 +362,6 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private void onRemoveMemberResponse(Void returnNothing) {
         Log.d(TAG, "Removed user from group.");
-        populateMemberList();
     }
 
     private boolean checkChildrenInGroup(){
