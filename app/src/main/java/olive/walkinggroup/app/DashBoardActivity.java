@@ -14,9 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.Dash;
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +22,6 @@ import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Message;
 import olive.walkinggroup.dataobjects.Model;
-import olive.walkinggroup.dataobjects.UpdateUserPoints;
 import olive.walkinggroup.dataobjects.UploadGpsLocation;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
@@ -37,7 +33,6 @@ public class DashBoardActivity extends AppCompatActivity {
     private static final int GET_UNREAD_MESSAGES_INTERVAL = 60000;
     private Model instance;
     private UploadGpsLocation uploadGpsLocation;
-    private UpdateUserPoints updateUserPoints;
     private Handler handler = new Handler();
     private Boolean hasCompletedCurrentWalk;
 
@@ -47,7 +42,6 @@ public class DashBoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dash_board);
 
         uploadGpsLocation = new UploadGpsLocation(this);
-        updateUserPoints = new UpdateUserPoints(this);
 
         instance = Model.getInstance();
         updateCurrentUser();

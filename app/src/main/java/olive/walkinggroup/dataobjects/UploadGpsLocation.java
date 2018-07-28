@@ -79,7 +79,6 @@ public class UploadGpsLocation {
                         Log.i("MyApp", "UploadGpsLocation arrived in destination location");
                         instance.setCompletedWalkGroup(activeGroup);
                         updateUserPoints();
-
                         hasArrived = true;
                         startAutoStopTimer();
                     }
@@ -273,12 +272,31 @@ public class UploadGpsLocation {
         Log.d("UpdatePoints", Long.toString(distanceToPoints));
 
         // Long to Integer from StackOverflow
-        Integer accumulatedPoints = distanceToPoints != null ? distanceToPoints.intValue() : null;
+        Integer accumulatedPoints;
+
+        if (distanceToPoints != null) {
+            accumulatedPoints = distanceToPoints.intValue();
+        } else {
+            accumulatedPoints = 0;
+        }
 
         Log.d("UpdatePoints",Integer.toString(accumulatedPoints));
 
-        Integer currentPoints = instance.getCurrentUser().getCurrentPoints() != null ? instance.getCurrentUser().getCurrentPoints() : 0;
-        Integer totalPoints = instance.getCurrentUser().getTotalPointsEarned() != null ? instance.getCurrentUser().getTotalPointsEarned() : 0;
+        Integer currentPoints;
+
+        if (instance.getCurrentUser().getCurrentPoints() != null) {
+            currentPoints = instance.getCurrentUser().getCurrentPoints();
+        } else {
+            currentPoints = 0;
+        }
+
+        Integer totalPoints;
+
+        if (instance.getCurrentUser().getTotalPointsEarned() != null) {
+            totalPoints = instance.getCurrentUser().getTotalPointsEarned();
+        } else {
+            totalPoints = 0;
+        }
 
         currentPoints += accumulatedPoints;
         totalPoints += accumulatedPoints;
