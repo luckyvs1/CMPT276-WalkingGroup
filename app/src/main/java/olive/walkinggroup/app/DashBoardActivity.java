@@ -129,6 +129,9 @@ public class DashBoardActivity extends AppCompatActivity {
         public void run() {
             Log.d(TAG, "Getting messages from server...");
             getUnreadMessages();
+
+            //Update user when fetching messages
+            updateCurrentUser();
             handler.postDelayed(getUnreadMessagesRunnable, GET_UNREAD_MESSAGES_INTERVAL);
         }
     };
