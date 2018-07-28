@@ -138,4 +138,5 @@
     <string name="leaderboard_points_title">Points</string>
     <string name="leaderboard_main_title">Leaderboard</string>
     <string name="btn_view_current_rewards">View current rewards</string>
+    <string name="btn_ok_currentrewards">OK</string>
 </resources>
