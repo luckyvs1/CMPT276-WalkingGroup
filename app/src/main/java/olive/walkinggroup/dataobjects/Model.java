@@ -29,6 +29,8 @@ public class Model {
 
     private static Model instance;
     private static Group activeGroup;
+
+    private static Group completedWalkGroup;
     private static List<Message> messageList;
 
     private Model(){
@@ -82,5 +84,13 @@ public class Model {
 
     public static void setMessageList(List<Message> messageList) {
         Model.messageList = messageList;
+    }
+
+    public static Group getCompletedWalkGroup() {
+        return completedWalkGroup;
+    }
+
+    public static void setCompletedWalkGroup(Group completedWalkGroup) {
+        Model.completedWalkGroup = completedWalkGroup;
     }
 }
