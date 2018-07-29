@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +43,12 @@ public class ViewPermissionsActivity extends AppCompatActivity {
     WGServerProxy proxy;
     User currentUser;
 
+    ToggleButton pendingBtn;
+    ToggleButton approvedBtn;
+    ToggleButton deniedBtn;
+    ToggleButton allBtn;
+    List<ToggleButton> toggleButtons = new ArrayList<>();
+    String selectedStatus = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +59,45 @@ public class ViewPermissionsActivity extends AppCompatActivity {
         proxy = model.getProxy();
         currentUser = model.getCurrentUser();
 
+        setupFilterToggleBtns();
+
         getMyPermissionRequests();
+    }
+
+    private void setupFilterToggleBtns() {
+        pendingBtn = findViewById(R.id.viewPermissions_pendingBtn);
+        approvedBtn = findViewById(R.id.viewPermissions_approvedBtn);
+        deniedBtn = findViewById(R.id.viewPermissions_deniedBtn);
+        allBtn = findViewById(R.id.viewPermissions_allBtn);
+
+        toggleButtons.add(pendingBtn);
+        toggleButtons.add(approvedBtn);
+        toggleButtons.add(deniedBtn);
+        toggleButtons.add(allBtn);
+
+        // Default selected status: pending
+        pendingBtn.setChecked(true);
+        selectedStatus = pendingBtn.getTextOn().toString();
+
+        for (ToggleButton btn : toggleButtons) {
+            setToggleBtnOnClickListener(btn);
+        }
+    }
+
+    private void setToggleBtnOnClickListener(ToggleButton button) {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedStatus = button.getTextOn().toString();
+                Log.d(TAG, "Currently displaying requests with status: " + selectedStatus);
+
+                for (ToggleButton btn : toggleButtons) {
+                    if (!button.equals(btn)) {
+                        btn.setChecked(false);
+                    }
+                }
+            }
+        });
     }
 
     private void getMyPermissionRequests() {

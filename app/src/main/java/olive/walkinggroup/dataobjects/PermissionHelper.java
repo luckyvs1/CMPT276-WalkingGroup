@@ -1,5 +1,6 @@
 package olive.walkinggroup.dataobjects;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -8,6 +9,17 @@ import java.util.Set;
 import olive.walkinggroup.proxy.WGServerProxy;
 
 public class PermissionHelper {
+    public List<PermissionRequest> getAllRequestsWithStatus(List<PermissionRequest> requestList, WGServerProxy.PermissionStatus status) {
+        List<PermissionRequest> returnList = new ArrayList<>();
+
+        for (PermissionRequest request : requestList) {
+            if (request.getStatus().equals(status)) {
+                returnList.add(request);
+            }
+        }
+
+        return returnList;
+    }
 
     public static String makeDisplayActionString(String action) {
         switch (action) {

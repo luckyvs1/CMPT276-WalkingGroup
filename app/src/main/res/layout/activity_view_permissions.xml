@@ -37,51 +37,55 @@
     <LinearLayout
         android:id="@+id/viewPermissions_filterBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="47dp"
         app:layout_constraintTop_toBottomOf="@id/viewPermissions_header"
         android:orientation="horizontal"
-        android:background="#fff"
+        android:background="@color/colorPrimaryDark"
         android:elevation="2dp"
         >
 
         <ToggleButton
             android:id="@+id/viewPermissions_pendingBtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_dashboard_button"
+            android:layout_height="45dp"
+            android:background="@drawable/background_toggle_button"
             android:layout_weight="1"
             android:textOn="@string/viewPermissions_pendingBtnTxt"
             android:textOff="@string/viewPermissions_pendingBtnTxt"
+            android:textColor="@color/black_and_white_toggle"
             />
 
         <ToggleButton
-            android:id="@+id/viewPermissions_acceptedBtn"
+            android:id="@+id/viewPermissions_approvedBtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_dashboard_button"
+            android:layout_height="45dp"
+            android:background="@drawable/background_toggle_button"
             android:layout_weight="1"
-            android:textOn="@string/viewPermissions_acceptedBtnTxt"
-            android:textOff="@string/viewPermissions_acceptedBtnTxt"
+            android:textOn="@string/viewPermissions_approvedBtnTxt"
+            android:textOff="@string/viewPermissions_approvedBtnTxt"
+            android:textColor="@color/black_and_white_toggle"
             />
 
         <ToggleButton
             android:id="@+id/viewPermissions_deniedBtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_dashboard_button"
+            android:layout_height="45dp"
+            android:background="@drawable/background_toggle_button"
             android:layout_weight="1"
             android:textOn="@string/viewPermissions_deniedBtnTxt"
             android:textOff="@string/viewPermissions_deniedBtnTxt"
+            android:textColor="@color/black_and_white_toggle"
             />
 
         <ToggleButton
             android:id="@+id/viewPermissions_allBtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_dashboard_button"
+            android:layout_height="45dp"
+            android:background="@drawable/background_toggle_button"
             android:layout_weight="1"
             android:textOn="@string/viewPermissions_allBtnTxt"
             android:textOff="@string/viewPermissions_allBtnTxt"
+            android:textColor="@color/black_and_white_toggle"
             />
 
     </LinearLayout>
