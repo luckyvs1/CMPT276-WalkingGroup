@@ -1,5 +1,6 @@
 package olive.walkinggroup.dataobjects;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +31,82 @@ public class PermissionHelper {
         }
     }
 
+    public static Set<User> getAllUsers(List<PermissionRequest> requestList) {
+        Set<User> userSet = new HashSet<>();
+
+        for (PermissionRequest request : requestList) {
+            Set<PermissionRequest.Authorizor> authorizors = request.getAuthorizors();
+
+            for (PermissionRequest.Authorizor authorizor : authorizors) {
+                userSet.addAll(authorizor.getUsers());
+            }
+        }
+
+        return userSet;
+    }
+
+    public static String makeApproveUserList(PermissionRequest request, HashMap<Integer, String> nameMap) {
+        Set<PermissionRequest.Authorizor> authorizors = request.getAuthorizors();
+        Set<Integer> approvedUsersIdSet = new HashSet<>();
+
+        for (PermissionRequest.Authorizor authorizorGroup : authorizors) {
+            if (authorizorGroup.getStatus().equals(WGServerProxy.PermissionStatus.APPROVED)) {
+                approvedUsersIdSet.add(authorizorGroup.getWhoApprovedOrDenied().getId().intValue());
+            }
+        }
+
+        StringBuilder nameListString = new StringBuilder();
+
+        for (Integer id : approvedUsersIdSet) {
+            if (!nameListString.toString().equals("")) {
+               nameListString.append(", ");
+            }
+
+            String name = nameMap.get(id);
+            nameListString.append(name);
+        }
+
+        return nameListString.toString();
+    }
+
+    public static String getDeniedUserName(PermissionRequest request, HashMap<Integer, String> nameMap) {
+        Set<PermissionRequest.Authorizor> authorizors = request.getAuthorizors();
+
+        for (PermissionRequest.Authorizor authorizorGroup : authorizors) {
+            if (authorizorGroup.getStatus().equals(WGServerProxy.PermissionStatus.DENIED)) {
+                return nameMap.get(authorizorGroup.getWhoApprovedOrDenied().getId().intValue());
+            }
+        }
+
+        return "";
+    }
+
+    public static String makePendingUserList(PermissionRequest request, HashMap<Integer, String> nameMap) {
+        Set<PermissionRequest.Authorizor> authorizors = request.getAuthorizors();
+        Set<User> approvedUsersSet = new HashSet<>();
+
+        for (PermissionRequest.Authorizor authorizorGroup : authorizors) {
+            if (authorizorGroup.getStatus().equals(WGServerProxy.PermissionStatus.PENDING)) {
+                approvedUsersSet.addAll(authorizorGroup.getUsers());
+            }
+        }
+
+        StringBuilder nameListString = new StringBuilder();
+
+        for (User user : approvedUsersSet) {
+            if (!nameListString.toString().equals("")) {
+                nameListString.append(", ");
+            }
+
+            String name = nameMap.get(user.getId().intValue());
+            nameListString.append(name);
+        }
+
+        return nameListString.toString();
+    }
+
+
+    // Todo: finish this
     public static Boolean hasActionDoneOnBehalf(PermissionRequest request, User user) {
         long userId = user.getId();
 
@@ -62,5 +139,6 @@ public class PermissionHelper {
         }
         return true;
     }
+
 
 }

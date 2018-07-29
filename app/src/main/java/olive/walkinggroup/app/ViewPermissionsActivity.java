@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -29,6 +31,9 @@ import retrofit2.Call;
 
 public class ViewPermissionsActivity extends AppCompatActivity {
 
+    private static final String TAG = "ViewPermissionsActivity";
+    Set<User> rawUserSet = new HashSet<>();
+    Set<User> detailedUserSet = new HashSet<>();
     HashMap<Integer, String> userNameMap = new HashMap<>();
 
     List<PermissionRequest> requestDisplayList = new ArrayList<>();
@@ -57,7 +62,25 @@ public class ViewPermissionsActivity extends AppCompatActivity {
 
     private void onGetMyPermissionRequestsResponse(List<PermissionRequest> requestList) {
         requestDisplayList = requestList;
-        populatePermissionRequestList();
+        buildUserNameMap();
+    }
+
+    private void buildUserNameMap() {
+        rawUserSet = PermissionHelper.getAllUsers(requestDisplayList);
+
+        for (User user : rawUserSet) {
+            Call<User> caller = proxy.getUserById(user.getId());
+            ProxyBuilder.callProxy(this, caller, detailedUser -> onBuildUserNameMapResponse(detailedUser));
+        }
+    }
+
+    private void onBuildUserNameMapResponse(User detailedUser) {
+        detailedUserSet.add(detailedUser);
+        userNameMap.put(detailedUser.getId().intValue(), detailedUser.getName());
+
+        if (detailedUserSet.size() == rawUserSet.size()) {
+            populatePermissionRequestList();
+        }
     }
 
     private void populatePermissionRequestList() {
@@ -151,37 +174,11 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             // Display request message
             messageTextView.setText(currentRequest.getMessage());
 
-            // TODO: Display authorizors
-//
-//            Set<PermissionRequest.Authorizor> authorizors = currentRequest.getAuthorizors();
-//
-//            String approvedUsers = "";
-//            String deniedUser = "";
-//            String pendingUsers = "";
-//
-//            for (PermissionRequest.Authorizor authorizor : authorizors) {
-//                switch (authorizor.getStatus()) {
-//                    case APPROVED:
-//                        User userApproved = authorizor.getWhoApprovedOrDenied();
-//
-//                        if (!Objects.equals(approvedUsers, "")) {
-//                            approvedUsers += ", ";
-//                        }
-//
-//                        String userApprovedText = getUserNameFromMap(userApproved.getId());
-//                        approvedUsers += userApprovedText;
-//                        break;
-//
-//                    case DENIED:
-//                        User userDenied = authorizor.getWhoApprovedOrDenied();
-//                        String userDeniedText = getUserNameFromMap(userDenied.getId()) + ", ";
-//
-//                    case PENDING:
-//
-//                    default:
-//                        break;
-//                }
-//            }
+            // Display authorizors
+            approvedUsersTextView.setText(PermissionHelper.makeApproveUserList(currentRequest, userNameMap));
+            deniedUserTextView.setText(PermissionHelper.getDeniedUserName(currentRequest, userNameMap));
+            Log.d(TAG, "Denied user: " + PermissionHelper.getDeniedUserName(currentRequest, userNameMap));
+            pendingUsersTextView.setText(PermissionHelper.makePendingUserList(currentRequest, userNameMap));
 
             // Action buttons onClickListeners
             approveBtn.setOnClickListener(new View.OnClickListener() {
