@@ -90,6 +90,18 @@ public class CurrentRewardsActivity extends AppCompatActivity {
             super(CurrentRewardsActivity.this, R.layout.list_currentrewards_icon_item, iconIds);
         }
 
+        // Disable ListView recycling
+        // https://stackoverflow.com/questions/6921462/listview-reusing-views-when-i-dont-want-it-to
+        @Override
+        public int getViewTypeCount() {
+            return getCount();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position;
+        }
+
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -111,16 +123,16 @@ public class CurrentRewardsActivity extends AppCompatActivity {
         private void setupImageViewColumn(ImageView imageView, int position, int col) {
             int imageResourceId = iconIds.get(position).get(col);
             imageView.setImageResource(imageResourceId);
-            imageView.setTag(imageResourceId);
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ImageView selectedImageView = (ImageView)v;
                     if (previouslySelectedIcon != null) {
                         previouslySelectedIcon.clearColorFilter();
                     }
-                    imageView.setColorFilter(Color.CYAN, PorterDuff.Mode.LIGHTEN);
-                    previouslySelectedIcon = imageView;
+                    selectedImageView.setColorFilter(Color.CYAN, PorterDuff.Mode.LIGHTEN);
+                    previouslySelectedIcon = selectedImageView;
                     selectedIconId = imageResourceId;
 
                 }
