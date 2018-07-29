@@ -45,39 +45,43 @@
         >
 
         <ToggleButton
+            android:id="@+id/viewPermissions_pendingBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/background_dashboard_button"
             android:layout_weight="1"
-            android:textOn="Pending"
-            android:textOff="Pending"
+            android:textOn="@string/viewPermissions_pendingBtnTxt"
+            android:textOff="@string/viewPermissions_pendingBtnTxt"
             />
 
         <ToggleButton
+            android:id="@+id/viewPermissions_acceptedBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/background_dashboard_button"
             android:layout_weight="1"
-            android:textOn="Accepted"
-            android:textOff="Accepted"
+            android:textOn="@string/viewPermissions_acceptedBtnTxt"
+            android:textOff="@string/viewPermissions_acceptedBtnTxt"
             />
 
         <ToggleButton
+            android:id="@+id/viewPermissions_deniedBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/background_dashboard_button"
             android:layout_weight="1"
-            android:textOn="Denied"
-            android:textOff="Denied"
+            android:textOn="@string/viewPermissions_deniedBtnTxt"
+            android:textOff="@string/viewPermissions_deniedBtnTxt"
             />
 
         <ToggleButton
+            android:id="@+id/viewPermissions_allBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/background_dashboard_button"
             android:layout_weight="1"
-            android:textOn="All"
-            android:textOff="All"
+            android:textOn="@string/viewPermissions_allBtnTxt"
+            android:textOff="@string/viewPermissions_allBtnTxt"
             />
 
     </LinearLayout>

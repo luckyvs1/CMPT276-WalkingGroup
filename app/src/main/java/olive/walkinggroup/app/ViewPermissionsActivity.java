@@ -128,7 +128,6 @@ public class ViewPermissionsActivity extends AppCompatActivity {
 
             LinearLayout onBehalfContainer = itemView.findViewById(R.id.permissionItem_onBehalfContainer);
             TextView onBehalfTextView = itemView.findViewById(R.id.permissionItem_onBehalfText);
-            String onBehalfText = "";
 
             // Make descriptive action text
             actionTextView.setText(PermissionHelper.makeDisplayActionString(currentRequest.getAction()));
@@ -137,10 +136,11 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             switch (currentRequest.getStatus()) {
                 case APPROVED:
                     approvedTag.setVisibility(View.VISIBLE);
-                    approvedUsersContainer.setVisibility(View.VISIBLE);
                     deniedTag.setVisibility(View.GONE);
-                    deniedUserContainer.setVisibility(View.GONE);
                     pendingTag.setVisibility(View.GONE);
+
+                    approvedUsersContainer.setVisibility(View.VISIBLE);
+                    deniedUserContainer.setVisibility(View.GONE);
                     pendingUsersContainer.setVisibility(View.GONE);
 
                     actionBtnContainer.setVisibility(View.GONE);
@@ -149,23 +149,24 @@ public class ViewPermissionsActivity extends AppCompatActivity {
 
                 case DENIED:
                     deniedTag.setVisibility(View.VISIBLE);
-                    deniedUserContainer.setVisibility(View.VISIBLE);
                     approvedTag.setVisibility(View.GONE);
-                    approvedUsersContainer.setVisibility(View.GONE);
                     pendingTag.setVisibility(View.GONE);
+
+                    deniedUserContainer.setVisibility(View.VISIBLE);
+                    approvedUsersContainer.setVisibility(View.GONE);
                     pendingUsersContainer.setVisibility(View.GONE);
 
                     actionBtnContainer.setVisibility(View.GONE);
-
                     onBehalfContainer.setVisibility(View.GONE);
                     break;
 
                 case PENDING:
                     pendingTag.setVisibility(View.VISIBLE);
-                    pendingUsersContainer.setVisibility(View.VISIBLE);
                     approvedTag.setVisibility(View.GONE);
-                    approvedUsersContainer.setVisibility(View.VISIBLE);
                     deniedTag.setVisibility(View.GONE);
+
+                    pendingUsersContainer.setVisibility(View.VISIBLE);
+                    approvedUsersContainer.setVisibility(View.VISIBLE);
                     deniedUserContainer.setVisibility(View.GONE);
 
                     actionBtnContainer.setVisibility(View.VISIBLE);
@@ -179,7 +180,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             // Display request message
             messageTextView.setText(currentRequest.getMessage());
 
-            // Display authorizors
+            // Display authorizors, grouped by status
             approvedUsersTextView.setText(PermissionHelper.makeApproveUserList(currentRequest, userNameMap));
             deniedUserTextView.setText(PermissionHelper.getDeniedUserName(currentRequest, userNameMap));
             pendingUsersTextView.setText(PermissionHelper.makePendingUserList(currentRequest, userNameMap));
@@ -202,26 +203,20 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             });
 
             // Display "on behalf" text
+            // Show when an action is done on behalf of currentUser in an authorizor group.
+            // Do not show when currentUser can still authorize in a different authorizor group.
             if (!(PermissionHelper.hasActionDoneOnBehalf(currentRequest, currentUser, userNameMap))) {
                 onBehalfContainer.setVisibility(View.GONE);
             } else {
-                String onBehalfBaseText = getResources().getString(R.string.permissionItem_onBehalfTxt);
+                String onBehalfText = getResources().getString(R.string.permissionItem_onBehalfTxt);
                 String actionDoneOnBehalfString = PermissionHelper.getActionDoneOnBehalfString(currentRequest, currentUser, userNameMap);
-                String displayOnBehalfString = actionDoneOnBehalfString + onBehalfBaseText;
-                onBehalfTextView.setText(displayOnBehalfString);
+                onBehalfText = actionDoneOnBehalfString + onBehalfText;
+                onBehalfTextView.setText(onBehalfText);
 
                 actionBtnContainer.setVisibility(View.GONE);
             }
 
-
             return itemView;
-        }
-
-
-
-        private String getUserNameFromMap(long id) {
-            Integer userId = (int) id;
-            return userNameMap.get(userId);
         }
     }
 }

@@ -151,4 +151,8 @@
     <string name="permissionItem_usersApprovedTxt">Approved by:\u0020</string>
     <string name="permissionItem_deniedByTxt">Denied by:\u0020</string>
     <string name="permissionItem_pendingTxt">Pending:\u0020</string>
+    <string name="viewPermissions_pendingBtnTxt">Pending</string>
+    <string name="viewPermissions_acceptedBtnTxt">Accepted</string>
+    <string name="viewPermissions_deniedBtnTxt">Denied</string>
+    <string name="viewPermissions_allBtnTxt">All</string>
 </resources>
