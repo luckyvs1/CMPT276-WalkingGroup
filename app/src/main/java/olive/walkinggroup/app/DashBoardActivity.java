@@ -132,7 +132,7 @@ public class DashBoardActivity extends AppCompatActivity {
         // TODO: Make the getting tier dynamic
         //int currentTier = pointsHelper.getCurrentTier();
 
-        int currentTier = 2;
+        int currentTier = 100;
         int titleColor;
         TypedArray typedArray = getResources().obtainTypedArray(R.array.colors);
         titleColor = typedArray.getResourceId(currentTier, -1);
