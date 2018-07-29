@@ -40,7 +40,45 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/viewPermissions_header"
         android:orientation="horizontal"
+        android:background="#fff"
+        android:elevation="2dp"
         >
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_dashboard_button"
+            android:layout_weight="1"
+            android:textOn="Pending"
+            android:textOff="Pending"
+            />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_dashboard_button"
+            android:layout_weight="1"
+            android:textOn="Accepted"
+            android:textOff="Accepted"
+            />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_dashboard_button"
+            android:layout_weight="1"
+            android:textOn="Denied"
+            android:textOff="Denied"
+            />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_dashboard_button"
+            android:layout_weight="1"
+            android:textOn="All"
+            android:textOff="All"
+            />
 
     </LinearLayout>
 

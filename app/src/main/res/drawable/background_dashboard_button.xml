@@ -5,9 +5,15 @@
         </shape>
     </item>
 
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#33333333"/>
+        </shape>
+    </item>
+
     <item android:state_window_focused="true">
         <shape android:shape="rectangle">
-            <solid android:color="#fafafa"/>
+            <solid android:color="#00000000"/>
         </shape>
     </item>
 </selector>

@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -59,6 +60,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
     }
 
     private void onGetMyPermissionRequestsResponse(List<PermissionRequest> requestList) {
+        Collections.reverse(requestList);
         requestDisplayList = requestList;
         buildUserNameMap();
     }
@@ -203,9 +205,10 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             if (!(PermissionHelper.hasActionDoneOnBehalf(currentRequest, currentUser, userNameMap))) {
                 onBehalfContainer.setVisibility(View.GONE);
             } else {
-                String onBehalfBaseText = onBehalfTextView.getText().toString();
+                String onBehalfBaseText = getResources().getString(R.string.permissionItem_onBehalfTxt);
                 String actionDoneOnBehalfString = PermissionHelper.getActionDoneOnBehalfString(currentRequest, currentUser, userNameMap);
-                onBehalfTextView.setText(actionDoneOnBehalfString + onBehalfBaseText);
+                String displayOnBehalfString = actionDoneOnBehalfString + onBehalfBaseText;
+                onBehalfTextView.setText(displayOnBehalfString);
 
                 actionBtnContainer.setVisibility(View.GONE);
             }
