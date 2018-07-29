@@ -40,9 +40,11 @@
             <RelativeLayout
                 android:id="@+id/permissionItem_tagContainer"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/permissionItem_actionTxt"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 >
 
                 <TextView
@@ -56,7 +58,7 @@
                     android:paddingEnd="10dp"
                     android:layout_alignParentEnd="true"
                     android:text="@string/permissionItem_deniedTagTxt"
-
+                    android:visibility="gone"
                     />
 
                 <TextView
@@ -70,6 +72,7 @@
                     android:paddingEnd="10dp"
                     android:layout_alignParentEnd="true"
                     android:text="@string/permissionItem_approvedTagTxt"
+                    android:visibility="gone"
                     />
 
                 <TextView
@@ -83,6 +86,7 @@
                     android:paddingEnd="10dp"
                     android:layout_alignParentEnd="true"
                     android:text="@string/permissionItem_pendingTagTxt"
+                    android:visibility="gone"
                     />
 
             </RelativeLayout>
@@ -100,28 +104,109 @@
             />
 
         <LinearLayout
-            android:id="@+id/permissionItem_userApprovedOrDeniedContainer"
+            android:id="@+id/permissionItem_authorizorsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
+            android:orientation="vertical"
             >
 
-            <TextView
-                android:id="@+id/permissionItem_userApprovedOrDenied"
+            <LinearLayout
+                android:id="@+id/permissionItem_usersApprovedContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
 
-                android:textSize="15sp"
-                android:textColor="#000"
-                android:textStyle="italic"
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/ic_check_green"
+                    android:padding="8dp"
+                    />
 
-                android:background="#fff"
-                android:elevation="2dp"
-                android:padding="5dp"
-                android:layout_margin="3dp"
+                <TextView
+                    android:id="@+id/permissionItem_usersApproved"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                android:text="@string/sampleText"
-                />
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:textStyle="italic"
+
+                    android:background="#fff"
+                    android:elevation="2dp"
+                    android:padding="5dp"
+                    android:layout_margin="3dp"
+
+                    android:text="Approved by: "
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/permissionItem_userDeniedContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/ic_cross_red"
+                    android:padding="8dp"
+                    />
+
+                <TextView
+                    android:id="@+id/permissionItem_userDenied"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:textStyle="italic"
+
+                    android:background="#fff"
+                    android:elevation="2dp"
+                    android:padding="5dp"
+                    android:layout_margin="3dp"
+
+                    android:text="Denied by: "
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/permissionItem_userPendingContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/ic_pending_gray"
+                    android:padding="8dp"
+                    />
+
+                <TextView
+                    android:id="@+id/permissionItem_usersPending"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:textStyle="italic"
+
+                    android:background="#fff"
+                    android:elevation="2dp"
+                    android:padding="5dp"
+                    android:layout_margin="3dp"
+
+                    android:text="Pending: "
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
 
