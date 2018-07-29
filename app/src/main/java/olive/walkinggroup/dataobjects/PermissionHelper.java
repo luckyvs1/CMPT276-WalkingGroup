@@ -45,7 +45,7 @@ public class PermissionHelper {
         return userSet;
     }
 
-    public static String makeApproveUserList(PermissionRequest request, HashMap<Integer, String> nameMap) {
+    public static String makeApproveUserList(PermissionRequest request, HashMap<Integer, String> nameMap, User currentUser) {
         Set<PermissionRequest.Authorizor> authorizors = request.getAuthorizors();
         Set<Integer> approvedUsersIdSet = new HashSet<>();
 
@@ -64,24 +64,34 @@ public class PermissionHelper {
 
             String name = nameMap.get(id);
             nameListString.append(name);
+
+            if (id.equals(currentUser.getId().intValue())) {
+                nameListString.append(" (You)");
+            }
         }
 
         return nameListString.toString();
     }
 
-    public static String getDeniedUserName(PermissionRequest request, HashMap<Integer, String> nameMap) {
+    public static String getDeniedUserName(PermissionRequest request, HashMap<Integer, String> nameMap, User currentUser) {
         Set<PermissionRequest.Authorizor> authorizors = request.getAuthorizors();
 
         for (PermissionRequest.Authorizor authorizorGroup : authorizors) {
             if (authorizorGroup.getStatus().equals(WGServerProxy.PermissionStatus.DENIED)) {
-                return nameMap.get(authorizorGroup.getWhoApprovedOrDenied().getId().intValue());
+                String returnString = nameMap.get(authorizorGroup.getWhoApprovedOrDenied().getId().intValue());
+
+                if (authorizorGroup.getWhoApprovedOrDenied().getId().equals(currentUser.getId())) {
+                    returnString += " (You)";
+                }
+
+                return returnString;
             }
         }
 
         return "";
     }
 
-    public static String makePendingUserList(PermissionRequest request, HashMap<Integer, String> nameMap) {
+    public static String makePendingUserList(PermissionRequest request, HashMap<Integer, String> nameMap, User currentUser) {
         Set<PermissionRequest.Authorizor> authorizors = request.getAuthorizors();
         Set<User> approvedUsersSet = new HashSet<>();
 
@@ -100,6 +110,10 @@ public class PermissionHelper {
 
             String name = nameMap.get(user.getId().intValue());
             nameListString.append(name);
+
+            if (user.getId().equals(currentUser.getId())) {
+                nameListString.append(" (You)");
+            }
         }
 
         return nameListString.toString();
@@ -160,6 +174,4 @@ public class PermissionHelper {
 
         return null;
     }
-
-
 }

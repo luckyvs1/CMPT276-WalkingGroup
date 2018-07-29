@@ -181,9 +181,9 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             messageTextView.setText(currentRequest.getMessage());
 
             // Display authorizors, grouped by status
-            approvedUsersTextView.setText(PermissionHelper.makeApproveUserList(currentRequest, userNameMap));
-            deniedUserTextView.setText(PermissionHelper.getDeniedUserName(currentRequest, userNameMap));
-            pendingUsersTextView.setText(PermissionHelper.makePendingUserList(currentRequest, userNameMap));
+            approvedUsersTextView.setText(PermissionHelper.makeApproveUserList(currentRequest, userNameMap, currentUser));
+            deniedUserTextView.setText(PermissionHelper.getDeniedUserName(currentRequest, userNameMap, currentUser));
+            pendingUsersTextView.setText(PermissionHelper.makePendingUserList(currentRequest, userNameMap, currentUser));
 
             // Action buttons onClickListeners
             approveBtn.setOnClickListener(new View.OnClickListener() {
