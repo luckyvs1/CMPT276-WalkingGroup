@@ -131,6 +131,9 @@
     <string name="chatActivity_modeText">Send as emergency:</string>
     <string name="track_user_timestamp">Timestamp:</string>
     <string name="upload_gps_has_arrived">You have arrived at destination location</string>
+    <string name="exclamationMark">!</string>
+    <string name="dashBoard_permissionsText">Permissions</string>
+    <string name="viewPermissions_headerText">Permissions</string>
     <string name="btn_leaderboard">Leaderboard</string>
     <string name="rank_points_placeholder">000</string>
     <string name="leaderboard_rank_title">#</string>
@@ -139,4 +142,13 @@
     <string name="leaderboard_main_title">Leaderboard</string>
     <string name="btn_view_current_rewards">View current rewards</string>
     <string name="btn_ok_currentrewards">OK</string>
+    <string name="permissionItem_denyBtnTxt">DENY</string>
+    <string name="permissionItem_approveBtnTxt">APPROVE</string>
+    <string name="permissionItem_deniedTagTxt">DENIED</string>
+    <string name="permissionItem_approvedTagTxt">APPROVED</string>
+    <string name="permissionItem_pendingTagTxt">PENDING</string>
+    <string name="permissionItem_onBehalfTxt">\u0020on behalf of you.</string>
+    <string name="permissionItem_usersApprovedTxt">Approved by:\u0020</string>
+    <string name="permissionItem_deniedByTxt">Denied by:\u0020</string>
+    <string name="permissionItem_pendingTxt">Pending:\u0020</string>
 </resources>

@@ -466,6 +466,56 @@
 
         </LinearLayout>
 
+
+        <LinearLayout
+            android:id="@+id/dashBoard_permissionsBtn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_weight="1"
+            android:background="@drawable/background_header_button"
+            >
+
+            <RelativeLayout
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:layout_margin="5dp"
+                >
+
+                <ImageView
+                    android:id="@+id/dashBoard_permissionsIcon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_lock_open_black"
+                    android:layout_centerHorizontal="true"
+                    />
+
+                <TextView
+                    android:id="@+id/dashBoard_permissionsExclamation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exclamationMark"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold"
+                    android:layout_toStartOf="@id/dashBoard_permissionsIcon"
+                    android:visibility="invisible"
+                    />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dashBoard_permissionsText"
+                android:textColor="#000"
+                android:textSize="12sp"
+                />
+
+        </LinearLayout>
+
+
         <LinearLayout
             android:id="@+id/dashBoard_panicBtn"
             android:layout_width="0dp"
