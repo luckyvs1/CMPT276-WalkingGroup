@@ -3,6 +3,7 @@ package olive.walkinggroup.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,7 +35,6 @@ public class DashBoardActivity extends AppCompatActivity {
     private Model instance;
     private UploadGpsLocation uploadGpsLocation;
     private Handler handler = new Handler();
-    private Boolean hasCompletedCurrentWalk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +105,21 @@ public class DashBoardActivity extends AppCompatActivity {
 
     private void getUserById(User updatedUser) {
         instance.setCurrentUser(updatedUser);
-        displayUserName();
+        setupProfileSection();
+    }
+
+    private void setupProfileSection() {
+        Integer currentPoints = instance.getCurrentUser().getTotalPointsEarned() != null ? instance.getCurrentUser().getTotalPointsEarned() : 0;
+        String welcomeMessage = "Welcome, " + instance.getCurrentUser().getName() + "!";
+        String pointsMessage = "You have " + currentPoints + " points.";
+
+        String titleMessage = instance.getCurrentUser().getRewards().getSelectedTitle();
+        Integer avatarId = instance.getCurrentUser().getRewards().getSelectedIconId();
+
+        displayDetails(R.id.txtUserName, welcomeMessage);
+        displayDetails(R.id.txtUserPoints, pointsMessage);
+        displayDetails(R.id.txtUserTitle, titleMessage);
+        displayAvater(R.id.imgViewAvatar, avatarId);
     }
 
     // UI Logic
@@ -193,15 +207,15 @@ public class DashBoardActivity extends AppCompatActivity {
 
     // Center Menu
     // -------------------------------
-    private void displayUserName() {
-        try {
-            Integer currentPoints = instance.getCurrentUser().getTotalPointsEarned() != null ? instance.getCurrentUser().getTotalPointsEarned() : 0;
-            String message = "Welcome, " + instance.getCurrentUser().getName() + "! You have " + currentPoints + " points.";
-            TextView userName = (TextView) findViewById(R.id.txtUserName);
-            userName.setText(message);
-        } catch (NullPointerException e) {
-            Log.d("DashboardActivity", e.getMessage());
-        }
+    private void displayDetails(int resourceID, String message) {
+        TextView userName = (TextView) findViewById(resourceID);
+        userName.setText(message);
+    }
+
+    private void displayAvater(Integer avatarId, Integer avatarResource) {
+        Drawable avatarImg = getResources().getDrawable(avatarResource);
+        ImageView avatar = (ImageView) findViewById(avatarId);
+        avatar.setImageDrawable(avatarImg);
     }
 
     private void setupProfileButton() {

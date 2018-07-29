@@ -34,6 +34,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
     private int selectedIconId;
     private Model instance;
     private User currentUser;
+    private User dummyUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,12 @@ public class CurrentRewardsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 SelectedRewards selectedRewards = new SelectedRewards("Title", selectedIconId);
                 currentUser.setRewards(selectedRewards);
+
+                // Update rewards to dummy user
+                dummyUser.setEmail(currentUser.getEmail());
+                dummyUser.setName(currentUser.getName());
+                dummyUser.setRewards(selectedRewards);
+                dummyUser.setId(currentUser.getId());
                 updateUserOnServer();
                 finish();
             }
@@ -75,11 +82,13 @@ public class CurrentRewardsActivity extends AppCompatActivity {
 
     private void updateUserOnServer() {
 
-        Call<User> caller = instance.getProxy().updateUser(currentUser.getId(), currentUser);
+        //Call<User> caller = instance.getProxy().updateUser(currentUser.getId(), currentUser);
+        Call<User> caller = instance.getProxy().updateUser(currentUser.getId(), dummyUser);
         ProxyBuilder.callProxy(this, caller, returnedUsers -> onUpdateUser(returnedUsers));
     }
 
     private void onUpdateUser(User returnedUsers) {
+        instance.setCurrentUser(returnedUsers);
     }
 
     private class IconsAdapter extends ArrayAdapter<List<Integer>> {
