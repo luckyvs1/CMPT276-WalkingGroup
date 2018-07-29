@@ -67,6 +67,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
                     currentUser.setRewards(selectedRewards);
                     updateUserOnServer();
                 }
+                Log.i("MyApp", "No icon selected");
                 finish();
             }
         });
@@ -138,9 +139,15 @@ public class CurrentRewardsActivity extends AppCompatActivity {
                     if (previouslySelectedIcon != null) {
                         previouslySelectedIcon.clearColorFilter();
                     }
-                    selectedImageView.setColorFilter(Color.CYAN, PorterDuff.Mode.LIGHTEN);
-                    previouslySelectedIcon = selectedImageView;
-                    selectedIconId = imageResourceId;
+                    if (previouslySelectedIcon == selectedImageView && selectedIconId != 0) {
+                        selectedImageView.clearColorFilter();
+                        selectedIconId = 0;
+                    } else {
+                        selectedImageView.setColorFilter(Color.CYAN, PorterDuff.Mode.LIGHTEN);
+                        previouslySelectedIcon = selectedImageView;
+                        selectedIconId = imageResourceId;
+                    }
+                    Log.i("MyApp", selectedIconId + "");
 
                 }
 
