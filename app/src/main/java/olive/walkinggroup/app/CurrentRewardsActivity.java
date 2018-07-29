@@ -21,6 +21,7 @@ import java.util.List;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.PointsHelper;
 import olive.walkinggroup.dataobjects.Rewards;
 import olive.walkinggroup.dataobjects.SelectedRewards;
 import olive.walkinggroup.dataobjects.User;
@@ -35,6 +36,8 @@ public class CurrentRewardsActivity extends AppCompatActivity {
     private int selectedIconId = 0;
     private Model instance;
     private User currentUser;
+    private PointsHelper pointsHelper;
+    private int currentTier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +46,14 @@ public class CurrentRewardsActivity extends AppCompatActivity {
 
         instance = Model.getInstance();
         currentUser = instance.getCurrentUser();
+        pointsHelper = new PointsHelper();
+        currentTier = pointsHelper.getCurrentTier();
 
-        rewards = new Rewards(this);
-        iconIds = new ArrayList<>(rewards.getUnlockedIconsUpToTier(10));
-        setupListIcons();
+        if (currentTier > -1) {
+            rewards = new Rewards(this);
+            iconIds = new ArrayList<>(rewards.getUnlockedIconsUpToTier(currentTier + 1));
+            setupListIcons();
+        }
         setupOKButton();
     }
 
