@@ -65,12 +65,12 @@ public class StoreActivity extends AppCompatActivity {
         for(int i = 0 ; i <= currentTier ; i ++){
             coverTiers[i].setVisibility(View.GONE);
         }
-        if(currentTier < 9){
+        if(currentTier < numTiers-1){
         coverTiers[currentTier+1].append("\n"+"You still need "+pointsNeeded+" points !");}
     }
 
     private void setupTierClickable(){
-        for (int i = 0 ; i < 5 ; i++) {
+        for (int i = 0 ; i < numTiers ; i++) {
             if (coverTiers[i].getVisibility() == View.GONE) {
                 setupAvatarClickable(i);
             }
