@@ -202,4 +202,12 @@
         android:layout_alignBottom="@id/btnEditInformation"
         android:layout_toEndOf="@+id/monitorsMe" />
 
+    <Button
+        android:id="@+id/btnCurrentRewards"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnEditInformation"
+        android:layout_alignEnd="@+id/btnEditInformation"
+        android:text="@string/btn_view_current_rewards" />
+
 </RelativeLayout>
