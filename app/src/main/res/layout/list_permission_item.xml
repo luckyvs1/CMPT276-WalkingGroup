@@ -8,10 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_rectangle_rounded_white"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:elevation="5dp"
+        android:elevation="4dp"
         android:padding="8dp"
         android:orientation="vertical"
         >
@@ -58,7 +59,6 @@
                     android:paddingEnd="10dp"
                     android:layout_alignParentEnd="true"
                     android:text="@string/permissionItem_deniedTagTxt"
-                    android:visibility="gone"
                     />
 
                 <TextView
@@ -72,7 +72,6 @@
                     android:paddingEnd="10dp"
                     android:layout_alignParentEnd="true"
                     android:text="@string/permissionItem_approvedTagTxt"
-                    android:visibility="gone"
                     />
 
                 <TextView
@@ -86,7 +85,6 @@
                     android:paddingEnd="10dp"
                     android:layout_alignParentEnd="true"
                     android:text="@string/permissionItem_pendingTagTxt"
-                    android:visibility="gone"
                     />
 
             </RelativeLayout>
@@ -111,11 +109,18 @@
             android:orientation="vertical"
             >
 
+            <!--android:background="#fff"-->
+            <!--android:elevation="2dp"-->
+            <!--android:layout_margin="3dp"-->
+
+
             <LinearLayout
                 android:id="@+id/permissionItem_usersApprovedContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
+
                 >
 
                 <ImageView
@@ -134,12 +139,7 @@
                     android:textColor="#000"
                     android:textStyle="italic"
 
-                    android:background="#fff"
-                    android:elevation="2dp"
-                    android:padding="5dp"
-                    android:layout_margin="3dp"
-
-                    android:text="Approved by: "
+                    android:text="@string/permissionItem_usersApprovedTxt"
                     />
 
             </LinearLayout>
@@ -148,7 +148,10 @@
                 android:id="@+id/permissionItem_userDeniedContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+
+                >
 
                 <ImageView
                     android:layout_width="35dp"
@@ -166,12 +169,7 @@
                     android:textColor="#000"
                     android:textStyle="italic"
 
-                    android:background="#fff"
-                    android:elevation="2dp"
-                    android:padding="5dp"
-                    android:layout_margin="3dp"
-
-                    android:text="Denied by: "
+                    android:text="@string/permissionItem_deniedByTxt"
                     />
 
             </LinearLayout>
@@ -180,7 +178,10 @@
                 android:id="@+id/permissionItem_userPendingContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+
+                >
 
                 <ImageView
                     android:layout_width="35dp"
@@ -198,12 +199,7 @@
                     android:textColor="#000"
                     android:textStyle="italic"
 
-                    android:background="#fff"
-                    android:elevation="2dp"
-                    android:padding="5dp"
-                    android:layout_margin="3dp"
-
-                    android:text="Pending: "
+                    android:text="@string/permissionItem_pendingTxt"
                     />
 
             </LinearLayout>
@@ -240,6 +236,40 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/permissionItem_onBehalfContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+
+            android:background="#fff"
+            android:elevation="2dp"
+            android:layout_margin="3dp"
+            >
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_info_circle_black"
+                android:padding="8dp"
+                />
+
+            <TextView
+                android:id="@+id/permissionItem_onBehalfText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textSize="15sp"
+                android:textColor="#000"
+                android:textStyle="italic"
+
+                android:text="@string/permissionItem_onBehalfTxt"
+                />
+
 
         </LinearLayout>
 
