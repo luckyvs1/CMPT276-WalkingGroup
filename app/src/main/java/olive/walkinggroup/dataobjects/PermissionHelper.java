@@ -105,17 +105,21 @@ public class PermissionHelper {
         return nameListString.toString();
     }
 
+    public static boolean hasActionDoneOnBehalf(PermissionRequest request, User user, HashMap<Integer, String> nameMap) {
+        return (getActionDoneOnBehalfString(request, user, nameMap)) != null;
+    }
 
-    // Todo: finish this
-    public static Boolean hasActionDoneOnBehalf(PermissionRequest request, User user) {
+    public static String getActionDoneOnBehalfString(PermissionRequest request, User user, HashMap<Integer, String> nameMap) {
         long userId = user.getId();
 
         Set<PermissionRequest.Authorizor> authorizors = request.getAuthorizors();
         Set<PermissionRequest.Authorizor> myAuthorizorGroups = new HashSet<>();
 
+        User actionDoneOnBehalfBy = new User();
+
         for (PermissionRequest.Authorizor authorizorGroup : authorizors) {
             Set<User> userList = authorizorGroup.getUsers();
-            Boolean userIsInList = false;
+            boolean userIsInList = false;
 
             for (User eachUser : userList) {
                 if (eachUser.getId().equals(userId)) {
@@ -128,16 +132,33 @@ public class PermissionHelper {
             }
         }
 
-        for (PermissionRequest.Authorizor authorizorGroup : myAuthorizorGroups) {
-            // If authorizor group has approved or denied
-            if (authorizorGroup.getStatus().equals(WGServerProxy.PermissionStatus.APPROVED)
-                || authorizorGroup.getStatus().equals(WGServerProxy.PermissionStatus.DENIED))
-            {
-                // If user is
+        String actionString = "";
 
+        for (PermissionRequest.Authorizor authorizorGroup : myAuthorizorGroups) {
+            // If authorizor group is still pending
+            if (authorizorGroup.getStatus().equals(WGServerProxy.PermissionStatus.PENDING)) {
+                return null;
+            } else {
+                actionDoneOnBehalfBy = authorizorGroup.getWhoApprovedOrDenied();
+
+                if (actionDoneOnBehalfBy.getId().equals(userId)) {
+                    return null;
+                }
+
+                if (authorizorGroup.getStatus().equals(WGServerProxy.PermissionStatus.APPROVED)) {
+                    actionString = " has approved";
+                } else {
+                    actionString = " has denied";
+                }
             }
         }
-        return true;
+
+        if (actionDoneOnBehalfBy.getId() != null) {
+            String onBehalfByUserName = nameMap.get(actionDoneOnBehalfBy.getId().intValue());
+            return (onBehalfByUserName + actionString);
+        }
+
+        return null;
     }
 
 

@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import olive.walkinggroup.R;
@@ -128,6 +126,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
 
             LinearLayout onBehalfContainer = itemView.findViewById(R.id.permissionItem_onBehalfContainer);
             TextView onBehalfTextView = itemView.findViewById(R.id.permissionItem_onBehalfText);
+            String onBehalfText = "";
 
             // Make descriptive action text
             actionTextView.setText(PermissionHelper.makeDisplayActionString(currentRequest.getAction()));
@@ -143,6 +142,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
                     pendingUsersContainer.setVisibility(View.GONE);
 
                     actionBtnContainer.setVisibility(View.GONE);
+                    onBehalfContainer.setVisibility(View.VISIBLE);
                     break;
 
                 case DENIED:
@@ -154,6 +154,8 @@ public class ViewPermissionsActivity extends AppCompatActivity {
                     pendingUsersContainer.setVisibility(View.GONE);
 
                     actionBtnContainer.setVisibility(View.GONE);
+
+                    onBehalfContainer.setVisibility(View.GONE);
                     break;
 
                 case PENDING:
@@ -165,6 +167,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
                     deniedUserContainer.setVisibility(View.GONE);
 
                     actionBtnContainer.setVisibility(View.VISIBLE);
+                    onBehalfContainer.setVisibility(View.VISIBLE);
                     break;
 
                 default:
@@ -177,7 +180,6 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             // Display authorizors
             approvedUsersTextView.setText(PermissionHelper.makeApproveUserList(currentRequest, userNameMap));
             deniedUserTextView.setText(PermissionHelper.getDeniedUserName(currentRequest, userNameMap));
-            Log.d(TAG, "Denied user: " + PermissionHelper.getDeniedUserName(currentRequest, userNameMap));
             pendingUsersTextView.setText(PermissionHelper.makePendingUserList(currentRequest, userNameMap));
 
             // Action buttons onClickListeners
@@ -198,6 +200,16 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             });
 
             // Display "on behalf" text
+            if (!(PermissionHelper.hasActionDoneOnBehalf(currentRequest, currentUser, userNameMap))) {
+                onBehalfContainer.setVisibility(View.GONE);
+            } else {
+                String onBehalfBaseText = onBehalfTextView.getText().toString();
+                String actionDoneOnBehalfString = PermissionHelper.getActionDoneOnBehalfString(currentRequest, currentUser, userNameMap);
+                onBehalfTextView.setText(actionDoneOnBehalfString + onBehalfBaseText);
+
+                actionBtnContainer.setVisibility(View.GONE);
+            }
+
 
             return itemView;
         }
