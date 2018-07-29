@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Title Names: https://en.wikipedia.org/wiki/Canadian_Armed_Forces_ranks_and_insignia -->
+    <string-array name="titleNames">
+        <item>Officer Cadet</item>
+        <item>Second Lieutenant</item>
+        <item>Lieutenant</item>
+        <item>Captain</item>
+        <item>Major</item>
+        <item>Lieutenant-Colonel</item>
+        <item>Colonel</item>
+        <item>Brigadier General</item>
+        <item>Major-General</item>
+        <item>Lieutenant-General</item>
+        <item>General</item>
+    </string-array>
+</resources>
