@@ -1,5 +1,7 @@
 package olive.walkinggroup.dataobjects;
 
+import android.util.Log;
+
 public class PointsHelper {
     private Model instance = Model.getInstance();
     private User user = instance.getCurrentUser();
@@ -41,11 +43,16 @@ public class PointsHelper {
 
     public int getCurrentTier() {
         currentTier = -1;
+        Log.d("PointsHelper", String.valueOf(totalPoints));
+        Log.d("PointsHelper", String.valueOf(currentPoints));
         for(int i = 0 ; i < 10 ; i++){
+            Log.d("PointsHelper", String.valueOf(TierPoints[i]));
             if(totalPoints >= TierPoints[i]){
+
                 currentTier = i;
             }
         }
+        Log.d("PointsHelper", String.valueOf(currentTier));
         return currentTier;
     }
 

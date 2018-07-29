@@ -38,6 +38,7 @@ public class StoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_store);
 
         currentTier = pointsHelper.getCurrentTier();
+        Toast.makeText(StoreActivity.this, "Store Current tier is: " + String.valueOf(currentTier), Toast.LENGTH_LONG).show();
         pointsNeeded = pointsHelper.getPointsNeeded();
         TierPoints = pointsHelper.getTierPoints();
 

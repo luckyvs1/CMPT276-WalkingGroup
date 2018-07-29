@@ -132,27 +132,30 @@ public class DashBoardActivity extends AppCompatActivity {
         // TODO: Make the getting tier dynamic
         //int currentTier = pointsHelper.getCurrentTier();
 
-        int currentTier = 5;
+        int currentTier = pointsHelper.getCurrentTier();
+        Toast.makeText(DashBoardActivity.this, "Dashboard Current tier is: " + String.valueOf(currentTier), Toast.LENGTH_LONG).show();
 
-        // Colors
-        int titleColor;
-        TypedArray typedArrayColors = getResources().obtainTypedArray(R.array.colors);
-        titleColor = typedArrayColors.getResourceId(currentTier, -1);
-        int colorValue = getResources().getColor(titleColor);
+        if(currentTier != -1){
+            // Colors
+            int titleColor;
+            TypedArray typedArrayColors = getResources().obtainTypedArray(R.array.colors);
+            titleColor = typedArrayColors.getResourceId(currentTier, -1);
+            int colorValue = getResources().getColor(titleColor);
+            setTitleColor(R.id.txtUserTitle, colorValue);
 
-        // Titles
-        String titleName;
-        String[] typedArrayTitles = getResources().getStringArray(R.array.titleNames);
-        titleName = typedArrayTitles[currentTier];
+            // Titles
+            String titleName;
+            String[] typedArrayTitles = getResources().getStringArray(R.array.titleNames);
+            titleName = typedArrayTitles[currentTier];
+            displayDetails(R.id.txtUserTitle, titleName);
+        }
 
         //String titleMessage = instance.getCurrentUser().getRewards().getSelectedTitle();
         Integer avatarId = instance.getCurrentUser().getRewards().getSelectedIconId();
 
         displayDetails(R.id.txtUserName, welcomeMessage);
         displayDetails(R.id.txtUserPoints, pointsMessage);
-        displayDetails(R.id.txtUserTitle, titleName);
         displayAvater(R.id.imgViewAvatar, avatarId);
-        setTitleColor(R.id.txtUserTitle, colorValue);
     }
 
     // UI Logic
