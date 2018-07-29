@@ -390,8 +390,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/profile"
                     android:textColor="#000"
-                    android:textSize="13sp"
-                    />
+                    android:textSize="13sp" />
 
             </LinearLayout>
 

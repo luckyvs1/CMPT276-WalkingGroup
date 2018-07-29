@@ -3,6 +3,7 @@ package olive.walkinggroup.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Message;
 import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.PointsHelper;
 import olive.walkinggroup.dataobjects.UploadGpsLocation;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
@@ -35,6 +37,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private Model instance;
     private UploadGpsLocation uploadGpsLocation;
     private Handler handler = new Handler();
+    private PointsHelper pointsHelper = new PointsHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,9 +117,26 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setupProfileSection() {
-        Integer currentPoints = instance.getCurrentUser().getTotalPointsEarned() != null ? instance.getCurrentUser().getTotalPointsEarned() : 0;
+        Integer currentPoints;
+
+        if (instance.getCurrentUser().getTotalPointsEarned() != null) {
+            currentPoints = instance.getCurrentUser().getTotalPointsEarned();
+        }  else {
+            currentPoints = 0;
+        }
+
         String welcomeMessage = "Welcome, " + instance.getCurrentUser().getName() + "!";
         String pointsMessage = "You have " + currentPoints + " points.";
+
+        // Getting color based on tier
+        // TODO: Make the getting tier dynamic
+        //int currentTier = pointsHelper.getCurrentTier();
+
+        int currentTier = 2;
+        int titleColor;
+        TypedArray typedArray = getResources().obtainTypedArray(R.array.colors);
+        titleColor = typedArray.getResourceId(currentTier, -1);
+        int colorValue = getResources().getColor(titleColor);
 
         String titleMessage = instance.getCurrentUser().getRewards().getSelectedTitle();
         Integer avatarId = instance.getCurrentUser().getRewards().getSelectedIconId();
@@ -125,6 +145,7 @@ public class DashBoardActivity extends AppCompatActivity {
         displayDetails(R.id.txtUserPoints, pointsMessage);
         displayDetails(R.id.txtUserTitle, titleMessage);
         displayAvater(R.id.imgViewAvatar, avatarId);
+        setTitleColor(R.id.txtUserTitle, colorValue);
     }
 
     // UI Logic
@@ -213,14 +234,19 @@ public class DashBoardActivity extends AppCompatActivity {
     // Center Menu
     // -------------------------------
     private void displayDetails(int resourceID, String message) {
-        TextView userName = (TextView) findViewById(resourceID);
-        userName.setText(message);
+        TextView userDetail = (TextView) findViewById(resourceID);
+        userDetail.setText(message);
     }
 
     private void displayAvater(Integer avatarId, Integer avatarResource) {
         Drawable avatarImg = getResources().getDrawable(avatarResource);
         ImageView avatar = (ImageView) findViewById(avatarId);
         avatar.setImageDrawable(avatarImg);
+    }
+
+    private void setTitleColor(int resourceId, int titleColor) {
+        TextView title = (TextView) findViewById(resourceId);
+        title.setTextColor(titleColor);
     }
 
     private void setupProfileButton() {
