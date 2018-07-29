@@ -65,7 +65,8 @@ public class StoreActivity extends AppCompatActivity {
         for(int i = 0 ; i <= currentTier ; i ++){
             coverTiers[i].setVisibility(View.GONE);
         }
-        coverTiers[currentTier+1].append("\n"+"You still need "+pointsNeeded+" points !");
+        if(currentTier < 9){
+        coverTiers[currentTier+1].append("\n"+"You still need "+pointsNeeded+" points !");}
     }
 
     private void setupTierClickable(){

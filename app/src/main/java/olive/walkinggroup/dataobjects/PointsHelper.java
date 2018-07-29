@@ -50,7 +50,9 @@ public class PointsHelper {
     }
 
     public int getPointsNeeded(){
-        int points = TierPoints[currentTier+1] - currentPoints;
+        int points = 0;
+        if(currentTier < 9){
+        points = TierPoints[currentTier+1] - currentPoints;}
         return points;
     }
 
