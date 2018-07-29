@@ -20,6 +20,7 @@ import java.util.Set;
 
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.PermissionHelper;
 import olive.walkinggroup.dataobjects.PermissionRequest;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
@@ -82,6 +83,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
 
             PermissionRequest currentRequest = requestDisplayList.get(position);
 
+            // Views from top to bottom
             TextView actionTextView = itemView.findViewById(R.id.permissionItem_actionTxt);
 
             TextView approvedTag = itemView.findViewById(R.id.permissionItem_approvedTag);
@@ -101,10 +103,13 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             Button approveBtn = itemView.findViewById(R.id.permissionItem_approveBtn);
             Button denyBtn = itemView.findViewById(R.id.permissionItem_denyBtn);
 
-            // TODO: may need to make text more descriptive
-            actionTextView.setText(makeDisplayActionString(currentRequest.getAction()));
+            LinearLayout onBehalfContainer = itemView.findViewById(R.id.permissionItem_onBehalfContainer);
+            TextView onBehalfTextView = itemView.findViewById(R.id.permissionItem_onBehalfText);
 
-            // Display correct status tag
+            // Make descriptive action text
+            actionTextView.setText(PermissionHelper.makeDisplayActionString(currentRequest.getAction()));
+
+            // Hide and Display UI
             switch (currentRequest.getStatus()) {
                 case APPROVED:
                     approvedTag.setVisibility(View.VISIBLE);
@@ -178,6 +183,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
 //                }
 //            }
 
+            // Action buttons onClickListeners
             approveBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -194,30 +200,12 @@ public class ViewPermissionsActivity extends AppCompatActivity {
                 }
             });
 
+            // Display "on behalf" text
+
             return itemView;
         }
 
-        private String makeDisplayActionString(String action) {
-            switch (action) {
-                case "A_START_MONITOR_B":
-                    return "Request to monitor user";
 
-                case "A_STOP_MONITORING_B":
-                    return "Request to stop monitoring";
-
-                case "A_JOIN_GROUP":
-                    return "Request to join group";
-
-                case "A_LEAVE_GROUP":
-                    return "Request to leave group";
-
-                case "A_LEAD_GROUP":
-                    return "Request to lead group";
-
-                default:
-                    return "Permission request";
-            }
-        }
 
         private String getUserNameFromMap(long id) {
             Integer userId = (int) id;
