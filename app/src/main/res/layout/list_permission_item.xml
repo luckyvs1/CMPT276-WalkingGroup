@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_rectangle_rounded_white"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:elevation="4dp"
+        android:padding="8dp"
+        android:orientation="vertical"
+        >
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            >
+
+            <TextView
+                android:id="@+id/permissionItem_actionTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/permissionItem_tagContainer"
+
+                android:textSize="18sp"
+                android:textColor="#000"
+                android:textStyle="bold"
+
+                android:text="@string/sampleText"
+                />
+
+
+            <RelativeLayout
+                android:id="@+id/permissionItem_tagContainer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/permissionItem_actionTxt"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                >
+
+                <TextView
+                    android:id="@+id/permissionItem_deniedTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_tag_dark_red"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/permissionItem_deniedTagTxt"
+                    />
+
+                <TextView
+                    android:id="@+id/permissionItem_approvedTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_tag_navy_blue"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/permissionItem_approvedTagTxt"
+                    />
+
+                <TextView
+                    android:id="@+id/permissionItem_pendingTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_tag_teal"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/permissionItem_pendingTagTxt"
+                    />
+
+            </RelativeLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/permissionItem_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="13sp"
+            android:textColor="#000"
+            android:text="@string/sampleText"
+            />
+
+        <LinearLayout
+            android:id="@+id/permissionItem_authorizorsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="vertical"
+            >
+
+            <!--android:background="#fff"-->
+            <!--android:elevation="2dp"-->
+            <!--android:layout_margin="3dp"-->
+
+
+            <LinearLayout
+                android:id="@+id/permissionItem_usersApprovedContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+
+                >
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/ic_check_green"
+                    android:padding="8dp"
+                    />
+
+                <TextView
+                    android:id="@+id/permissionItem_usersApproved"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:textStyle="italic"
+
+                    android:text="@string/permissionItem_usersApprovedTxt"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/permissionItem_userDeniedContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+
+                >
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/ic_cross_red"
+                    android:padding="8dp"
+                    />
+
+                <TextView
+                    android:id="@+id/permissionItem_userDenied"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:textStyle="italic"
+
+                    android:text="@string/permissionItem_deniedByTxt"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/permissionItem_userPendingContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+
+                >
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/ic_pending_gray"
+                    android:padding="8dp"
+                    />
+
+                <TextView
+                    android:id="@+id/permissionItem_usersPending"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:textStyle="italic"
+
+                    android:text="@string/permissionItem_pendingTxt"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/permissionItem_actionButtonContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            >
+
+            <Button
+                android:id="@+id/permissionItem_approveBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="#fff"
+                android:text="@string/permissionItem_approveBtnTxt"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                />
+
+            <Button
+                android:id="@+id/permissionItem_denyBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="#fff"
+                android:text="@string/permissionItem_denyBtnTxt"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/permissionItem_onBehalfContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+
+            android:background="#fff"
+            android:elevation="2dp"
+            android:layout_margin="3dp"
+            >
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_info_circle_black"
+                android:padding="8dp"
+                />
+
+            <TextView
+                android:id="@+id/permissionItem_onBehalfText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textSize="15sp"
+                android:textColor="#000"
+                android:textStyle="italic"
+
+                android:text="@string/permissionItem_onBehalfTxt"
+                />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

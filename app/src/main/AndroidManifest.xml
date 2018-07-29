@@ -91,7 +91,8 @@
             android:name=".app.ChatActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".app.UserDetailsActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
@@ -99,17 +100,24 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity android:name=".app.EditUserInformationActivity"
+        <activity
+            android:name=".app.EditUserInformationActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".app.TrackerActivity"
             android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".app.LeaderboardActivity" />
-        <activity android:name=".app.StoreActivity" />
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".app.ViewPermissionsActivity"
+            android:configChanges="keyboard|orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".app.LeaderboardActivity"/>
+<activity android:name=".app.StoreActivity"/>
         <activity android:name=".app.CurrentRewardsActivity"></activity>
     </application>
 

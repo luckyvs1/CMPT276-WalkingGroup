@@ -156,6 +156,14 @@ public interface WGServerProxy {
             @Path("id") long permissionId,
             @Body PermissionStatus status
     );
+
+    // Added:
+    @GET("/permissions")
+    Call<List<PermissionRequest>> getPermissions(@Query("userId") Long userId);
+
+    @GET("/permissions?statusForUser=PENDING")
+    Call<List<PermissionRequest>> getPendingPermissions(@Query("userId") Long userId);
+
 //
 //    // -- Internal --
 //    @GET("/permissions/actions")
