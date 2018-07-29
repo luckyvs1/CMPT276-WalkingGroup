@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -31,7 +32,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
     private Rewards rewards;
     private List<List<Integer>> iconIds;
     private ImageView previouslySelectedIcon;
-    private int selectedIconId;
+    private int selectedIconId = 0;
     private Model instance;
     private User currentUser;
 
@@ -44,7 +45,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
         currentUser = instance.getCurrentUser();
 
         rewards = new Rewards(this);
-        iconIds = new ArrayList<>(rewards.getUnlockedIconsUpToTier(5));
+        iconIds = new ArrayList<>(rewards.getUnlockedIconsUpToTier(10));
         setupListIcons();
         setupOKButton();
     }
@@ -54,9 +55,11 @@ public class CurrentRewardsActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelectedRewards selectedRewards = new SelectedRewards("Title", selectedIconId);
-                currentUser.setRewards(selectedRewards);
-                updateUserOnServer();
+                if (selectedIconId != 0) {
+                    SelectedRewards selectedRewards = new SelectedRewards("Title", selectedIconId);
+                    currentUser.setRewards(selectedRewards);
+                    updateUserOnServer();
+                }
                 finish();
             }
         });
@@ -108,6 +111,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
         private void setupImageViewColumn(ImageView imageView, int position, int col) {
             int imageResourceId = iconIds.get(position).get(col);
             imageView.setImageResource(imageResourceId);
+            imageView.setTag(imageResourceId);
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override

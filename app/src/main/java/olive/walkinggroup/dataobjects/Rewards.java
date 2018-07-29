@@ -13,7 +13,7 @@ import olive.walkinggroup.R;
 public  class Rewards {
 
     private Context context;
-    public static final int NUM_TIERS = 5;
+    public static final int NUM_TIERS = 10;
     public static final int NUM_ICONS_PER_TIER = 3;
     static List<String> title = new ArrayList<>();
     static List<List<Integer>> icons = new ArrayList<>(NUM_TIERS);
@@ -32,13 +32,14 @@ public  class Rewards {
 
 
         TypedArray drawablesArray = context.getResources().obtainTypedArray(R.array.avatar_imgs);
+
         for (int i = 0; i < NUM_TIERS; i++) {
             icons.add(new ArrayList<>(NUM_ICONS_PER_TIER));
             for (int j = 0; j < NUM_ICONS_PER_TIER; j++) {
                 icons.get(i).add(drawablesArray.getResourceId(i*NUM_ICONS_PER_TIER+j,-1));
             }
         }
-
+        Log.i("MyApp", icons.toString());
         drawablesArray.recycle();
 
 
