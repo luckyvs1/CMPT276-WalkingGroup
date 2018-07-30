@@ -97,6 +97,8 @@ public class ViewPermissionsActivity extends AppCompatActivity {
                 for (ToggleButton btn : toggleButtons) {
                     if (!button.equals(btn)) {
                         btn.setChecked(false);
+                    } else {
+                        btn.setChecked(true);
                     }
                 }
             }
