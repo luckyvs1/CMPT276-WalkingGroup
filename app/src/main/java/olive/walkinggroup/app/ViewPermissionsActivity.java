@@ -177,6 +177,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
         ListView requestList = findViewById(R.id.viewPermissions_list);
         PermissionRequestListAdapter adapter = new PermissionRequestListAdapter();
         requestList.setAdapter(adapter);
+
         hideLoadingCircle();
     }
 
@@ -316,6 +317,10 @@ public class ViewPermissionsActivity extends AppCompatActivity {
     }
 
     private void showLoadingCircle() {
+        for (Button btn : toggleButtons) {
+            btn.setEnabled(false);
+        }
+
         RelativeLayout loadingCircle = findViewById(R.id.viewPermissions_loading);
 
         if (loadingCircle != null) {
@@ -324,6 +329,10 @@ public class ViewPermissionsActivity extends AppCompatActivity {
     }
 
     private void hideLoadingCircle() {
+        for (Button btn : toggleButtons) {
+            btn.setEnabled(true);
+        }
+
         RelativeLayout loadingCircle = findViewById(R.id.viewPermissions_loading);
 
         if (loadingCircle != null) {
