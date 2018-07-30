@@ -178,7 +178,7 @@
                     android:id="@+id/groupDetail_leaderTag"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
-                    android:background="@drawable/background_tag_navy_blue"
+                    android:background="@drawable/background_tag_blue"
                     >
 
                     <TextView

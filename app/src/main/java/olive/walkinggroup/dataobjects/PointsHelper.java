@@ -6,10 +6,11 @@ public class PointsHelper {
     private Model instance = Model.getInstance();
     private User user = instance.getCurrentUser();
 
+    int max_Tier = 10;
     int currentTier;
     int currentPoints;
     int totalPoints;
-    int [] TierPoints = new int[10];
+    int [] TierPoints = new int[max_Tier];
 
     int n1 = 0;
     int n2 = 4000;
@@ -45,10 +46,9 @@ public class PointsHelper {
         currentTier = -1;
         Log.d("PointsHelper", String.valueOf(totalPoints));
         Log.d("PointsHelper", String.valueOf(currentPoints));
-        for(int i = 0 ; i < 10 ; i++){
+        for(int i = 0 ; i < max_Tier ; i++){
             Log.d("PointsHelper", String.valueOf(TierPoints[i]));
             if(totalPoints >= TierPoints[i]){
-
                 currentTier = i;
             }
         }
@@ -57,12 +57,14 @@ public class PointsHelper {
     }
 
     public int getPointsNeeded(){
-        int points = TierPoints[currentTier+1] - currentPoints;
+        int points = 0;
+        if(currentTier < max_Tier-1){
+        points = TierPoints[currentTier+1] - currentPoints;}
         return points;
     }
 
     private void setTierPoints() {
-        for(int i = 0 ; i < 10 ; i++){
+        for(int i = 0 ; i < max_Tier ; i++){
             int n3 = n1 + n2;
             TierPoints[i] = n3;
             n1 = n2;
