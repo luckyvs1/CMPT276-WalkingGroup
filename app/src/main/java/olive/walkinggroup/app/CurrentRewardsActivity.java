@@ -74,7 +74,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (selectedIconId != 0) {
-                    SelectedRewards selectedRewards = new SelectedRewards("Title", selectedIconId);
+                    SelectedRewards selectedRewards = new SelectedRewards(selectedIconId);
                     currentUser.setRewards(selectedRewards);
                     updateUserOnServer();
                 }
