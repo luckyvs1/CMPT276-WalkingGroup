@@ -3,6 +3,8 @@ package olive.walkinggroup.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Message;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.PermissionRequest;
+import olive.walkinggroup.dataobjects.PointsHelper;
 import olive.walkinggroup.dataobjects.UploadGpsLocation;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
@@ -35,7 +38,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private Model instance;
     private UploadGpsLocation uploadGpsLocation;
     private Handler handler = new Handler();
-    private Boolean hasCompletedCurrentWalk;
+    private PointsHelper pointsHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +115,51 @@ public class DashBoardActivity extends AppCompatActivity {
 
     private void getUserById(User updatedUser) {
         instance.setCurrentUser(updatedUser);
-        displayUserName();
+        setupProfileSection();
+    }
+
+    private void setupProfileSection() {
+        Integer totalPoints;
+        int invalidTier = -1;
+        pointsHelper = new PointsHelper();
+
+        if (instance.getCurrentUser().getTotalPointsEarned() != null) {
+            totalPoints = instance.getCurrentUser().getTotalPointsEarned();
+        }  else {
+            totalPoints = 0;
+        }
+
+        String welcomeMessage = "Welcome, " + instance.getCurrentUser().getName() + "!";
+        String pointsMessage = "You have " + totalPoints + " points.";
+
+        int currentTier = pointsHelper.getCurrentTier();
+
+        if(currentTier != invalidTier){
+            // Colors
+            int titleColor;
+            TypedArray typedArrayColors = getResources().obtainTypedArray(R.array.colors);
+            titleColor = typedArrayColors.getResourceId(currentTier, invalidTier);
+            int colorValue = getResources().getColor(titleColor);
+            setTitleColor(R.id.txtUserTitle, colorValue);
+
+            // Titles
+            String titleName;
+            String[] typedArrayTitles = getResources().getStringArray(R.array.titleNames);
+            titleName = typedArrayTitles[currentTier];
+            displayDetails(R.id.txtUserTitle, titleName);
+        }
+
+        //String titleMessage = instance.getCurrentUser().getRewards().getSelectedTitle();
+        Integer avatarId;
+
+        //TODO: Have a default avatar instead to show on profile?
+        if(instance.getCurrentUser().getRewards() != null) {
+            avatarId = instance.getCurrentUser().getRewards().getSelectedIconId();
+            displayAvater(R.id.imgViewAvatar, avatarId);
+        }
+
+        displayDetails(R.id.txtUserName, welcomeMessage);
+        displayDetails(R.id.txtUserPoints, pointsMessage);
     }
 
     // UI Logic
@@ -204,15 +251,20 @@ public class DashBoardActivity extends AppCompatActivity {
 
     // Center Menu
     // -------------------------------
-    private void displayUserName() {
-        try {
-            Integer currentPoints = instance.getCurrentUser().getTotalPointsEarned() != null ? instance.getCurrentUser().getTotalPointsEarned() : 0;
-            String message = "Welcome, " + instance.getCurrentUser().getName() + "! You have " + currentPoints + " points.";
-            TextView userName = (TextView) findViewById(R.id.txtUserName);
-            userName.setText(message);
-        } catch (NullPointerException e) {
-            Log.d("DashboardActivity", e.getMessage());
-        }
+    private void displayDetails(int resourceID, String message) {
+        TextView userDetail = (TextView) findViewById(resourceID);
+        userDetail.setText(message);
+    }
+
+    private void displayAvater(Integer avatarId, Integer avatarResource) {
+        Drawable avatarImg = getResources().getDrawable(avatarResource);
+        ImageView avatar = (ImageView) findViewById(avatarId);
+        avatar.setImageDrawable(avatarImg);
+    }
+
+    private void setTitleColor(int resourceId, int titleColor) {
+        TextView title = (TextView) findViewById(resourceId);
+        title.setTextColor(titleColor);
     }
 
     private void setupProfileButton() {
