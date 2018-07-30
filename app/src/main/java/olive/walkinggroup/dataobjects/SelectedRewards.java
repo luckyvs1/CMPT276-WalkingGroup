@@ -21,25 +21,14 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SelectedRewards implements Serializable{
 
-    private String selectedTitle = "Title";
     private Integer selectedIconId = 0;
 
     // Needed for JSON deserialization
     public SelectedRewards() {
     }
 
-    public SelectedRewards(String selectedTitle, Integer selectedIconId) {
-        this.selectedTitle = selectedTitle;
+    public SelectedRewards(Integer selectedIconId) {
         this.selectedIconId = selectedIconId;
-    }
-
-
-    public String getSelectedTitle() {
-        return selectedTitle;
-    }
-
-    public void setSelectedTitle(String selectedTitle) {
-        this.selectedTitle = selectedTitle;
     }
 
     public Integer getSelectedIconId() {
