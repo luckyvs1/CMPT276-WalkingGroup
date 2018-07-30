@@ -9,6 +9,7 @@ import java.util.Set;
 import olive.walkinggroup.proxy.WGServerProxy;
 
 public class PermissionHelper {
+
     public static List<PermissionRequest> getAllRequestsWithStatus(List<PermissionRequest> requestList, WGServerProxy.PermissionStatus status) {
         List<PermissionRequest> returnList = new ArrayList<>();
 
@@ -133,9 +134,23 @@ public class PermissionHelper {
         return nameListString.toString();
     }
 
+    // Check if some other user has made decision on behalf of user
     public static boolean hasActionDoneOnBehalf(PermissionRequest request, User user, HashMap<Integer, String> nameMap) {
         return (getActionDoneOnBehalfString(request, user, nameMap)) != null;
     }
+
+    /**
+     * Return a string containing information about if an action has been done on behalf of a user.
+     * If a user belongs to one authorizor group only and the authorizor group has approved/denied,
+     * and if the user is not the one authorizing it, this function returns a string as:
+     * "<user_name> has approved/denied", where user_name is the user who authorized the action.
+     *
+     * If the user belongs to multiple authorizor groups, the function will only return such string if
+     * no authorizor group has status "PENDING" (i.e. the user can no longer make any decision).
+     *
+     * Otherwise, the function returns null.
+     */
+
 
     public static String getActionDoneOnBehalfString(PermissionRequest request, User user, HashMap<Integer, String> nameMap) {
         long userId = user.getId();
@@ -187,5 +202,21 @@ public class PermissionHelper {
         }
 
         return null;
+    }
+
+    public static boolean userHasMadeDecision(PermissionRequest request, User user) {
+        Set<PermissionRequest.Authorizor> authorizors = request.getAuthorizors();
+
+        for (PermissionRequest.Authorizor authorizor : authorizors) {
+            Set<User> userSet = authorizor.getUsers();
+
+            for (User eachUser : userSet) {
+                if (eachUser.getId().equals(user.getId())) {
+                    return (!(authorizor.getStatus().equals(WGServerProxy.PermissionStatus.PENDING)));
+                }
+            }
+        }
+
+        return false;
     }
 }

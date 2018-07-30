@@ -140,6 +140,7 @@
                     android:textStyle="italic"
 
                     android:text="@string/permissionItem_usersApprovedTxt"
+                    android:padding="5dp"
                     />
 
             </LinearLayout>
@@ -170,6 +171,7 @@
                     android:textStyle="italic"
 
                     android:text="@string/permissionItem_deniedByTxt"
+                    android:padding="5dp"
                     />
 
             </LinearLayout>
@@ -200,6 +202,7 @@
                     android:textStyle="italic"
 
                     android:text="@string/permissionItem_pendingTxt"
+                    android:padding="5dp"
                     />
 
             </LinearLayout>
@@ -268,6 +271,7 @@
                 android:textStyle="italic"
 
                 android:text="@string/permissionItem_onBehalfTxt"
+                android:padding="5dp"
                 />
 
 

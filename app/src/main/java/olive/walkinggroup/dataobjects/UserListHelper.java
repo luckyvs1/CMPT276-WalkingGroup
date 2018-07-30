@@ -23,6 +23,7 @@ package olive.walkinggroup.dataobjects;
         import java.util.List;
         import java.util.Objects;
         import java.util.Set;
+        import java.util.TreeSet;
         import java.util.regex.Matcher;
         import java.util.regex.Pattern;
 
@@ -395,6 +396,7 @@ public class UserListHelper {
         }
 
         Collections.sort(listToSort, new SortSetById());
+        Collections.reverse(listToSort);
 
         return new HashSet<>(listToSort);
     }

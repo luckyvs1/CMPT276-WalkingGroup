@@ -273,6 +273,11 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             deniedUserTextView.setText(PermissionHelper.getDeniedUserName(currentRequest, userNameMap, currentUser));
             pendingUsersTextView.setText(PermissionHelper.makePendingUserList(currentRequest, userNameMap, currentUser));
 
+            // Hide action buttons if currentUser has approved/denied a pending request already
+            if (PermissionHelper.userHasMadeDecision(currentRequest, currentUser)) {
+                actionBtnContainer.setVisibility(View.GONE);
+            }
+
             // Action buttons onClickListeners
             approveBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
