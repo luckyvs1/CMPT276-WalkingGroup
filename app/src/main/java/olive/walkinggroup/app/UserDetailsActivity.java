@@ -37,6 +37,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 
         extractDataFromIntent();
         checkToDisplayEdit();
+        checkToDisplayCurrentRewardsButton();
         populateView();
         verifyMonitoredUsersList();
         registerClickCallback();
@@ -53,6 +54,20 @@ public class UserDetailsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void checkToDisplayCurrentRewardsButton() {
+        if(user != null){
+            sameindividual =  UserListHelper.sameUser(instance.getCurrentUser(), user);
+
+            Button rewardsBtn = (Button) findViewById(R.id.btnCurrentRewards);
+
+            if(sameindividual){
+                rewardsBtn.setVisibility(View.VISIBLE);
+            } else {
+                rewardsBtn.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void checkToDisplayEdit() {
