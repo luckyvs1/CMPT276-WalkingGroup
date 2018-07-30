@@ -16,5 +16,20 @@
         <item>@drawable/avatar51</item>
         <item>@drawable/avatar52</item>
         <item>@drawable/avatar53</item>
+        <item>@drawable/avatar61</item>
+        <item>@drawable/avatar62</item>
+        <item>@drawable/avatar63</item>
+        <item>@drawable/avatar71</item>
+        <item>@drawable/avatar72</item>
+        <item>@drawable/avatar73</item>
+        <item>@drawable/avatar81</item>
+        <item>@drawable/avatar82</item>
+        <item>@drawable/avatar83</item>
+        <item>@drawable/avatar91</item>
+        <item>@drawable/avatar92</item>
+        <item>@drawable/avatar93</item>
+        <item>@drawable/avatar101</item>
+        <item>@drawable/avatar102</item>
+        <item>@drawable/avatar103</item>
     </integer-array>
 </resources>
