@@ -32,7 +32,7 @@
             android:id="@+id/listUsers_monitorTag"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:background="@drawable/background_tag_teal"
+            android:background="@drawable/background_tag_gray"
             >
 
             <TextView

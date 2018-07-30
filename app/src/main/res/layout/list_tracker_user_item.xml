@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/background_tag_navy_blue"
+            android:background="@drawable/background_tag_blue"
             android:elevation="1dp">
 
             <TextView
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/background_tag_teal"
+            android:background="@drawable/background_tag_gray"
             android:elevation="1dp">
 
             <TextView

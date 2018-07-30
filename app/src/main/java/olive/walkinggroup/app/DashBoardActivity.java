@@ -22,6 +22,7 @@ import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Group;
 import olive.walkinggroup.dataobjects.Message;
 import olive.walkinggroup.dataobjects.Model;
+import olive.walkinggroup.dataobjects.PermissionRequest;
 import olive.walkinggroup.dataobjects.UploadGpsLocation;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
@@ -98,6 +99,7 @@ public class DashBoardActivity extends AppCompatActivity {
         updateCurrentUser();
         getUnreadMessages();
         checkIfUserIsParent();
+        notifyNewPermissionRequest();
     }
 
     private void updateCurrentUser() {
@@ -132,8 +134,12 @@ public class DashBoardActivity extends AppCompatActivity {
     private Runnable getUnreadMessagesRunnable = new Runnable() {
         @Override
         public void run() {
-            Log.d(TAG, "Getting messages from server...");
             getUnreadMessages();
+            Log.d(TAG, "Getting messages from server...");
+
+            // Update permission request status
+            notifyNewPermissionRequest();
+            Log.d(TAG, "Getting pending permission requests from server...");
 
             //Update user when fetching messages
             updateCurrentUser();
@@ -330,20 +336,22 @@ public class DashBoardActivity extends AppCompatActivity {
 
     // Show a "!" next to permissions icon to signify pending request
     private void notifyNewPermissionRequest() {
-        // if new request, show exclamation mark:
+        Call<List<PermissionRequest>> caller = instance.getProxy().getPendingPermissions(instance.getCurrentUser().getId());
+        ProxyBuilder.callProxy(this, caller, returnedList -> onNotifyNewPermissionRequestResponse(returnedList));
+    }
+
+    private void onNotifyNewPermissionRequestResponse(List<PermissionRequest> returnedList) {
+        Log.d(TAG, "onNotifyNewPermissionRequestResponse: returnedList: " + returnedList);
+
         TextView exclamationMark = findViewById(R.id.dashBoard_permissionsExclamation);
-        if (hasPendingPermissions()) {
-            exclamationMark.setVisibility(View.VISIBLE);
-        } else {
+
+        if (returnedList.size() == 0) {
             exclamationMark.setVisibility(View.INVISIBLE);
+        } else {
+            exclamationMark.setVisibility(View.VISIBLE);
         }
     }
 
-    private boolean hasPendingPermissions() {
-        // check if there is pending permissions.
-        // TODO: add server calls
-        return true;
-    }
 
 
     // Other logic
