@@ -9,7 +9,7 @@ import java.util.Set;
 import olive.walkinggroup.proxy.WGServerProxy;
 
 public class PermissionHelper {
-    public List<PermissionRequest> getAllRequestsWithStatus(List<PermissionRequest> requestList, WGServerProxy.PermissionStatus status) {
+    public static List<PermissionRequest> getAllRequestsWithStatus(List<PermissionRequest> requestList, WGServerProxy.PermissionStatus status) {
         List<PermissionRequest> returnList = new ArrayList<>();
 
         for (PermissionRequest request : requestList) {
@@ -59,25 +59,26 @@ public class PermissionHelper {
 
     public static String makeApproveUserList(PermissionRequest request, HashMap<Integer, String> nameMap, User currentUser) {
         Set<PermissionRequest.Authorizor> authorizors = request.getAuthorizors();
-        Set<Integer> approvedUsersIdSet = new HashSet<>();
+        Set<User> approvedUsersSet = new HashSet<>();
 
         for (PermissionRequest.Authorizor authorizorGroup : authorizors) {
             if (authorizorGroup.getStatus().equals(WGServerProxy.PermissionStatus.APPROVED)) {
-                approvedUsersIdSet.add(authorizorGroup.getWhoApprovedOrDenied().getId().intValue());
+                approvedUsersSet.add(authorizorGroup.getWhoApprovedOrDenied());
             }
         }
 
         StringBuilder nameListString = new StringBuilder();
+        approvedUsersSet = UserListHelper.sortUserSetById(approvedUsersSet);
 
-        for (Integer id : approvedUsersIdSet) {
+        for (User user : approvedUsersSet) {
             if (!nameListString.toString().equals("")) {
                nameListString.append(", ");
             }
 
-            String name = nameMap.get(id);
+            String name = nameMap.get(user.getId().intValue());
             nameListString.append(name);
 
-            if (id.equals(currentUser.getId().intValue())) {
+            if (user.getId().equals(currentUser.getId())) {
                 nameListString.append(" (You)");
             }
         }
@@ -105,17 +106,18 @@ public class PermissionHelper {
 
     public static String makePendingUserList(PermissionRequest request, HashMap<Integer, String> nameMap, User currentUser) {
         Set<PermissionRequest.Authorizor> authorizors = request.getAuthorizors();
-        Set<User> approvedUsersSet = new HashSet<>();
+        Set<User> pendingUsersSet = new HashSet<>();
 
         for (PermissionRequest.Authorizor authorizorGroup : authorizors) {
             if (authorizorGroup.getStatus().equals(WGServerProxy.PermissionStatus.PENDING)) {
-                approvedUsersSet.addAll(authorizorGroup.getUsers());
+                pendingUsersSet.addAll(authorizorGroup.getUsers());
             }
         }
 
         StringBuilder nameListString = new StringBuilder();
+        pendingUsersSet = UserListHelper.sortUserSetById(pendingUsersSet);
 
-        for (User user : approvedUsersSet) {
+        for (User user : pendingUsersSet) {
             if (!nameListString.toString().equals("")) {
                 nameListString.append(", ");
             }

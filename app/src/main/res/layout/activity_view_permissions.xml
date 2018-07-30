@@ -8,7 +8,7 @@
     android:background="#fafafa"
     >
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/viewPermissions_header"
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -20,19 +20,37 @@
         >
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:text="@string/viewPermissions_headerText"
-            android:layout_alignParentStart="true"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#fff"
-            android:layout_centerVertical="true"
             android:padding="10dp"
             android:layout_marginStart="6dp"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/viewPermissions_refreshBtn"
             />
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/viewPermissions_refreshBtn"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_header_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_refresh_white"
+                android:layout_centerInParent="true"
+                />
+
+        </RelativeLayout>
+
+    </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/viewPermissions_filterBar"
@@ -97,13 +115,56 @@
         app:layout_constraintTop_toBottomOf="@id/viewPermissions_filterBar"
         app:layout_constraintBottom_toBottomOf="parent"
 
-        android:layout_marginTop="8dp"
-
         android:divider="@null"
         android:dividerHeight="0dp"
         android:scrollbars="none"
         >
 
     </ListView>
+
+    <LinearLayout
+        android:id="@+id/viewPermissions_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/viewPermissions_filterBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#fafafa"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/emptyText"
+            android:textColor="#808080"
+            android:textSize="18sp"
+            android:drawableTop="@drawable/ic_empty_box_gray"
+            />
+
+    </LinearLayout>
+
+    <!--
+    Loading progress bar. Using code from:
+    https://stackoverflow.com/questions/5442183/using-the-animated-circle-in-an-imageview-while-loading-stuff
+    -->
+
+    <RelativeLayout
+        android:id="@+id/viewPermissions_loading"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/viewPermissions_filterBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        android:background="#33333333"
+        >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            />
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

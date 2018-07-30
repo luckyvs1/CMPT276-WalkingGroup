@@ -155,4 +155,5 @@
     <string name="viewPermissions_approvedBtnTxt">Approved</string>
     <string name="viewPermissions_deniedBtnTxt">Denied</string>
     <string name="viewPermissions_allBtnTxt">All</string>
+    <string name="emptyText">Empty</string>
 </resources>

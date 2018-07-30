@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -37,6 +38,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
     Set<User> detailedUserSet = new HashSet<>();
     HashMap<Integer, String> userNameMap = new HashMap<>();
 
+    List<PermissionRequest> requestFullList = new ArrayList<>();
     List<PermissionRequest> requestDisplayList = new ArrayList<>();
 
     Model model;
@@ -60,7 +62,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
         currentUser = model.getCurrentUser();
 
         setupFilterToggleBtns();
-
+        setupRefreshBtn();
         getMyPermissionRequests();
     }
 
@@ -90,6 +92,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 selectedStatus = button.getTextOn().toString();
                 Log.d(TAG, "Currently displaying requests with status: " + selectedStatus);
+                populatePermissionRequestList();
 
                 for (ToggleButton btn : toggleButtons) {
                     if (!button.equals(btn)) {
@@ -100,19 +103,37 @@ public class ViewPermissionsActivity extends AppCompatActivity {
         });
     }
 
+    private void setupRefreshBtn() {
+        RelativeLayout refreshBtn = findViewById(R.id.viewPermissions_refreshBtn);
+        refreshBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getMyPermissionRequests();
+            }
+        });
+    }
+
     private void getMyPermissionRequests() {
+        showLoadingCircle();
+
         Call<List<PermissionRequest>> caller = proxy.getPermissions(currentUser.getId());
         ProxyBuilder.callProxy(this, caller, requestList -> onGetMyPermissionRequestsResponse(requestList));
     }
 
     private void onGetMyPermissionRequestsResponse(List<PermissionRequest> requestList) {
+        if (requestList.size() == 0) {
+            hideLoadingCircle();
+            showEmpty();
+            return;
+        }
+
         Collections.reverse(requestList);
-        requestDisplayList = requestList;
+        requestFullList = requestList;
         buildUserNameMap();
     }
 
     private void buildUserNameMap() {
-        rawUserSet = PermissionHelper.getAllUsers(requestDisplayList);
+        rawUserSet = PermissionHelper.getAllUsers(requestFullList);
 
         for (User user : rawUserSet) {
             Call<User> caller = proxy.getUserById(user.getId());
@@ -130,10 +151,31 @@ public class ViewPermissionsActivity extends AppCompatActivity {
     }
 
     private void populatePermissionRequestList() {
+        switch (selectedStatus) {
+            case "Pending":
+                requestDisplayList = PermissionHelper.getAllRequestsWithStatus(requestFullList, WGServerProxy.PermissionStatus.PENDING);
+                break;
+            case "Approved":
+                requestDisplayList = PermissionHelper.getAllRequestsWithStatus(requestFullList, WGServerProxy.PermissionStatus.APPROVED);
+                break;
+            case "Denied":
+                requestDisplayList = PermissionHelper.getAllRequestsWithStatus(requestFullList, WGServerProxy.PermissionStatus.DENIED);
+                break;
+            default:
+                requestDisplayList = requestFullList;
+                break;
+        }
+
+        if (requestDisplayList.size() == 0) {
+            showEmpty();
+        } else {
+            hideEmpty();
+        }
+
         ListView requestList = findViewById(R.id.viewPermissions_list);
         PermissionRequestListAdapter adapter = new PermissionRequestListAdapter();
         requestList.setAdapter(adapter);
-
+        hideLoadingCircle();
     }
 
     public class PermissionRequestListAdapter extends ArrayAdapter<PermissionRequest> {
@@ -236,7 +278,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Call<PermissionRequest> caller = proxy.approveOrDenyPermissionRequest(currentRequest.getId(), WGServerProxy.PermissionStatus.APPROVED);
-                    ProxyBuilder.callProxy(ViewPermissionsActivity.this, caller, null);
+                    ProxyBuilder.callProxy(ViewPermissionsActivity.this, caller, returnedRequest -> getMyPermissionRequests());
                 }
             });
 
@@ -244,7 +286,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Call<PermissionRequest> caller = proxy.approveOrDenyPermissionRequest(currentRequest.getId(), WGServerProxy.PermissionStatus.DENIED);
-                    ProxyBuilder.callProxy(ViewPermissionsActivity.this, caller, null);
+                    ProxyBuilder.callProxy(ViewPermissionsActivity.this, caller, returnedRequest -> getMyPermissionRequests());
                 }
             });
 
@@ -263,6 +305,38 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             }
 
             return itemView;
+        }
+    }
+
+    private void showLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.viewPermissions_loading);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.viewPermissions_loading);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
+        }
+    }
+
+    private void showEmpty() {
+        LinearLayout empty = findViewById(R.id.viewPermissions_empty);
+
+        if (empty != null) {
+            empty.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideEmpty() {
+        LinearLayout empty = findViewById(R.id.viewPermissions_empty);
+
+        if (empty != null) {
+            empty.setVisibility(View.GONE);
         }
     }
 }
