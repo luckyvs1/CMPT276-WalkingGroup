@@ -11,9 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -117,6 +120,8 @@ public class ViewPermissionsActivity extends AppCompatActivity {
 
     private void getMyPermissionRequests() {
         showLoadingCircle();
+        editProgressBarText("Updating permission requests...");
+        updateProgressBarProgress(5);
 
         Call<List<PermissionRequest>> caller = proxy.getPermissions(currentUser.getId());
         ProxyBuilder.callProxy(this, caller, requestList -> onGetMyPermissionRequestsResponse(requestList));
@@ -129,6 +134,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             return;
         }
 
+        updateProgressBarProgress(50);
         Collections.reverse(requestList);
         requestFullList = requestList;
         buildUserNameMap();
@@ -144,8 +150,14 @@ public class ViewPermissionsActivity extends AppCompatActivity {
     }
 
     private void onBuildUserNameMapResponse(User detailedUser) {
+        editProgressBarText("Updating user name list...");
+
         detailedUserSet.add(detailedUser);
         userNameMap.put(detailedUser.getId().intValue(), detailedUser.getName());
+
+        int progress = ((detailedUserSet.size()) * 50) / (rawUserSet.size());
+        Log.d(TAG, "progress" + progress);
+        updateProgressBarProgress(50 + progress);
 
         if (detailedUserSet.size() == rawUserSet.size()) {
             populatePermissionRequestList();
@@ -178,6 +190,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
         PermissionRequestListAdapter adapter = new PermissionRequestListAdapter();
         requestList.setAdapter(adapter);
 
+        updateProgressBarProgress(100);
         hideLoadingCircle();
     }
 
@@ -338,6 +351,16 @@ public class ViewPermissionsActivity extends AppCompatActivity {
         if (loadingCircle != null) {
             loadingCircle.setVisibility(View.GONE);
         }
+    }
+
+    private void editProgressBarText(String text) {
+        TextView progressBarTextView = findViewById(R.id.viewPermissions_progressBarTextView);
+        progressBarTextView.setText(text);
+    }
+
+    private void updateProgressBarProgress(int currentProgress) {
+        ProgressBar progressBar = findViewById(R.id.viewPermissions_progressBar);
+        progressBar.setProgress(currentProgress);
     }
 
     private void showEmpty() {
