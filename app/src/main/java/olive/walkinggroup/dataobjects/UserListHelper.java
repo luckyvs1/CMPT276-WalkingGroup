@@ -205,6 +205,18 @@ public class UserListHelper {
             super(activity, R.layout.list_leaderboard_item, userList);
         }
 
+        // Disable ListView recycling
+        // https://stackoverflow.com/questions/6921462/listview-reusing-views-when-i-dont-want-it-to
+        @Override
+        public int getViewTypeCount() {
+            return getCount();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position;
+        }
+
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
