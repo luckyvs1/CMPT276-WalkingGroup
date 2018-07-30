@@ -52,7 +52,7 @@
                     android:id="@+id/permissionItem_deniedTag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/background_tag_red"
+                    android:background="@drawable/background_tag_dark_red"
                     android:gravity="center"
                     android:textColor="#fff"
                     android:paddingStart="10dp"
@@ -157,7 +157,7 @@
                 <ImageView
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:src="@drawable/ic_cross_red"
+                    android:src="@drawable/ic_cross_dark_red"
                     android:padding="8dp"
                     />
 
