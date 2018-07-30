@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,6 +95,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
     }
 
     private void onUpdateUser(User returnedUser) {
+        instance.setCurrentUser(returnedUser);
     }
 
     private class CurrentRewardsAdapter extends ArrayAdapter<List<Integer>> {
@@ -125,14 +128,21 @@ public class CurrentRewardsActivity extends AppCompatActivity {
             ImageView colTwoId = itemView.findViewById(R.id.imageViewCurrentRewardItem_Col2);
             ImageView colThreeId = itemView.findViewById(R.id.imageViewCurrentRewardItem_Col3);
 
-            setupTextView(itemView, position);
+            setupTitleTextView(itemView, position);
+            setupTierTextView(itemView, position);
             setupImageViewColumn(colOneId, position, 0);
             setupImageViewColumn(colTwoId, position, 1);
             setupImageViewColumn(colThreeId, position, 2);
             return itemView;
         }
 
-        private void setupTextView(View itemView, int position) {
+        private void setupTierTextView(View itemView, int position) {
+            TextView textView = itemView.findViewById(R.id.textViewTierTitle);
+            String text = getString(R.string.title_currentrewards_tier) + " " +  (position + 1);
+            textView.setText(text);
+        }
+
+        private void setupTitleTextView(View itemView, int position) {
             TextView textView = itemView.findViewById(R.id.textViewCurrentRewardTitle);
             textView.setText(unlockedTitles.get(position));
         }

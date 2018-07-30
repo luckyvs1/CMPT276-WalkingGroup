@@ -151,4 +151,5 @@
     <string name="permissionItem_usersApprovedTxt">Approved by:\u0020</string>
     <string name="permissionItem_deniedByTxt">Denied by:\u0020</string>
     <string name="permissionItem_pendingTxt">Pending:\u0020</string>
+    <string name="title_currentrewards_tier">Tier</string>
 </resources>
