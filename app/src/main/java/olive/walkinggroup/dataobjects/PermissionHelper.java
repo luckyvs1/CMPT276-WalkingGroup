@@ -68,6 +68,9 @@ public class PermissionHelper {
             }
         }
 
+        // Requesting user always approves. (Fix for #93)
+        approvedUsersSet.add(request.getRequestingUser());
+
         StringBuilder nameListString = new StringBuilder();
         approvedUsersSet = UserListHelper.sortUserSetById(approvedUsersSet);
 
