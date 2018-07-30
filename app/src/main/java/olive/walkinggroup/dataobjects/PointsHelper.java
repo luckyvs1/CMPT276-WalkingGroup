@@ -44,15 +44,11 @@ public class PointsHelper {
 
     public int getCurrentTier() {
         currentTier = -1;
-        Log.d("PointsHelper", String.valueOf(totalPoints));
-        Log.d("PointsHelper", String.valueOf(currentPoints));
         for(int i = 0 ; i < max_Tier ; i++){
-            Log.d("PointsHelper", String.valueOf(TierPoints[i]));
             if(totalPoints >= TierPoints[i]){
                 currentTier = i;
             }
         }
-        Log.d("PointsHelper", String.valueOf(currentTier));
         return currentTier;
     }
 

@@ -38,7 +38,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private Model instance;
     private UploadGpsLocation uploadGpsLocation;
     private Handler handler = new Handler();
-    private PointsHelper pointsHelper = new PointsHelper();
+    private PointsHelper pointsHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,20 +119,17 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setupProfileSection() {
-        Integer currentPoints;
+        Integer totalPoints;
+        pointsHelper = new PointsHelper();
 
         if (instance.getCurrentUser().getTotalPointsEarned() != null) {
-            currentPoints = instance.getCurrentUser().getTotalPointsEarned();
+            totalPoints = instance.getCurrentUser().getTotalPointsEarned();
         }  else {
-            currentPoints = 0;
+            totalPoints = 0;
         }
 
         String welcomeMessage = "Welcome, " + instance.getCurrentUser().getName() + "!";
-        String pointsMessage = "You have " + currentPoints + " points.";
-
-        // Getting color based on tier
-        // TODO: Make the getting tier dynamic
-        //int currentTier = pointsHelper.getCurrentTier();
+        String pointsMessage = "You have " + totalPoints + " points.";
 
         int currentTier = pointsHelper.getCurrentTier();
         Toast.makeText(DashBoardActivity.this, "Dashboard Current tier is: " + String.valueOf(currentTier), Toast.LENGTH_LONG).show();
@@ -153,11 +150,16 @@ public class DashBoardActivity extends AppCompatActivity {
         }
 
         //String titleMessage = instance.getCurrentUser().getRewards().getSelectedTitle();
-        Integer avatarId = instance.getCurrentUser().getRewards().getSelectedIconId();
+        Integer avatarId;
+
+        //TODO: Have a default avatar instead to show on profile?
+        if(instance.getCurrentUser().getRewards() != null) {
+            avatarId = instance.getCurrentUser().getRewards().getSelectedIconId();
+            displayAvater(R.id.imgViewAvatar, avatarId);
+        }
 
         displayDetails(R.id.txtUserName, welcomeMessage);
         displayDetails(R.id.txtUserPoints, pointsMessage);
-        displayAvater(R.id.imgViewAvatar, avatarId);
     }
 
     // UI Logic
