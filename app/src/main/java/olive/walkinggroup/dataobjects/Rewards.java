@@ -27,7 +27,7 @@ public  class Rewards {
     }
 
     public Rewards(Context context){
-        List<String> stringList = Arrays.asList(new String[]{"A", "B", "A", "B", "C", "D","A", "B", "C", "D"});
+        List<String> stringList = Arrays.asList(new String[]{"Lieutenant", "B", "A", "B", "C", "D","A", "B", "C", "D"});
         title.addAll(stringList);
 
 

@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
 
     private Rewards rewards;
     private List<List<Integer>> iconIds;
+    private List<String> unlockedTitles;
     private ImageView previouslySelectedIcon;
     private int selectedIconId = 0;
     private Model instance;
@@ -52,6 +54,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
         if (currentTier > -1) {
             rewards = new Rewards(this);
             iconIds = new ArrayList<>(rewards.getUnlockedIconsUpToTier(currentTier + 1));
+            unlockedTitles = new ArrayList<>(rewards.getUnlockedTitlesUpToTier(currentTier + 1));
             setupListIcons();
         }
         setupOKButton();
@@ -67,7 +70,6 @@ public class CurrentRewardsActivity extends AppCompatActivity {
                     currentUser.setRewards(selectedRewards);
                     updateUserOnServer();
                 }
-                Log.i("MyApp", "No icon selected");
                 finish();
             }
         });
@@ -75,9 +77,9 @@ public class CurrentRewardsActivity extends AppCompatActivity {
 
     private void setupListIcons() {
 
-        IconsAdapter iconsAdapter = new IconsAdapter();
+        CurrentRewardsAdapter currentRewardsAdapter = new CurrentRewardsAdapter();
         ListView listView = findViewById(R.id.listViewCurrentRewardsIcons);
-        listView.setAdapter(iconsAdapter);
+        listView.setAdapter(currentRewardsAdapter);
     }
 
     public static Intent makeLaunchIntent(Context context) {
@@ -87,15 +89,15 @@ public class CurrentRewardsActivity extends AppCompatActivity {
     private void updateUserOnServer() {
 
         Call<User> caller = instance.getProxy().updateUser(currentUser.getId(), currentUser);
-        ProxyBuilder.callProxy(this, caller, returnedUsers -> onUpdateUser(returnedUsers));
+        ProxyBuilder.callProxy(this, caller, returnedUser -> onUpdateUser(returnedUser));
     }
 
-    private void onUpdateUser(User returnedUsers) {
+    private void onUpdateUser(User returnedUser) {
     }
 
-    private class IconsAdapter extends ArrayAdapter<List<Integer>> {
-        private IconsAdapter() {
-            super(CurrentRewardsActivity.this, R.layout.list_currentrewards_icon_item, iconIds);
+    private class CurrentRewardsAdapter extends ArrayAdapter<List<Integer>> {
+        private CurrentRewardsAdapter() {
+            super(CurrentRewardsActivity.this, R.layout.list_currentrewards_item, iconIds);
         }
 
         // Disable ListView recycling
@@ -115,20 +117,30 @@ public class CurrentRewardsActivity extends AppCompatActivity {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             View itemView = convertView;
             if (itemView == null) {
-                itemView = CurrentRewardsActivity.this.getLayoutInflater().inflate(R.layout.list_currentrewards_icon_item, parent, false);
+                itemView = CurrentRewardsActivity.this.getLayoutInflater().inflate(R.layout.list_currentrewards_item, parent, false);
             }
+
 
             ImageView colOneId = itemView.findViewById(R.id.imageViewCurrentRewardItem_Col1);
             ImageView colTwoId = itemView.findViewById(R.id.imageViewCurrentRewardItem_Col2);
             ImageView colThreeId = itemView.findViewById(R.id.imageViewCurrentRewardItem_Col3);
 
+            setupTextView(itemView, position);
             setupImageViewColumn(colOneId, position, 0);
             setupImageViewColumn(colTwoId, position, 1);
             setupImageViewColumn(colThreeId, position, 2);
             return itemView;
         }
 
+        private void setupTextView(View itemView, int position) {
+            TextView textView = itemView.findViewById(R.id.textViewCurrentRewardTitle);
+            textView.setText(unlockedTitles.get(position));
+        }
+
         private void setupImageViewColumn(ImageView imageView, int position, int col) {
+
+
+
             int imageResourceId = iconIds.get(position).get(col);
             imageView.setImageResource(imageResourceId);
 
@@ -156,3 +168,4 @@ public class CurrentRewardsActivity extends AppCompatActivity {
         }
     }
 }
+
