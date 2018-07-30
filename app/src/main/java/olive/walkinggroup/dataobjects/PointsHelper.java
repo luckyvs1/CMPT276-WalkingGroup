@@ -1,7 +1,5 @@
 package olive.walkinggroup.dataobjects;
 
-import android.util.Log;
-
 public class PointsHelper {
     private Model instance = Model.getInstance();
     private User user = instance.getCurrentUser();

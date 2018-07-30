@@ -120,6 +120,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
     private void setupProfileSection() {
         Integer totalPoints;
+        int invalidTier = -1;
         pointsHelper = new PointsHelper();
 
         if (instance.getCurrentUser().getTotalPointsEarned() != null) {
@@ -132,13 +133,12 @@ public class DashBoardActivity extends AppCompatActivity {
         String pointsMessage = "You have " + totalPoints + " points.";
 
         int currentTier = pointsHelper.getCurrentTier();
-        Toast.makeText(DashBoardActivity.this, "Dashboard Current tier is: " + String.valueOf(currentTier), Toast.LENGTH_LONG).show();
 
-        if(currentTier != -1){
+        if(currentTier != invalidTier){
             // Colors
             int titleColor;
             TypedArray typedArrayColors = getResources().obtainTypedArray(R.array.colors);
-            titleColor = typedArrayColors.getResourceId(currentTier, -1);
+            titleColor = typedArrayColors.getResourceId(currentTier, invalidTier);
             int colorValue = getResources().getColor(titleColor);
             setTitleColor(R.id.txtUserTitle, colorValue);
 
