@@ -24,13 +24,14 @@ public class StoreActivity extends AppCompatActivity {
     private User user = instance.getCurrentUser();
     private PointsHelper pointsHelper = new PointsHelper();
 
+    private int numTiers = 10;
     private int totalPoints;
     private int currentPoints;
     private int currentTier;
     private int pointsNeeded;
     private int [] TierPoints;
 
-    TextView [] coverTiers = new TextView [5];
+    TextView [] coverTiers = new TextView [numTiers];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class StoreActivity extends AppCompatActivity {
         pointsNeeded = pointsHelper.getPointsNeeded();
         TierPoints = pointsHelper.getTierPoints();
 
-        for(int i = 0 ; i < 5 ; i++) {
+        for(int i = 0 ; i < numTiers ; i++) {
             String ID = "cover_tier"+(i+1);
             int resID = getResources().getIdentifier(ID,"id",getPackageName());
             coverTiers [i] = findViewById(resID);
@@ -64,11 +65,12 @@ public class StoreActivity extends AppCompatActivity {
         for(int i = 0 ; i <= currentTier ; i ++){
             coverTiers[i].setVisibility(View.GONE);
         }
-        coverTiers[currentTier+1].append("\n"+"You still need "+pointsNeeded+" points !");
+        if(currentTier < numTiers-1){
+        coverTiers[currentTier+1].append("\n"+"You still need "+pointsNeeded+" points !");}
     }
 
     private void setupTierClickable(){
-        for (int i = 0 ; i < 5 ; i++) {
+        for (int i = 0 ; i < numTiers ; i++) {
             if (coverTiers[i].getVisibility() == View.GONE) {
                 setupAvatarClickable(i);
             }

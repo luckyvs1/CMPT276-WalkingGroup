@@ -322,8 +322,268 @@
                 android:background="@drawable/shelf"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/avatar_61"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="55dp"
+                    app:srcCompat="@drawable/avatar61" />
+
+                <ImageView
+                    android:id="@+id/avatar_62"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignTop="@+id/avatar_61"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/avatar62" />
+
+                <ImageView
+                    android:id="@+id/avatar_63"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/avatar_61"
+                    android:layout_marginEnd="55dp"
+                    app:srcCompat="@drawable/avatar63" />
+
                 <TextView
                     android:id="@+id/cover_tier6"
+                    android:text="Get 500 Total Points to Unlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:shadowColor="#000000"
+                    android:shadowRadius="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="10dp"
+                    android:background="#55000000"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/shelve_tier7"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/shelf"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/avatar_71"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="55dp"
+                    app:srcCompat="@drawable/avatar71" />
+
+                <ImageView
+                    android:id="@+id/avatar_72"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignTop="@+id/avatar_71"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/avatar72" />
+
+                <ImageView
+                    android:id="@+id/avatar_73"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/avatar_71"
+                    android:layout_marginEnd="55dp"
+                    app:srcCompat="@drawable/avatar73" />
+
+                <TextView
+                    android:id="@+id/cover_tier7"
+                    android:text="Get 500 Total Points to Unlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:shadowColor="#000000"
+                    android:shadowRadius="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="10dp"
+                    android:background="#55000000"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/shelve_tier8"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/shelf"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/avatar_81"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="55dp"
+                    app:srcCompat="@drawable/avatar81" />
+
+                <ImageView
+                    android:id="@+id/avatar_82"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignTop="@+id/avatar_81"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/avatar82" />
+
+                <ImageView
+                    android:id="@+id/avatar_83"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/avatar_81"
+                    android:layout_marginEnd="55dp"
+                    app:srcCompat="@drawable/avatar83" />
+
+                <TextView
+                    android:id="@+id/cover_tier8"
+                    android:text="Get 500 Total Points to Unlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:shadowColor="#000000"
+                    android:shadowRadius="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="10dp"
+                    android:background="#55000000"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/shelve_tier9"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/shelf"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/avatar_91"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="55dp"
+                    app:srcCompat="@drawable/avatar91" />
+
+                <ImageView
+                    android:id="@+id/avatar_92"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignTop="@+id/avatar_91"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/avatar92" />
+
+                <ImageView
+                    android:id="@+id/avatar_93"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/avatar_91"
+                    android:layout_marginEnd="55dp"
+                    app:srcCompat="@drawable/avatar93" />
+
+                <TextView
+                    android:id="@+id/cover_tier9"
+                    android:text="Get 500 Total Points to Unlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:shadowColor="#000000"
+                    android:shadowRadius="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="10dp"
+                    android:background="#55000000"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/shelve_tier10"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/shelf"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/avatar_101"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="55dp"
+                    app:srcCompat="@drawable/avatar101" />
+
+                <ImageView
+                    android:id="@+id/avatar_102"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignTop="@+id/avatar_101"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/avatar102" />
+
+                <ImageView
+                    android:id="@+id/avatar_103"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/avatar_101"
+                    android:layout_marginEnd="55dp"
+                    app:srcCompat="@drawable/avatar103" />
+
+                <TextView
+                    android:id="@+id/cover_tier10"
+                    android:text="Get 500 Total Points to Unlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:shadowColor="#000000"
+                    android:shadowRadius="10"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="10dp"
+                    android:background="#55000000"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/shelve_tier11"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/shelf"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/cover_tier11"
                     android:text="Coming Soon ..."
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
