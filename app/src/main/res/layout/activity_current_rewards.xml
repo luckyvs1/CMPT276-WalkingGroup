@@ -7,11 +7,17 @@
     android:orientation="vertical"
     tools:context=".app.CurrentRewardsActivity">
 
+    <TextView
+        android:id="@+id/textViewNoRewards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sampleText" />
+
     <ListView
         android:id="@+id/listViewCurrentRewardsIcons"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="90"/>
+        android:layout_weight="90" />
 
     <LinearLayout
         android:layout_width="match_parent"

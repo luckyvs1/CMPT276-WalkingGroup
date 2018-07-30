@@ -152,4 +152,5 @@
     <string name="permissionItem_deniedByTxt">Denied by:\u0020</string>
     <string name="permissionItem_pendingTxt">Pending:\u0020</string>
     <string name="title_currentrewards_tier">Tier</string>
+    <string name="current_rewards_no_rewards">No rewards to show.  Go walk to earn points and get rewards!</string>
 </resources>

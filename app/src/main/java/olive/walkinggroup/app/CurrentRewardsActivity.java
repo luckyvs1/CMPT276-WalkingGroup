@@ -53,11 +53,17 @@ public class CurrentRewardsActivity extends AppCompatActivity {
         pointsHelper = new PointsHelper();
         currentTier = pointsHelper.getCurrentTier();
 
+        TextView textView = findViewById(R.id.textViewNoRewards);
+        textView.setVisibility(View.GONE);
+
         if (currentTier > -1) {
             rewards = new Rewards(this);
             iconIds = new ArrayList<>(rewards.getUnlockedIconsUpToTier(currentTier + 1));
             unlockedTitles = new ArrayList<>(rewards.getUnlockedTitlesUpToTier(currentTier + 1));
             setupListIcons();
+        } else {
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(R.string.current_rewards_no_rewards);
         }
         setupOKButton();
     }
