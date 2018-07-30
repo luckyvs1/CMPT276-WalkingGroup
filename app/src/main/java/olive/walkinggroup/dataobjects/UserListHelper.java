@@ -1,31 +1,34 @@
 package olive.walkinggroup.dataobjects;
 
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+        import android.app.Activity;
+        import android.content.Context;
+        import android.graphics.Color;
+        import android.support.annotation.NonNull;
+        import android.support.annotation.Nullable;
+        import android.util.Log;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.ArrayAdapter;
+        import android.widget.RelativeLayout;
+        import android.widget.TextView;
+        import android.widget.Toast;
 
-import org.w3c.dom.Text;
+        import org.w3c.dom.Text;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+        import java.util.ArrayList;
+        import java.util.Collection;
+        import java.util.Collections;
+        import java.util.Comparator;
+        import java.util.HashSet;
+        import java.util.List;
+        import java.util.Objects;
+        import java.util.Set;
+        import java.util.TreeSet;
+        import java.util.regex.Matcher;
+        import java.util.regex.Pattern;
 
-import olive.walkinggroup.R;
-import olive.walkinggroup.app.GroupDetailsActivity;
+        import olive.walkinggroup.R;
+        import olive.walkinggroup.app.GroupDetailsActivity;
 
 /**
  * UserListHelper class allows generating an ArrayAdapter to be used in a ListView of users
@@ -202,6 +205,18 @@ public class UserListHelper {
             super(activity, R.layout.list_leaderboard_item, userList);
         }
 
+        // Disable ListView recycling
+        // https://stackoverflow.com/questions/6921462/listview-reusing-views-when-i-dont-want-it-to
+        @Override
+        public int getViewTypeCount() {
+            return getCount();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position;
+        }
+
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -250,7 +265,7 @@ public class UserListHelper {
         }
 
         private String getModifiedName(String name) {
-            
+
             String modifiedName = name.trim();
             Pattern pattern = Pattern.compile("(^[a-zA-Z ,.'-]+$)");
             Matcher matcher = pattern.matcher(modifiedName);
@@ -265,7 +280,7 @@ public class UserListHelper {
 
                     int lastSpaceIndex = modifiedName.lastIndexOf(' ');
                     String lastNameInitial = Character.toUpperCase(modifiedName.charAt(lastSpaceIndex + 1)) + ".";
-                    
+
                     return firstName + " " + lastNameInitial;
 
                 } else {
@@ -379,5 +394,22 @@ public class UserListHelper {
 
     }
 
+    public static Set<User> sortUserSetById(Set<User> setToSort) {
+        List<User> listToSort = new ArrayList<>(setToSort);
 
+        class SortSetById implements Comparator<User> {
+            @Override
+            public int compare(User o1, User o2) {
+                Integer userId1 = o1.getId().intValue();
+                Integer userId2 = o2.getId().intValue();
+
+                return (userId1.compareTo(userId2));
+            }
+        }
+
+        Collections.sort(listToSort, new SortSetById());
+        Collections.reverse(listToSort);
+
+        return new HashSet<>(listToSort);
+    }
 }

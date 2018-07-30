@@ -4,18 +4,22 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import olive.walkinggroup.R;
@@ -29,14 +33,24 @@ import retrofit2.Call;
 
 public class ViewPermissionsActivity extends AppCompatActivity {
 
+    private static final String TAG = "ViewPermissionsActivity";
+    Set<User> rawUserSet = new HashSet<>();
+    Set<User> detailedUserSet = new HashSet<>();
     HashMap<Integer, String> userNameMap = new HashMap<>();
 
+    List<PermissionRequest> requestFullList = new ArrayList<>();
     List<PermissionRequest> requestDisplayList = new ArrayList<>();
 
     Model model;
     WGServerProxy proxy;
     User currentUser;
 
+    ToggleButton pendingBtn;
+    ToggleButton approvedBtn;
+    ToggleButton deniedBtn;
+    ToggleButton allBtn;
+    List<ToggleButton> toggleButtons = new ArrayList<>();
+    String selectedStatus = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,24 +61,121 @@ public class ViewPermissionsActivity extends AppCompatActivity {
         proxy = model.getProxy();
         currentUser = model.getCurrentUser();
 
+        setupFilterToggleBtns();
+        setupRefreshBtn();
         getMyPermissionRequests();
     }
 
+    private void setupFilterToggleBtns() {
+        pendingBtn = findViewById(R.id.viewPermissions_pendingBtn);
+        approvedBtn = findViewById(R.id.viewPermissions_approvedBtn);
+        deniedBtn = findViewById(R.id.viewPermissions_deniedBtn);
+        allBtn = findViewById(R.id.viewPermissions_allBtn);
+
+        toggleButtons.add(pendingBtn);
+        toggleButtons.add(approvedBtn);
+        toggleButtons.add(deniedBtn);
+        toggleButtons.add(allBtn);
+
+        // Default selected status: pending
+        pendingBtn.setChecked(true);
+        selectedStatus = pendingBtn.getTextOn().toString();
+
+        for (ToggleButton btn : toggleButtons) {
+            setToggleBtnOnClickListener(btn);
+        }
+    }
+
+    private void setToggleBtnOnClickListener(ToggleButton button) {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedStatus = button.getTextOn().toString();
+                Log.d(TAG, "Currently displaying requests with status: " + selectedStatus);
+                populatePermissionRequestList();
+
+                for (ToggleButton btn : toggleButtons) {
+                    if (!button.equals(btn)) {
+                        btn.setChecked(false);
+                    }
+                }
+            }
+        });
+    }
+
+    private void setupRefreshBtn() {
+        RelativeLayout refreshBtn = findViewById(R.id.viewPermissions_refreshBtn);
+        refreshBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getMyPermissionRequests();
+            }
+        });
+    }
+
     private void getMyPermissionRequests() {
+        showLoadingCircle();
+
         Call<List<PermissionRequest>> caller = proxy.getPermissions(currentUser.getId());
         ProxyBuilder.callProxy(this, caller, requestList -> onGetMyPermissionRequestsResponse(requestList));
     }
 
     private void onGetMyPermissionRequestsResponse(List<PermissionRequest> requestList) {
-        requestDisplayList = requestList;
-        populatePermissionRequestList();
+        if (requestList.size() == 0) {
+            hideLoadingCircle();
+            showEmpty();
+            return;
+        }
+
+        Collections.reverse(requestList);
+        requestFullList = requestList;
+        buildUserNameMap();
+    }
+
+    private void buildUserNameMap() {
+        rawUserSet = PermissionHelper.getAllUsers(requestFullList);
+
+        for (User user : rawUserSet) {
+            Call<User> caller = proxy.getUserById(user.getId());
+            ProxyBuilder.callProxy(this, caller, detailedUser -> onBuildUserNameMapResponse(detailedUser));
+        }
+    }
+
+    private void onBuildUserNameMapResponse(User detailedUser) {
+        detailedUserSet.add(detailedUser);
+        userNameMap.put(detailedUser.getId().intValue(), detailedUser.getName());
+
+        if (detailedUserSet.size() == rawUserSet.size()) {
+            populatePermissionRequestList();
+        }
     }
 
     private void populatePermissionRequestList() {
+        switch (selectedStatus) {
+            case "Pending":
+                requestDisplayList = PermissionHelper.getAllRequestsWithStatus(requestFullList, WGServerProxy.PermissionStatus.PENDING);
+                break;
+            case "Approved":
+                requestDisplayList = PermissionHelper.getAllRequestsWithStatus(requestFullList, WGServerProxy.PermissionStatus.APPROVED);
+                break;
+            case "Denied":
+                requestDisplayList = PermissionHelper.getAllRequestsWithStatus(requestFullList, WGServerProxy.PermissionStatus.DENIED);
+                break;
+            default:
+                requestDisplayList = requestFullList;
+                break;
+        }
+
+        if (requestDisplayList.size() == 0) {
+            showEmpty();
+        } else {
+            hideEmpty();
+        }
+
         ListView requestList = findViewById(R.id.viewPermissions_list);
         PermissionRequestListAdapter adapter = new PermissionRequestListAdapter();
         requestList.setAdapter(adapter);
-
+        hideLoadingCircle();
     }
 
     public class PermissionRequestListAdapter extends ArrayAdapter<PermissionRequest> {
@@ -113,35 +224,41 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             switch (currentRequest.getStatus()) {
                 case APPROVED:
                     approvedTag.setVisibility(View.VISIBLE);
-                    approvedUsersContainer.setVisibility(View.VISIBLE);
                     deniedTag.setVisibility(View.GONE);
-                    deniedUserContainer.setVisibility(View.GONE);
                     pendingTag.setVisibility(View.GONE);
+
+                    approvedUsersContainer.setVisibility(View.VISIBLE);
+                    deniedUserContainer.setVisibility(View.GONE);
                     pendingUsersContainer.setVisibility(View.GONE);
 
                     actionBtnContainer.setVisibility(View.GONE);
+                    onBehalfContainer.setVisibility(View.VISIBLE);
                     break;
 
                 case DENIED:
                     deniedTag.setVisibility(View.VISIBLE);
-                    deniedUserContainer.setVisibility(View.VISIBLE);
                     approvedTag.setVisibility(View.GONE);
-                    approvedUsersContainer.setVisibility(View.GONE);
                     pendingTag.setVisibility(View.GONE);
+
+                    deniedUserContainer.setVisibility(View.VISIBLE);
+                    approvedUsersContainer.setVisibility(View.GONE);
                     pendingUsersContainer.setVisibility(View.GONE);
 
                     actionBtnContainer.setVisibility(View.GONE);
+                    onBehalfContainer.setVisibility(View.GONE);
                     break;
 
                 case PENDING:
                     pendingTag.setVisibility(View.VISIBLE);
-                    pendingUsersContainer.setVisibility(View.VISIBLE);
                     approvedTag.setVisibility(View.GONE);
-                    approvedUsersContainer.setVisibility(View.VISIBLE);
                     deniedTag.setVisibility(View.GONE);
+
+                    pendingUsersContainer.setVisibility(View.VISIBLE);
+                    approvedUsersContainer.setVisibility(View.VISIBLE);
                     deniedUserContainer.setVisibility(View.GONE);
 
                     actionBtnContainer.setVisibility(View.VISIBLE);
+                    onBehalfContainer.setVisibility(View.VISIBLE);
                     break;
 
                 default:
@@ -151,44 +268,22 @@ public class ViewPermissionsActivity extends AppCompatActivity {
             // Display request message
             messageTextView.setText(currentRequest.getMessage());
 
-            // TODO: Display authorizors
-//
-//            Set<PermissionRequest.Authorizor> authorizors = currentRequest.getAuthorizors();
-//
-//            String approvedUsers = "";
-//            String deniedUser = "";
-//            String pendingUsers = "";
-//
-//            for (PermissionRequest.Authorizor authorizor : authorizors) {
-//                switch (authorizor.getStatus()) {
-//                    case APPROVED:
-//                        User userApproved = authorizor.getWhoApprovedOrDenied();
-//
-//                        if (!Objects.equals(approvedUsers, "")) {
-//                            approvedUsers += ", ";
-//                        }
-//
-//                        String userApprovedText = getUserNameFromMap(userApproved.getId());
-//                        approvedUsers += userApprovedText;
-//                        break;
-//
-//                    case DENIED:
-//                        User userDenied = authorizor.getWhoApprovedOrDenied();
-//                        String userDeniedText = getUserNameFromMap(userDenied.getId()) + ", ";
-//
-//                    case PENDING:
-//
-//                    default:
-//                        break;
-//                }
-//            }
+            // Display authorizors, grouped by status
+            approvedUsersTextView.setText(PermissionHelper.makeApproveUserList(currentRequest, userNameMap, currentUser));
+            deniedUserTextView.setText(PermissionHelper.getDeniedUserName(currentRequest, userNameMap, currentUser));
+            pendingUsersTextView.setText(PermissionHelper.makePendingUserList(currentRequest, userNameMap, currentUser));
+
+            // Hide action buttons if currentUser has approved/denied a pending request already
+            if (PermissionHelper.userHasMadeDecision(currentRequest, currentUser)) {
+                actionBtnContainer.setVisibility(View.GONE);
+            }
 
             // Action buttons onClickListeners
             approveBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Call<PermissionRequest> caller = proxy.approveOrDenyPermissionRequest(currentRequest.getId(), WGServerProxy.PermissionStatus.APPROVED);
-                    ProxyBuilder.callProxy(ViewPermissionsActivity.this, caller, null);
+                    ProxyBuilder.callProxy(ViewPermissionsActivity.this, caller, returnedRequest -> getMyPermissionRequests());
                 }
             });
 
@@ -196,20 +291,57 @@ public class ViewPermissionsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Call<PermissionRequest> caller = proxy.approveOrDenyPermissionRequest(currentRequest.getId(), WGServerProxy.PermissionStatus.DENIED);
-                    ProxyBuilder.callProxy(ViewPermissionsActivity.this, caller, null);
+                    ProxyBuilder.callProxy(ViewPermissionsActivity.this, caller, returnedRequest -> getMyPermissionRequests());
                 }
             });
 
             // Display "on behalf" text
+            // Show when an action is done on behalf of currentUser in an authorizor group.
+            // Do not show when currentUser can still authorize in a different authorizor group.
+            if (!(PermissionHelper.hasActionDoneOnBehalf(currentRequest, currentUser, userNameMap))) {
+                onBehalfContainer.setVisibility(View.GONE);
+            } else {
+                String onBehalfText = getResources().getString(R.string.permissionItem_onBehalfTxt);
+                String actionDoneOnBehalfString = PermissionHelper.getActionDoneOnBehalfString(currentRequest, currentUser, userNameMap);
+                onBehalfText = actionDoneOnBehalfString + onBehalfText;
+                onBehalfTextView.setText(onBehalfText);
+
+                actionBtnContainer.setVisibility(View.GONE);
+            }
 
             return itemView;
         }
+    }
 
+    private void showLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.viewPermissions_loading);
 
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.VISIBLE);
+        }
+    }
 
-        private String getUserNameFromMap(long id) {
-            Integer userId = (int) id;
-            return userNameMap.get(userId);
+    private void hideLoadingCircle() {
+        RelativeLayout loadingCircle = findViewById(R.id.viewPermissions_loading);
+
+        if (loadingCircle != null) {
+            loadingCircle.setVisibility(View.GONE);
+        }
+    }
+
+    private void showEmpty() {
+        LinearLayout empty = findViewById(R.id.viewPermissions_empty);
+
+        if (empty != null) {
+            empty.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideEmpty() {
+        LinearLayout empty = findViewById(R.id.viewPermissions_empty);
+
+        if (empty != null) {
+            empty.setVisibility(View.GONE);
         }
     }
 }
