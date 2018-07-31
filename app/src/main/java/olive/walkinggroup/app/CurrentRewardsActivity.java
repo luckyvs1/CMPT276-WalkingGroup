@@ -40,6 +40,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
     private int selectedIconId = 0;
     private Model instance;
     private User currentUser;
+    private User dummyUser = new User();
     private PointsHelper pointsHelper;
     private int currentTier;
 
@@ -75,7 +76,13 @@ public class CurrentRewardsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (selectedIconId != 0) {
                     SelectedRewards selectedRewards = new SelectedRewards(selectedIconId);
-                    currentUser.setRewards(selectedRewards);
+                    dummyUser.setName(currentUser.getName());
+                    dummyUser.setEmail(currentUser.getEmail());
+                    dummyUser.setCurrentPoints(currentUser.getCurrentPoints());
+                    dummyUser.setTotalPointsEarned(currentUser.getTotalPointsEarned());
+                    dummyUser.setRewards(selectedRewards);
+
+
                     updateUserOnServer();
                 }
                 finish();
@@ -96,7 +103,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
 
     private void updateUserOnServer() {
 
-        Call<User> caller = instance.getProxy().updateUser(currentUser.getId(), currentUser);
+        Call<User> caller = instance.getProxy().updateUser(currentUser.getId(), dummyUser);
         ProxyBuilder.callProxy(this, caller, returnedUser -> onUpdateUser(returnedUser));
     }
 
