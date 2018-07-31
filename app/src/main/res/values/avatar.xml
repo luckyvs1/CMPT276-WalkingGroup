@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="avatar_default">
+        <item>@drawable/avatar00</item>
+    </integer-array>
+
+    <string-array name="title_default">
+        <item>Officer Cadet</item>
+    </string-array>
+</resources>

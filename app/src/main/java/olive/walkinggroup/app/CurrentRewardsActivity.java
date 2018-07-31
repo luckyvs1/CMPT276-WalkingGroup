@@ -80,9 +80,15 @@ public class CurrentRewardsActivity extends AppCompatActivity {
                     dummyUser.setEmail(currentUser.getEmail());
                     dummyUser.setCurrentPoints(currentUser.getCurrentPoints());
                     dummyUser.setTotalPointsEarned(currentUser.getTotalPointsEarned());
+                    dummyUser.setBirthYear(currentUser.getBirthYear());
+                    dummyUser.setBirthMonth(currentUser.getBirthMonth());
+                    dummyUser.setAddress(currentUser.getAddress());
+                    dummyUser.setCellPhone(currentUser.getCellPhone());
+                    dummyUser.setHomePhone(currentUser.getHomePhone());
+                    dummyUser.setTeacherName(currentUser.getTeacherName());
+                    dummyUser.setGrade(currentUser.getGrade());
+                    dummyUser.setEmergencyContactInfo(currentUser.getEmergencyContactInfo());
                     dummyUser.setRewards(selectedRewards);
-
-
                     updateUserOnServer();
                 }
                 finish();

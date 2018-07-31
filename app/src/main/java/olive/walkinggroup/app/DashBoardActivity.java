@@ -115,14 +115,31 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void getUserById(User updatedUser) {
+
         instance.setCurrentUser(updatedUser);
+        instance.getCurrentUser().setRewards(updatedUser.getRewards());
         setupProfileSection();
     }
 
     private void setupProfileSection() {
+
+        pointsHelper = new PointsHelper();
+        Rewards rewards = new Rewards(this);
+
         Integer totalPoints;
         int invalidTier = -1;
-        pointsHelper = new PointsHelper();
+        int currentTier;
+        Integer avatarId;
+        int titleColor;
+        String titleName;
+        int colorValue;
+
+        TypedArray typedArrayColors = getResources().obtainTypedArray(R.array.colors);
+        TypedArray defaultColor = getResources().obtainTypedArray(R.array.color_default);
+        String[] typedArrayTitles = getResources().getStringArray(R.array.title_default);
+        TypedArray defaultAvatar = getResources().obtainTypedArray(R.array.avatar_default);
+
+        currentTier = pointsHelper.getCurrentTier();
 
         if (instance.getCurrentUser().getTotalPointsEarned() != null) {
             totalPoints = instance.getCurrentUser().getTotalPointsEarned();
@@ -133,35 +150,42 @@ public class DashBoardActivity extends AppCompatActivity {
         String welcomeMessage = "Welcome, " + instance.getCurrentUser().getName() + "!";
         String pointsMessage = "You have " + totalPoints + " points.";
 
-        int currentTier = pointsHelper.getCurrentTier();
-
         if(currentTier != invalidTier){
-            Rewards rewards = new Rewards(this);
 
             // Colors
-            int titleColor;
-            TypedArray typedArrayColors = getResources().obtainTypedArray(R.array.colors);
-            titleColor = typedArrayColors.getResourceId(currentTier, invalidTier);
-            int colorValue = getResources().getColor(titleColor);
-            setTitleColor(R.id.txtUserTitle, colorValue);
+            titleColor = typedArrayColors.getResourceId(currentTier+1, invalidTier);
+            colorValue = getResources().getColor(titleColor);
 
             // Titles
-            String titleName;
             titleName = rewards.getTierTitle(currentTier);
-            displayDetails(R.id.txtUserTitle, titleName);
+
+
+            if(instance.getCurrentUser().getRewards() != null) {
+                avatarId = instance.getCurrentUser().getRewards().getSelectedIconId();
+            } else {
+                avatarId = defaultAvatar.getResourceId(0,0);
+            }
+
+        } else {
+            titleColor = defaultColor.getResourceId(currentTier+1, 0);
+            colorValue = getResources().getColor(titleColor);
+
+            // Default Title
+            titleName = typedArrayTitles[currentTier+1];
+            avatarId = defaultAvatar.getResourceId(0,0);
         }
 
-        //String titleMessage = instance.getCurrentUser().getRewards().getSelectedTitle();
-        Integer avatarId;
-
-        //TODO: Have a default avatar instead to show on profile?
-        if(instance.getCurrentUser().getRewards() != null) {
-            avatarId = instance.getCurrentUser().getRewards().getSelectedIconId();
-            displayAvater(R.id.imgViewAvatar, avatarId);
-        }
+//        if(instance.getCurrentUser().getRewards() != null) {
+//            avatarId = instance.getCurrentUser().getRewards().getSelectedIconId();
+//        } else  {
+//            avatarId = defaultAvatar.getResourceId(0,0);
+//        }
 
         displayDetails(R.id.txtUserName, welcomeMessage);
         displayDetails(R.id.txtUserPoints, pointsMessage);
+        setTitleColor(R.id.txtUserTitle, colorValue);
+        displayDetails(R.id.txtUserTitle, titleName);
+        displayAvater(R.id.imgViewAvatar, avatarId);
     }
 
     // UI Logic

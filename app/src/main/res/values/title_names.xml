@@ -3,7 +3,6 @@
 
     <!-- Title Names: https://en.wikipedia.org/wiki/Canadian_Armed_Forces_ranks_and_insignia -->
     <string-array name="titleNames">
-        <item>Officer Cadet</item>
         <item>Second Lieutenant</item>
         <item>Lieutenant</item>
         <item>Captain</item>

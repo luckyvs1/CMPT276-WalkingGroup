@@ -143,6 +143,10 @@
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
 
+    <array name="color_default">
+        <item name="Olive">@color/Olive</item>
+    </array>
+
     <array name="colors">
 
 
@@ -156,7 +160,6 @@
         <item name="Crimson">@color/Crimson</item>
         <item name="Aqua">@color/Aqua</item>
         <item name="DarkSeaGreen">@color/DarkSeaGreen</item>
-        <item name="Olive">@color/Olive</item>
 
 
         <!--<item name="White">@color/White</item>-->
