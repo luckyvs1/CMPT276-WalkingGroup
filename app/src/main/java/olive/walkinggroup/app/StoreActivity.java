@@ -58,15 +58,13 @@ public class StoreActivity extends AppCompatActivity {
         totalPoints = pointsHelper.getTotalPoints();
         currentPoints = pointsHelper.getCurrentPoints();
         TextView viewPoints = findViewById(R.id.shop_currentPoint);
-        viewPoints.setText("Current points: "+currentPoints+"\nTotal points: "+totalPoints);
+        viewPoints.setText("Your points: "+totalPoints+"\nPoints needed for next Tier: "+pointsNeeded);
     }
 
     private void setupCoverVisibility() {
         for(int i = 0 ; i <= currentTier ; i ++){
             coverTiers[i].setVisibility(View.GONE);
         }
-        if(currentTier < numTiers-1){
-        coverTiers[currentTier+1].append("\n"+"You still need "+pointsNeeded+" points !");}
     }
 
     private void setupTierClickable(){
