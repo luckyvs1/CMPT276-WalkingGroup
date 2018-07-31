@@ -13,13 +13,15 @@ import olive.walkinggroup.R;
 public  class Rewards {
 
     private Context context;
+
+
     public static final int NUM_TIERS = 10;
     public static final int NUM_ICONS_PER_TIER = 3;
-    static List<String> title = new ArrayList<>();
-    static List<List<Integer>> icons = new ArrayList<>(NUM_TIERS);
+    private List<String> titles;
+    private List<List<Integer>> icons = new ArrayList<>(NUM_TIERS);
 
     public String getTierTitle(int pos){
-        return title.get(pos);
+        return titles.get(pos);
     }
 
     public List<Integer>  getTierIcons (int pos){
@@ -27,9 +29,9 @@ public  class Rewards {
     }
 
     public Rewards(Context context){
-        List<String> stringList = Arrays.asList(new String[]{"Lieutenant", "B", "A", "B", "C", "D","A", "B", "C", "D"});
-        title.addAll(stringList);
 
+        String[] titlesArray = context.getResources().getStringArray(R.array.titleNames);
+        titles = new ArrayList<>(Arrays.asList(titlesArray));
 
         TypedArray drawablesArray = context.getResources().obtainTypedArray(R.array.avatar_imgs);
 
@@ -39,14 +41,13 @@ public  class Rewards {
                 icons.get(i).add(drawablesArray.getResourceId(i*NUM_ICONS_PER_TIER+j,-1));
             }
         }
-        Log.i("MyApp", icons.toString());
         drawablesArray.recycle();
 
 
     }
 
     public List<String> getUnlockedTitlesUpToTier(int currentTier) {
-        return title.subList(0, currentTier);
+        return titles.subList(0, currentTier);
     }
 
     public List<List<Integer>> getUnlockedIconsUpToTier(int currentTier) {
@@ -54,7 +55,7 @@ public  class Rewards {
     }
 
     public List<String> getLockedTitlesFromTier(int currentTier) {
-        return title.subList(currentTier + 1, NUM_TIERS);
+        return titles.subList(currentTier + 1, NUM_TIERS);
     }
 
     public List<List<Integer>> getLockedIconsFromTier(int currentTier) {

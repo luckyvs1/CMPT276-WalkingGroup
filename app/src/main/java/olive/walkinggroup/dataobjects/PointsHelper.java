@@ -4,7 +4,7 @@ public class PointsHelper {
     private Model instance = Model.getInstance();
     private User user = instance.getCurrentUser();
 
-    int max_Tier = 10;
+    int max_Tier = Rewards.NUM_TIERS;
     int currentTier;
     int currentPoints;
     int totalPoints;
