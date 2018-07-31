@@ -26,6 +26,7 @@ import olive.walkinggroup.dataobjects.Message;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.PermissionRequest;
 import olive.walkinggroup.dataobjects.PointsHelper;
+import olive.walkinggroup.dataobjects.Rewards;
 import olive.walkinggroup.dataobjects.UploadGpsLocation;
 import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
@@ -135,6 +136,8 @@ public class DashBoardActivity extends AppCompatActivity {
         int currentTier = pointsHelper.getCurrentTier();
 
         if(currentTier != invalidTier){
+            Rewards rewards = new Rewards(this);
+
             // Colors
             int titleColor;
             TypedArray typedArrayColors = getResources().obtainTypedArray(R.array.colors);
@@ -144,8 +147,7 @@ public class DashBoardActivity extends AppCompatActivity {
 
             // Titles
             String titleName;
-            String[] typedArrayTitles = getResources().getStringArray(R.array.titleNames);
-            titleName = typedArrayTitles[currentTier];
+            titleName = rewards.getTierTitle(currentTier);
             displayDetails(R.id.txtUserTitle, titleName);
         }
 
