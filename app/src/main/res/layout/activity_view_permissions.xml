@@ -164,11 +164,40 @@
         android:background="#33333333"
         >
 
-        <ProgressBar
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/viewPermissions_progressBarContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
-            />
+            android:layout_margin="60dp"
+            android:background="@drawable/background_rectangle_rounded_white"
+            android:orientation="vertical"
+            android:elevation="5dp"
+            >
+
+            <ProgressBar
+                android:id="@+id/viewPermissions_progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:paddingTop="12dp"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                />
+
+
+            <TextView
+                android:id="@+id/viewPermissions_progressBarTextView"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sampleText"
+                />
+
+        </LinearLayout>
+
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
