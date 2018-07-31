@@ -141,6 +141,7 @@ public class ViewPermissionsActivity extends AppCompatActivity {
     }
 
     private void buildUserNameMap() {
+        editProgressBarText("Updating user name list...");
         rawUserSet = PermissionHelper.getAllUsers(requestFullList);
 
         for (User user : rawUserSet) {
@@ -150,8 +151,6 @@ public class ViewPermissionsActivity extends AppCompatActivity {
     }
 
     private void onBuildUserNameMapResponse(User detailedUser) {
-        editProgressBarText("Updating user name list...");
-
         detailedUserSet.add(detailedUser);
         userNameMap.put(detailedUser.getId().intValue(), detailedUser.getName());
 

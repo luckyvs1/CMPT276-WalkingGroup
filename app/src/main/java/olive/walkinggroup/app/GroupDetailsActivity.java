@@ -82,6 +82,8 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     // Server Calls:
     // ---------------------------------------------------------------------------------------------
     private void updateGroupDetails() {
+        showLoadingCircle();
+
         Call<Group> caller = model.getProxy().getGroupById(group.getId());
         ProxyBuilder.callProxy(this, caller, returnedGroup -> onUpdateGroupDetailsProxyResponse(returnedGroup));
     }
@@ -127,6 +129,11 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
         leaderTag.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // If currentUser is not a member, do not let them click
+                if (getMemberListIndex(currentUser) < 0) {
+                    return;
+                }
+
                 Intent intent = UserDetailsActivity.makeIntent(GroupDetailsActivity.this, leader);
                 startActivity(intent);
             }
@@ -287,9 +294,9 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
             case REQUEST_CODE_ADD:
                 if (resultCode == Activity.RESULT_OK) {
                     User userToAdd = (User) data.getSerializableExtra(SelectUserActivity.SELECT_USER_ACTIVITY_RETURN);
-                    memberList.add(userToAdd);
+                    //memberList.add(userToAdd);
 
-                    populateMemberList();
+                    //populateMemberList();
                     addNewMemberToServer(userToAdd);
                     setUpLeaderOnClick(groupLeader);
                     break;
@@ -299,16 +306,16 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
                 if (resultCode == Activity.RESULT_OK) {
                     User userToRemove = (User) data.getSerializableExtra(SelectUserActivity.SELECT_USER_ACTIVITY_RETURN);
 
-                    int index = getMemberListIndex(userToRemove);
-                    if (index >= 0) {
-                        try{
-                            memberList.remove(index);
-                        } catch (IndexOutOfBoundsException e) {
-                            Log.d(TAG, "onActivityResult: IndexOutOfBoundException" + e.getMessage());
-                        }
-                    }
+//                    int index = getMemberListIndex(userToRemove);
+//                    if (index >= 0) {
+//                        try{
+//                            memberList.remove(index);
+//                        } catch (IndexOutOfBoundsException e) {
+//                            Log.d(TAG, "onActivityResult: IndexOutOfBoundException" + e.getMessage());
+//                        }
+//                    }
 
-                    populateMemberList();
+//                    populateMemberList();
                     removeMemberFromGroup(userToRemove);
                     finish();
                     break;
@@ -345,6 +352,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private void onAddNewMemberResponse(List<User> listOfMembers) {
         Log.d(TAG, "Added user to group. New group member list:\n\n\n" + listOfMembers.toString());
+        updateGroupDetails();
     }
 
     private void removeMemberFromGroup(User user) {
@@ -354,6 +362,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
 
     private void onRemoveMemberResponse(Void returnNothing) {
         Log.d(TAG, "Removed user from group.");
+        updateGroupDetails();
     }
 
     private boolean checkChildrenInGroup(){
