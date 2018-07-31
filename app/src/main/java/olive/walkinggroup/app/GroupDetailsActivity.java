@@ -131,7 +131,9 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
             public void onClick(View v) {
                 // If currentUser is not a member, do not let them click
                 if (getMemberListIndex(currentUser) < 0) {
-                    return;
+                    if (!checkChildrenInGroup()) {
+                        return;
+                    }
                 }
 
                 Intent intent = UserDetailsActivity.makeIntent(GroupDetailsActivity.this, leader);
