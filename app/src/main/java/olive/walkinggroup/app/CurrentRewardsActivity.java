@@ -67,6 +67,17 @@ public class CurrentRewardsActivity extends AppCompatActivity {
             textView.setText(R.string.current_rewards_no_rewards);
         }
         setupOKButton();
+        setupCancelButton();
+    }
+
+    private void setupCancelButton() {
+        Button btn = findViewById(R.id.btnCurrentRewardsCancel);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void setupOKButton() {
