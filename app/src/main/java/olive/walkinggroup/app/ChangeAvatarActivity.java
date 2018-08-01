@@ -17,8 +17,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +29,7 @@ import olive.walkinggroup.dataobjects.User;
 import olive.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
 
-public class CurrentRewardsActivity extends AppCompatActivity {
+public class ChangeAvatarActivity extends AppCompatActivity {
 
     private Rewards rewards;
     private List<List<Integer>> iconIds;
@@ -47,7 +45,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_current_rewards);
+        setContentView(R.layout.activity_change_avatar);
 
         instance = Model.getInstance();
         currentUser = instance.getCurrentUser();
@@ -67,6 +65,17 @@ public class CurrentRewardsActivity extends AppCompatActivity {
             textView.setText(R.string.current_rewards_no_rewards);
         }
         setupOKButton();
+        setupCancelButton();
+    }
+
+    private void setupCancelButton() {
+        Button btn = findViewById(R.id.btnCurrentRewardsCancel);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void setupOKButton() {
@@ -97,14 +106,13 @@ public class CurrentRewardsActivity extends AppCompatActivity {
     }
 
     private void setupListIcons() {
-
         CurrentRewardsAdapter currentRewardsAdapter = new CurrentRewardsAdapter();
         ListView listView = findViewById(R.id.listViewCurrentRewardsIcons);
         listView.setAdapter(currentRewardsAdapter);
     }
 
     public static Intent makeLaunchIntent(Context context) {
-        return new Intent(context, CurrentRewardsActivity.class);
+        return new Intent(context, ChangeAvatarActivity.class);
     }
 
     private void updateUserOnServer() {
@@ -119,7 +127,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
 
     private class CurrentRewardsAdapter extends ArrayAdapter<List<Integer>> {
         private CurrentRewardsAdapter() {
-            super(CurrentRewardsActivity.this, R.layout.list_currentrewards_item, iconIds);
+            super(ChangeAvatarActivity.this, R.layout.list_currentrewards_item, iconIds);
         }
 
         // Disable ListView recycling
@@ -139,7 +147,7 @@ public class CurrentRewardsActivity extends AppCompatActivity {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             View itemView = convertView;
             if (itemView == null) {
-                itemView = CurrentRewardsActivity.this.getLayoutInflater().inflate(R.layout.list_currentrewards_item, parent, false);
+                itemView = ChangeAvatarActivity.this.getLayoutInflater().inflate(R.layout.list_currentrewards_item, parent, false);
             }
 
 

@@ -1,5 +1,10 @@
 package olive.walkinggroup.dataobjects;
 
+/**
+ * Helper class to calculate points and tiers based on current points.
+ * Contains methods that are used in Points related activities.
+ */
+
 public class PointsHelper {
     private Model instance = Model.getInstance();
     private User user = instance.getCurrentUser();
@@ -14,16 +19,13 @@ public class PointsHelper {
     int n2 = 4000;
 
     public PointsHelper(){
-        if(user.getTotalPointsEarned()==null)
-        {totalPoints = 0;}
-        else
-        {totalPoints = user.getTotalPointsEarned();}
+        if (user.getTotalPointsEarned()==null) {
+            totalPoints = 0;
+        } else {
+            totalPoints = user.getTotalPointsEarned();
+        }
 
-        if(user.getCurrentPoints()==null)
-        {currentPoints = 0;}
-        else
-        {currentPoints = user.getCurrentPoints();}
-
+        currentPoints = user.getTotalPointsEarned();
         setTierPoints();
         currentTier = getCurrentTier();
     }
@@ -58,11 +60,14 @@ public class PointsHelper {
     }
 
     private void setTierPoints() {
+        int firstNum = n1;
+        int secondNum = n2;
+
         for(int i = 0 ; i < max_Tier ; i++){
-            int n3 = n1 + n2;
-            TierPoints[i] = n3;
-            n1 = n2;
-            n2 = n3;
+            int thirdNum = firstNum + secondNum;
+            TierPoints[i] = thirdNum;
+            firstNum = secondNum;
+            secondNum = thirdNum;
         }
     }
 }

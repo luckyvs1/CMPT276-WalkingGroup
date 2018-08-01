@@ -8,6 +8,11 @@ import java.util.Set;
 
 import olive.walkinggroup.proxy.WGServerProxy;
 
+/**
+ * Helper class for Permission class.
+ * Contains methods that are used in Permission related activities.
+ */
+
 public class PermissionHelper {
 
     public static List<PermissionRequest> getAllRequestsWithStatus(List<PermissionRequest> requestList, WGServerProxy.PermissionStatus status) {

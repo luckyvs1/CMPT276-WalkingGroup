@@ -51,7 +51,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = CurrentRewardsActivity.makeLaunchIntent(UserDetailsActivity.this);
+                Intent intent = ChangeAvatarActivity.makeLaunchIntent(UserDetailsActivity.this);
                 startActivity(intent);
             }
         });

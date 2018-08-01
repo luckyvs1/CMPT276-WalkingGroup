@@ -27,6 +27,9 @@ import retrofit2.Call;
  * UploadGpsLocation class allow starting and stopping of uploading the gps location of the current user.  The
  * class also auto stops the timer if the user has arrived within a fixed distance from their active walking
  * group's destination location.
+ *
+ * When the user arrives at the destination the distance of the walk is calculated and the user is allocated points
+ * which is then uploaded to the server to update the user's current and total points.
  */
 
 public class UploadGpsLocation {
@@ -299,7 +302,15 @@ public class UploadGpsLocation {
         }
 
         currentPoints += accumulatedPoints;
+        if(currentPoints < 0 ) {
+            currentPoints = Integer.MAX_VALUE;
+        }
+
         totalPoints += accumulatedPoints;
+        if(totalPoints < 0 ) {
+            totalPoints = Integer.MAX_VALUE;
+        }
+
 
         Log.d("UpdatePoints", Integer.toString(currentPoints));
         Log.d("UpdatePoints", Integer.toString(totalPoints));

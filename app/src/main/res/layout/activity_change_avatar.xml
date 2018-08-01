@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".app.CurrentRewardsActivity">
+    tools:context=".app.ChangeAvatarActivity">
 
     <TextView
         android:id="@+id/textViewNoRewards"
@@ -27,8 +27,16 @@
 
         <Button
             android:id="@+id/btnCurrentRewardsOK"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="50"
             android:text="@string/btn_ok_currentrewards" />
+
+        <Button
+            android:id="@+id/btnCurrentRewardsCancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:text="@string/btn_current_rewards_cancel" />
     </LinearLayout>
 </LinearLayout>
