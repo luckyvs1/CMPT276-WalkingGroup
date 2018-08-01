@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -147,8 +148,28 @@ public class DashBoardActivity extends AppCompatActivity {
             totalPoints = 0;
         }
 
+        int[] tierMaxPoints = pointsHelper.getTierPoints();
+        int currentTierMaxPoints = 0;
+
+        if (currentTier >= 0) {
+            currentTierMaxPoints = tierMaxPoints[currentTier];
+        } else {
+            currentTierMaxPoints = tierMaxPoints[currentTier + 1];
+        }
+
+        int pointsNeeded = pointsHelper.getPointsNeeded();
+        int pointsProgress = currentTierMaxPoints - pointsNeeded;
+
+        if (pointsProgress < 0) {
+            pointsProgress = 0;
+        }
+
         String welcomeMessage = "Welcome, " + instance.getCurrentUser().getName() + "!";
-        String pointsMessage = "You have " + totalPoints + " points.";
+        String pointsMessage = pointsProgress + " / " + currentTierMaxPoints;
+
+        TextView totalPointsText = findViewById(R.id.dashBoard_totalPointsTxt);
+        String totalPointsMessage = "Total points: " + totalPoints;
+        totalPointsText.setText(totalPointsMessage);
 
         if(currentTier != invalidTier){
 
@@ -180,6 +201,19 @@ public class DashBoardActivity extends AppCompatActivity {
         setTitleColor(R.id.txtUserTitle, colorValue);
         displayDetails(R.id.txtUserTitle, titleName);
         displayAvater(R.id.imgViewAvatar, avatarId);
+
+        // Update progress bar
+        updateProgressBar(currentTier + 1, currentTierMaxPoints - pointsNeeded, currentTierMaxPoints);
+    }
+
+    private void updateProgressBar(int currentTier, int currentProgress, int maxProgress) {
+        ProgressBar progressBar = findViewById(R.id.dashBoard_progressBar);
+        progressBar.setMax(maxProgress);
+        progressBar.setProgress(currentProgress);
+
+        TextView currentTierTextView = findViewById(R.id.dashBoard_currentTier);
+        String currentTierText = currentTier + "";
+        currentTierTextView.setText(currentTierText);
     }
 
     // UI Logic

@@ -19,15 +19,17 @@ public class PointsHelper {
     int n2 = 4000;
 
     public PointsHelper(){
-        if(user.getTotalPointsEarned()==null)
-        {totalPoints = 0;}
-        else
-        {totalPoints = user.getTotalPointsEarned();}
+        if (user.getTotalPointsEarned()==null) {
+            totalPoints = 0;
+        } else {
+            totalPoints = user.getTotalPointsEarned();
+        }
 
-        if(user.getCurrentPoints()==null)
-        {currentPoints = 0;}
-        else
-        {currentPoints = user.getCurrentPoints();}
+        if (user.getCurrentPoints()==null) {
+            currentPoints = 0;
+        } else {
+            currentPoints = user.getCurrentPoints();
+        }
 
         setTierPoints();
         currentTier = getCurrentTier();
@@ -63,11 +65,14 @@ public class PointsHelper {
     }
 
     private void setTierPoints() {
+        int firstNum = n1;
+        int secondNum = n2;
+
         for(int i = 0 ; i < max_Tier ; i++){
-            int n3 = n1 + n2;
-            TierPoints[i] = n3;
-            n1 = n2;
-            n2 = n3;
+            int thirdNum = firstNum + secondNum;
+            TierPoints[i] = thirdNum;
+            firstNum = secondNum;
+            secondNum = thirdNum;
         }
     }
 }
