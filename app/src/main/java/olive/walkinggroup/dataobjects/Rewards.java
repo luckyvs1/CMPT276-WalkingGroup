@@ -10,6 +10,11 @@ import java.util.List;
 
 import olive.walkinggroup.R;
 
+/**
+ * Rewards class to setup and share titles and icons per tier.
+ * Contains methods that are used to interact with the rewards for a user and the tiers.
+ */
+
 public  class Rewards {
 
     private Context context;
