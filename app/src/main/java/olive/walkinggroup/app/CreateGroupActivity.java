@@ -163,6 +163,7 @@ public class CreateGroupActivity extends AppCompatActivity {
 
         Call<Group> caller = proxy.createGroup(group);
         ProxyBuilder.callProxy(CreateGroupActivity.this, caller, returnedGroup -> response(returnedGroup));
+        Toast.makeText(CreateGroupActivity.this, R.string.serverrequestsent, Toast.LENGTH_LONG).show();
     }
 
     private void response(Group returnedGroup) {
