@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -78,6 +79,7 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
     private void addUserByEmail(String email) {
         Call<User> caller = instance.getProxy().getUserByEmail(email);
         ProxyBuilder.callProxy((MonitorActivity)getActivity(), caller, user -> addUserToList(user));
+        Toast.makeText((MonitorActivity)getActivity(), R.string.serverrequestsent, Toast.LENGTH_LONG).show();
     }
 
     private void addUserToList(User user){
@@ -97,6 +99,7 @@ public class editMonitoredByUserFragment extends AppCompatDialogFragment {
     private void removeUserByEmail(String email){
         Call<User> caller = instance.getProxy().getUserByEmail(email);
         ProxyBuilder.callProxy((MonitorActivity)getActivity(),caller, user -> removeUserFromList(user));
+        Toast.makeText((MonitorActivity)getActivity(), R.string.serverrequestsent, Toast.LENGTH_LONG).show();
     }
 
     private void removeUserFromList(User user){

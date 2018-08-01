@@ -197,6 +197,8 @@ public class EditUserInformationActivity extends AppCompatActivity {
             String emergencyContactInformation = getUserInput(R.id.txtSetEmergencyContact);
             Integer intBirthYear;
             Integer intBirthMonth;
+            Integer currentPoints;
+            Integer totalPoints;
 
             dummyUser.setName(name);
             dummyUser.setEmail(email);
@@ -206,6 +208,22 @@ public class EditUserInformationActivity extends AppCompatActivity {
             dummyUser.setHomePhone(homePhone);
             dummyUser.setCellPhone(cellPhone);
             dummyUser.setEmergencyContactInfo(emergencyContactInformation);
+
+            //Add points and rewards
+            if(editUserEmail == null) {
+                totalPoints = instance.getCurrentUser().getTotalPointsEarned();
+                currentPoints = instance.getCurrentUser().getCurrentPoints();
+                dummyUser.setRewards(instance.getCurrentUser().getRewards());
+
+            } else {
+                totalPoints = user.getTotalPointsEarned();
+                currentPoints = user.getCurrentPoints();
+                dummyUser.setRewards(user.getRewards());
+
+            }
+
+            dummyUser.setCurrentPoints(currentPoints);
+            dummyUser.setTotalPointsEarned(totalPoints);
 
             if(birthYear != null){
                 intBirthYear = Integer.valueOf(birthYear);

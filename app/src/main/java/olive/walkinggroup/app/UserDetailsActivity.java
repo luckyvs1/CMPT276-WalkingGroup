@@ -43,6 +43,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         registerClickCallback();
         setupEditButton();
         setupCurrentRewardsButton();
+        updateCurrentUser();
     }
 
     private void setupCurrentRewardsButton() {
@@ -207,5 +208,24 @@ public class UserDetailsActivity extends AppCompatActivity {
     private void extractDataFromIntent(){
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("Children");
+    }
+
+    private void updateCurrentUser() {
+        if (instance.getCurrentUser() == null) {
+            return;
+        }
+        Call<User> caller = instance.getProxy().getUserById(instance.getCurrentUser().getId());
+        ProxyBuilder.callProxy(UserDetailsActivity.this, caller, returnedUser -> getUserById(returnedUser));
+    }
+
+    private void getUserById(User updatedUser) {
+        instance.setCurrentUser(updatedUser);
+        instance.getCurrentUser().setRewards(updatedUser.getRewards());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCurrentUser();
     }
 }

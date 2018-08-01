@@ -350,6 +350,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     private void addNewMemberToServer(User user) {
         Call<List<User>> caller = model.getProxy().addGroupMember(group.getId(), getIdDummy(user));
         ProxyBuilder.callProxy(this, caller, listOfMembers -> onAddNewMemberResponse(listOfMembers));
+        Toast.makeText(GroupDetailsActivity.this, R.string.serverrequestsent, Toast.LENGTH_LONG).show();
     }
 
     private void onAddNewMemberResponse(List<User> listOfMembers) {
@@ -360,6 +361,7 @@ public class GroupDetailsActivity extends AppCompatActivity implements OnMapRead
     private void removeMemberFromGroup(User user) {
         Call<Void> caller = model.getProxy().removeGroupMember(group.getId(), user.getId());
         ProxyBuilder.callProxy(this, caller, returnNothing -> onRemoveMemberResponse(returnNothing));
+        Toast.makeText(GroupDetailsActivity.this, R.string.serverrequestsent, Toast.LENGTH_LONG).show();
     }
 
     private void onRemoveMemberResponse(Void returnNothing) {
