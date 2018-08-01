@@ -153,7 +153,7 @@ public class DashBoardActivity extends AppCompatActivity {
         if(currentTier != invalidTier){
 
             // Colors
-            titleColor = typedArrayColors.getResourceId(currentTier+1, invalidTier);
+            titleColor = typedArrayColors.getResourceId(currentTier, invalidTier);
             colorValue = getResources().getColor(titleColor);
 
             // Titles
@@ -174,12 +174,6 @@ public class DashBoardActivity extends AppCompatActivity {
             titleName = typedArrayTitles[currentTier+1];
             avatarId = defaultAvatar.getResourceId(0,0);
         }
-
-//        if(instance.getCurrentUser().getRewards() != null) {
-//            avatarId = instance.getCurrentUser().getRewards().getSelectedIconId();
-//        } else  {
-//            avatarId = defaultAvatar.getResourceId(0,0);
-//        }
 
         displayDetails(R.id.txtUserName, welcomeMessage);
         displayDetails(R.id.txtUserPoints, pointsMessage);
