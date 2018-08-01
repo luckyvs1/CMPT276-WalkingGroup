@@ -301,11 +301,15 @@ public class UploadGpsLocation {
             totalPoints = 0;
         }
 
-        if(currentPoints != Integer.MAX_VALUE) {
+        if(currentPoints < 0 ) {
+            currentPoints = Integer.MAX_VALUE;
+        } else {
             currentPoints += accumulatedPoints;
         }
 
-        if(totalPoints != Integer.MAX_VALUE) {
+        if(totalPoints < 0 ) {
+            totalPoints = Integer.MAX_VALUE;
+        } else {
             totalPoints += accumulatedPoints;
         }
 
