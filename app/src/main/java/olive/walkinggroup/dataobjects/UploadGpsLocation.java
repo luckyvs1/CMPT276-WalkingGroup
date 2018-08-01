@@ -298,8 +298,14 @@ public class UploadGpsLocation {
             totalPoints = 0;
         }
 
-        currentPoints += accumulatedPoints;
-        totalPoints += accumulatedPoints;
+        if(currentPoints != Integer.MAX_VALUE) {
+            currentPoints += accumulatedPoints;
+        }
+
+        if(totalPoints != Integer.MAX_VALUE) {
+            totalPoints += accumulatedPoints;
+        }
+
 
         Log.d("UpdatePoints", Integer.toString(currentPoints));
         Log.d("UpdatePoints", Integer.toString(totalPoints));
