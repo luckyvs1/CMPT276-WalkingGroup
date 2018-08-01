@@ -14,9 +14,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import olive.walkinggroup.R;
 import olive.walkinggroup.dataobjects.Model;
 import olive.walkinggroup.dataobjects.PointsHelper;
+import olive.walkinggroup.dataobjects.Rewards;
 import olive.walkinggroup.dataobjects.User;
 
 public class StoreActivity extends AppCompatActivity {
@@ -26,17 +31,22 @@ public class StoreActivity extends AppCompatActivity {
 
     private int numTiers = 10;
     private int totalPoints;
-    private int currentPoints;
     private int currentTier;
     private int pointsNeeded;
     private int [] TierPoints;
 
     TextView [] coverTiers = new TextView [numTiers];
+    TextView [] titleTiers = new TextView [numTiers];
+
+    String[] titlesArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
+
+        titlesArray = this.getResources().getStringArray(R.array.titleNames);
+//        List<String> titles = new ArrayList<>(Arrays.asList(titlesArray));
 
         currentTier = pointsHelper.getCurrentTier();
         pointsNeeded = pointsHelper.getPointsNeeded();
@@ -51,12 +61,22 @@ public class StoreActivity extends AppCompatActivity {
 
         setupPointsView();
         setupCoverVisibility();
+        setupTitlesView();
 //        setupTierClickable();
+    }
+
+    private void setupTitlesView() {
+        for(int i = 0 ; i < numTiers ; i++) {
+            String ID = "title_tier"+(i+1);
+            int resID = getResources().getIdentifier(ID,"id",getPackageName());
+            titleTiers [i] = findViewById(resID);
+            String titleName = titlesArray[i];
+            titleTiers[i].setText(titleName);
+        }
     }
 
     private void setupPointsView(){
         totalPoints = pointsHelper.getTotalPoints();
-        currentPoints = pointsHelper.getCurrentPoints();
         TextView viewPoints = findViewById(R.id.shop_currentPoint);
         viewPoints.setText("Your points: "+totalPoints);
         if(pointsNeeded != 0){
