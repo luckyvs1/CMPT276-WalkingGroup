@@ -106,11 +106,9 @@ public class ChangeAvatarActivity extends AppCompatActivity {
     }
 
     private void setupListIcons() {
-
         CurrentRewardsAdapter currentRewardsAdapter = new CurrentRewardsAdapter();
         ListView listView = findViewById(R.id.listViewCurrentRewardsIcons);
         listView.setAdapter(currentRewardsAdapter);
-
     }
 
     public static Intent makeLaunchIntent(Context context) {
@@ -182,13 +180,6 @@ public class ChangeAvatarActivity extends AppCompatActivity {
 
             int imageResourceId = iconIds.get(position).get(col);
             imageView.setImageResource(imageResourceId);
-            if (currentUser.getRewards() != null) {
-                if (currentUser.getRewards().getSelectedIconId() == imageResourceId) {
-                    imageView.setColorFilter(Color.CYAN, PorterDuff.Mode.LIGHTEN);
-                    selectedIconId = imageResourceId;
-                    previouslySelectedIcon = imageView;
-                }
-            }
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
