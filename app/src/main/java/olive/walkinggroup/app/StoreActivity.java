@@ -58,7 +58,11 @@ public class StoreActivity extends AppCompatActivity {
         totalPoints = pointsHelper.getTotalPoints();
         currentPoints = pointsHelper.getCurrentPoints();
         TextView viewPoints = findViewById(R.id.shop_currentPoint);
-        viewPoints.setText("Your points: "+totalPoints+"\nPoints needed for next Tier: "+pointsNeeded);
+        viewPoints.setText("Your points: "+totalPoints);
+        if(pointsNeeded != 0){
+        viewPoints.append("\nPoints needed for next Tier: "+pointsNeeded);}
+        if(pointsNeeded == 0){
+            viewPoints.append("\n"+"Congratulations! You reached Max Tier!");}
     }
 
     private void setupCoverVisibility() {

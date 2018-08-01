@@ -149,15 +149,16 @@
 
     <array name="colors">
         <item name="Crimson">@color/Crimson</item>
-        <item name="Green">@color/Green</item>
+        <item name="SandyBrown">@color/SandyBrown</item>
+        <item name="YellowGreen">@color/YellowGreen</item>
+        <item name="Lime">@color/Lime</item>
+        <item name="Aqua">@color/Aqua</item>
         <item name="Blue">@color/Blue</item>
-        <item name="Gold">@color/Gold</item>
+        <item name="MediumPurple">@color/MediumPurple</item>
         <item name="DarkGoldenrod">@color/DarkGoldenrod</item>
         <item name="Silver">@color/Silver</item>
-        <item name="Aquamarine">@color/Aquamarine</item>
-        <item name="Red">@color/Red</item>
-        <item name="Aqua">@color/Aqua</item>
-        <item name="Lime">@color/Lime</item>
+        <item name="Gold">@color/Gold</item>
+
     </array>
 
 </resources>
