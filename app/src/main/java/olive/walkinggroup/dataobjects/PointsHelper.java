@@ -25,7 +25,7 @@ public class PointsHelper {
             totalPoints = user.getTotalPointsEarned();
         }
 
-        currentPoints = user.getTotalPointsEarned();
+        currentPoints = totalPoints;
         setTierPoints();
         currentTier = getCurrentTier();
     }

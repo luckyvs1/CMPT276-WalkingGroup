@@ -149,15 +149,21 @@ public class DashBoardActivity extends AppCompatActivity {
         }
 
         int[] tierMaxPoints = pointsHelper.getTierPoints();
+
         int currentTierMaxPoints = 0;
 
         if (currentTier >= 0) {
-            currentTierMaxPoints = tierMaxPoints[currentTier];
+            if((currentTier + 1) < Rewards.NUM_TIERS) {
+                currentTierMaxPoints = tierMaxPoints[currentTier + 1] - tierMaxPoints[currentTier];
+            } else {
+                currentTierMaxPoints = tierMaxPoints[currentTier];
+            }
         } else {
             currentTierMaxPoints = tierMaxPoints[currentTier + 1];
         }
 
         int pointsNeeded = pointsHelper.getPointsNeeded();
+
         int pointsProgress = currentTierMaxPoints - pointsNeeded;
 
         if (pointsProgress < 0) {
@@ -166,6 +172,10 @@ public class DashBoardActivity extends AppCompatActivity {
 
         String welcomeMessage = "Welcome, " + instance.getCurrentUser().getName() + "!";
         String pointsMessage = pointsProgress + " / " + currentTierMaxPoints;
+
+        if (totalPoints >= tierMaxPoints[tierMaxPoints.length - 1]) {
+            pointsMessage = "Max tier reached!";
+        }
 
         TextView totalPointsText = findViewById(R.id.dashBoard_totalPointsTxt);
         String totalPointsMessage = "Total points: " + totalPoints;
