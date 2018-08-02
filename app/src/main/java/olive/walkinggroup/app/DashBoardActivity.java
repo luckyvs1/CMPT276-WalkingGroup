@@ -173,6 +173,10 @@ public class DashBoardActivity extends AppCompatActivity {
         String welcomeMessage = "Welcome, " + instance.getCurrentUser().getName() + "!";
         String pointsMessage = pointsProgress + " / " + currentTierMaxPoints;
 
+        if (totalPoints > tierMaxPoints[Rewards.NUM_TIERS -1]) {
+            pointsMessage = "Max tier reached!";
+        }
+
         TextView totalPointsText = findViewById(R.id.dashBoard_totalPointsTxt);
         String totalPointsMessage = "Total points: " + totalPoints;
         totalPointsText.setText(totalPointsMessage);
