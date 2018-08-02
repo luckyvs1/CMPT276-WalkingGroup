@@ -11,6 +11,9 @@ Suppose F[] contains the generated Fibonacci sequence (F[] = {1, 1, 2, 3, 5, 8, 
 ...
 This scheme will give the user a gradual increase in difficulty and keep them motivated to unlock all 10 tiers (currently, but more to come in the future). The scheme is easily expandable on in order to add more tiers in the future.
 
+Exp bar
+- exp bar indicates progress of remaining points towards next tier.  I.e a user with 4512 points will have exp bar of 512 / 4000 as next tier is 8000.
+
 
 App Functionality
 -	User can go to profile -> select avatar to select the current avatar to update.  Tapping on an icon and clicking OK would set user active icon.  Tapping on a highlighted icon deselects the selected icon and clicking OK would not set user active icon.  Clicking cancel doesn’t change active icon regardless if user selected an icon of not.
